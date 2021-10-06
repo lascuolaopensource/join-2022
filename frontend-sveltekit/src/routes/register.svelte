@@ -1,36 +1,38 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 
+	// Form data needed for the registration
 	let username: string = '';
 	let email: string = '';
 	let password: string = '';
 
+	// Helper variables to store and check for errors
 	let error: boolean = false;
 	let error_msg: string = '';
 
+	// Registers a user
 	async function registerUser() {
-		error = false;
-
+		// We first post a request to the register endpoint
 		const res = await fetch('http://localhost:1337/auth/local/register', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 			body: JSON.stringify({
-				name: username,
 				username: username,
 				email: email,
 				password: password
 			})
 		});
 
+		// If response is okay we move to login
+		// In future this will be the "verify your email" page
 		if (res.ok) {
 			goto('/login');
 		}
-		//
+		// Else we update the error variables
 		else {
 			const data: { message: { messages: { message: string }[] }[] } = await res.json();
-			if (data?.message?.[0]?.messages?.[0]?.message) {
-				alert(data.message[0].messages[0].message);
-			}
+			error = true;
+			error_msg = data.message[0].messages[0].message;
 		}
 	}
 </script>

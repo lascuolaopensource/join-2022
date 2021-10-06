@@ -1,0 +1,4 @@
+TODO
+
+- Bloccare iscrizione ad un corso se ci si è già iscritti
+- Provare a togliere react dal frontend (?)
