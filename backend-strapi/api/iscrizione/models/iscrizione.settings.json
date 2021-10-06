@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "iscriziones",
+  "info": {
+    "name": "Iscrizione"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "iscrizioni"
+    },
+    "lettera_motivazionale": {
+      "type": "richtext"
+    },
+    "corso": {
+      "via": "iscrizioni",
+      "model": "corso"
+    }
+  }
+}

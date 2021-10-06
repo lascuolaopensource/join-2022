@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "corsos",
+  "info": {
+    "name": "Corso",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titolo": {
+      "type": "string",
+      "required": true
+    },
+    "iscrizioni": {
+      "collection": "iscrizione",
+      "via": "corso"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/iscriziones",
+      "handler": "iscrizione.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/iscriziones/count",
+      "handler": "iscrizione.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/iscriziones/:id",
+      "handler": "iscrizione.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/iscriziones",
+      "handler": "iscrizione.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/iscriziones/:id",
+      "handler": "iscrizione.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/iscriziones/:id",
+      "handler": "iscrizione.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
