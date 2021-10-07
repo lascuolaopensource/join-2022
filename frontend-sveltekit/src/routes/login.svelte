@@ -20,7 +20,7 @@
 			localStorage.setItem('token', data.jwt);
 			if (data) {
 				$user = data.user;
-				goto('/inside/home');
+				goto('/inside');
 			}
 		} else {
 			const data: { message: { messages: { message: string }[] }[] } = await res.json();

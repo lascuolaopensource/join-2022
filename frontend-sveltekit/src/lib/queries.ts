@@ -37,7 +37,14 @@ export const POST_ISCRIZIONE = gql`
 `;
 
 export const GET_ISCRIZIONI = gql`
-	query get_iscrizioni($userID: ID!) {
-		user(id: )
+	query {
+		me {
+			iscrizioni {
+				corso {
+					titolo
+				}
+				lettera_motivazionale
+			}
+		}
 	}
 `;

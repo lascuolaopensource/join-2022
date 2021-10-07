@@ -1,27 +1,25 @@
 <script lang="ts">
-	// import { goto } from '$app/navigation';
-	// import { page } from '$app/stores';
-	// import userStore from '$lib/stores/userStore';
-	// const ID: string = $page.params.corso;
+	import createApolloClient from '$lib/helpers/createApolloClient';
+	import { setClient, query } from 'svelte-apollo';
+	import { GET_ISCRIZIONI } from '$lib/queries';
 
-	// let lettera_motivazionale: string = '';
+	// Setting the GraphQL client
+	const client = createApolloClient(localStorage.getItem('token'));
+	setClient(client);
 
-	// const client = createApolloClient(localStorage.getItem('token'));
-	// setClient(client);
-
-	async function get_iscrizioni() {
-		const res = await fetch('http://localhost:1337/users/me', {
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem('token')}`
-			}
-		});
-		console.log(res.json());
-	}
-
-	get_iscrizioni();
-
-	// const post_iscrizione = mutation(POST_ISCRIZIONE);
+	const iscrizioni = query(GET_ISCRIZIONI);
 </script>
 
-le tue prenotazioni ai corsi
+le tue iscrizioni ai corsi:
+
+{#if $iscrizioni.loading}
+	loading...
+{:else if $iscrizioni.error}
+	Error!
+{:else if $iscrizioni.data}
+	<ul>
+		{#each $iscrizioni.data.me.iscrizioni as iscrizione}
+			<li>{iscrizione.corso.titolo} {iscrizione.lettera_motivazionale}</li>
+		{/each}
+	</ul>
+{/if}
