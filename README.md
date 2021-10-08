@@ -1,4 +1,9 @@
-TODO
+# Notes to make it work
+
+- After install, on strapi, go to users and permissions plugin and switch on correctly the authorizations
+- Make sure content is "Published", otherwise you won't find it in the frontend and queries
+
+# TODO
 
 - Bloccare iscrizione ad un corso se ci si è già iscritti
 - Far sì che i tab della navbar corrispondano ai link aperti
