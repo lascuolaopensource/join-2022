@@ -1,6 +1,15 @@
+:root {
+	--padding-item: 8px;
+	--padding-container: 2px;
+	--border-radius: 0;
+	--hover-tertiary: rgba(0, 0, 0, 0.1);
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Arial, sans-serif;
+	font-size: 16px;
+	line-height: 20px;
 }

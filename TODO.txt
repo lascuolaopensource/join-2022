@@ -1,5 +1,0 @@
-TODO
-
-- Bloccare iscrizione ad un corso se ci si è già iscritti
-- Provare a togliere react dal frontend (?)
-- Provare a mettere il client GraphQL dentro __layout
