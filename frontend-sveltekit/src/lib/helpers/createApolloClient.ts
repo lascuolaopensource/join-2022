@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 
 // https://hasura.io/learn/graphql/svelte-apollo/apollo-client/
 // Row 14, "link: httpLink" - c'è un errore nel tutorial, che riporta solo "httpLink"
