@@ -1,17 +1,12 @@
 <!-- src/lib/Navbar.svelte -->
 <script lang="ts">
+	// Need this to check if user is logged
 	import userStore from '$lib/stores/userStore';
-	import { goto } from '$app/navigation';
 
 	// Components
 	import NavbarItem from './navbarItem.svelte';
-	import Button from './button.svelte';
-
-	async function logout() {
-		localStorage.removeItem('token');
-		$userStore = null;
-		goto('/');
-	}
+	import LogoutButton from './logoutButton.svelte';
+	import Icon from './icon.svelte';
 </script>
 
 <nav class="">
@@ -20,7 +15,6 @@
 	<!-- Right-side links -->
 	{#if !$userStore}
 		<div>
-			<NavbarItem href="/login">Login</NavbarItem>
 			<NavbarItem href="/register">Register</NavbarItem>
 		</div>
 	{:else}
@@ -29,15 +23,15 @@
 		</div>
 		<div>
 			<NavbarItem href="/inside/profile">{$userStore.username}</NavbarItem>
-			<Button hierarchy="Tertiary" on:click={logout}>Logout</Button>
+			<LogoutButton>↖ Logout</LogoutButton>
 		</div>
 	{/if}
 </nav>
 
 <style>
 	nav {
-		padding: var(--padding-container);
-		border-bottom: 1px solid black;
+		background-color: var(--nav-main-bg);
+		padding: var(--container-padding);
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: space-between;

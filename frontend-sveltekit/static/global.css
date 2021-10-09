@@ -1,8 +1,23 @@
 :root {
-	--padding-item: 8px;
-	--padding-container: 2px;
+	--item-padding: 8px;
+	--container-padding: 2px;
 	--border-radius: 0;
-	--hover-tertiary: rgba(0, 0, 0, 0.1);
+	/* Main navbar */
+	--nav-main-bg: black;
+	--nav-main-item-bg: transparent;
+	--nav-main-item-text: white;
+	--nav-main-item-hover: rgba(255, 255, 255, 0.3);
+	--nav-main-item-bg-active: white;
+	--nav-main-item-text-active: black;
+	/* --nav
+	--nav-item-text-light: black;
+	--nav-item-text-dark: white;
+	--nav-item-background-light: transparent;
+	--nav-item-background-dark: transparent;
+	--nav-item-hover-light: rgba(0, 0, 0, 0.1);
+	--nav-item-hover-dark: ;
+	--nav-item-active-light: black;
+	--nav-item-active-dark: white; */
 }
 
 * {

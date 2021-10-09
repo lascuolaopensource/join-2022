@@ -43,6 +43,6 @@
 	}
 
 	.tertiary:hover {
-		background-color: var(--hover-tertiary);
+		background-color: var(--tertiary-hover-light);
 	}
 </style>

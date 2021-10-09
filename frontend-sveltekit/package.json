@@ -28,6 +28,7 @@
   "type": "module",
   "dependencies": {
     "apollo-client": "^2.6.10",
+    "feather-icons": "^4.28.0",
     "graphql": "^15.6.0",
     "svelte-apollo": "^0.4.0"
   }

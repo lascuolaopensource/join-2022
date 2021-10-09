@@ -1,10 +1,15 @@
 <script lang="ts">
+	// We get the page store in order to get the current url
 	import { page } from '$app/stores';
 
+	// Variable for href
 	export let href: string;
 
+	// This variable keeps track if the page is open or not
 	let active = false;
 
+	// This one executes every time $page changes
+	// Checks if the href variable has some match with the current url
 	$: active = ($page.path.includes(href) && href != '/') || $page.path == href;
 </script>
 
@@ -15,21 +20,21 @@
 <style>
 	a {
 		text-decoration: none;
-		padding: var(--padding-item);
+		padding: var(--item-padding);
 		border-radius: var(--border-radius);
 	}
 
 	.inactive {
-		color: black;
-		background-color: transparent;
+		color: var(--nav-main-item-text);
+		background-color: var(--nav-main-item-bg);
 	}
 
 	.inactive:hover {
-		background-color: var(--hover-tertiary);
+		background-color: var(--nav-main-item-hover);
 	}
 
 	.active {
-		color: white;
-		background-color: black;
+		color: var(--nav-main-item-text-active);
+		background-color: var(--nav-main-item-bg-active);
 	}
 </style>
