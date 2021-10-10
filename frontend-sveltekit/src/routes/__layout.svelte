@@ -58,14 +58,7 @@
 		min-width: 200px;
 		max-width: 500px;
 		width: 100%;
-		padding: 45px;
 		background-color: white;
 		border-radius: var(--border-radius);
-	}
-
-	@media (max-width: 767px) {
-		section {
-			padding: 15px;
-		}
 	}
 </style>

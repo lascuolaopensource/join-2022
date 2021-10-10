@@ -14,7 +14,7 @@
 
 # TODO
 
-- Mettere in home il login, e la registrazione come link? Senza stare a mettere la navbar sopra
+- Login: prima si controlla email, poi password (2-step)
 - Capire come integrare le icone
 - Nascondere il logout dentro un dropdown, in modo tale da evitare misclick quando l'utente clicca sul suo profilo
 - Bloccare iscrizione ad un corso se ci si è già iscritti
@@ -27,3 +27,4 @@
 
 - Provare a togliere react dal frontend (?)
 - Far sì che i tab della navbar corrispondano ai link aperti
+- Mettere in home il login, e la registrazione come link? Senza stare a mettere la navbar sopra

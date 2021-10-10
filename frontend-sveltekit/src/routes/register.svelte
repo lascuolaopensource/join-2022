@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 
+	import Button from '$lib/components/button.svelte';
+	import InputText from '$lib/components/inputText.svelte';
+	import FormGroup from '$lib/components/formGroup.svelte';
+	import Form from '$lib/components/form.svelte';
+	import FormError from '$lib/components/formError.svelte';
+
 	// Form data needed for the registration
 	let username: string = '';
 	let email: string = '';
@@ -26,39 +32,65 @@
 		// If response is okay we move to login
 		// In future this will be the "verify your email" page
 		if (res.ok) {
-			goto('/login');
+			goto('/');
 		}
 		// Else we update the error variables
 		else {
 			const data: { message: { messages: { message: string }[] }[] } = await res.json();
 			error = true;
-			error_msg = data.message[0].messages[0].message;
+			if (data?.message?.[0]?.messages?.[0]?.message) {
+				error_msg = data.message[0].messages[0].message;
+			} else {
+				error_msg = 'An unknown error occurred';
+			}
 		}
 	}
 </script>
 
-<h1>This is the registration page!</h1>
-<form on:submit|preventDefault={registerUser}>
+<!-- Markup -->
+
+<!-- Registration link -->
+<div>
+	<a href="/">← Login</a>
+</div>
+
+<Form on:submit={registerUser} title="Join / Registrati">
 	<!-- Error message in case something goes wrong -->
 	{#if error}
-		<div>
+		<FormError>
 			{error_msg}
-		</div>
+		</FormError>
 	{/if}
-	<!-- The form -->
-	<input bind:value={username} type="text" placeholder="username" required />
-	<input bind:value={email} type="email" placeholder="email" required />
-	<input bind:value={password} type="password" placeholder="password" required />
-	<button type="submit">Register!</button>
-</form>
+	<!-- Rest of the form -->
+	<FormGroup>
+		<InputText
+			type="text"
+			bind:value={username}
+			label="Username"
+			placeholder="Inserisci il tuo username"
+			required
+		/>
+		<InputText
+			type="email"
+			bind:value={email}
+			label="Email"
+			placeholder="Inserisci la tua email"
+			required
+		/>
+		<InputText
+			type="password"
+			bind:value={password}
+			label="Password"
+			placeholder="Inserisci la tua password"
+			required
+		/>
+	</FormGroup>
+	<Button type="submit">Registrati!</Button>
+</Form>
 
 <style>
-	form {
-		display: flex;
-		flex-flow: column nowrap;
-		width: 400px;
-	}
-	input {
-		margin-bottom: 10px;
+	div {
+		width: 100%;
+		padding: var(--s-4) var(--s-4) 0 var(--s-4);
 	}
 </style>

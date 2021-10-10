@@ -1,7 +1,22 @@
 :root {
+	--text-small: 14px;
+	--text-small-lh: 16px;
+	--text-normal: 16px;
+	--text-normal-lh: 20px;
+
 	--item-padding: 8px;
 	--container-padding: 2px;
 	--border-radius: 0;
+
+	/* Spacing */
+	--s-0: 4px;
+	--s-1: 8px;
+	--s-2: 16px;
+	--s-25: 24px;
+	--s-3: 32px;
+	--s-35: 40px;
+	--s-4: 48px;
+
 	/* Button */
 	--btn-text-primary: black;
 	--btn-bg-primary: gold;
@@ -17,6 +32,7 @@
 	--input-border-focus: solid blue;
 	--input-border-width: 0;
 	--input-border-width-focus: 2px;
+
 	/* Link */
 	--a-text: blue;
 	--a-padding: 0 1px;
@@ -26,6 +42,7 @@
 	--a-decoration-hover: none;
 	--a-background-hover: blue;
 	--a-text-hover: white;
+
 	/* Main navbar */
 	--nav-main-bg: black;
 	--nav-main-item-bg: transparent;
@@ -33,6 +50,12 @@
 	--nav-main-item-hover: rgba(255, 255, 255, 0.3);
 	--nav-main-item-bg-active: white;
 	--nav-main-item-text-active: black;
+
+	/* Form error */
+	--form-err-color: red;
+	--form-err-bg: rgba(255, 0, 0, 0.1);
+	--form-err-border: 1px solid red;
+
 	/* --nav
 	--nav-item-text-light: black;
 	--nav-item-text-dark: white;
@@ -50,8 +73,8 @@
 	box-sizing: border-box;
 
 	font-family: Arial, sans-serif;
-	font-size: 16px;
-	line-height: 20px;
+	font-size: var(--text-normal);
+	line-height: var(--text-normal-lh);
 }
 
 a {
