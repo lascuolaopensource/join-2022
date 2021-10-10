@@ -3,23 +3,32 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	// Si serve usare per "nascondere" lo slot fino a quando il caricamento non è completo
+	// Si serve usare per "nascondere" il contenuto
+	// fino a quando il caricamento non è completo
+	// (In partenza ovviamente si è in caricamento)
 	let loading = true;
 
 	// Quando il componente viene chiamato:
 	onMount(async () => {
-		// Fetch the user from strapi
-		const res = await fetch('http://localhost:1337/auth/me', {
-			headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-		});
-
-		//
-		if (res.ok) {
-			goto('/inside');
-		}
-		//
-		else {
+		// Se non c'è il token in localstorage termina il caricamento
+		if (!localStorage.getItem('token')) {
 			loading = false;
+		}
+		// Se invece il token c'è:
+		else {
+			// Si chiede se l'utente è registrato
+			const res = await fetch('http://localhost:1337/auth/me', {
+				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+			});
+
+			// Se si, si va direttamente all'interno
+			if (res.ok) {
+				goto('/inside');
+			}
+			// Altrimenti, il caricamento finisce
+			else {
+				loading = false;
+			}
 		}
 	});
 </script>
