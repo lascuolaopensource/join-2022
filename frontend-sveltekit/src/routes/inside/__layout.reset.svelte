@@ -1,17 +1,16 @@
 <script lang="ts">
-	// Here we do two things:
-
-	// 1. Check if the user is logged otherwise we send it away
+	// Here we check if the user is logged otherwise we send it away
 	import userStore from '$lib/stores/userStore';
 	import type { User } from '$lib/types';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	// ---
+	import NavbarMain from '$lib/components/navbarMain.svelte';
 
 	// Si serve usare per "nascondere" lo slot fino a quando il caricamento non è completo
 	let loading = true;
 
+	// Quando il componente viene chiamato:
 	onMount(async () => {
 		// Check if 'token' exists in localStorage
 		if (!localStorage.getItem('token')) {
@@ -43,6 +42,7 @@
 {#if loading}
 	<p>loading...</p>
 {:else}
+	<NavbarMain />
 	<!-- Non veramente sicuro di questo ↓, ma dovrebbe andare -->
 	{#if $userStore}
 		<slot />

@@ -1,8 +1,10 @@
 <script lang="ts">
 	export let hierarchy: 'Primary' | 'Secondary' | 'Tertiary' = 'Primary';
+	export let type: 'button' | 'submit' | 'reset' = 'button';
 </script>
 
 <button
+	{type}
 	class:primary={hierarchy == 'Primary'}
 	class:secondary={hierarchy == 'Secondary'}
 	class:tertiary={hierarchy == 'Tertiary'}
@@ -13,7 +15,7 @@
 
 <style>
 	button {
-		padding: var(--padding-item);
+		padding: var(--item-padding);
 		border-radius: var(--border-radius);
 		border: none;
 	}
@@ -22,12 +24,21 @@
 		cursor: pointer;
 	}
 
+	button:focus,
+	button:active {
+		outline: none;
+		border: var(--input-border-focus);
+		border-width: var(--input-border-width-focus);
+		padding: calc(var(--item-padding) - var(--input-border-width-focus));
+	}
+
 	.primary {
-		background-color: yellow;
+		background-color: var(--btn-bg-primary);
+		color: var(--btn-text-primary);
 	}
 
 	.primary:hover {
-		background-color: orange;
+		background-color: var(--btn-bg-primary-hover);
 	}
 
 	.secondary {

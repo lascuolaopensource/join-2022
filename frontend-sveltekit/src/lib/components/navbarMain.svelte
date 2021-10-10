@@ -6,12 +6,11 @@
 	// Components
 	import NavbarItem from './navbarItem.svelte';
 	import LogoutButton from './logoutButton.svelte';
-	import Icon from './icon.svelte';
 </script>
 
 <nav class="">
 	<!-- Main link -->
-	<NavbarItem href="/">Join</NavbarItem>
+	<NavbarItem href="/inside">Join</NavbarItem>
 	<!-- Right-side links -->
 	{#if !$userStore}
 		<div>
