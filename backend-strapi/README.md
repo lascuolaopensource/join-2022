@@ -4,6 +4,12 @@ Just some notes on fixes and procedures :)
 
 ---
 
+## Email confirmation!
+
+Important: activate the email confirmation in advanced settings!
+
+---
+
 ## Adding auth/me endpoint
 
 1. checking everytime the token
