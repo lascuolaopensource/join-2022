@@ -66,7 +66,7 @@
 			required
 			link={{
 				label: 'Password dimenticata?',
-				href: '/resetpassword'
+				href: '/password/forgot'
 			}}
 		/>
 	</FormGroup>

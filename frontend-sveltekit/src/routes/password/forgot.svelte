@@ -16,7 +16,25 @@
 
 	// Registers a user
 	async function resetPassword() {
-		console.log('Password reset');
+		const res = await fetch('http://localhost:1337/auth/forgot-password', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+			body: JSON.stringify({ email })
+		});
+		// If response is ok we send the user to some confirmation
+		if (res.ok) {
+			goto('/password/forgotconfirm');
+		}
+		// We have to alert the user that something went wrong
+		else {
+			const data: { message: { messages: { message: string }[] }[] } = await res.json();
+			error = true;
+			if (data?.message?.[0]?.messages?.[0]?.message) {
+				error_msg = data.message[0].messages[0].message;
+			} else {
+				error_msg = 'An unknown error occurred';
+			}
+		}
 	}
 </script>
 
@@ -50,6 +68,6 @@
 <style>
 	div {
 		width: 100%;
-		padding: var(--s-4) var(--s-4) 0 var(--s-4);
+		padding-bottom: var(--s-4);
 	}
 </style>
