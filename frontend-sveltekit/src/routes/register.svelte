@@ -32,7 +32,7 @@
 		// If response is okay we move to login
 		// In future this will be the "verify your email" page
 		if (res.ok) {
-			goto('/');
+			goto('/thanks');
 		}
 		// Else we update the error variables
 		else {
@@ -51,7 +51,7 @@
 
 <!-- Registration link -->
 <div>
-	<a href="/">← Login</a>
+	<a class="back" href="/">← Login</a>
 </div>
 
 <Form on:submit={registerUser} title="Join / Registrati">
@@ -91,6 +91,6 @@
 <style>
 	div {
 		width: 100%;
-		padding: var(--s-4) var(--s-4) 0 var(--s-4);
+		padding-bottom: var(--s-4);
 	}
 </style>

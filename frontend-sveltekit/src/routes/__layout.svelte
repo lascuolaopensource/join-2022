@@ -60,5 +60,6 @@
 		width: 100%;
 		background-color: white;
 		border-radius: var(--border-radius);
+		padding: var(--s-4);
 	}
 </style>

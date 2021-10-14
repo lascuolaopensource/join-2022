@@ -90,7 +90,7 @@
 	}
 
 	.message {
-		margin-bottom: var(--s-4);
+		margin-top: var(--s-4);
 	}
 
 	.registrati {

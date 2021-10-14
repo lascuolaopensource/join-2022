@@ -16,6 +16,5 @@
 		display: flex;
 		flex-flow: column nowrap;
 		gap: var(--s-4);
-		padding: var(--s-4);
 	}
 </style>

@@ -9,6 +9,8 @@
 
 - Come gestire il logout? Mi pare la cosa giusta sia creare un endpoint, ma poi da lì non riesco a svuotare il localstorage. Per questo al momento ho un componente specifico per il bottone di logout ma non mi quadra tanto.
 - Come gestire i testi? Si fa un file unico con tutte le stringhe?
+- Come si fa il 2-step login?
+- Risistemiamo le issues su github?
 
 ---
 
@@ -22,6 +24,8 @@
   - Oppure fare in modo che stia da una parte soltanto
   - Oppure metterlo dentro Load
 - Evitare che svelte marchi come errori i risultati delle query fatte con GraphQL (per via degli attributi mancanti). Soluzione: creare i tipi
+- Fare i field che diventano rossi quando c'è un errore
+- Conferma password
 
 ## Done
 
