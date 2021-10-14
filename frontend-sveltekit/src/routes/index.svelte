@@ -41,8 +41,8 @@
 </script>
 
 <!-- Markup -->
-
-<Form on:submit={login} title="Join / Login">
+<h1>Login</h1>
+<Form on:submit={login}>
 	<!-- Error message in case something goes wrong -->
 	{#if error}
 		<FormError>

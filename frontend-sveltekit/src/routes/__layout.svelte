@@ -36,30 +36,52 @@
 {#if loading}
 	loading...
 {:else}
-	<div>
-		<section>
-			<slot />
-		</section>
+	<div class="container">
+		<main>
+			<div class="header">
+				<h1>Join!</h1>
+			</div>
+			<section>
+				<slot />
+			</section>
+		</main>
 	</div>
 {/if}
 
 <style>
-	div {
+	.container {
 		width: 100%;
 		height: 100vh;
 		display: flex;
-		flex-flow: row nowrap;
+		flex-flow: column nowrap;
 		align-items: center;
 		justify-content: center;
 		background-color: blue;
+		padding: var(--s-2);
 	}
 
-	section {
+	main {
 		min-width: 200px;
 		max-width: 500px;
 		width: 100%;
-		background-color: white;
 		border-radius: var(--border-radius);
+		overflow: hidden;
+	}
+
+	section {
+		background-color: white;
 		padding: var(--s-4);
+	}
+
+	.header {
+		width: 100%;
+		background-color: black;
+		color: white;
+		padding: var(--s-2) var(--s-4);
+	}
+
+	h1 {
+		font-weight: 400;
+		margin-bottom: 0;
 	}
 </style>

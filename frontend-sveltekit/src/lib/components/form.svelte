@@ -1,13 +1,4 @@
-<script lang="ts">
-	export let title = '';
-</script>
-
 <form on:submit|preventDefault>
-	<!-- Title -->
-	{#if title != ''}
-		<h1>{title}</h1>
-	{/if}
-	<!-- Content -->
 	<slot />
 </form>
 
