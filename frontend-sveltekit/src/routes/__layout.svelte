@@ -1,22 +1,31 @@
 <script lang="ts">
-	// We check if the user is logged already, so we send him inside
+	//
+
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
+	import Loading from '$lib/components/loading.svelte';
+
+	//
+
 	// Si serve usare per "nascondere" il contenuto
-	// fino a quando il caricamento non è completo
-	// (In partenza ovviamente si è in caricamento)
+	// fino a quando il caricamento non è completo (loading = false)
 	let loading = true;
 
-	// Quando il componente viene chiamato:
+	// ON MOUNT (Quando il componente viene chiamato):
+	// If the user is logged already, we send him inside
 	onMount(async () => {
-		// Se non c'è il token in localstorage termina il caricamento
+		// Se non c'è il token in localstorage
+		// significa automaticamente che non c'è nessun user
 		if (!localStorage.getItem('token')) {
+			// Quindi termina il caricamento
 			loading = false;
+			// E si resta nella stessa pagina
 		}
-		// Se invece il token c'è:
+		// Se invece il token c'è,
+		// C'è un utente
 		else {
-			// Si chiede se l'utente è registrato
+			// Si chiede quindi se l'utente è registrato
 			const res = await fetch('http://localhost:1337/auth/me', {
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
 			});
@@ -26,6 +35,7 @@
 				goto('/inside');
 			}
 			// Altrimenti, il caricamento finisce
+			// NOTA: Serve riportare l'errore nel caso ci sia?
 			else {
 				loading = false;
 			}
@@ -33,8 +43,10 @@
 	});
 </script>
 
+<!--  -->
+
 {#if loading}
-	loading...
+	<Loading fullscreen />
 {:else}
 	<div class="container">
 		<main>
@@ -50,13 +62,13 @@
 
 <style>
 	.container {
-		width: 100%;
+		width: 100vw;
 		height: 100vh;
 		display: flex;
 		flex-flow: column nowrap;
 		align-items: center;
 		justify-content: center;
-		background-color: blue;
+		background-color: var(--outside-bg);
 		padding: var(--s-2);
 	}
 
@@ -69,19 +81,19 @@
 	}
 
 	section {
-		background-color: white;
+		background-color: var(--main-bg);
 		padding: var(--s-4);
 	}
 
 	.header {
 		width: 100%;
-		background-color: black;
-		color: white;
+		background-color: var(--nav-main-bg);
 		padding: var(--s-2) var(--s-4);
 	}
 
 	h1 {
 		font-weight: 400;
 		margin-bottom: 0;
+		color: var(--nav-main-item-text);
 	}
 </style>

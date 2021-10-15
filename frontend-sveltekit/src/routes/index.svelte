@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { User } from '$lib/types';
-	import { goto } from '$app/navigation';
 	import user from '$lib/stores/userStore';
+	import { goto } from '$app/navigation';
 
 	import Button from '$lib/components/button.svelte';
 	import InputText from '$lib/components/inputText.svelte';
@@ -9,11 +9,15 @@
 	import Form from '$lib/components/form.svelte';
 	import FormError from '$lib/components/formError.svelte';
 
+	//
+
 	let email = '';
 	let password = '';
 
 	let error: boolean = false;
 	let error_msg: string = '';
+
+	//
 
 	async function login() {
 		const res = await fetch('http://localhost:1337/auth/local', {

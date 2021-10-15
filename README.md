@@ -8,6 +8,9 @@
 
 # Da chiedere a Raffa
 
+- Sicurezza: quanto dovremmo preoccuparci?
+  - https://dev.to/cotter/localstorage-vs-cookies-all-you-need-to-know-about-storing-jwt-tokens-securely-in-the-front-end-15id
+- src/routes/\_\_layout.svelte : Line 38
 - Come gestire il logout? Mi pare la cosa giusta sia creare un endpoint, ma poi da lì non riesco a svuotare il localstorage. Per questo al momento ho un componente specifico per il bottone di logout ma non mi quadra tanto.
 - Come gestire i testi? Si fa un file unico con tutte le stringhe?
 - Come si fa il 2-step login?
