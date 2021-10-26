@@ -1,12 +1,11 @@
 <script lang="ts">
-	import type { User } from '$lib/types';
 	import user from '$lib/stores/userStore';
-
-	console.log($user);
 </script>
 
 <h1>Join / Grazie per aver confermato l'email!</h1>
-<p>Super! Hai confermato la tua email! Ora puoi fare tutto quello che vuoi :D</p>
+<p>
+	Super! Hai confermato la tua email! Ora puoi fare tutto quello che vuoi :D
+</p>
 {#if $user}
 	<a href="/inside">Vai alla home</a>
 {:else}

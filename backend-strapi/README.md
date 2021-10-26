@@ -65,3 +65,31 @@ module.exports = {
     `,
 };
 ```
+
+---
+
+TODO
+
+creare degli endpoint come "check email" e "check username"
+per vedere se quelle cose stanno già dentro il database
+in modo da ritornare errori specifici per il singolo field
+
+---
+
+NOTE
+
+Per segnalare automaticamente che un’iscrizione é scaduta, o che un corso é partito:
+
+• UPDATE: si possono usare i CRON
+
+https://stackoverflow.com/questions/60208028/strapi-cms-add-calculated-field
+
+https://strapi.io/documentation/developer-docs/latest/guides/custom-data-response.html
+
+https://strapi.io/documentation/developer-docs/latest/guides/slug.html#create-attributes
+
+https://stackoverflow.com/questions/59088220/update-given-field-value-with-every-fetch-request-in-strapi
+
+https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#routing
+
+https://github.com/unlocomqx/svelte-apollo/blob/patch-client/src/client.ts

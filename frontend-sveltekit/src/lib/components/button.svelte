@@ -1,6 +1,7 @@
 <script lang="ts">
 	export let hierarchy: 'Primary' | 'Secondary' | 'Tertiary' = 'Primary';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
+	export let tabindex = 0;
 </script>
 
 <button
@@ -8,6 +9,7 @@
 	class:primary={hierarchy == 'Primary'}
 	class:secondary={hierarchy == 'Secondary'}
 	class:tertiary={hierarchy == 'Tertiary'}
+	{tabindex}
 	on:click
 >
 	<slot />

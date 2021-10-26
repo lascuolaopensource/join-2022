@@ -28,6 +28,11 @@
 </nav>
 
 <style>
+	div {
+		height: fit-content;
+		width: fit-content;
+	}
+
 	nav {
 		background-color: var(--nav-main-bg);
 		padding: var(--container-padding);

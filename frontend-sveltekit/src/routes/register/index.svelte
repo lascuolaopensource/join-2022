@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { post } from '$lib/helpers/requestUtils';
 
 	import Button from '$lib/components/button.svelte';
 	import InputText from '$lib/components/inputText.svelte';
@@ -12,37 +13,24 @@
 	let email: string = '';
 	let password: string = '';
 
-	// Helper variables to store and check for errors
+	// Helper variables to check for error and store it
 	let error: boolean = false;
 	let error_msg: string = '';
 
 	// Registers a user
 	async function registerUser() {
-		// We first post a request to the register endpoint
-		const res = await fetch('http://localhost:1337/auth/local/register', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-			body: JSON.stringify({
+		try {
+			// IMPORTANT! Since post is an async function, we need to put await before
+			await post(fetch, 'http://localhost:1337/auth/local/register', {
 				username: username,
 				email: email,
 				password: password
-			})
-		});
-
-		// If response is okay we move to login
-		// In future this will be the "verify your email" page
-		if (res.ok) {
-			goto('/thanks');
-		}
-		// Else we update the error variables
-		else {
-			const data: { message: { messages: { message: string }[] }[] } = await res.json();
+			});
+			// If successful, we redirect
+			goto('/register/thanks');
+		} catch (err) {
 			error = true;
-			if (data?.message?.[0]?.messages?.[0]?.message) {
-				error_msg = data.message[0].messages[0].message;
-			} else {
-				error_msg = 'An unknown error occurred';
-			}
+			error_msg = err.message;
 		}
 	}
 </script>
@@ -54,7 +42,8 @@
 	<a class="back" href="/">← Login</a>
 </div>
 
-<Form on:submit={registerUser} title="Join / Registrati">
+<h1>Registrati!</h1>
+<Form on:submit={registerUser}>
 	<!-- Error message in case something goes wrong -->
 	{#if error}
 		<FormError>

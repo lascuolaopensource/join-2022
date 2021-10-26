@@ -10,7 +10,8 @@
 
 	// This one executes every time $page changes
 	// Checks if the href variable has some match with the current url
-	$: active = ($page.path.includes(href) && href != '/inside') || $page.path == href;
+	$: active =
+		($page.path.includes(href) && href != '/inside') || $page.path == href;
 </script>
 
 <a class:inactive={!active} class:active {href}>
@@ -22,6 +23,8 @@
 		text-decoration: none;
 		padding: var(--item-padding);
 		border-radius: var(--border-radius);
+		font-size: var(--text-normal);
+		line-height: var(--text-normal);
 	}
 
 	.inactive {

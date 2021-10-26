@@ -1,6 +1,5 @@
 <script lang="ts">
 	//
-
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
@@ -62,14 +61,14 @@
 
 <style>
 	.container {
-		width: 100vw;
-		height: 100vh;
-		display: flex;
-		flex-flow: column nowrap;
-		align-items: center;
-		justify-content: center;
 		background-color: var(--outside-bg);
-		padding: var(--s-2);
+		height: 100%;
+		overflow-y: auto;
+
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: center;
+		align-items: center;
 	}
 
 	main {
@@ -77,7 +76,7 @@
 		max-width: 500px;
 		width: 100%;
 		border-radius: var(--border-radius);
-		overflow: hidden;
+		margin: auto;
 	}
 
 	section {

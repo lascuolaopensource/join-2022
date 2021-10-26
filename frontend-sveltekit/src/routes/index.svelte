@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { User } from '$lib/types';
 	import user from '$lib/stores/userStore';
 	import { goto } from '$app/navigation';
+	import { post } from '$lib/helpers/requestUtils';
 
 	import Button from '$lib/components/button.svelte';
 	import InputText from '$lib/components/inputText.svelte';
@@ -20,26 +20,23 @@
 	//
 
 	async function login() {
-		const res = await fetch('http://localhost:1337/auth/local', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-			body: JSON.stringify({ identifier: email, password })
-		});
-		if (res.ok) {
-			const data: { user: User; jwt: string } = await res.json();
+		try {
+			// We send the login data
+			// IMPORTANT! Since post is an async function, we need to put await before
+			const data = await post(fetch, 'http://localhost:1337/auth/local', {
+				identifier: email,
+				password
+			});
+			// Then, if successful:
+			// - we store the token in localstorage
 			localStorage.setItem('token', data.jwt);
-			if (data) {
-				$user = data.user;
-				goto('/inside');
-			}
-		} else {
-			const data: { message: { messages: { message: string }[] }[] } = await res.json();
+			// - we update the user store
+			$user = data.user;
+			// - redirect the user inside
+			goto('/inside');
+		} catch (err) {
 			error = true;
-			if (data?.message?.[0]?.messages?.[0]?.message) {
-				error_msg = data.message[0].messages[0].message;
-			} else {
-				error_msg = 'An unknown error occurred';
-			}
+			error_msg = err.message;
 		}
 	}
 </script>
@@ -61,6 +58,7 @@
 			label="Email"
 			placeholder="Inserisci la tua email"
 			required
+			tabindex={1}
 		/>
 		<InputText
 			type="password"
@@ -72,9 +70,10 @@
 				label: 'Password dimenticata?',
 				href: '/password/forgot'
 			}}
+			tabindex={2}
 		/>
 	</FormGroup>
-	<Button type="submit">Login!</Button>
+	<Button type="submit" tabindex={3}>Login!</Button>
 </Form>
 
 <!-- Registration link -->

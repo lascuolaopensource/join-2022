@@ -5,6 +5,7 @@
 	export let placeholder = '';
 	export let required = true;
 	export let link: { label: string; href: string } = null;
+	export let tabindex = 0;
 
 	import { uid } from 'uid';
 	const id = uid(5);
@@ -24,11 +25,18 @@
 	</div>
 	<!-- Field -->
 	{#if type == 'text'}
-		<input {id} bind:value type="text" {placeholder} {required} />
+		<input {id} bind:value type="text" {placeholder} {required} {tabindex} />
 	{:else if type == 'email'}
-		<input {id} bind:value type="email" {placeholder} {required} />
+		<input {id} bind:value type="email" {placeholder} {required} {tabindex} />
 	{:else if type == 'password'}
-		<input {id} bind:value type="password" {placeholder} {required} />
+		<input
+			{id}
+			bind:value
+			type="password"
+			{placeholder}
+			{required}
+			{tabindex}
+		/>
 	{/if}
 </div>
 
