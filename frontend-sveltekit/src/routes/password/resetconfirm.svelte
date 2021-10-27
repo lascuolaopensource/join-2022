@@ -1,2 +1,3 @@
-<p>password resettata!</p>
-<a href="/">Torna al login</a>
+<h1>Password resettata!</h1>
+
+<a href="/">← Torna al login</a>

@@ -23,6 +23,7 @@
 		try {
 			// We send the login data
 			// IMPORTANT! Since post is an async function, we need to put await before
+			// POST function throws an error if something goes wrong
 			const data = await post(fetch, 'http://localhost:1337/auth/local', {
 				identifier: email,
 				password
@@ -39,17 +40,21 @@
 			error_msg = err.message;
 		}
 	}
+
+	// If you got an error, and you start typing again
+	// Then the error should go away
+	function hideError() {
+		if (error) {
+			error = false;
+		}
+	}
 </script>
 
 <!-- Markup -->
 <h1>Login</h1>
 <Form on:submit={login}>
-	<!-- Error message in case something goes wrong -->
-	{#if error}
-		<FormError>
-			{error_msg}
-		</FormError>
-	{/if}
+	<!-- Error message -->
+	<FormError show={error}>{error_msg}</FormError>
 	<!-- Rest of the form -->
 	<FormGroup>
 		<InputText
@@ -59,6 +64,7 @@
 			placeholder="Inserisci la tua email"
 			required
 			tabindex={1}
+			on:input={hideError}
 		/>
 		<InputText
 			type="password"
@@ -71,6 +77,7 @@
 				href: '/password/forgot'
 			}}
 			tabindex={2}
+			on:input={hideError}
 		/>
 	</FormGroup>
 	<Button type="submit" tabindex={3}>Login!</Button>

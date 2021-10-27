@@ -126,7 +126,7 @@ input {
 
 input:hover {
 	background-color: var(--input-bg-hover);
-	cursor: pointer;
+	/* cursor: pointer; */
 }
 
 input:active,

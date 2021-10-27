@@ -7,8 +7,16 @@
 	export let link: { label: string; href: string } = null;
 	export let tabindex = 0;
 
+	// Generating custom ID to link input and label
 	import { uid } from 'uid';
 	const id = uid(5);
+
+	// This is needed to change dynamically the type of the input
+	// Solution provided by
+	// https://github.com/sveltejs/svelte/issues/3921#issuecomment-880664654
+	const setType = (node) => {
+		node.type = type;
+	};
 </script>
 
 <!-- Markup -->
@@ -24,20 +32,15 @@
 		{/if}
 	</div>
 	<!-- Field -->
-	{#if type == 'text'}
-		<input {id} bind:value type="text" {placeholder} {required} {tabindex} />
-	{:else if type == 'email'}
-		<input {id} bind:value type="email" {placeholder} {required} {tabindex} />
-	{:else if type == 'password'}
-		<input
-			{id}
-			bind:value
-			type="password"
-			{placeholder}
-			{required}
-			{tabindex}
-		/>
-	{/if}
+	<input
+		use:setType
+		bind:value
+		on:input
+		{id}
+		{placeholder}
+		{required}
+		{tabindex}
+	/>
 </div>
 
 <!-- Style -->

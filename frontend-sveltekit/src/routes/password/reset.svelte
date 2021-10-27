@@ -29,16 +29,24 @@
 	async function resetPassword() {
 		const res = await fetch('http://localhost:1337/auth/reset-password', {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-			body: JSON.stringify({ code: $page.query.get('code'), password, passwordConfirmation })
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			},
+			body: JSON.stringify({
+				code: $page.query.get('code'),
+				password,
+				passwordConfirmation
+			})
 		});
 		// If response is ok we send the user to some confirmation
 		if (res.ok) {
-			goto('/password/resetconfirm')
+			goto('/password/resetconfirm');
 		}
 		// // We have to alert the user that something went wrong
 		else {
-			const data: { message: { messages: { message: string }[] }[] } = await res.json();
+			const data: { message: { messages: { message: string }[] }[] } =
+				await res.json();
 			error = true;
 			if (data?.message?.[0]?.messages?.[0]?.message) {
 				error_msg = data.message[0].messages[0].message;
@@ -56,13 +64,10 @@
 	<a href="/">← Login</a>
 </div>
 
-<Form on:submit={resetPassword} title="Join / Password reset">
+<h1>Cambio password</h1>
+<Form on:submit={resetPassword}>
 	<!-- Error message in case something goes wrong -->
-	{#if error}
-		<FormError>
-			{error_msg}
-		</FormError>
-	{/if}
+	<FormError show={error}>{error_msg}</FormError>
 	<!-- Rest of the form -->
 	<FormGroup>
 		<InputText
@@ -86,6 +91,6 @@
 <style>
 	div {
 		width: 100%;
-		padding-bottom: var(--s-4);
+		padding-bottom: var(--s-2);
 	}
 </style>

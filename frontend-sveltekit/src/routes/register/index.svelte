@@ -33,6 +33,14 @@
 			error_msg = err.message;
 		}
 	}
+
+	// If you got an error, and you start typing again
+	// Then the error should go away
+	function hideError() {
+		if (error) {
+			error = false;
+		}
+	}
 </script>
 
 <!-- Markup -->
@@ -44,12 +52,8 @@
 
 <h1>Registrati!</h1>
 <Form on:submit={registerUser}>
-	<!-- Error message in case something goes wrong -->
-	{#if error}
-		<FormError>
-			{error_msg}
-		</FormError>
-	{/if}
+	<!-- Error message -->
+	<FormError show={error}>{error_msg}</FormError>
 	<!-- Rest of the form -->
 	<FormGroup>
 		<InputText
@@ -58,6 +62,7 @@
 			label="Username"
 			placeholder="Inserisci il tuo username"
 			required
+			on:input={hideError}
 		/>
 		<InputText
 			type="email"
@@ -65,6 +70,7 @@
 			label="Email"
 			placeholder="Inserisci la tua email"
 			required
+			on:input={hideError}
 		/>
 		<InputText
 			type="password"
@@ -72,6 +78,7 @@
 			label="Password"
 			placeholder="Inserisci la tua password"
 			required
+			on:input={hideError}
 		/>
 	</FormGroup>
 	<Button type="submit">Registrati!</Button>
@@ -80,6 +87,6 @@
 <style>
 	div {
 		width: 100%;
-		padding-bottom: var(--s-4);
+		padding-bottom: var(--s-2);
 	}
 </style>

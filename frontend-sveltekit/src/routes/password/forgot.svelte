@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { post } from '$lib/helpers/requestUtils';
 
 	import Button from '$lib/components/button.svelte';
 	import InputText from '$lib/components/inputText.svelte';
@@ -16,24 +17,26 @@
 
 	// Registers a user
 	async function resetPassword() {
-		const res = await fetch('http://localhost:1337/auth/forgot-password', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-			body: JSON.stringify({ email })
-		});
-		// If response is ok we send the user to some confirmation
-		if (res.ok) {
+		try {
+			// This function:
+			// - Returns if it's all good
+			// - Throws error if something's wrong
+			await post(fetch, 'http://localhost:1337/auth/forgot-password', {
+				email
+			});
+			// If response is ok we send the user to some confirmation
 			goto('/password/forgotconfirm');
-		}
-		// We have to alert the user that something went wrong
-		else {
-			const data: { message: { messages: { message: string }[] }[] } = await res.json();
+		} catch (err) {
 			error = true;
-			if (data?.message?.[0]?.messages?.[0]?.message) {
-				error_msg = data.message[0].messages[0].message;
-			} else {
-				error_msg = 'An unknown error occurred';
-			}
+			error_msg = err.message;
+		}
+	}
+
+	// If you got an error, and you start typing again
+	// Then the error should go away
+	function hideError() {
+		if (error) {
+			error = false;
 		}
 	}
 </script>
@@ -45,13 +48,10 @@
 	<a href="/">← Login</a>
 </div>
 
-<Form on:submit={resetPassword} title="Join / Password reset">
+<h1>Password reset</h1>
+<Form on:submit={resetPassword}>
 	<!-- Error message in case something goes wrong -->
-	{#if error}
-		<FormError>
-			{error_msg}
-		</FormError>
-	{/if}
+	<FormError show={error}>{error_msg}</FormError>
 	<!-- Rest of the form -->
 	<FormGroup>
 		<InputText
@@ -60,6 +60,7 @@
 			label="Email"
 			placeholder="Inserisci la tua email"
 			required
+			on:input={hideError}
 		/>
 	</FormGroup>
 	<Button type="submit">Recupera password</Button>
@@ -68,6 +69,6 @@
 <style>
 	div {
 		width: 100%;
-		padding-bottom: var(--s-4);
+		padding-bottom: var(--s-2);
 	}
 </style>
