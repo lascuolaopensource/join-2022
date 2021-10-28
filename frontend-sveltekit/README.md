@@ -38,3 +38,16 @@ Attualmente esce scritto "email is already taken" quando in realtà l'errore è 
 
 Trovare un unico sistema per gestire la spaziatura:
 ad esempio i link per tornare indietro in Password Reset o Register
+
+---
+
+Validazione form:
+https://github.com/chainlist/svelte-forms
+https://blog.logrocket.com/form-validation-in-svelte/
+https://validatejs.org/
+https://pristine.js.org/
+
+---
+
+Svelte apollo
+https://github.com/timhall/svelte-apollo/issues/97

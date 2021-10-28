@@ -13,6 +13,7 @@ module.exports = {
     const { username } = ctx.params;
 
     // Searching for a user with that username
+    // https://forum.strapi.io/t/get-only-some-fields/9000/5
     const user = await strapi
       .query("user", "users-permissions")
       .findOne({ username });

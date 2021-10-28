@@ -1,3 +1,5 @@
+TODO: METTERE IN ORDINE LE NOTE
+
 # Notes to make it work
 
 - After install, on strapi, go to users and permissions plugin and switch on correctly the authorizations
