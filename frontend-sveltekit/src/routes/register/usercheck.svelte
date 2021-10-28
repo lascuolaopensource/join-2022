@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { post } from '$lib/helpers/requestUtils';
 
-	let username = 'mariolino';
+	let username = 'bbtgnn';
 
 	async function test() {
 		const res = await post(
