@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/username/check/:username",
+      "handler": "Username.check",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
