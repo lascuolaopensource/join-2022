@@ -61,10 +61,13 @@ export async function post(
 				customError = true;
 				// Then we extract the Error message
 				// There are actually two ways to extract the message:
-				// - The first one is strapi specific: https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi
+				// - The first one is strapi specific:
+				//   https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi
 				// - The second one is the generic
 				errorMessage =
-					data?.message?.[0]?.messages?.[0]?.message || data?.message;
+					data?.message?.[0]?.messages?.[0]?.message ||
+					data?.message ||
+					'Unknown error. Tell the developers to check the response shape.';
 			} catch (err) {
 				// Otherwise, we'll send the error we get
 				throw err;
