@@ -5,6 +5,7 @@
       "path": "/exists",
       "handler": "Exists.check",
       "config": {
+        "policies": []
       }
     }
   ]

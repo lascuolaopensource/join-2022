@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { post } from '$lib/helpers/requestUtils';
 
-	let email = 'bbt.gnn@gmail.com';
-
 	async function test() {
 		const res = await post(fetch, `http://localhost:1337/exists`, {
-			email
+			// email: 'bbt.gnn@gmail.com' // TRUE
+			// email: 'dasdsa' // FALSE
+			// username: 'bbtgnn' // TRUE
+			// username: 'sdsad' // FALSE
+			// nonExistingProperty: 12 // Bad request
 		});
 		console.log(res);
 	}
