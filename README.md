@@ -1,3 +1,5 @@
+Separate le repo?
+
 TODO: METTERE IN ORDINE LE NOTE
 
 # Notes to make it work
