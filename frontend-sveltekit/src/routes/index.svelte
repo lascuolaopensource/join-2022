@@ -12,29 +12,51 @@
 	//
 
 	let email = '';
-	let password = '';
+	// let password = '';
 
 	let error: boolean = false;
 	let error_msg: string = '';
 
 	//
 
-	async function login() {
+	// async function login() {
+	// 	try {
+	// 		// We send the login data
+	// 		// IMPORTANT! Since post is an async function, we need to put await before
+	// 		// POST function throws an error if something goes wrong
+	// 		const data = await post(fetch, 'http://localhost:1337/auth/local', {
+	// 			identifier: email,
+	// 			password
+	// 		});
+	// 		// Then, if successful:
+	// 		// - we store the token in localstorage
+	// 		localStorage.setItem('token', data.jwt);
+	// 		// - we update the user store
+	// 		$user = data.user;
+	// 		// - redirect the user inside
+	// 		goto('/inside');
+	// 	} catch (err) {
+	// 		error = true;
+	// 		error_msg = err.message;
+	// 	}
+	// }
+
+	async function checkEmail() {
 		try {
-			// We send the login data
-			// IMPORTANT! Since post is an async function, we need to put await before
-			// POST function throws an error if something goes wrong
-			const data = await post(fetch, 'http://localhost:1337/auth/local', {
-				identifier: email,
-				password
-			});
-			// Then, if successful:
-			// - we store the token in localstorage
-			localStorage.setItem('token', data.jwt);
-			// - we update the user store
-			$user = data.user;
-			// - redirect the user inside
-			goto('/inside');
+			// Asking the server if the email exists
+			const res: { exists: boolean } = await post(
+				fetch,
+				`http://localhost:1337/exists`,
+				{
+					email
+				}
+			);
+			// Then
+			if (res.exists) {
+				goto('/login/password');
+			} else {
+				throw new Error('This email does not exist');
+			}
 		} catch (err) {
 			error = true;
 			error_msg = err.message;
@@ -52,7 +74,7 @@
 
 <!-- Markup -->
 <h1>Login</h1>
-<Form on:submit={login}>
+<Form on:submit={checkEmail}>
 	<!-- Error message -->
 	<FormError show={error}>{error_msg}</FormError>
 	<!-- Rest of the form -->
@@ -66,7 +88,7 @@
 			tabindex={1}
 			on:input={hideError}
 		/>
-		<InputText
+		<!-- <InputText
 			type="password"
 			bind:value={password}
 			label="Password"
@@ -78,9 +100,9 @@
 			}}
 			tabindex={2}
 			on:input={hideError}
-		/>
+		/> -->
 	</FormGroup>
-	<Button type="submit" tabindex={3}>Login!</Button>
+	<Button type="submit" tabindex={2}>Avanti</Button>
 </Form>
 
 <!-- Registration link -->

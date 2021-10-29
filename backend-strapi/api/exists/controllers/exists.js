@@ -7,6 +7,8 @@
 module.exports = {
   /**
    * This function checks if a user with some props exists
+   * The props have to match the user's fields,
+   * otherwise you get a 'Bad Request' error
    */
   async check(ctx) {
     // This variable keeps track if the user exists
