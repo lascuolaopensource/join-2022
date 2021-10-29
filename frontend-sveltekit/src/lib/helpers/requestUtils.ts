@@ -55,12 +55,16 @@ export async function post(
 		// If the response is not okay
 		if (!res.ok) {
 			try {
-				// We try to get the error message from strapi
-				// This is the custom error
+				// We get the response
 				const data = await res.json();
-				const error: Error = data.message[0].messages[0];
+				// We set customError to be true
 				customError = true;
-				errorMessage = error.message;
+				// Then we extract the Error message
+				// There are actually two ways to extract the message:
+				// - The first one is strapi specific: https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi
+				// - The second one is the generic
+				errorMessage =
+					data?.message?.[0]?.messages?.[0]?.message || data?.message;
 			} catch (err) {
 				// Otherwise, we'll send the error we get
 				throw err;

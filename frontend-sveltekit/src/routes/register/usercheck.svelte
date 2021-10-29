@@ -1,16 +1,12 @@
 <script lang="ts">
 	import { post } from '$lib/helpers/requestUtils';
 
-	let username = 'bbtgnn';
+	let email = 'bbt.gnn@gmail.com';
 
 	async function test() {
-		const res = await post(
-			fetch,
-			`http://localhost:1337/username/check/${username}`,
-			{
-				ciao: 'ok'
-			}
-		);
+		const res = await post(fetch, `http://localhost:1337/exists`, {
+			email
+		});
 		console.log(res);
 	}
 

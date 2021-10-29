@@ -93,3 +93,9 @@ https://stackoverflow.com/questions/59088220/update-given-field-value-with-every
 https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#routing
 
 https://github.com/unlocomqx/svelte-apollo/blob/patch-client/src/client.ts
+
+---
+
+Serve dell'error handling qui?
+api/exists/controllers/exists.js
+e servirebbe lanciare una bad request nel caso non ci sia "email" o "password"

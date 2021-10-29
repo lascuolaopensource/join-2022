@@ -1,0 +1,11 @@
+{
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/exists",
+      "handler": "Exists.check",
+      "config": {
+      }
+    }
+  ]
+}
