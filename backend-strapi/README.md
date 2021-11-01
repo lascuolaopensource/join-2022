@@ -10,12 +10,16 @@
 
 Alcuni appunti per ricordarsi su come sono state fatte (e su come fare) alcune cose :)
 
+<br>
+
 ## Adding auth/me endpoint
 
 1. checking everytime the token
 2. storing User in store
 
 (Going to explain better)
+
+<br>
 
 ## How to query User's relational fields
 
@@ -63,6 +67,8 @@ module.exports = {
     `,
 };
 ```
+
+<br>
 
 ## Task automatiche
 
