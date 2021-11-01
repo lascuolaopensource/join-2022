@@ -4,7 +4,11 @@
 - Quando si pubblica un contenuto, assicurarsi che il suo stato sia `Published`. Altrimenti non viene preso dalle query.
 - Andare in `Impostazioni avanzate` per sistemare le impostazioni di conferma email, link reindirizzamento password e simili.
 
+<br>
+
 ---
+
+<br>
 
 # Note di sviluppo
 
