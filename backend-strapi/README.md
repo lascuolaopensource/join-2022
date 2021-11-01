@@ -1,14 +1,14 @@
-# Development notes
+# Cose da controllare per far funzionare tutto
 
-Just some notes on fixes and procedures :)
-
----
-
-## Email confirmation!
-
-Important: activate the email confirmation in advanced settings!
+- Dopo aver installato strapi, andare nel Plugin `Users and Permissions` e attivare le autorizzazioni per gli endpoint (inclusi quelli personalizzati). Sia per l'utente autenticato che non.
+- Quando si pubblica un contenuto, assicurarsi che il suo stato sia `Published`. Altrimenti non viene preso dalle query.
+- Andare in `Impostazioni avanzate` per sistemare le impostazioni di conferma email, link reindirizzamento password e simili.
 
 ---
+
+# Note di sviluppo
+
+Alcuni appunti per ricordarsi su come sono state fatte (e su come fare) alcune cose :)
 
 ## Adding auth/me endpoint
 
@@ -16,8 +16,6 @@ Important: activate the email confirmation in advanced settings!
 2. storing User in store
 
 (Going to explain better)
-
----
 
 ## How to query User's relational fields
 
@@ -66,36 +64,15 @@ module.exports = {
 };
 ```
 
----
-
-TODO
-
-creare degli endpoint come "check email" e "check username"
-per vedere se quelle cose stanno già dentro il database
-in modo da ritornare errori specifici per il singolo field
-
----
-
-NOTE
+## Task automatiche
 
 Per segnalare automaticamente che un’iscrizione é scaduta, o che un corso é partito:
 
-• UPDATE: si possono usare i CRON
+- Utilizzare i CRON!
 
-https://stackoverflow.com/questions/60208028/strapi-cms-add-calculated-field
-
-https://strapi.io/documentation/developer-docs/latest/guides/custom-data-response.html
-
-https://strapi.io/documentation/developer-docs/latest/guides/slug.html#create-attributes
-
-https://stackoverflow.com/questions/59088220/update-given-field-value-with-every-fetch-request-in-strapi
-
-https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#routing
-
-https://github.com/unlocomqx/svelte-apollo/blob/patch-client/src/client.ts
-
----
-
-Serve dell'error handling qui?
-api/exists/controllers/exists.js
-e servirebbe lanciare una bad request nel caso non ci sia "email" o "password"
+- https://stackoverflow.com/questions/60208028/strapi-cms-add-calculated-field
+- https://strapi.io/documentation/developer-docs/latest/guides/custom-data-response.html
+- https://strapi.io/documentation/developer-docs/latest/guides/slug.html#create-attributes
+- https://stackoverflow.com/questions/59088220/update-given-field-value-with-every-fetch-request-in-strapi
+- https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#routing
+- https://github.com/unlocomqx/svelte-apollo/blob/patch-client/src/client.ts
