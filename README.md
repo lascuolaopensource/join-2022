@@ -6,7 +6,6 @@
 - Potrebbe aver senso separare le repo? Temo che i commit poi confondano l'idea su cosa si abbia lavorato. Ma forse no.
 - É scritta bene questa funzione? `api/exists/controllers/exists.js`
 - Controllare anche qui `/src/routes/__layout.svelte` se è scritto bene (riga 37 NOTA)
-
 - Va bene che la parte autenticata è "inside" o sarebbe più bello avere che l'url principale sia Join e basta, senza /inside?
 
 ## Forse risolti / Capito come si fa
