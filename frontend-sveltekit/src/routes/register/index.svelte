@@ -6,39 +6,72 @@
 	import InputText from '$lib/components/inputText.svelte';
 	import FormGroup from '$lib/components/formGroup.svelte';
 	import Form from '$lib/components/form.svelte';
-	import FormError from '$lib/components/formError.svelte';
 
-	// Form data needed for the registration
-	let username: string = '';
-	let email: string = '';
-	let password: string = '';
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
 
-	// Helper variables to check for error and store it
-	let error: boolean = false;
-	let error_msg: string = '';
+	// Creating form
+
+	// Email validation
+	const emailExistsTest = async (value, testContext) => {
+		const res: { exists: boolean } = await post(
+			fetch,
+			`http://localhost:1337/exists`,
+			{
+				email: value
+			}
+		);
+		return !res.exists;
+	};
+
+	const usernameExistsTest = async (value, testContext) => {
+		const res: { exists: boolean } = await post(
+			fetch,
+			`http://localhost:1337/exists`,
+			{
+				username: value
+			}
+		);
+		return !res.exists;
+	};
+
+	const { form, errors, state, handleChange, handleSubmit } = createForm({
+		initialValues: {
+			username: '',
+			email: '',
+			password: ''
+		},
+		validationSchema: yup.object().shape({
+			username: yup.string().required().test({
+				name: 'usernameExists',
+				message: 'L username esiste già',
+				test: usernameExistsTest
+			}),
+			email: yup.string().email().required().test({
+				name: 'emailExists',
+				message: 'L email esiste già',
+				test: emailExistsTest
+			}),
+			password: yup.string().min(8).max(52).required()
+		}),
+		onSubmit: (values) => {
+			registerUser(values);
+		}
+	});
 
 	// Registers a user
-	async function registerUser() {
+	async function registerUser(body: {
+		username: string;
+		email: string;
+		password: string;
+	}) {
 		try {
 			// IMPORTANT! Since post is an async function, we need to put await before
-			await post(fetch, 'http://localhost:1337/auth/local/register', {
-				username: username,
-				email: email,
-				password: password
-			});
+			await post(fetch, 'http://localhost:1337/auth/local/register', body);
 			// If successful, we redirect
 			goto('/register/thanks');
 		} catch (err) {
-			error = true;
-			error_msg = err.message;
-		}
-	}
-
-	// If you got an error, and you start typing again
-	// Then the error should go away
-	function hideError() {
-		if (error) {
-			error = false;
+			alert(err.message);
 		}
 	}
 </script>
@@ -51,34 +84,38 @@
 </div>
 
 <h1>Registrati!</h1>
-<Form on:submit={registerUser}>
-	<!-- Error message -->
-	<FormError show={error}>{error_msg}</FormError>
+<Form on:submit={handleSubmit}>
 	<!-- Rest of the form -->
 	<FormGroup>
 		<InputText
+			id="username"
 			type="text"
-			bind:value={username}
 			label="Username"
 			placeholder="Inserisci il tuo username"
 			required
-			on:input={hideError}
+			bind:value={$form.username}
+			on:blur={handleChange}
+			error={$errors.username}
 		/>
 		<InputText
+			id="email"
 			type="email"
-			bind:value={email}
 			label="Email"
 			placeholder="Inserisci la tua email"
 			required
-			on:input={hideError}
+			bind:value={$form.email}
+			on:blur={handleChange}
+			error={$errors.email}
 		/>
 		<InputText
+			id="password"
 			type="password"
-			bind:value={password}
 			label="Password"
 			placeholder="Inserisci la tua password"
 			required
-			on:input={hideError}
+			bind:value={$form.password}
+			on:blur={handleChange}
+			error={$errors.password}
 		/>
 	</FormGroup>
 	<Button type="submit">Registrati!</Button>

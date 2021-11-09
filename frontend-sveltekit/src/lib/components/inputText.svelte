@@ -1,4 +1,5 @@
 <script lang="ts">
+	export let id: string;
 	export let value = '';
 	export let label = '';
 	export let type: 'text' | 'email' | 'password' = 'text';
@@ -6,10 +7,7 @@
 	export let required = true;
 	export let link: { label: string; href: string } = null;
 	export let tabindex = 0;
-
-	// Generating custom ID to link input and label
-	import { uid } from 'uid';
-	const id = uid(5);
+	export let error = '';
 
 	// This is needed to change dynamically the type of the input
 	// Solution provided by
@@ -35,12 +33,20 @@
 	<input
 		use:setType
 		bind:value
-		on:input
+		on:input={() => {
+			error = '';
+		}}
+		on:blur
 		{id}
 		{placeholder}
 		{required}
 		{tabindex}
+		class:error={error != ''}
 	/>
+	<!-- Error -->
+	{#if error}
+		<p class="errorMsg">{error}</p>
+	{/if}
 </div>
 
 <!-- Style -->
@@ -66,6 +72,12 @@
 	}
 
 	a {
+		font-size: var(--text-small);
+		line-height: var(--text-small-lh);
+	}
+
+	.errorMsg {
+		color: var(--alert-color);
 		font-size: var(--text-small);
 		line-height: var(--text-small-lh);
 	}

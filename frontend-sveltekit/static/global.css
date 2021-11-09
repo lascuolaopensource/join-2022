@@ -57,9 +57,7 @@
 	--nav-main-item-text-active: black;
 
 	/* Form error */
-	--form-err-color: red;
-	--form-err-bg: rgba(255, 0, 0, 0.1);
-	--form-err-border: 1px solid red;
+	--alert-color: red;
 
 	/* --nav
 	--nav-item-text-light: black;
@@ -129,11 +127,17 @@ input:hover {
 	/* cursor: pointer; */
 }
 
+input:focus,
 input:active,
-input:focus {
-	outline: none;
-	background-color: var(--input-bg);
+input:focus:hover,
+input:active:hover {
+	outline: var(--input-border-width-focus) var(--input-border-focus);
+	/* background-color: var(--input-bg);
 	border: var(--input-border-focus);
 	border-width: var(--input-border-width-focus);
-	padding: calc(var(--item-padding) - var(--input-border-width-focus));
+	padding: calc(var(--item-padding) - var(--input-border-width-focus)); */
+}
+
+input.error {
+	outline: var(--input-border-width-focus) solid var(--alert-color);
 }
