@@ -1,4 +1,5 @@
 <script lang="ts">
+	export let id: string;
 	export let value = '';
 	export let label = '';
 	export let type: 'text' | 'email' | 'password' = 'text';
@@ -6,10 +7,8 @@
 	export let required = true;
 	export let link: { label: string; href: string } = null;
 	export let tabindex = 0;
-
-	// Generating custom ID to link input and label
-	import { uid } from 'uid';
-	const id = uid(5);
+	export let error = '';
+	export let helperText = '';
 
 	// This is needed to change dynamically the type of the input
 	// Solution provided by
@@ -17,11 +16,15 @@
 	const setType = (node) => {
 		node.type = type;
 	};
+
+	const clearError = () => {
+		error = '';
+	};
 </script>
 
 <!-- Markup -->
 
-<div>
+<div class="field">
 	<!-- Label -->
 	<div class="top">
 		{#if label != ''}
@@ -31,16 +34,27 @@
 			<a href={link.href}>{link.label}</a>
 		{/if}
 	</div>
+
 	<!-- Field -->
 	<input
 		use:setType
 		bind:value
-		on:input
+		on:input={clearError}
+		on:blur
 		{id}
 		{placeholder}
 		{required}
 		{tabindex}
+		class:error={error != ''}
 	/>
+
+	<!-- Sub-text -->
+	{#if helperText}
+		<small class="tertiary">{helperText}</small>
+	{/if}
+	{#if error}
+		<small class="errorMsg">{error}</small>
+	{/if}
 </div>
 
 <!-- Style -->
@@ -50,7 +64,7 @@
 		width: 100%;
 	}
 
-	div {
+	.field {
 		display: flex;
 		flex-flow: column nowrap;
 		gap: var(--s-1);
@@ -68,5 +82,13 @@
 	a {
 		font-size: var(--text-small);
 		line-height: var(--text-small-lh);
+	}
+
+	.errorMsg {
+		color: var(--alert-color);
+	}
+
+	small {
+		display: block;
 	}
 </style>

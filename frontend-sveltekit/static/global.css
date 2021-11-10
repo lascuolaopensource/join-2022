@@ -11,7 +11,10 @@
 	/* Main colors */
 	--outside-bg: blue;
 	--main-bg: white;
-	--main-text: black;
+
+	--content-primary: black;
+	--content-secondary: rgba(0, 0, 0, 0.6);
+	--content-tertiary: rgba(0, 0, 0, 0.4);
 
 	/* Spacing */
 	--s-0: 4px;
@@ -57,9 +60,7 @@
 	--nav-main-item-text-active: black;
 
 	/* Form error */
-	--form-err-color: red;
-	--form-err-bg: rgba(255, 0, 0, 0.1);
-	--form-err-border: 1px solid red;
+	--alert-color: red;
 
 	/* --nav
 	--nav-item-text-light: black;
@@ -92,7 +93,7 @@ p,
 h1,
 h2,
 h3 {
-	color: var(--main-text);
+	color: var(--content-primary);
 }
 
 a {
@@ -129,11 +130,36 @@ input:hover {
 	/* cursor: pointer; */
 }
 
-input:active,
-input:focus {
-	outline: none;
-	background-color: var(--input-bg);
-	border: var(--input-border-focus);
+input:focus,
+input:active {
+	outline: var(--input-border-width-focus) var(--input-border-focus);
+	/* border: var(--input-border-focus);
 	border-width: var(--input-border-width-focus);
-	padding: calc(var(--item-padding) - var(--input-border-width-focus));
+	padding: calc(var(--item-padding) - var(--input-border-width-focus)); */
+}
+
+input.error {
+	outline: var(--input-border-width-focus) solid var(--alert-color);
+}
+
+input:focus:hover,
+input:active:hover {
+	background-color: var(--input-bg);
+}
+
+small {
+	font-size: var(--text-small);
+	line-height: var(--text-small-lh);
+}
+
+.primary {
+	color: var(--content-primary);
+}
+
+.secondary {
+	color: var(--content-secondary);
+}
+
+.tertiary {
+	color: var(--content-tertiary);
 }

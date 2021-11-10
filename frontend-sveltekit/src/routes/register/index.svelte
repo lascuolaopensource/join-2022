@@ -6,39 +6,57 @@
 	import InputText from '$lib/components/inputText.svelte';
 	import FormGroup from '$lib/components/formGroup.svelte';
 	import Form from '$lib/components/form.svelte';
-	import FormError from '$lib/components/formError.svelte';
 
-	// Form data needed for the registration
-	let username: string = '';
-	let email: string = '';
-	let password: string = '';
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+	import { createExistsTest, passwordValidator } from '$lib/validationTests';
 
-	// Helper variables to check for error and store it
-	let error: boolean = false;
-	let error_msg: string = '';
+	// Creating form
+
+	const { form, errors, state, handleChange, handleSubmit } = createForm({
+		initialValues: {
+			username: '',
+			email: '',
+			password: ''
+		},
+		validationSchema: yup.object().shape({
+			username: yup
+				.string()
+				.required()
+				.test({
+					name: 'usernameExists',
+					message: "L'username esiste già",
+					test: createExistsTest('username', true)
+				}),
+			email: yup
+				.string()
+				.email()
+				.required()
+				.test({
+					name: 'emailExists',
+					message: "L'email esiste già",
+					test: createExistsTest('email', true)
+				}),
+			password: passwordValidator
+		}),
+		onSubmit: (values) => {
+			registerUser();
+		}
+	});
 
 	// Registers a user
 	async function registerUser() {
 		try {
 			// IMPORTANT! Since post is an async function, we need to put await before
 			await post(fetch, 'http://localhost:1337/auth/local/register', {
-				username: username,
-				email: email,
-				password: password
+				username: $form.username,
+				email: $form.email,
+				password: $form.password
 			});
 			// If successful, we redirect
 			goto('/register/thanks');
 		} catch (err) {
-			error = true;
-			error_msg = err.message;
-		}
-	}
-
-	// If you got an error, and you start typing again
-	// Then the error should go away
-	function hideError() {
-		if (error) {
-			error = false;
+			alert(err.message);
 		}
 	}
 </script>
@@ -51,37 +69,45 @@
 </div>
 
 <h1>Registrati!</h1>
-<Form on:submit={registerUser}>
-	<!-- Error message -->
-	<FormError show={error}>{error_msg}</FormError>
+<Form on:submit={handleSubmit}>
 	<!-- Rest of the form -->
 	<FormGroup>
 		<InputText
+			id="username"
 			type="text"
-			bind:value={username}
 			label="Username"
 			placeholder="Inserisci il tuo username"
 			required
-			on:input={hideError}
+			tabindex={1}
+			bind:value={$form.username}
+			on:blur={handleChange}
+			error={$errors.username}
 		/>
 		<InputText
+			id="email"
 			type="email"
-			bind:value={email}
 			label="Email"
 			placeholder="Inserisci la tua email"
 			required
-			on:input={hideError}
+			tabindex={2}
+			bind:value={$form.email}
+			on:blur={handleChange}
+			error={$errors.email}
 		/>
 		<InputText
+			id="password"
 			type="password"
-			bind:value={password}
 			label="Password"
 			placeholder="Inserisci la tua password"
 			required
-			on:input={hideError}
+			tabindex={3}
+			bind:value={$form.password}
+			on:blur={handleChange}
+			error={$errors.password}
+			helperText="La password dev'essere compresa tra 8 e 52 caratteri"
 		/>
 	</FormGroup>
-	<Button type="submit">Registrati!</Button>
+	<Button tabindex={4} type="submit">Registrati!</Button>
 </Form>
 
 <style>
