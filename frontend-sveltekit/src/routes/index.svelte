@@ -1,103 +1,53 @@
 <script lang="ts">
-	import user from '$lib/stores/userStore';
 	import { goto } from '$app/navigation';
-	import { post } from '$lib/helpers/requestUtils';
 
 	import Button from '$lib/components/button.svelte';
 	import InputText from '$lib/components/inputText.svelte';
 	import FormGroup from '$lib/components/formGroup.svelte';
 	import Form from '$lib/components/form.svelte';
 
-	//
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+	import { createExistsTest } from '$lib/validationTests';
 
-	let email = '';
-	// let password = '';
+	// Creating form
 
-	let error: boolean = false;
-	let error_msg: string = '';
-
-	//
-
-	// async function login() {
-	// 	try {
-	// 		// We send the login data
-	// 		// IMPORTANT! Since post is an async function, we need to put await before
-	// 		// POST function throws an error if something goes wrong
-	// 		const data = await post(fetch, 'http://localhost:1337/auth/local', {
-	// 			identifier: email,
-	// 			password
-	// 		});
-	// 		// Then, if successful:
-	// 		// - we store the token in localstorage
-	// 		localStorage.setItem('token', data.jwt);
-	// 		// - we update the user store
-	// 		$user = data.user;
-	// 		// - redirect the user inside
-	// 		goto('/inside');
-	// 	} catch (err) {
-	// 		error = true;
-	// 		error_msg = err.message;
-	// 	}
-	// }
-
-	async function checkEmail() {
-		try {
-			// Asking the server if the email exists
-			const res: { exists: boolean } = await post(
-				fetch,
-				`http://localhost:1337/exists`,
-				{
-					email
-				}
-			);
-			// Then
-			if (res.exists) {
-				goto('/login/password');
-			} else {
-				throw new Error('This email does not exist');
-			}
-		} catch (err) {
-			error = true;
-			error_msg = err.message;
+	const { form, errors, state, handleChange, handleSubmit } = createForm({
+		initialValues: {
+			email: ''
+		},
+		validationSchema: yup.object().shape({
+			email: yup
+				.string()
+				.email()
+				.required()
+				.test({
+					name: 'emailExists',
+					message: "L'email non esiste",
+					test: createExistsTest('email')
+				})
+		}),
+		onSubmit: (values) => {
+			goto('/login/password');
 		}
-	}
-
-	// If you got an error, and you start typing again
-	// Then the error should go away
-	function hideError() {
-		if (error) {
-			error = false;
-		}
-	}
+	});
 </script>
 
 <!-- Markup -->
 <h1>Login</h1>
-<Form on:submit={checkEmail}>
+<Form on:submit={handleSubmit}>
 	<FormGroup>
 		<InputText
 			id="email"
 			type="email"
-			bind:value={email}
 			label="Email"
 			placeholder="Inserisci la tua email"
 			required
 			tabindex={1}
-			on:input={hideError}
+			bind:value={$form.email}
+			on:blur={handleChange}
+			error={$errors.email}
 		/>
-		<!-- <InputText
-			type="password"
-			bind:value={password}
-			label="Password"
-			placeholder="Inserisci la tua password"
-			required
-			link={{
-				label: 'Password dimenticata?',
-				href: '/password/forgot'
-			}}
-			tabindex={2}
-			on:input={hideError}
-		/> -->
 	</FormGroup>
 	<Button type="submit" tabindex={2}>Avanti</Button>
 </Form>

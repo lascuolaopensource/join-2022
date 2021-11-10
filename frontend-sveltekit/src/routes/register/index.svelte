@@ -78,6 +78,7 @@
 			label="Username"
 			placeholder="Inserisci il tuo username"
 			required
+			tabindex={1}
 			bind:value={$form.username}
 			on:blur={handleChange}
 			error={$errors.username}
@@ -88,6 +89,7 @@
 			label="Email"
 			placeholder="Inserisci la tua email"
 			required
+			tabindex={2}
 			bind:value={$form.email}
 			on:blur={handleChange}
 			error={$errors.email}
@@ -98,13 +100,14 @@
 			label="Password"
 			placeholder="Inserisci la tua password"
 			required
+			tabindex={3}
 			bind:value={$form.password}
 			on:blur={handleChange}
 			error={$errors.password}
 			helperText="La password dev'essere compresa tra 8 e 52 caratteri"
 		/>
 	</FormGroup>
-	<Button type="submit">Registrati!</Button>
+	<Button tabindex={4} type="submit">Registrati!</Button>
 </Form>
 
 <style>
