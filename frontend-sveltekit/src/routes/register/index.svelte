@@ -9,31 +9,9 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
+	import { createExistsTest } from '$lib/validationTests';
 
 	// Creating form
-
-	// Email validation
-	const emailExistsTest = async (value, testContext) => {
-		const res: { exists: boolean } = await post(
-			fetch,
-			`http://localhost:1337/exists`,
-			{
-				email: value
-			}
-		);
-		return !res.exists;
-	};
-
-	const usernameExistsTest = async (value, testContext) => {
-		const res: { exists: boolean } = await post(
-			fetch,
-			`http://localhost:1337/exists`,
-			{
-				username: value
-			}
-		);
-		return !res.exists;
-	};
 
 	const { form, errors, state, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -42,16 +20,23 @@
 			password: ''
 		},
 		validationSchema: yup.object().shape({
-			username: yup.string().required().test({
-				name: 'usernameExists',
-				message: 'L username esiste già',
-				test: usernameExistsTest
-			}),
-			email: yup.string().email().required().test({
-				name: 'emailExists',
-				message: 'L email esiste già',
-				test: emailExistsTest
-			}),
+			username: yup
+				.string()
+				.required()
+				.test({
+					name: 'usernameExists',
+					message: "L'username esiste già",
+					test: createExistsTest('username', true)
+				}),
+			email: yup
+				.string()
+				.email()
+				.required()
+				.test({
+					name: 'emailExists',
+					message: "L'email esiste già",
+					test: createExistsTest('email', true)
+				}),
 			password: yup.string().min(8).max(52).required()
 		}),
 		onSubmit: (values) => {
@@ -116,6 +101,7 @@
 			bind:value={$form.password}
 			on:blur={handleChange}
 			error={$errors.password}
+			helperText="La password dev'essere compresa tra 8 e 52 caratteri"
 		/>
 	</FormGroup>
 	<Button type="submit">Registrati!</Button>

@@ -7,7 +7,6 @@
 	import InputText from '$lib/components/inputText.svelte';
 	import FormGroup from '$lib/components/formGroup.svelte';
 	import Form from '$lib/components/form.svelte';
-	import FormError from '$lib/components/formError.svelte';
 
 	//
 
@@ -75,11 +74,9 @@
 <!-- Markup -->
 <h1>Login</h1>
 <Form on:submit={checkEmail}>
-	<!-- Error message -->
-	<FormError show={error}>{error_msg}</FormError>
-	<!-- Rest of the form -->
 	<FormGroup>
 		<InputText
+			id="email"
 			type="email"
 			bind:value={email}
 			label="Email"

@@ -8,6 +8,7 @@
 	export let link: { label: string; href: string } = null;
 	export let tabindex = 0;
 	export let error = '';
+	export let helperText = '';
 
 	// This is needed to change dynamically the type of the input
 	// Solution provided by
@@ -15,11 +16,15 @@
 	const setType = (node) => {
 		node.type = type;
 	};
+
+	const clearError = () => {
+		error = '';
+	};
 </script>
 
 <!-- Markup -->
 
-<div>
+<div class="field">
 	<!-- Label -->
 	<div class="top">
 		{#if label != ''}
@@ -29,13 +34,12 @@
 			<a href={link.href}>{link.label}</a>
 		{/if}
 	</div>
+
 	<!-- Field -->
 	<input
 		use:setType
 		bind:value
-		on:input={() => {
-			error = '';
-		}}
+		on:input={clearError}
 		on:blur
 		{id}
 		{placeholder}
@@ -43,9 +47,13 @@
 		{tabindex}
 		class:error={error != ''}
 	/>
-	<!-- Error -->
+
+	<!-- Sub-text -->
+	{#if helperText}
+		<small class="tertiary">{helperText}</small>
+	{/if}
 	{#if error}
-		<p class="errorMsg">{error}</p>
+		<small class="errorMsg">{error}</small>
 	{/if}
 </div>
 
@@ -56,7 +64,7 @@
 		width: 100%;
 	}
 
-	div {
+	.field {
 		display: flex;
 		flex-flow: column nowrap;
 		gap: var(--s-1);
@@ -78,7 +86,15 @@
 
 	.errorMsg {
 		color: var(--alert-color);
-		font-size: var(--text-small);
-		line-height: var(--text-small-lh);
+	}
+
+	.helpers {
+		display: flex;
+		flex-flow: column nowrap;
+		gap: var(--s-0);
+	}
+
+	small {
+		display: block;
 	}
 </style>
