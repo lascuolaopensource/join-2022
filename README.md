@@ -7,6 +7,7 @@
 - É scritta bene questa funzione? `api/exists/controllers/exists.js`
 - Controllare anche qui `/src/routes/__layout.svelte` se è scritto bene (riga 37 NOTA)
 - Va bene che la parte autenticata è "inside" o sarebbe più bello avere che l'url principale sia Join e basta, senza /inside?
+- Va bene che per fare il 2-step login salvo la mail nello store, anzichè passarla tramite url?
 
 ## Forse risolti / Capito come si fa
 
