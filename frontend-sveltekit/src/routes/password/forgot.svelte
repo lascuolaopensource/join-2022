@@ -7,22 +7,41 @@
 	import FormGroup from '$lib/components/formGroup.svelte';
 	import Form from '$lib/components/form.svelte';
 
-	// Form data needed for the registration
-	let email: string = '';
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+	import { createExistsTest } from '$lib/validationTests';
+
+	const { form, errors, state, handleChange, handleSubmit } = createForm({
+		initialValues: {
+			email: ''
+		},
+		validationSchema: yup.object().shape({
+			email: yup
+				.string()
+				.email()
+				.required()
+				.test({
+					name: 'emailExists',
+					message: "L'email non esiste",
+					test: createExistsTest('email')
+				})
+		}),
+		onSubmit: (values) => {
+			resetPassword();
+		}
+	});
 
 	// Registers a user
 	async function resetPassword() {
 		try {
-			// This function:
-			// - Returns if it's all good
-			// - Throws error if something's wrong
+			// Sending the request to the server
 			await post(fetch, 'http://localhost:1337/auth/forgot-password', {
-				email
+				email: $form.email
 			});
 			// If response is ok we send the user to some confirmation
 			goto('/password/forgotconfirm');
 		} catch (err) {
-			//
+			alert(err.message);
 		}
 	}
 </script>
@@ -35,19 +54,22 @@
 </div>
 
 <h1>Password reset</h1>
-<Form on:submit={resetPassword}>
+<Form on:submit={handleSubmit}>
 	<!-- Rest of the form -->
 	<FormGroup>
 		<InputText
 			id="email"
 			type="email"
-			bind:value={email}
 			label="Email"
 			placeholder="Inserisci la tua email"
 			required
+			tabindex={1}
+			bind:value={$form.email}
+			on:blur={handleChange}
+			error={$errors.email}
 		/>
 	</FormGroup>
-	<Button type="submit">Recupera password</Button>
+	<Button tabindex={2} type="submit">Recupera password</Button>
 </Form>
 
 <style>

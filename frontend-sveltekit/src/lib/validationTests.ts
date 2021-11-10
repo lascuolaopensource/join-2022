@@ -1,4 +1,5 @@
 import { post } from '$lib/helpers/requestUtils';
+import * as yup from 'yup';
 
 export function createExistsTest(param: string, invert: boolean = false) {
 	return async (value, testContext) => {
@@ -16,3 +17,5 @@ export function createExistsTest(param: string, invert: boolean = false) {
 		return invert ? !res.exists : res.exists;
 	};
 }
+
+export const passwordValidator = yup.string().required().min(8).max(52);

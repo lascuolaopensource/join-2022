@@ -88,12 +88,6 @@
 		color: var(--alert-color);
 	}
 
-	.helpers {
-		display: flex;
-		flex-flow: column nowrap;
-		gap: var(--s-0);
-	}
-
 	small {
 		display: block;
 	}

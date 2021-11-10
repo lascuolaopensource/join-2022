@@ -9,7 +9,7 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import { createExistsTest } from '$lib/validationTests';
+	import { createExistsTest, passwordValidator } from '$lib/validationTests';
 
 	// Creating form
 
@@ -37,22 +37,22 @@
 					message: "L'email esiste già",
 					test: createExistsTest('email', true)
 				}),
-			password: yup.string().min(8).max(52).required()
+			password: passwordValidator
 		}),
 		onSubmit: (values) => {
-			registerUser(values);
+			registerUser();
 		}
 	});
 
 	// Registers a user
-	async function registerUser(body: {
-		username: string;
-		email: string;
-		password: string;
-	}) {
+	async function registerUser() {
 		try {
 			// IMPORTANT! Since post is an async function, we need to put await before
-			await post(fetch, 'http://localhost:1337/auth/local/register', body);
+			await post(fetch, 'http://localhost:1337/auth/local/register', {
+				username: $form.username,
+				email: $form.email,
+				password: $form.password
+			});
 			// If successful, we redirect
 			goto('/register/thanks');
 		} catch (err) {

@@ -2,7 +2,7 @@
 	import user from '$lib/stores/userStore';
 </script>
 
-<h1>Join / Grazie per aver confermato l'email!</h1>
+<h1>Grazie per aver confermato l'email!</h1>
 <p>
 	Super! Hai confermato la tua email! Ora puoi fare tutto quello che vuoi :D
 </p>
