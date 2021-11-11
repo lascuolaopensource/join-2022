@@ -43,13 +43,19 @@
 			// - redirect the user inside
 			goto('/inside');
 		} catch (err) {
-			alert(err.message);
+			console.log(err);
+			// Just a workaround for now
+			if (err.message == 'Identifier or password invalid.') {
+				errors.set({ password: 'Password errata' });
+			} else {
+				alert(err.message);
+			}
 		}
 	}
 </script>
 
 <!-- Markup -->
-<h1>Login: Password</h1>
+<h1>Password, please</h1>
 <Form on:submit={handleSubmit}>
 	<FormGroup>
 		<InputText
