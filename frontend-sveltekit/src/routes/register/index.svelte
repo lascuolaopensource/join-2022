@@ -43,7 +43,7 @@
 				}),
 			password: passwordValidator
 		}),
-		onSubmit: (values) => {
+		onSubmit: () => {
 			registerUser();
 		}
 	});

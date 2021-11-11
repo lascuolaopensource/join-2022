@@ -1,8 +1,82 @@
-# Cose da controllare per far funzionare tutto
+# Installazione
 
-- Dopo aver installato strapi, andare nel Plugin `Users and Permissions` e attivare le autorizzazioni per gli endpoint (inclusi quelli personalizzati). Sia per l'utente autenticato che non.
+## Prerequisiti
+
+Assicurarsi di aver installato [NVM](https://github.com/nvm-sh/nvm).
+Strapi è attualmente compatibile con node `14.18.0`.
+
+## Installazione
+
+Lanciare il comando
+
+```bash
+nvm use
+```
+
+quindi
+
+```bash
+npm install
+```
+
+quindi
+
+```bash
+npm run develop
+```
+
+Al primo lancio webpack installerà tutto quindi ci metterà un po'.
+
+## Configurazione
+
+Tutti gli step sono **OBBLIGATORI**.
+
+### Settings
+
+Una volta dentro strapi, andare in `Settings`:
+
+- Andare in `USERS & PERMISSIONS PLUGIN > Roles`
+
+  - Andare in `Public > Permissions > Application` e spuntare:
+    - `Auth / Me`
+    - `Exists / Check`
+  - Andare in `Authenticated > Permissions > Application` e spuntare:
+    - `Auth / Me`
+    - `Corso`
+      - `Count`
+      - `Find`
+      - `FindOne`
+    - `Exists / Check`
+    - `Iscrizione / Tutti`
+
+- Andare in `Advanced settings`
+  - Tutti gli switch devono stare su `On`
+  - `Reset password page` dev'essere `http://localhost:3000/password/reset`
+  - `Redirection url` dev'essere `http://localhost:3000/register/confirm`
+
+### Env
+
+Creare un file `.env` nella root di strapi con le seguenti voci:
+
+```
+HOST=0.0.0.0
+PORT=1337
+SIB_API_KEY= ... <- Qui va la chiave API di Sendinblue
+SIB_DEFAULT_FROM= ...
+SIB_DEFAULT_FROM_NAME= ...
+SIB_DEFAULT_REPLY_TO= ...
+```
+
+<br>
+
+---
+
+<br>
+
+# Utilizzo
+
+- Lanciare sempre `nvm use` prima di `npm run develop`
 - Quando si pubblica un contenuto, assicurarsi che il suo stato sia `Published`. Altrimenti non viene preso dalle query.
-- Andare in `Impostazioni avanzate` per sistemare le impostazioni di conferma email, link reindirizzamento password e simili.
 
 <br>
 
