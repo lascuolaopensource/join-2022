@@ -1,23 +1,16 @@
 <script lang="ts">
-	import user from '$lib/stores/userStore';
+	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 </script>
 
-<h1>Grazie per aver confermato l'email!</h1>
+<OutsideTitle>Email confermata!</OutsideTitle>
+
 <p>
 	Super! Hai confermato la tua email! Ora puoi fare tutto quello che vuoi :D
 </p>
-{#if $user}
-	<a href="/inside">Vai alla home</a>
-{:else}
-	<a href="/">Vai al login</a>
-{/if}
+<a href="/">Vai al login →</a>
 
 <style>
-	h1 {
-		margin-bottom: var(--s-2);
-	}
-
 	p {
-		margin-bottom: var(--s-2);
+		margin-bottom: var(--s-3);
 	}
 </style>

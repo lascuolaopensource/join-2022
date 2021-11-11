@@ -3,6 +3,8 @@
 	import { page } from '$app/stores';
 	import { post } from '$lib/helpers/requestUtils';
 
+	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
+	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 	import Button from '$lib/components/button.svelte';
 	import InputText from '$lib/components/inputText.svelte';
 	import FormGroup from '$lib/components/formGroup.svelte';
@@ -11,6 +13,8 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import { passwordValidator } from '$lib/validationTests';
+
+	import { icons } from '$lib/icons';
 
 	const { form, errors, state, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -46,11 +50,10 @@
 </script>
 
 <!-- Registration link -->
-<div>
-	<a href="/">← Login</a>
-</div>
+<OutsideBacklink href="/" label="Login" />
 
-<h1>Cambio password</h1>
+<OutsideTitle>Cambio password</OutsideTitle>
+
 <Form on:submit={handleSubmit}>
 	<!-- Rest of the form -->
 	<FormGroup>
@@ -58,6 +61,7 @@
 			id="password"
 			type="password"
 			label="Password"
+			labelIcon={icons.fields.password}
 			placeholder="Inserisci la nuova password"
 			required
 			tabindex={1}
@@ -69,6 +73,7 @@
 			id="passwordConfirm"
 			type="password"
 			label="Password"
+			labelIcon={icons.fields.password}
 			placeholder="Conferma la nuova password"
 			required
 			tabindex={2}
@@ -79,10 +84,3 @@
 	</FormGroup>
 	<Button type="submit" tabindex={3}>Reset password</Button>
 </Form>
-
-<style>
-	div {
-		width: 100%;
-		padding-bottom: var(--s-2);
-	}
-</style>

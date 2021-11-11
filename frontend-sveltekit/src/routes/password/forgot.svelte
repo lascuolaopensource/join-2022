@@ -2,6 +2,8 @@
 	import { goto } from '$app/navigation';
 	import { post } from '$lib/helpers/requestUtils';
 
+	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
+	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 	import Button from '$lib/components/button.svelte';
 	import InputText from '$lib/components/inputText.svelte';
 	import FormGroup from '$lib/components/formGroup.svelte';
@@ -10,6 +12,8 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import { createExistsTest } from '$lib/validationTests';
+
+	import { icons } from '$lib/icons';
 
 	const { form, errors, state, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -48,12 +52,10 @@
 
 <!-- Markup -->
 
-<!-- Registration link -->
-<div>
-	<a href="/">← Login</a>
-</div>
+<OutsideBacklink href="/" label="Login" />
 
-<h1>Password reset</h1>
+<OutsideTitle>Resetta la password</OutsideTitle>
+
 <Form on:submit={handleSubmit}>
 	<!-- Rest of the form -->
 	<FormGroup>
@@ -61,6 +63,7 @@
 			id="email"
 			type="email"
 			label="Email"
+			labelIcon={icons.fields.email}
 			placeholder="Inserisci la tua email"
 			required
 			tabindex={1}
@@ -71,10 +74,3 @@
 	</FormGroup>
 	<Button tabindex={2} type="submit">Recupera password</Button>
 </Form>
-
-<style>
-	div {
-		width: 100%;
-		padding-bottom: var(--s-2);
-	}
-</style>
