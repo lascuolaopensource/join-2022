@@ -9,6 +9,9 @@
 	export let tabindex = 0;
 	export let error = '';
 	export let helperText = '';
+	export let labelIcon: Function = null;
+
+	import { icons } from '$lib/icons';
 
 	// This is needed to change dynamically the type of the input
 	// Solution provided by
@@ -24,71 +27,101 @@
 
 <!-- Markup -->
 
-<div class="field">
+<div class="container">
 	<!-- Label -->
 	<div class="top">
 		{#if label != ''}
-			<label for={id}>{label}</label>
+			<div class="labelContainer">
+				<svelte:component this={labelIcon} class="fieldLabelIcon" />
+				<label for={id}>{label}</label>
+			</div>
 		{/if}
 		{#if link}
-			<a href={link.href}>{link.label}</a>
+			<a href={link.href}><small>{link.label}</small></a>
 		{/if}
 	</div>
 
 	<!-- Field -->
-	<input
-		use:setType
-		bind:value
-		on:input={clearError}
-		on:blur
-		{id}
-		{placeholder}
-		{required}
-		{tabindex}
-		class:error={error != ''}
-	/>
+	<div class="field">
+		<input
+			use:setType
+			bind:value
+			on:input={clearError}
+			on:blur
+			{id}
+			{placeholder}
+			{required}
+			{tabindex}
+			class:error={error != ''}
+		/>
+	</div>
 
 	<!-- Sub-text -->
-	{#if helperText}
-		<small class="tertiary">{helperText}</small>
-	{/if}
-	{#if error}
-		<small class="errorMsg">{error}</small>
+	{#if helperText || error}
+		<div class="bottom">
+			{#if helperText}
+				<small class="tertiary">{helperText}</small>
+			{:else if error}
+				<svelte:component this={icons.fields.error} class="fieldErrorIcon" />
+				<small class="errorMsg">{error}</small>
+			{/if}
+		</div>
 	{/if}
 </div>
 
 <!-- Style -->
 <style>
-	div,
-	input {
+	.container,
+	.top,
+	.field,
+	input,
+	.bottom {
 		width: 100%;
 	}
 
-	.field {
+	.container {
 		display: flex;
 		flex-flow: column nowrap;
 		gap: var(--s-1);
 	}
 
+	/* Top part */
+
 	.top {
-		width: 100%;
 		display: flex;
 		flex-flow: row wrap;
-		align-items: baseline;
+		align-items: center;
 		justify-content: space-between;
 		gap: 0;
 	}
 
-	a {
-		font-size: var(--text-small);
-		line-height: var(--text-small-lh);
+	.labelContainer {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: var(--s-1);
+	}
+
+	label {
+		color: var(--content-secondary);
+	}
+
+	/* Field */
+
+	.field {
+		position: relative;
+	}
+
+	/* Bottom part */
+
+	.bottom {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		gap: var(--s-0);
 	}
 
 	.errorMsg {
 		color: var(--alert-color);
-	}
-
-	small {
-		display: block;
 	}
 </style>

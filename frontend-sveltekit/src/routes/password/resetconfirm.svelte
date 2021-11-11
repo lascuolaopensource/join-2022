@@ -1,3 +1,7 @@
-<h1>Password resettata!</h1>
+<script lang="ts">
+	import OutsideTitle from '$lib/components/outsideTitle.svelte';
+</script>
 
-<a href="/">← Torna al login</a>
+<OutsideTitle>Password resettata!</OutsideTitle>
+
+<a href="/">Vai al login →</a>

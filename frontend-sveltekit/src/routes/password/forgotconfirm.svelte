@@ -1,4 +1,9 @@
-<h1>Recupero password</h1>
+<script lang="ts">
+	import OutsideTitle from '$lib/components/outsideTitle.svelte';
+</script>
+
+<OutsideTitle>Recupera password</OutsideTitle>
+
 <p>
 	Ti abbiamo mandato un'email di conferma per il recupero della password!
 	<br />

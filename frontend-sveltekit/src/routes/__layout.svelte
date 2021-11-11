@@ -50,7 +50,7 @@
 	<div class="container">
 		<main>
 			<div class="header">
-				<h1>Join!</h1>
+				<h1>Join / SOS</h1>
 			</div>
 			<section>
 				<slot />
