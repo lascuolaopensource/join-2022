@@ -43,7 +43,7 @@
 			// - we update the user store
 			$user = data.user;
 			// - we empty the temporary email store
-			localStorage.set(localStorageEmailKey, '');
+			localStorage.setItem(localStorageEmailKey, '');
 			// - redirect the user inside
 			goto('/inside');
 		} catch (err) {
