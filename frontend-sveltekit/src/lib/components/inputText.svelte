@@ -61,9 +61,12 @@
 		<div class="bottom">
 			{#if helperText}
 				<small class="tertiary">{helperText}</small>
-			{:else if error}
-				<svelte:component this={icons.fields.error} class="fieldErrorIcon" />
-				<small class="errorMsg">{error}</small>
+			{/if}
+			{#if error}
+				<div class="errorContainer">
+					<svelte:component this={icons.fields.error} class="fieldErrorIcon" />
+					<small class="errorMsg">{error}</small>
+				</div>
 			{/if}
 		</div>
 	{/if}
@@ -115,6 +118,12 @@
 	/* Bottom part */
 
 	.bottom {
+		display: flex;
+		flex-flow: column nowrap;
+		gap: var(--s-0);
+	}
+
+	.errorContainer {
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
