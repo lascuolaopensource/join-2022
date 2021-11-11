@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { temporaryEmailStore } from '$lib/stores/temporaryEmailStore';
+	import { localStorageEmailKey } from '$lib/stores/temporaryEmailStore';
 
 	import Button from '$lib/components/button.svelte';
 	import InputText from '$lib/components/inputText.svelte';
@@ -29,8 +29,8 @@
 				})
 		}),
 		onSubmit: (values) => {
-			// We save the email in the store
-			temporaryEmailStore.set($form.email);
+			// We save the email in the localstorage
+			localStorage.setItem(localStorageEmailKey, $form.email);
 			// Then we redirect
 			goto('/login/password');
 		}

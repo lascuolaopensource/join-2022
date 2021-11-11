@@ -2,7 +2,7 @@
 	import user from '$lib/stores/userStore';
 	import { goto } from '$app/navigation';
 	import { post } from '$lib/helpers/requestUtils';
-	import { temporaryEmailStore } from '$lib/stores/temporaryEmailStore';
+	import { localStorageEmailKey } from '$lib/stores/temporaryEmailStore';
 
 	import Button from '$lib/components/button.svelte';
 	import InputText from '$lib/components/inputText.svelte';
@@ -30,7 +30,7 @@
 			// IMPORTANT! Since post is an async function, we need to put await before
 			// POST function throws an error if something goes wrong
 			const data = await post(fetch, 'http://localhost:1337/auth/local', {
-				identifier: $temporaryEmailStore,
+				identifier: localStorage.getItem(localStorageEmailKey),
 				password: $form.password
 			});
 			// Then, if successful:
@@ -39,11 +39,10 @@
 			// - we update the user store
 			$user = data.user;
 			// - we empty the temporary email store
-			temporaryEmailStore.set('');
+			localStorage.set(localStorageEmailKey, '');
 			// - redirect the user inside
 			goto('/inside');
 		} catch (err) {
-			console.log(err);
 			// Just a workaround for now
 			if (err.message == 'Identifier or password invalid.') {
 				errors.set({ password: 'Password errata' });
@@ -56,6 +55,7 @@
 
 <!-- Markup -->
 <h1>Password, please</h1>
+<p>Ciao, <strong>{localStorage.getItem(localStorageEmailKey)}</strong>!</p>
 <Form on:submit={handleSubmit}>
 	<FormGroup>
 		<InputText
@@ -76,3 +76,9 @@
 	</FormGroup>
 	<Button type="submit" tabindex={2}>Avanti</Button>
 </Form>
+
+<style>
+	p {
+		margin-bottom: var(--s-3);
+	}
+</style>
