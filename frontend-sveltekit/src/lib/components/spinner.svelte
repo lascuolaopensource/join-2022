@@ -1,16 +1,20 @@
 <script lang="ts">
-	export let color: string = '#FFFFFF';
+	export let color: string = '#000000';
 	export let unit: string = 'px';
 	export let durationNum: number = 0.6;
 	export let durationUnit: string = 's';
 	export let size: string = '60';
 </script>
 
-<div class="wrapper" style="--size:{size}{unit}; --duration: {durationNum}{durationUnit};">
+<div
+	class="wrapper"
+	style="--size:{size}{unit}; --duration: {durationNum}{durationUnit};"
+>
 	{#each [3, 2, 1] as i}
 		<div
 			class="dot"
-			style="--dotSize:{+size * 0.25}{unit}; --color:{color}; animation-delay:  {i *
+			style="--dotSize:{+size *
+				0.25}{unit}; --color:{color}; animation-delay:  {i *
 				(+durationNum / 10)}{durationUnit};"
 		/>
 	{/each}

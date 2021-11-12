@@ -1,11 +1,12 @@
-<div>
+<fieldset>
 	<slot />
-</div>
+</fieldset>
 
 <style>
-	div {
+	fieldset {
 		display: flex;
 		flex-flow: column nowrap;
 		gap: var(--s-3);
+		border: none;
 	}
 </style>

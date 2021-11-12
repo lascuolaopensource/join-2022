@@ -3,13 +3,11 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	import Loading from '$lib/components/loading.svelte';
-
-	//
-
-	// Si serve usare per "nascondere" il contenuto
+	// Si usa per "nascondere" il contenuto
 	// fino a quando il caricamento non è completo (loading = false)
-	let loading = true;
+	import loadingStore from '$lib/stores/loadingStore';
+
+	import Loading from '$lib/components/loading.svelte';
 
 	// ON MOUNT (Quando il componente viene chiamato):
 	// If the user is logged already, we send him inside
@@ -18,7 +16,7 @@
 		// significa automaticamente che non c'è nessun user
 		if (!localStorage.getItem('token')) {
 			// Quindi termina il caricamento
-			loading = false;
+			loadingStore.set(false);
 			// E si resta nella stessa pagina
 		}
 		// Se invece il token c'è,
@@ -36,7 +34,7 @@
 			// Altrimenti, il caricamento finisce
 			// NOTA: Serve riportare l'errore nel caso ci sia?
 			else {
-				loading = false;
+				loadingStore.set(false);
 			}
 		}
 	});
@@ -44,20 +42,20 @@
 
 <!--  -->
 
-{#if loading}
-	<Loading fullscreen />
-{:else}
-	<div class="container">
-		<main>
-			<div class="header">
-				<h1>Join / SOS</h1>
-			</div>
-			<section>
+<div class="container">
+	<main>
+		<div class="header">
+			<h1>Join / SOS</h1>
+		</div>
+		<section>
+			{#if $loadingStore}
+				<Loading />
+			{:else}
 				<slot />
-			</section>
-		</main>
-	</div>
-{/if}
+			{/if}
+		</section>
+	</main>
+</div>
 
 <style>
 	.container {
