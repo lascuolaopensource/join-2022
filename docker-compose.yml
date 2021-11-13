@@ -6,6 +6,8 @@ volumes:
 services:
   frontend:
     build: ./frontend-sveltekit
+    environment:
+      VITE_BACKEND_URL: http://backend:1337
     ports: 
       - 3000:3000
     depends_on: 
@@ -14,6 +16,7 @@ services:
   backend:
     build: ./backend-strapi
     environment:
+      FRONTEND_URL: http://localhost:3000
       DATABASE_ENV: production
       DATABASE_CLIENT: mysql
       DATABASE_HOST: mysql

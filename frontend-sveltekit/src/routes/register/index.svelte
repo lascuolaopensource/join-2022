@@ -14,6 +14,7 @@
 	import { createExistsTest, passwordValidator } from '$lib/validationTests';
 
 	import { icons } from '$lib/icons';
+import { variables } from '$lib/variables';
 
 	// Creating form
 
@@ -52,7 +53,7 @@
 	async function registerUser() {
 		try {
 			// IMPORTANT! Since post is an async function, we need to put await before
-			await post(fetch, 'http://localhost:1337/auth/local/register', {
+			await post(fetch, variables.backendUrl + '/auth/local/register', {
 				username: $form.username,
 				email: $form.email,
 				password: $form.password

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { variables } from '$lib/variables'; //import environment variables (backendUrl)
 	import { goto } from '$app/navigation';
 	import { localStorageEmailKey } from '$lib/stores/temporaryEmailStore';
 

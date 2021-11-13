@@ -15,6 +15,7 @@
 	import * as yup from 'yup';
 
 	import { icons } from '$lib/icons';
+import { variables } from '$lib/variables';
 
 	const { form, errors, state, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -33,7 +34,7 @@
 			// We send the login data
 			// IMPORTANT! Since post is an async function, we need to put await before
 			// POST function throws an error if something goes wrong
-			const data = await post(fetch, 'http://localhost:1337/auth/local', {
+			const data = await post(fetch, variables.backendUrl + '/auth/local', {
 				identifier: localStorage.getItem(localStorageEmailKey),
 				password: $form.password
 			});

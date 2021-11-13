@@ -14,6 +14,7 @@
 	import { createExistsTest } from '$lib/validationTests';
 
 	import { icons } from '$lib/icons';
+import { variables } from '$lib/variables';
 
 	const { form, errors, state, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -39,7 +40,7 @@
 	async function resetPassword() {
 		try {
 			// Sending the request to the server
-			await post(fetch, 'http://localhost:1337/auth/forgot-password', {
+			await post(fetch, variables.backendUrl + '/auth/forgot-password', {
 				email: $form.email
 			});
 			// If response is ok we send the user to some confirmation

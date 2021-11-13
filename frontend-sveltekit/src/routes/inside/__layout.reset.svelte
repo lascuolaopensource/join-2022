@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 
 	import NavbarMain from '$lib/components/navbarMain.svelte';
+import { variables } from '$lib/variables';
 
 	// Si serve usare per "nascondere" lo slot fino a quando il caricamento non è completo
 	let loading = true;
@@ -20,7 +21,7 @@
 		}
 
 		// Fetch the user from strapi
-		const res = await fetch('http://localhost:1337/auth/me', {
+		const res = await fetch(variables.backendUrl + '/auth/me', {
 			headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
 		});
 

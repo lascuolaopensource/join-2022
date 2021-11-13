@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { variables } from '$lib/variables';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { post } from '$lib/helpers/requestUtils';
@@ -15,6 +16,7 @@
 	import { passwordValidator } from '$lib/validationTests';
 
 	import { icons } from '$lib/icons';
+import type { variables } from '$lib/variables';
 
 	const { form, errors, state, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -36,7 +38,7 @@
 	// Resets password
 	async function resetPassword() {
 		try {
-			const res = post(fetch, 'http://localhost:1337/auth/reset-password', {
+			const res = post(fetch, variables.backendUrl + '/auth/reset-password', {
 				code: $page.query.get('code'),
 				password: $form.password,
 				passwordConfirmation: $form.passwordConfirm

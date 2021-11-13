@@ -1,5 +1,6 @@
 import { post } from '$lib/helpers/requestUtils';
 import * as yup from 'yup';
+import { variables } from './variables';
 
 export function createExistsTest(param: string, invert: boolean = false) {
 	return async (value, testContext) => {
@@ -10,7 +11,7 @@ export function createExistsTest(param: string, invert: boolean = false) {
 		// Sending post request
 		const res: { exists: boolean } = await post(
 			fetch,
-			`http://localhost:1337/exists`,
+			variables.backendUrl + `/exists`,
 			body
 		);
 

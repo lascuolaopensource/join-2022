@@ -1,5 +1,6 @@
 <script lang="ts">
 	//
+	import { variables } from '$lib/variables';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
@@ -23,7 +24,7 @@
 		// C'è un utente
 		else {
 			// Si chiede quindi se l'utente è registrato
-			const res = await fetch('http://localhost:1337/auth/me', {
+			const res = await fetch(variables.backendUrl + '/auth/me', {
 				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
 			});
 
