@@ -4,11 +4,9 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	// Si usa per "nascondere" il contenuto
-	// fino a quando il caricamento non è completo (loading = false)
-	import loadingStore from '$lib/stores/loadingStore';
-
 	import Loading from '$lib/components/loading.svelte';
+
+	let loading = true;
 
 	// ON MOUNT (Quando il componente viene chiamato):
 	// If the user is logged already, we send him inside
@@ -17,7 +15,7 @@
 		// significa automaticamente che non c'è nessun user
 		if (!localStorage.getItem('token')) {
 			// Quindi termina il caricamento
-			loadingStore.set(false);
+			loading = false;
 			// E si resta nella stessa pagina
 		}
 		// Se invece il token c'è,
@@ -35,7 +33,7 @@
 			// Altrimenti, il caricamento finisce
 			// NOTA: Serve riportare l'errore nel caso ci sia?
 			else {
-				loadingStore.set(false);
+				loading = false;
 			}
 		}
 	});
@@ -49,7 +47,7 @@
 			<h1>Join / SOS</h1>
 		</div>
 		<section>
-			{#if $loadingStore}
+			{#if loading}
 				<Loading />
 			{:else}
 				<slot />
