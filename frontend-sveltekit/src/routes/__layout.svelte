@@ -13,7 +13,7 @@
 	onMount(async () => {
 		// Se non c'è il token in localstorage
 		// significa automaticamente che non c'è nessun user
-		if (!localStorage.getItem('token')) {
+		if (!localStorage.getItem(variables.localStorage.token)) {
 			// Quindi termina il caricamento
 			loading = false;
 			// E si resta nella stessa pagina
@@ -23,7 +23,11 @@
 		else {
 			// Si chiede quindi se l'utente è registrato
 			const res = await fetch(variables.backendUrl + '/auth/me', {
-				headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem(
+						variables.localStorage.token
+					)}`
+				}
 			});
 
 			// Se si, si va direttamente all'interno

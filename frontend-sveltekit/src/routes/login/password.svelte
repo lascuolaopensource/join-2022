@@ -2,7 +2,7 @@
 	import user from '$lib/stores/userStore';
 	import { goto } from '$app/navigation';
 	import { post } from '$lib/helpers/requestUtils';
-	import { localStorageEmailKey } from '$lib/stores/temporaryEmailStore';
+	import { variables } from '$lib/variables';
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -15,7 +15,6 @@
 	import * as yup from 'yup';
 
 	import { icons } from '$lib/icons';
-import { variables } from '$lib/variables';
 
 	const { form, errors, state, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -35,7 +34,7 @@ import { variables } from '$lib/variables';
 			// IMPORTANT! Since post is an async function, we need to put await before
 			// POST function throws an error if something goes wrong
 			const data = await post(fetch, variables.backendUrl + '/auth/local', {
-				identifier: localStorage.getItem(localStorageEmailKey),
+				identifier: localStorage.getItem(variables.localStorage.email),
 				password: $form.password
 			});
 			// Then, if successful:
@@ -43,8 +42,9 @@ import { variables } from '$lib/variables';
 			localStorage.setItem('token', data.jwt);
 			// - we update the user store
 			$user = data.user;
-			// - we empty the temporary email store
-			localStorage.setItem(localStorageEmailKey, '');
+			// - we empty the temporary localstorage variables
+			localStorage.removeItem(variables.localStorage.email);
+			localStorage.removeItem(variables.localStorage.username);
 			// - redirect the user inside
 			goto('/inside');
 		} catch (err) {
@@ -63,7 +63,7 @@ import { variables } from '$lib/variables';
 <OutsideBacklink href="/" label="Login" />
 
 <OutsideTitle>
-	Ciao {localStorage.getItem(localStorageEmailKey)}!
+	Ciao {localStorage.getItem(variables.localStorage.username)}!
 </OutsideTitle>
 
 <Form on:submit={handleSubmit}>
