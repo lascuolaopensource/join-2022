@@ -25,6 +25,6 @@ module.exports = {
       exists = true;
     }
 
-    return { exists };
+    return { exists, username: user.username };
   },
 };
