@@ -16,7 +16,6 @@
 	import { passwordValidator } from '$lib/validationTests';
 
 	import { icons } from '$lib/icons';
-import type { variables } from '$lib/variables';
 
 	const { form, errors, state, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -38,7 +37,7 @@ import type { variables } from '$lib/variables';
 	// Resets password
 	async function resetPassword() {
 		try {
-			const res = post(fetch, variables.backendUrl + '/auth/reset-password', {
+			await post(fetch, variables.backendUrl + '/auth/reset-password', {
 				code: $page.query.get('code'),
 				password: $form.password,
 				passwordConfirmation: $form.passwordConfirm
