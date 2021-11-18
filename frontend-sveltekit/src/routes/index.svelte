@@ -11,11 +11,11 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
+	// import { createExistsTest } from '$lib/validationTests';
 
 	import { icons } from '$lib/icons';
 
 	// Creating form
-
 	const { form, errors, state, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			email: ''
