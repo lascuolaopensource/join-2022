@@ -7,7 +7,7 @@
 	export let required = true;
 	export let link: { label: string; href: string } = null;
 	export let tabindex = 0;
-	export let error = '';
+	export let error: string = null;
 	export let helperText = '';
 	export let labelIcon: Function = null;
 
@@ -21,7 +21,7 @@
 	};
 
 	const clearError = () => {
-		error = '';
+		error = null;
 	};
 </script>
 
@@ -52,7 +52,7 @@
 			{placeholder}
 			{required}
 			{tabindex}
-			class:error={error != ''}
+			class:error
 		/>
 	</div>
 
