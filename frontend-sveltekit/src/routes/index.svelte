@@ -11,7 +11,6 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	// import { createExistsTest } from '$lib/validationTests';
 
 	import { icons } from '$lib/icons';
 
@@ -36,26 +35,21 @@
 			const data = await post(fetch, variables.backendUrl + '/exists', {
 				email: $form.email
 			});
-			console.log(data);
 
-			// Then, if successful:
+			// Then, if user exists:
 			if (data.exists) {
 				// - we store email and username in localstorage
 				localStorage.setItem(variables.localStorage.email, $form.email);
 				localStorage.setItem(variables.localStorage.username, data.username);
 				// - redirect the user to the password
 				goto('/login/password');
-			} else {
+			}
+			// If not:
+			else {
 				throw new Error("L'email non esiste");
 			}
 		} catch (err) {
-			console.log(err);
-			// // Just a workaround for now
-			// if (err.message == 'Identifier or password invalid.') {
-			// 	errors.set({ email: "L'email non esiste" });
-			// } else {
-			// 	alert(err.message);
-			// }
+			errors.set({ email: err.message });
 		}
 	}
 </script>
