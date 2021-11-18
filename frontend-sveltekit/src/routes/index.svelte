@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { localStorageEmailKey } from '$lib/stores/temporaryEmailStore';
+	import { post } from '$lib/helpers/requestUtils';
+	import { variables } from '$lib/variables';
 
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 	import Button from '$lib/components/button.svelte';
@@ -10,7 +11,6 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import { createExistsTest } from '$lib/validationTests';
 
 	import { icons } from '$lib/icons';
 
@@ -21,23 +21,43 @@
 			email: ''
 		},
 		validationSchema: yup.object().shape({
-			email: yup
-				.string()
-				.email()
-				.required()
-				.test({
-					name: 'emailExists',
-					message: "L'email non esiste",
-					test: createExistsTest('email')
-				})
+			email: yup.string().email().required()
 		}),
 		onSubmit: (values) => {
-			// We save the email in the localstorage
-			localStorage.setItem(localStorageEmailKey, $form.email);
-			// Then we redirect
-			goto('/login/password');
+			checkEmail();
 		}
 	});
+
+	async function checkEmail() {
+		try {
+			// We send the login data
+			// IMPORTANT! Since post is an async function, we need to put await before
+			// POST function throws an error if something goes wrong
+			const data = await post(fetch, variables.backendUrl + '/exists', {
+				email: $form.email
+			});
+			console.log(data);
+
+			// Then, if successful:
+			if (data.exists) {
+				// - we store email and username in localstorage
+				localStorage.setItem(variables.localStorage.email, $form.email);
+				localStorage.setItem(variables.localStorage.username, data.username);
+				// - redirect the user to the password
+				goto('/login/password');
+			} else {
+				throw new Error("L'email non esiste");
+			}
+		} catch (err) {
+			console.log(err);
+			// // Just a workaround for now
+			// if (err.message == 'Identifier or password invalid.') {
+			// 	errors.set({ email: "L'email non esiste" });
+			// } else {
+			// 	alert(err.message);
+			// }
+		}
+	}
 </script>
 
 <!-- Markup -->
