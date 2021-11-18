@@ -13,6 +13,8 @@ module.exports = {
   async check(ctx) {
     // This variable keeps track if the user exists
     let exists = false;
+    // This variable keeps track of the username
+    let username = null;
 
     // Searching for a user with that props
     // https://forum.strapi.io/t/get-only-some-fields/9000/5
@@ -23,8 +25,9 @@ module.exports = {
     // If the user exists then we update the variable
     if (user) {
       exists = true;
+      username = user.username;
     }
 
-    return { exists, username: user.username };
+    return { exists, username };
   },
 };
