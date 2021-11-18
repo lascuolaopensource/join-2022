@@ -49,11 +49,11 @@
 			goto('/inside');
 		} catch (err) {
 			// Just a workaround for now
-			if (err.message == 'Identifier or password invalid.') {
-				errors.set({ password: 'Password errata' });
-			} else {
-				alert(err.message);
+			let errorMessage = err.message;
+			if (errorMessage == 'Identifier or password invalid.') {
+				errorMessage = 'Password errata';
 			}
+			errors.set({ password: errorMessage });
 		}
 	}
 </script>
