@@ -30,20 +30,32 @@
 
 	async function checkEmail() {
 		try {
-			// We send the email data to check if user exists
+			// We send the login data
 			// IMPORTANT! Since post is an async function, we need to put await before
-			// /exists endpoint throws 404 if not found
+			// POST function throws an error if something goes wrong
 			const data = await post(fetch, variables.backendUrl + '/exists', {
 				email: $form.email
 			});
+			console.log(data);
 
-			// - we store email and username in localstorage
-			localStorage.setItem(variables.localStorage.email, $form.email);
-			localStorage.setItem(variables.localStorage.username, data.username);
-			// - redirect the user to the password
-			goto('/login/password');
+			// Then, if successful:
+			if (data.exists) {
+				// - we store email and username in localstorage
+				localStorage.setItem(variables.localStorage.email, $form.email);
+				localStorage.setItem(variables.localStorage.username, data.username);
+				// - redirect the user to the password
+				goto('/login/password');
+			} else {
+				throw new Error("L'email non esiste");
+			}
 		} catch (err) {
-			errors.set({ email: err.message });
+			console.log(err);
+			// // Just a workaround for now
+			// if (err.message == 'Identifier or password invalid.') {
+			// 	errors.set({ email: "L'email non esiste" });
+			// } else {
+			// 	alert(err.message);
+			// }
 		}
 	}
 </script>

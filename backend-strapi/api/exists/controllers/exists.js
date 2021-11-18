@@ -11,6 +11,9 @@ module.exports = {
    * otherwise you get a 'Bad Request' error
    */
   async check(ctx) {
+    // This variable keeps track if the user exists
+    let exists = false;
+
     // Searching for a user with that props
     // https://forum.strapi.io/t/get-only-some-fields/9000/5
     const user = await strapi
@@ -19,12 +22,9 @@ module.exports = {
 
     // If the user exists then we update the variable
     if (user) {
-      return {
-        exists: true,
-        username: user.username,
-      };
-    } else {
-      return ctx.throw(404, "L'utente non esiste");
+      exists = true;
     }
+
+    return { exists, username: user.username };
   },
 };
