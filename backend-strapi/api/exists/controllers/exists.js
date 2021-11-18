@@ -13,7 +13,7 @@ module.exports = {
   async check(ctx) {
     // This variable keeps track if the user exists
     let exists = false;
-    // This variable keeps track of the username
+    // This variable holds the username
     let username = null;
 
     // Searching for a user with that props
