@@ -10,9 +10,5 @@
 - Controllare anche qui `/src/routes/__layout.svelte` se è scritto bene (riga 37 NOTA)
 - Va bene che la parte autenticata è "inside" o sarebbe più bello avere che l'url principale sia Join e basta, senza /inside?
 - Va bene che per fare il 2-step login salvo la mail in localstorage? Come si dovrebbe fare altrimenti?
-
-## Forse risolti / Capito come si fa
-
-- Come si fa il 2-step login?
-- Risistemiamo le issues su github?
-- Come bloccare (se serve) l'accesso alle pagine di conferma dell'invio di email o conferma dell'invio email recupero password?
+- Chiedere la questione della sovrascrizione degli errori nel login.
+- Verificare il 2-step login?
