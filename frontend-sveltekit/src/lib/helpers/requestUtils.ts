@@ -54,34 +54,25 @@ export async function post(
 
 		// If the response is not okay
 		if (!res.ok) {
-			try {
-				// We get the response
-				const data = await res.json();
-				// We set customError to be true
-				customError = true;
-				// Then we extract the Error message
-				// There are actually two ways to extract the message:
-				// - The first one is strapi specific:
-				//   https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi
-				// - The second one is the generic
-				errorMessage =
-					data?.message?.[0]?.messages?.[0]?.message ||
-					data?.message ||
-					'Unknown error. Tell the developers to check the response shape.';
-			} catch (err) {
-				// Otherwise, we'll send the error we get
-				throw err;
-			}
+			// We get the response
+			const data = await res.json();
+			// We set customError to be true
+			customError = true;
+			// Then we extract the Error message
+			// There are actually two ways to extract the message:
+			// - The first one is strapi specific:
+			//   https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi
+			// - The second one is the generic
+			errorMessage =
+				data?.message?.[0]?.messages?.[0]?.message ||
+				data?.message ||
+				'Unknown error. Tell the developers to check the response shape.';
 		}
 		// If the respose is okay
 		else {
-			try {
-				// We try to get the data and return it
-				const data = await res.json();
-				return data;
-			} catch (err) {
-				throw err;
-			}
+			// We try to get the data and return it
+			const data = await res.json();
+			return data;
 		}
 	} catch (err) {
 		throw err;
