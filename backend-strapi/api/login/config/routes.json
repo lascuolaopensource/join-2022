@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/checkEmail",
+      "handler": "Login.checkEmail",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
