@@ -52,10 +52,12 @@ export async function post(
 			headers
 		});
 
+		// Then we get the data
+		const data = await res.json();
+
 		// If the response is not okay
+		// We extract the error message from data
 		if (!res.ok) {
-			// We get the response
-			const data = await res.json();
 			// We set customError to be true
 			customError = true;
 			// Then we extract the Error message
@@ -69,9 +71,8 @@ export async function post(
 				'Unknown error. Tell the developers to check the response shape.';
 		}
 		// If the respose is okay
+		// We return the data
 		else {
-			// We try to get the data and return it
-			const data = await res.json();
 			return data;
 		}
 	} catch (err) {
