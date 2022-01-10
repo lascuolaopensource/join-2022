@@ -23,7 +23,6 @@ export function authorizationHeader(token: string): string {
 	return 'Bearer ' + token;
 }
 
-// Add body type
 export async function post(
 	fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
 	url: RequestInfo,
