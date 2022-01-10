@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { post } from '$lib/helpers/requestUtils';
+	import { post, browserSet } from '$lib/helpers/requestUtils';
 	import { variables } from '$lib/variables';
 
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -8,6 +8,7 @@
 	import InputText from '$lib/components/inputText.svelte';
 	import FormGroup from '$lib/components/formGroup.svelte';
 	import Form from '$lib/components/form.svelte';
+	import FormError from '$lib/components/formError.svelte';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -15,7 +16,7 @@
 	import { icons } from '$lib/icons';
 
 	// Creating form
-	const { form, errors, state, handleChange, handleSubmit } = createForm({
+	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			email: ''
 		},
@@ -29,29 +30,26 @@
 
 	async function checkEmail() {
 		try {
-			// We send the login data
+			// We send the email
 			// IMPORTANT! Since post is an async function, we need to put await before
 			// POST function throws an error if something goes wrong
-			const data = await post(fetch, variables.backendUrl + '/exists', {
+			const data = await post(fetch, variables.backendUrl + '/checkEmail', {
 				email: $form.email
 			});
+			console.log(data);
 
-			// Then, if user exists:
-			if (data.exists) {
-				// - we store email and username in localstorage
-				localStorage.setItem(variables.localStorage.email, $form.email);
-				localStorage.setItem(variables.localStorage.username, data.username);
-				// - redirect the user to the password
-				goto('/login/password');
-			}
-			// If not:
-			else {
-				throw new Error("L'email non esiste");
-			}
+			// - we store email and username in localstorage
+			browserSet(variables.localStorage.email, data.email);
+			browserSet(variables.localStorage.username, data.username);
+			// - redirect the user to the password
+			goto('/login/password');
 		} catch (err) {
-			errors.set({ email: err.message });
+			errorMsg = err.message;
 		}
 	}
+
+	// This is one final error message for the result of the request
+	let errorMsg = '';
 </script>
 
 <!-- Markup -->
@@ -59,6 +57,7 @@
 <OutsideTitle>Login</OutsideTitle>
 
 <Form on:submit={handleSubmit}>
+	<FormError {errorMsg} />
 	<FormGroup>
 		<InputText
 			id="email"
