@@ -14,7 +14,7 @@
 	import { createExistsTest, passwordValidator } from '$lib/validationTests';
 
 	import { icons } from '$lib/icons';
-import { variables } from '$lib/variables';
+	import { variables } from '$lib/variables';
 
 	// Creating form
 
