@@ -1,6 +1,6 @@
 import { browser } from '$app/env';
 
-export function browserGet(key: string): any {
+export function lstorageGet(key: string): any {
 	if (browser) {
 		const item = localStorage.getItem(key);
 		if (item) {
@@ -13,7 +13,7 @@ export function browserGet(key: string): any {
 	}
 }
 
-export function browserSet(key: string, value: string): void {
+export function lstorageSet(key: string, value: string): void {
 	if (browser) {
 		localStorage.setItem(key, value);
 	}
