@@ -8,15 +8,34 @@
 	--container-padding: 2px;
 	--border-radius: 0px;
 
-	/* Main colors */
+	/* --- Main colors --- */
+
 	--outside-bg: blue;
 	--main-bg: white;
 
-	--content-primary: black;
-	--content-secondary: rgba(0, 0, 0, 0.6);
-	--content-tertiary: rgba(0, 0, 0, 0.4);
+	/* Content */
 
-	/* Spacing */
+	/* -l : light background */
+	--content-primary-l: black;
+	--content-secondary-l: rgba(0, 0, 0, 0.6);
+	--content-tertiary-l: rgba(0, 0, 0, 0.4);
+
+	/* -d : dark background */
+	--content-primary-d: white;
+	--content-secondary-d: rgba(255, 255, 255, 0.6);
+	--content-tertiary-d: rgba(255, 255, 255, 0.4);
+
+	/* Surfaces */
+
+	/* -l : light background */
+	--surface-default-l: transparent;
+	--surface-hover-l: rgba(0, 0, 0, 0.3);
+
+	/* -d : dark background */
+	--surface-default-d: transparent;
+	--surface-hover-d: rgba(255, 255, 255, 0.3);
+
+	/* --- Spacing --- */
 	--s-0: 4px;
 	--s-1: 8px;
 	--s-2: 16px;
@@ -93,7 +112,7 @@ p,
 h1,
 h2,
 h3 {
-	color: var(--content-primary);
+	color: var(--content-primary-l);
 }
 
 a {
@@ -152,23 +171,31 @@ small {
 }
 
 .primary {
-	color: var(--content-primary);
+	color: var(--content-primary-l);
 }
 
 .secondary {
-	color: var(--content-secondary);
+	color: var(--content-secondary-l);
 }
 
 .tertiary {
-	color: var(--content-tertiary);
+	color: var(--content-tertiary-l);
 }
 
 /* Color for icons */
 
 .fieldLabelIcon {
-	fill: var(--content-secondary);
+	fill: var(--content-secondary-l);
 }
 
 .fieldErrorIcon {
 	fill: var(--alert-color);
+}
+
+.iconPrimary-l {
+	fill: var(--content-primary-l);
+}
+
+.iconPrimary-d {
+	fill: var(--content-primary-d);
 }

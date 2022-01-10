@@ -106,7 +106,7 @@
 	}
 
 	label {
-		color: var(--content-secondary);
+		color: var(--content-secondary-l);
 	}
 
 	/* Field */
