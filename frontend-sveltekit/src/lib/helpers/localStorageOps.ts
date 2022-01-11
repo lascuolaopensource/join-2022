@@ -1,10 +1,14 @@
 import { browser } from '$app/env';
 
-export function localStorageGet(key: string): any {
+export function localStorageGet(key: string, isObject = false): any {
 	if (browser) {
 		const item = localStorage.getItem(key);
 		if (item) {
-			return JSON.parse(item);
+			if (isObject) {
+				return JSON.parse(item);
+			} else {
+				return item;
+			}
 		}
 	}
 	//
