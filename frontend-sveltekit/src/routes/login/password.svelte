@@ -3,6 +3,11 @@
 	import { goto } from '$app/navigation';
 	import { post } from '$lib/helpers/requestUtils';
 	import { variables } from '$lib/variables';
+	import {
+		localStorageGet,
+		localStorageRemove,
+		localStorageSet
+	} from '$lib/helpers/localStorageOps';
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -10,13 +15,14 @@
 	import InputText from '$lib/components/inputText.svelte';
 	import FormGroup from '$lib/components/formGroup.svelte';
 	import Form from '$lib/components/form.svelte';
+	import FormError from '$lib/components/formError.svelte';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 
 	import { icons } from '$lib/icons';
 
-	const { form, errors, state, handleChange, handleSubmit } = createForm({
+	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			password: ''
 		},
@@ -34,28 +40,26 @@
 			// IMPORTANT! Since post is an async function, we need to put await before
 			// POST function throws an error if something goes wrong
 			const data = await post(fetch, variables.backendUrl + '/auth/local', {
-				identifier: localStorage.getItem(variables.localStorage.email),
+				identifier: localStorageGet(variables.localStorage.email),
 				password: $form.password
 			});
 			// Then, if successful:
 			// - we store the token in localstorage
-			localStorage.setItem('token', data.jwt);
+			localStorageSet('token', data.jwt);
 			// - we update the user store
 			$user = data.user;
 			// - we empty the temporary localstorage variables
-			localStorage.removeItem(variables.localStorage.email);
-			localStorage.removeItem(variables.localStorage.username);
+			localStorageRemove(variables.localStorage.email);
+			localStorageRemove(variables.localStorage.username);
 			// - redirect the user inside
 			goto('/inside');
 		} catch (err) {
-			// Just a workaround for now
-			let errorMessage = err.message;
-			if (errorMessage == 'Identifier or password invalid.') {
-				errorMessage = 'Password errata';
-			}
-			errors.set({ password: errorMessage });
+			errorMsg = err.message;
 		}
 	}
+
+	// This is one final error message for the result of the request
+	let errorMsg = '';
 </script>
 
 <!-- Markup -->
@@ -63,10 +67,11 @@
 <OutsideBacklink href="/" label="Login" />
 
 <OutsideTitle>
-	Ciao {localStorage.getItem(variables.localStorage.username)}!
+	Ciao {localStorageGet(variables.localStorage.username)}!
 </OutsideTitle>
 
 <Form on:submit={handleSubmit}>
+	<FormError {errorMsg} />
 	<FormGroup>
 		<InputText
 			id="password"
