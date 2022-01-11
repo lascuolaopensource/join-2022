@@ -11,23 +11,26 @@ module.exports = {
    * otherwise you get a 'Bad Request' error
    */
   async check(ctx) {
-    // This variable keeps track if the user exists
-    let exists = false;
-    // This variable holds the username
-    let username = null;
+    // Prendiamo il body della richiesta
+    const body = ctx.request.body;
+
+    // Se l'oggetto NON:
+    // - ha solo una chiave
+    // - la chiave è "email" o "username"
+    if (
+      !(
+        Object.keys(body).length == 1 &&
+        ("email" in body || "username" in body)
+      )
+    ) {
+      ctx.throw(400);
+    }
 
     // Searching for a user with that props
     // https://forum.strapi.io/t/get-only-some-fields/9000/5
-    const user = await strapi
-      .query("user", "users-permissions")
-      .findOne(ctx.request.body);
+    const user = await strapi.query("user", "users-permissions").findOne(body);
 
-    // If the user exists then we update the variable
-    if (user) {
-      exists = true;
-      username = user.username;
-    }
-
-    return { exists, username };
+    // We return accordingly
+    return { exists: user ? true : false };
   },
 };
