@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { post, browserSet } from '$lib/helpers/requestUtils';
+	import { localStorageSet } from '$lib/helpers/localStorageOps';
+	import { post } from '$lib/helpers/requestUtils';
 	import { variables } from '$lib/variables';
 
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -36,11 +37,9 @@
 			const data = await post(fetch, variables.backendUrl + '/checkEmail', {
 				email: $form.email
 			});
-			console.log(data);
-
 			// - we store email and username in localstorage
-			browserSet(variables.localStorage.email, data.email);
-			browserSet(variables.localStorage.username, data.username);
+			localStorageSet(variables.localStorage.email, data.email);
+			localStorageSet(variables.localStorage.username, data.username);
 			// - redirect the user to the password
 			goto('/login/password');
 		} catch (err) {
