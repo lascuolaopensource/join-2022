@@ -9,10 +9,6 @@ export async function post(
 	body: Record<string, any> | string,
 	headers: HeadersInit = {}
 ) {
-	// // This variable is needed to check if there's a custom error from Strapi
-	let customError = false;
-	let errorMessage = '';
-
 	// We try to send the POST request
 	try {
 		// If body is not form data,
@@ -31,35 +27,37 @@ export async function post(
 			headers
 		});
 
-		// Then we get the data
-		const data = await res.json();
-
 		// If the response is not okay
-		// We extract the error message from data
 		if (!res.ok) {
-			// We set customError to be true
-			customError = true;
-			// Then we extract the Error message
-			// There are actually two ways to extract the message:
+			// We extract the error message
+			let errorMessage;
+
+			// It can be a generic 404 not found
+			if (res.status == 404) {
+				errorMessage = res.status;
+			}
+
+			// Or a Strapi messsage:
 			// - The first one is strapi specific:
 			//   https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi
 			// - The second one is the generic
-			errorMessage =
-				data?.message?.[0]?.messages?.[0]?.message ||
-				data?.message ||
-				'Unknown error. Tell the developers to check the response shape.';
+			else {
+				const data = await res.json();
+				errorMessage =
+					data?.message?.[0]?.messages?.[0]?.message || data?.message;
+			}
+
+			// Then we throw the error
+			throw new Error(errorMessage);
 		}
+
 		// If the respose is okay
-		// We return the data
 		else {
+			// We return the data
+			const data = await res.json();
 			return data;
 		}
 	} catch (err) {
 		throw err;
-	}
-
-	// Finally, we throw the customError (if nothing has been returned or thrown)
-	if (customError) {
-		throw new Error(errorMessage);
 	}
 }
