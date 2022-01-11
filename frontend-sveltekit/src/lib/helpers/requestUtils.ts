@@ -1,24 +1,3 @@
-import { browser } from '$app/env';
-
-export function lstorageGet(key: string): any {
-	if (browser) {
-		const item = localStorage.getItem(key);
-		if (item) {
-			return JSON.parse(item);
-		}
-	}
-	//
-	else {
-		return null;
-	}
-}
-
-export function lstorageSet(key: string, value: string): void {
-	if (browser) {
-		localStorage.setItem(key, value);
-	}
-}
-
 export function authorizationHeader(token: string): string {
 	return 'Bearer ' + token;
 }
