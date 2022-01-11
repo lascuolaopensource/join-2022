@@ -3,41 +3,42 @@
 	import { variables } from '$lib/variables';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { localStorageGet } from '$lib/helpers/localStorageOps';
+	import { createAuthorizationHeader } from '$lib/helpers/requestUtils';
 
 	import Loading from '$lib/components/loading.svelte';
 
+	// Questa variabile tiene traccia dello stato di caricamento
 	let loading = true;
 
-	// ON MOUNT (Quando il componente viene chiamato):
-	// If the user is logged already, we send him inside
+	// ON MOUNT (Quando il componente viene chiamato)
+	// Ovvero, quando ogni pagina viene caricata
 	onMount(async () => {
-		// Se non c'è il token in localstorage
-		// significa automaticamente che non c'è nessun user
-		if (!localStorage.getItem(variables.localStorage.token)) {
-			// Quindi termina il caricamento
+		// Prendiamo il token in localstorage
+		const token = localStorageGet(variables.localStorage.token);
+
+		// Se il token 'è vuoto', significa automaticamente che non c'è nessun user
+		if (!token) {
+			// Quindi termina il caricamento e si resta nella stessa pagina
 			loading = false;
-			// E si resta nella stessa pagina
 		}
-		// Se invece il token c'è,
-		// C'è un utente
+		// Se invece il token c'è, c'è un utente
 		else {
-			// Si chiede quindi se l'utente è registrato
+			// Si chiede quindi a strapi se l'utente è registrato
 			const res = await fetch(variables.backendUrl + '/auth/me', {
 				headers: {
-					Authorization: `Bearer ${localStorage.getItem(
-						variables.localStorage.token
-					)}`
+					Authorization: createAuthorizationHeader(token)
 				}
 			});
 
-			// Se si, si va direttamente all'interno
+			// Se l'utente è loggato, si va direttamente all'interno
 			if (res.ok) {
 				goto('/inside');
 			}
 			// Altrimenti, il caricamento finisce
-			// NOTA: Serve riportare l'errore nel caso ci sia?
 			else {
 				loading = false;
+				// NOTA: Serve riportare l'errore nel caso ci sia?
 			}
 		}
 	});

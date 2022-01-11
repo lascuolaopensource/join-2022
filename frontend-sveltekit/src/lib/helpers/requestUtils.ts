@@ -1,4 +1,4 @@
-export function authorizationHeader(token: string): string {
+export function createAuthorizationHeader(token: string): string {
 	return 'Bearer ' + token;
 }
 

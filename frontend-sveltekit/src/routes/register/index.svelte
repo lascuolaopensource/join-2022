@@ -8,17 +8,18 @@
 	import InputText from '$lib/components/inputText.svelte';
 	import FormGroup from '$lib/components/formGroup.svelte';
 	import Form from '$lib/components/form.svelte';
+	import FormError from '$lib/components/formError.svelte';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import { createExistsTest, passwordValidator } from '$lib/validationTests';
+	import { createUserExistsTest } from '$lib/validationTests';
 
 	import { icons } from '$lib/icons';
 	import { variables } from '$lib/variables';
 
 	// Creating form
 
-	const { form, errors, state, handleChange, handleSubmit } = createForm({
+	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			username: '',
 			email: '',
@@ -31,7 +32,7 @@
 				.test({
 					name: 'usernameExists',
 					message: "L'username esiste già",
-					test: createExistsTest('username', true)
+					test: createUserExistsTest('username')
 				}),
 			email: yup
 				.string()
@@ -40,9 +41,9 @@
 				.test({
 					name: 'emailExists',
 					message: "L'email esiste già",
-					test: createExistsTest('email', true)
+					test: createUserExistsTest('email')
 				}),
-			password: passwordValidator
+			password: yup.string().required().min(8).max(52)
 		}),
 		onSubmit: () => {
 			registerUser();
@@ -61,9 +62,12 @@
 			// If successful, we redirect
 			goto('/register/thanks');
 		} catch (err) {
-			alert(err.message);
+			errorMsg = err.message;
 		}
 	}
+
+	// Error message for the result of the request
+	let errorMsg = '';
 </script>
 
 <!-- Markup -->
@@ -73,7 +77,7 @@
 <OutsideTitle>Crea un account</OutsideTitle>
 
 <Form on:submit={handleSubmit}>
-	<!-- Rest of the form -->
+	<FormError {errorMsg} />
 	<FormGroup>
 		<InputText
 			id="username"

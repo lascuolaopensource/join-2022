@@ -1,4 +1,9 @@
 /checkEmail
 POST
--> {email}
-<- {email, username}
+-> {email: string}
+<- {email: string, username: string}
+
+/exists
+POST
+-> {email: string} || {username: string}
+<- {exists: boolean}
