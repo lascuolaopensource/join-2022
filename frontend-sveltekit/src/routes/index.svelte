@@ -26,14 +26,12 @@
 		}),
 		onSubmit: (values) => {
 			checkEmail();
+			errorMsg = '';
 		}
 	});
 
 	async function checkEmail() {
 		try {
-			// We send the email
-			// IMPORTANT! Since post is an async function, we need to put await before
-			// POST function throws an error if something goes wrong
 			const data = await post(fetch, variables.backendUrl + '/checkEmail', {
 				email: $form.email
 			});
@@ -43,11 +41,15 @@
 			// - redirect the user to the password
 			goto('/login/password');
 		} catch (err) {
-			errorMsg = err.message;
+			if (err.message == '404') {
+				errorMsg = "L'email non è corretta";
+			} else {
+				errorMsg = err.message;
+			}
 		}
 	}
 
-	// This is one final error message for the result of the request
+	// Error message for the result of the request
 	let errorMsg = '';
 </script>
 
