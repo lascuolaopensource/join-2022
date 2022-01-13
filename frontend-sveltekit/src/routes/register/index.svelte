@@ -1,6 +1,15 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { post } from '$lib/helpers/requestUtils';
+
+	import post from '$lib/requestUtils/post';
+	import { endpoints } from '$lib/requestUtils/endpoints';
+
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+	import {
+		createUserExistsTest,
+		passwordValidator
+	} from '$lib/validationTests';
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -10,18 +19,11 @@
 	import Form from '$lib/components/form.svelte';
 	import FormError from '$lib/components/formError.svelte';
 
-	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
-	import {
-		createUserExistsTest,
-		passwordValidator
-	} from '$lib/validationTests';
-
 	import { icons } from '$lib/icons';
-	import { variables } from '$lib/variables';
+
+	//
 
 	// Creating form
-
 	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			username: '',
@@ -49,15 +51,18 @@
 			password: passwordValidator
 		}),
 		onSubmit: () => {
+			errorMsg = '';
 			registerUser();
 		}
 	});
+
+	//
 
 	// Registers a user
 	async function registerUser() {
 		try {
 			// IMPORTANT! Since post is an async function, we need to put await before
-			await post(fetch, variables.backendUrl + '/auth/local/register', {
+			await post(fetch, endpoints.register, {
 				username: $form.username,
 				email: $form.email,
 				password: $form.password
@@ -69,11 +74,13 @@
 		}
 	}
 
+	//
+
 	// Error message for the result of the request
 	let errorMsg = '';
 </script>
 
-<!-- Markup -->
+<!-- ---  Markup --- -->
 
 <OutsideBacklink href="/" label="Login" />
 

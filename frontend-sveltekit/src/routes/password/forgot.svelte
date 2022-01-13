@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { post } from '$lib/helpers/requestUtils';
+	import post from '$lib/requestUtils/post';
+
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -10,11 +13,8 @@
 	import Form from '$lib/components/form.svelte';
 	import FormError from '$lib/components/formError.svelte';
 
-	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
-
 	import { icons } from '$lib/icons';
-	import { variables } from '$lib/variables';
+	import { endpoints } from '$lib/requestUtils/endpoints';
 
 	//
 
@@ -26,6 +26,7 @@
 			email: yup.string().email().required()
 		}),
 		onSubmit: (values) => {
+			errorMsg = '';
 			resetPassword();
 		}
 	});
@@ -35,10 +36,10 @@
 	async function resetPassword() {
 		try {
 			// Sending the request to the server
-			await post(fetch, variables.backendUrl + '/auth/forgot-password', {
+			await post(fetch, endpoints.forgotPassword, {
 				email: $form.email
 			});
-			// If response is ok we send the user to some confirmation
+			// If response is ok we send the user to a confirmation message
 			goto('/password/forgotconfirm');
 		} catch (err) {
 			errorMsg = err.message;
@@ -50,7 +51,7 @@
 	let errorMsg = '';
 </script>
 
-<!-- Markup -->
+<!-- --- Markup --- -->
 
 <OutsideBacklink href="/" label="Login" />
 

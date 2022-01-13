@@ -1,8 +1,13 @@
 <script lang="ts">
-	import { variables } from '$lib/variables';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { post } from '$lib/helpers/requestUtils';
+
+	import post from '$lib/requestUtils/post';
+	import { endpoints } from '$lib/requestUtils/endpoints';
+
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+	import { passwordValidator } from '$lib/validationTests';
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -12,11 +17,9 @@
 	import Form from '$lib/components/form.svelte';
 	import FormError from '$lib/components/formError.svelte';
 
-	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
-	import { passwordValidator } from '$lib/validationTests';
-
 	import { icons } from '$lib/icons';
+
+	//
 
 	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -31,14 +34,16 @@
 			)
 		}),
 		onSubmit: (values) => {
+			errorMsg = '';
 			resetPassword();
 		}
 	});
 
-	// Resets password
+	//
+
 	async function resetPassword() {
 		try {
-			await post(fetch, variables.backendUrl + '/auth/reset-password', {
+			await post(fetch, endpoints.resetPassword, {
 				code: $page.url.searchParams.get('code'),
 				password: $form.password,
 				passwordConfirmation: $form.passwordConfirm
@@ -55,7 +60,8 @@
 	let errorMsg = '';
 </script>
 
-<!-- Registration link -->
+<!-- --- Markup --- -->
+
 <OutsideBacklink href="/" label="Login" />
 
 <OutsideTitle>Cambio password</OutsideTitle>
