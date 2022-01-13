@@ -1,3 +1,7 @@
+# Documentazione
+
+https://sos-nuovo-sito.notion.site/Documentazione-885d9b79e4554c0c8ccd441966384788
+
 # Da chiedere
 
 - Controllare le issue taggate come "Question" in GitHub
@@ -10,5 +14,8 @@
 - Controllare anche qui `/src/routes/__layout.svelte` se è scritto bene (riga 37 NOTA)
 - Va bene che la parte autenticata è "inside" o sarebbe più bello avere che l'url principale sia Join e basta, senza /inside?
 - Va bene che per fare il 2-step login salvo la mail in localstorage? Come si dovrebbe fare altrimenti?
-- Chiedere la questione della sovrascrizione degli errori nel login.
 - Verificare il 2-step login?
+
+## Risolto
+
+- Chiedere la questione della sovrascrizione degli errori nel login.
