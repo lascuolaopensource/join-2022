@@ -28,6 +28,10 @@ module.exports = {
       .query("plugin::users-permissions.user")
       .findOne({ where: body });
 
-    return { email: user.email, username: user.username };
+    if (user) {
+      return { email: user.email, username: user.username };
+    } else {
+      ctx.throw(404);
+    }
   },
 };
