@@ -1,5 +1,4 @@
 <script lang="ts">
-	//
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
@@ -9,6 +8,8 @@
 	import { createAuthorizationHeader } from '$lib/requestUtils/authorizationHeader';
 
 	import Loading from '$lib/components/loading.svelte';
+
+	//
 
 	// Questa variabile tiene traccia dello stato di caricamento
 	let loading = true;
@@ -40,13 +41,12 @@
 			// Altrimenti, il caricamento finisce
 			else {
 				loading = false;
-				// NOTA: Serve riportare l'errore nel caso ci sia?
 			}
 		}
 	});
 </script>
 
-<!--  -->
+<!-- --- Markup --- -->
 
 <div class="container">
 	<main>
@@ -63,6 +63,7 @@
 	</main>
 </div>
 
+<!-- --- Style --- -->
 <style>
 	.container {
 		background-color: var(--outside-bg);

@@ -5,6 +5,10 @@
 	import post from '$lib/requestUtils/post';
 	import { endpoints } from '$lib/requestUtils/endpoints';
 
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+	import { passwordValidator } from '$lib/validationTests';
+
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 	import Button from '$lib/components/button.svelte';
@@ -13,11 +17,9 @@
 	import Form from '$lib/components/form.svelte';
 	import FormError from '$lib/components/formError.svelte';
 
-	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
-	import { passwordValidator } from '$lib/validationTests';
-
 	import { icons } from '$lib/icons';
+
+	//
 
 	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -32,11 +34,13 @@
 			)
 		}),
 		onSubmit: (values) => {
+			errorMsg = '';
 			resetPassword();
 		}
 	});
 
-	// Resets password
+	//
+
 	async function resetPassword() {
 		try {
 			await post(fetch, endpoints.resetPassword, {
@@ -56,7 +60,8 @@
 	let errorMsg = '';
 </script>
 
-<!-- Registration link -->
+<!-- --- Markup --- -->
+
 <OutsideBacklink href="/" label="Login" />
 
 <OutsideTitle>Cambio password</OutsideTitle>

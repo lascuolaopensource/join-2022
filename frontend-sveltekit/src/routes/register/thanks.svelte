@@ -2,6 +2,8 @@
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 </script>
 
+<!-- --- Markup --- -->
+
 <OutsideTitle>Grazie per esserti registrato!</OutsideTitle>
 
 <p>

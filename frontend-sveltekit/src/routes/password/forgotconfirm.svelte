@@ -2,6 +2,8 @@
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 </script>
 
+<!-- --- Markup --- -->
+
 <OutsideTitle>Recupera password</OutsideTitle>
 
 <p>

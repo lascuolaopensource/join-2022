@@ -1,13 +1,18 @@
 <script lang="ts">
 	import user from '$lib/stores/userStore';
 	import { goto } from '$app/navigation';
+
 	import post from '$lib/requestUtils/post';
+	import { endpoints } from '$lib/requestUtils/endpoints';
 	import { variables } from '$lib/variables';
 	import {
 		localStorageGet,
 		localStorageRemove,
 		localStorageSet
 	} from '$lib/helpers/localStorageOps';
+
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -17,11 +22,9 @@
 	import Form from '$lib/components/form.svelte';
 	import FormError from '$lib/components/formError.svelte';
 
-	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
-
 	import { icons } from '$lib/icons';
-	import { endpoints } from '$lib/requestUtils/endpoints';
+
+	//
 
 	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -31,15 +34,16 @@
 			password: yup.string().required()
 		}),
 		onSubmit: (values) => {
+			errorMsg = '';
 			login();
 		}
 	});
 
+	//
+
 	async function login() {
 		try {
 			// We send the login data
-			// IMPORTANT! Since post is an async function, we need to put await before
-			// POST function throws an error if something goes wrong
 			const data = await post(fetch, endpoints.login, {
 				identifier: localStorageGet(variables.localStorage.email),
 				password: $form.password
@@ -55,6 +59,7 @@
 			// - redirect the user inside
 			goto('/inside');
 		} catch (err) {
+			// Soluzione temporanea
 			if (err.message == 'Invalid identifier or password') {
 				errorMsg = 'Password errata';
 			} else {
@@ -63,11 +68,13 @@
 		}
 	}
 
+	//
+
 	// This is one final error message for the result of the request
 	let errorMsg = '';
 </script>
 
-<!-- Markup -->
+<!-- --- Markup --- -->
 
 <OutsideBacklink href="/" label="Login" />
 

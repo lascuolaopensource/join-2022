@@ -2,6 +2,8 @@
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 </script>
 
+<!-- --- Markup --- -->
+
 <OutsideTitle>Email confermata!</OutsideTitle>
 
 <p>
@@ -9,6 +11,7 @@
 </p>
 <a href="/">Vai al login →</a>
 
+<!-- --- Style --- -->
 <style>
 	p {
 		margin-bottom: var(--s-3);

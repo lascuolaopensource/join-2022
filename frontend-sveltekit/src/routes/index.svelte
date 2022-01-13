@@ -6,6 +6,9 @@
 	import { endpoints } from '$lib/requestUtils/endpoints';
 	import { localStorageSet } from '$lib/helpers/localStorageOps';
 
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 	import Button from '$lib/components/button.svelte';
 	import InputText from '$lib/components/inputText.svelte';
@@ -13,10 +16,9 @@
 	import Form from '$lib/components/form.svelte';
 	import FormError from '$lib/components/formError.svelte';
 
-	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
-
 	import { icons } from '$lib/icons';
+
+	//
 
 	// Creating form
 	const { form, errors, handleChange, handleSubmit } = createForm({
@@ -27,10 +29,12 @@
 			email: yup.string().email().required()
 		}),
 		onSubmit: (values) => {
-			checkEmail();
 			errorMsg = '';
+			checkEmail();
 		}
 	});
+
+	//
 
 	async function checkEmail() {
 		try {
@@ -51,11 +55,13 @@
 		}
 	}
 
+	//
+
 	// Error message for the result of the request
 	let errorMsg = '';
 </script>
 
-<!-- Markup -->
+<!-- --- Markup --- -->
 
 <OutsideTitle>Login</OutsideTitle>
 
@@ -84,7 +90,7 @@
 	<a href="/register" class="registrati">Registrati!</a>
 </div>
 
-<!-- /* Style */ -->
+<!-- --- Style --- -->
 <style>
 	.message {
 		display: flex;
