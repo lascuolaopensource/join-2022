@@ -1,14 +1,16 @@
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
-import { variables } from '$lib/variables';
+
+import { createAuthorizationHeader } from './authorizationHeader';
+import { endpoints } from './endpoints';
 
 // https://hasura.io/learn/graphql/svelte-apollo/apollo-client/
 // Row 14, "link: httpLink" - c'è un errore nel tutorial, che riporta solo "httpLink"
 
 export default function createApolloClient(authToken) {
 	const httpLink = new HttpLink({
-		uri: variables.backendUrl + '/graphql',
+		uri: endpoints.graphql + '/graphql',
 		headers: {
-			Authorization: `Bearer ${authToken}`
+			Authorization: createAuthorizationHeader(authToken)
 		}
 	});
 	const cache = new InMemoryCache();

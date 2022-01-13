@@ -5,8 +5,13 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
+	import { createAuthorizationHeader } from '$lib/requestUtils/authorizationHeader';
+	import { localStorageGet } from '$lib/helpers/localStorageOps';
+	import { endpoints } from '$lib/requestUtils/endpoints';
+
 	import NavbarMain from '$lib/components/navbarMain.svelte';
-	import { variables } from '$lib/variables';
+
+	//
 
 	// Si serve usare per "nascondere" lo slot fino a quando il caricamento non è completo
 	let loading = true;
@@ -14,15 +19,17 @@
 	// Quando il componente viene chiamato:
 	onMount(async () => {
 		// Check if 'token' exists in localStorage
-		if (!localStorage.getItem('token')) {
+		if (!localStorageGet('token')) {
 			loading = false;
 			goto('/');
 			// return { props: { user: null } }; // ← a che serve sta roba?
 		}
 
 		// Fetch the user from strapi
-		const res = await fetch(variables.backendUrl + '/auth/me', {
-			headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+		const res = await fetch(endpoints.me, {
+			headers: {
+				Authorization: createAuthorizationHeader(localStorageGet('token'))
+			}
 		});
 
 		// Redirect if we get unauthorized error
