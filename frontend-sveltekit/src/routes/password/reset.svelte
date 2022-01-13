@@ -10,6 +10,7 @@
 	import InputText from '$lib/components/inputText.svelte';
 	import FormGroup from '$lib/components/formGroup.svelte';
 	import Form from '$lib/components/form.svelte';
+	import FormError from '$lib/components/formError.svelte';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -17,7 +18,7 @@
 
 	import { icons } from '$lib/icons';
 
-	const { form, errors, state, handleChange, handleSubmit } = createForm({
+	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			password: '',
 			passwordConfirm: ''
@@ -38,16 +39,20 @@
 	async function resetPassword() {
 		try {
 			await post(fetch, variables.backendUrl + '/auth/reset-password', {
-				code: $page.query.get('code'),
+				code: $page.url.searchParams.get('code'),
 				password: $form.password,
 				passwordConfirmation: $form.passwordConfirm
 			});
 			// If response is ok we send the user to some confirmation
 			goto('/password/resetconfirm');
 		} catch (err) {
-			alert(err.message);
+			errorMsg = err.message;
 		}
 	}
+
+	//
+
+	let errorMsg = '';
 </script>
 
 <!-- Registration link -->
@@ -56,7 +61,7 @@
 <OutsideTitle>Cambio password</OutsideTitle>
 
 <Form on:submit={handleSubmit}>
-	<!-- Rest of the form -->
+	<FormError {errorMsg} />
 	<FormGroup>
 		<InputText
 			id="password"
