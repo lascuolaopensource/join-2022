@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { mutation, setClient } from 'svelte-apollo';
-	import { POST_ISCRIZIONE } from '$lib/queries';
-	import createApolloClient from '$lib/helpers/createApolloClient';
+	import { POST_ISCRIZIONE } from '$lib/requestUtils/queries';
+	import createApolloClient from '$lib/requestUtils/createApolloClient';
 
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';

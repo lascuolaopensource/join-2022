@@ -1,5 +1,5 @@
-import { post } from '$lib/helpers/requestUtils';
-import { variables } from './variables';
+import post from '$lib/requestUtils/post';
+import { endpoints } from './requestUtils/endpoints';
 import * as yup from 'yup';
 
 //
@@ -14,7 +14,7 @@ export function createUserExistsTest(param: 'email' | 'username') {
 			// Sending post request
 			const res: { exists: boolean } = await post(
 				fetch,
-				variables.backendUrl + '/userexists',
+				endpoints.checkUserExists,
 				body
 			);
 

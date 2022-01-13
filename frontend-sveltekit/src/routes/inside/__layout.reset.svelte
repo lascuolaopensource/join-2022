@@ -1,7 +1,7 @@
 <script lang="ts">
 	// Here we check if the user is logged otherwise we send it away
 	import userStore from '$lib/stores/userStore';
-	import type { User } from '$lib/types';
+	import type { User } from '$lib/requestUtils/types';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 

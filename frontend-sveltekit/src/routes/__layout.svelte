@@ -1,10 +1,12 @@
 <script lang="ts">
 	//
-	import { variables } from '$lib/variables';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+
+	import { variables } from '$lib/variables';
+	import { endpoints } from '$lib/requestUtils/endpoints';
 	import { localStorageGet } from '$lib/helpers/localStorageOps';
-	import { createAuthorizationHeader } from '$lib/helpers/requestUtils';
+	import { createAuthorizationHeader } from '$lib/requestUtils/authorizationHeader';
 
 	import Loading from '$lib/components/loading.svelte';
 
@@ -25,7 +27,7 @@
 		// Se invece il token c'è, c'è un utente
 		else {
 			// Si chiede quindi a strapi se l'utente è registrato
-			const res = await fetch(variables.backendUrl + '/auth/me', {
+			const res = await fetch(endpoints.me, {
 				headers: {
 					Authorization: createAuthorizationHeader(token)
 				}

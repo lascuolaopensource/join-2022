@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { variables } from '$lib/variables';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { post } from '$lib/helpers/requestUtils';
+
+	import post from '$lib/requestUtils/post';
+	import { endpoints } from '$lib/requestUtils/endpoints';
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -38,7 +39,7 @@
 	// Resets password
 	async function resetPassword() {
 		try {
-			await post(fetch, variables.backendUrl + '/auth/reset-password', {
+			await post(fetch, endpoints.resetPassword, {
 				code: $page.url.searchParams.get('code'),
 				password: $form.password,
 				passwordConfirmation: $form.passwordConfirm

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { query } from 'svelte-apollo';
-	import { GET_CORSI } from '$lib/queries';
+	import { GET_CORSI } from '$lib/requestUtils/queries';
 
-	import createApolloClient from '$lib/helpers/createApolloClient';
+	import createApolloClient from '$lib/requestUtils/createApolloClient';
 	import { setClient } from 'svelte-apollo';
 
 	const client = createApolloClient(localStorage.getItem('token'));

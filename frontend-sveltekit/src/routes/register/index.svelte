@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { post } from '$lib/helpers/requestUtils';
+
+	import post from '$lib/requestUtils/post';
+	import { endpoints } from '$lib/requestUtils/endpoints';
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -18,7 +20,6 @@
 	} from '$lib/validationTests';
 
 	import { icons } from '$lib/icons';
-	import { variables } from '$lib/variables';
 
 	// Creating form
 
@@ -57,7 +58,7 @@
 	async function registerUser() {
 		try {
 			// IMPORTANT! Since post is an async function, we need to put await before
-			await post(fetch, variables.backendUrl + '/auth/local/register', {
+			await post(fetch, endpoints.register, {
 				username: $form.username,
 				email: $form.email,
 				password: $form.password

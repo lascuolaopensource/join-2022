@@ -1,7 +1,7 @@
 <script lang="ts">
 	import user from '$lib/stores/userStore';
 	import { goto } from '$app/navigation';
-	import { post } from '$lib/helpers/requestUtils';
+	import post from '$lib/requestUtils/post';
 	import { variables } from '$lib/variables';
 	import {
 		localStorageGet,
@@ -21,6 +21,7 @@
 	import * as yup from 'yup';
 
 	import { icons } from '$lib/icons';
+	import { endpoints } from '$lib/requestUtils/endpoints';
 
 	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -39,7 +40,7 @@
 			// We send the login data
 			// IMPORTANT! Since post is an async function, we need to put await before
 			// POST function throws an error if something goes wrong
-			const data = await post(fetch, variables.backendUrl + '/auth/local', {
+			const data = await post(fetch, endpoints.login, {
 				identifier: localStorageGet(variables.localStorage.email),
 				password: $form.password
 			});

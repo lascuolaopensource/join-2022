@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { query, setClient } from 'svelte-apollo';
-	import { GET_CORSO } from '$lib/queries';
-	import createApolloClient from '$lib/helpers/createApolloClient';
+	import { GET_CORSO } from '$lib/requestUtils/queries';
+	import createApolloClient from '$lib/requestUtils/createApolloClient';
 
 	import { page } from '$app/stores';
 	const ID: string = $page.params.corso;

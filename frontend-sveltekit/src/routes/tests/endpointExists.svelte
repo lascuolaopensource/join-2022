@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { variables } from '$lib/variables';
-	import { post } from '$lib/helpers/requestUtils';
+	import { endpoints } from '$lib/requestUtils/endpoints';
+	import post from '$lib/requestUtils/post';
 
 	async function test() {
 		try {
-			const res = await post(fetch, variables.backendUrl + `/userExists`, {
+			const res = await post(fetch, endpoints.checkUserExists + `/userExists`, {
 				username: 'bbtgn' // Should return true
 			});
 			console.log(res);

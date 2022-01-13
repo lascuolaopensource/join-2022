@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { localStorageSet } from '$lib/helpers/localStorageOps';
-	import { post } from '$lib/helpers/requestUtils';
+
 	import { variables } from '$lib/variables';
+	import post from '$lib/requestUtils/post';
+	import { endpoints } from '$lib/requestUtils/endpoints';
+	import { localStorageSet } from '$lib/helpers/localStorageOps';
 
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 	import Button from '$lib/components/button.svelte';
@@ -32,7 +34,7 @@
 
 	async function checkEmail() {
 		try {
-			const data = await post(fetch, variables.backendUrl + '/loginemail', {
+			const data = await post(fetch, endpoints.checkLoginEmail, {
 				email: $form.email
 			});
 			// We store email and username in localstorage

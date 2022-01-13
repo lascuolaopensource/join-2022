@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { post } from '$lib/helpers/requestUtils';
+	import post from '$lib/requestUtils/post';
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -14,7 +14,7 @@
 	import * as yup from 'yup';
 
 	import { icons } from '$lib/icons';
-	import { variables } from '$lib/variables';
+	import { endpoints } from '$lib/requestUtils/endpoints';
 
 	//
 
@@ -35,7 +35,7 @@
 	async function resetPassword() {
 		try {
 			// Sending the request to the server
-			await post(fetch, variables.backendUrl + '/auth/forgot-password', {
+			await post(fetch, endpoints.forgotPassword, {
 				email: $form.email
 			});
 			// If response is ok we send the user to some confirmation
