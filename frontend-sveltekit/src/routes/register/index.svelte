@@ -12,7 +12,10 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import { createUserExistsTest } from '$lib/validationTests';
+	import {
+		createUserExistsTest,
+		passwordValidator
+	} from '$lib/validationTests';
 
 	import { icons } from '$lib/icons';
 	import { variables } from '$lib/variables';
@@ -43,7 +46,7 @@
 					message: "L'email esiste già",
 					test: createUserExistsTest('email')
 				}),
-			password: yup.string().required().min(8).max(52)
+			password: passwordValidator
 		}),
 		onSubmit: () => {
 			registerUser();
