@@ -39,3 +39,8 @@ module.exports = {
     return { exists: user ? true : false };
   },
 };
+
+/**
+ * TO REVIEW:
+ * Va bene come endpoint?
+ */

@@ -1,3 +1,11 @@
+<!-- 
+	TO REVIEW
+	-
+	Questo componente verifica che sia stato effettuato già l'accesso
+	verificando la presenza del JWT token nel localstorage.
+	Se il token c'è ed è valido, vieni portato direttamente all'interno del sito.
+	Altrimenti resti fuori.
+ -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';

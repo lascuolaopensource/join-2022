@@ -37,3 +37,12 @@ type Endpoints = typeof baseEndpoints;
 /* --- */
 
 export const endpoints = <Endpoints>buildEndpoints(baseUrl, baseEndpoints);
+
+/**
+ * TO REVIEW
+ * -
+ * Ho pensato di raggruppare gli endpoint in un oggetto,
+ * e di costruire in automatico gli endpoint
+ * anzichè specificare ogni volta nelle query
+ * baseUrl + "/endpoint/name"
+ */

@@ -6,9 +6,12 @@
 
 module.exports = {
   /**
-   * This function checks if a user with some props exists
-   * The props have to match the user's fields,
-   * otherwise you get a 'Bad Request' error
+   * Questo endpoint, data l'email,
+   * ti ridà indietro l'username dell'utente.
+   * Serve per il login:
+   * all'utente prima viene chiesta la mail,
+   * quindi se la mail c'è il programma ti "saluta"
+   * usando il tuo username.
    */
   async index(ctx) {
     // Prendiamo il body della richiesta, che deve essere di tipo {email: "email"}
@@ -35,3 +38,8 @@ module.exports = {
     }
   },
 };
+
+/**
+ * TO REVIEW:
+ * Va bene come endpoint?
+ */

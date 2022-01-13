@@ -35,6 +35,7 @@ export default async function post(
 			// - The first way is strapi specific:
 			//   https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi
 			// - The second and third ones are more generic
+			// - Lastly we have a fallback
 			else {
 				const data = await res.json();
 				errorMessage =
@@ -58,3 +59,10 @@ export default async function post(
 		throw err;
 	}
 }
+
+/**
+ * TO REVIEW
+ * -
+ * La funzione è stata sistemata secondo le revisioni di @Puria
+ * Ma potrebbe esserci ancora qualcosa fuori posto.
+ */

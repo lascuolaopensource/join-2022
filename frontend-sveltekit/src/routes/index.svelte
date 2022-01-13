@@ -1,3 +1,19 @@
+<!-- 
+	TO REVIEW
+	-
+	Di base, quando si fa il login con Strapi si invia un oggetto {identifier, password}.
+	Se non c'è il match, viene restituito l'errore 'credenziali invalide'.
+	-
+	Credo che lato utente sia un po' scomodo, non capisce se l'email è sbagliata o la password.
+	Per questo ho pensato di fare come fa Google tipo:
+	si mette l'email prima, quindi ti porta ad una schermata successiva dove si mette la password.
+	-
+	L'endpoint '/loginemail' verifica quindi che l'utente esiste,
+	ridà indietro email e username che vengono salvati in localstorage
+	per essere utilizzati nella pagina successiva.
+	-
+	Ha senso come cosa? Presenta qualche problema?
+ -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
 

@@ -28,3 +28,7 @@ export function localStorageRemove(key: string) {
 		localStorage.removeItem(key);
 	}
 }
+
+/**
+ * TO REVIEW
+ */

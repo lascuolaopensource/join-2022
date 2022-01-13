@@ -1,3 +1,19 @@
+<!-- 
+	TO REVIEW
+	-
+	Prima di tutto, si prende dal localstorage la mail utente
+	che è stata precedentemente salvata (insieme all'username)
+	-
+	Quindi, si invia la richiesta per fare il login.
+	-
+	Se positiva, viene restituito:
+	- il Token JWT, che viene salvato nel localstorage
+	- L'oggetto Utente, che viene salvato in uno store
+	  (Operazione consigliata da questa guida
+	  https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi
+	  al punto 'Authentication and authorization')
+	- 
+ -->
 <script lang="ts">
 	import user from '$lib/stores/userStore';
 	import { goto } from '$app/navigation';
