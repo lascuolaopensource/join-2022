@@ -1,9 +1,4 @@
-export function createAuthorizationHeader(token: string): string {
-	return 'Bearer ' + token;
-}
-
-// Robbe da sistemare
-export async function post(
+export default async function post(
 	fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
 	url: RequestInfo,
 	body: Record<string, any> | string,
