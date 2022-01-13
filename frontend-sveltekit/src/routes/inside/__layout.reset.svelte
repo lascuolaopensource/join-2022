@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation';
 
 	import NavbarMain from '$lib/components/navbarMain.svelte';
-import { variables } from '$lib/variables';
+	import { variables } from '$lib/variables';
 
 	// Si serve usare per "nascondere" lo slot fino a quando il caricamento non è completo
 	let loading = true;
