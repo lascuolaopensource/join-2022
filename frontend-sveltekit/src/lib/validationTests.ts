@@ -1,5 +1,8 @@
 import { post } from '$lib/helpers/requestUtils';
 import { variables } from './variables';
+import * as yup from 'yup';
+
+//
 
 export function createUserExistsTest(param: 'email' | 'username') {
 	return async (value, testContext) => {
@@ -11,7 +14,7 @@ export function createUserExistsTest(param: 'email' | 'username') {
 			// Sending post request
 			const res: { exists: boolean } = await post(
 				fetch,
-				variables.backendUrl + '/exists',
+				variables.backendUrl + '/userexists',
 				body
 			);
 
@@ -23,3 +26,7 @@ export function createUserExistsTest(param: 'email' | 'username') {
 		}
 	};
 }
+
+//
+
+export const passwordValidator = yup.string().required().min(8).max(52);

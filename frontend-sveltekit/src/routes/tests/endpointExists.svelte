@@ -4,8 +4,8 @@
 
 	async function test() {
 		try {
-			const res = await post(fetch, variables.backendUrl + `/exists`, {
-				username: 'bbtgnn' // TRUE
+			const res = await post(fetch, variables.backendUrl + `/userExists`, {
+				username: 'bbtgn' // Should return true
 			});
 			console.log(res);
 		} catch (err) {

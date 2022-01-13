@@ -32,13 +32,13 @@
 
 	async function checkEmail() {
 		try {
-			const data = await post(fetch, variables.backendUrl + '/checkEmail', {
+			const data = await post(fetch, variables.backendUrl + '/loginemail', {
 				email: $form.email
 			});
-			// - we store email and username in localstorage
+			// We store email and username in localstorage
 			localStorageSet(variables.localStorage.email, data.email);
 			localStorageSet(variables.localStorage.username, data.username);
-			// - redirect the user to the password
+			// And redirect the user to the password
 			goto('/login/password');
 		} catch (err) {
 			if (err.message == '404') {
