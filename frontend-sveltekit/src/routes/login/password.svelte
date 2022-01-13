@@ -54,7 +54,11 @@
 			// - redirect the user inside
 			goto('/inside');
 		} catch (err) {
-			errorMsg = err.message;
+			if (err.message == 'Invalid identifier or password') {
+				errorMsg = 'Password errata';
+			} else {
+				errorMsg = err.message;
+			}
 		}
 	}
 
