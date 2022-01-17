@@ -10,6 +10,7 @@
 	import { endpoints } from '$lib/requestUtils/endpoints';
 
 	import NavbarMain from '$lib/components/navbarMain.svelte';
+	import Loading from '$lib/components/loading.svelte';
 
 	//
 
@@ -22,7 +23,6 @@
 		if (!localStorageGet('token')) {
 			loading = false;
 			goto('/');
-			// return { props: { user: null } }; // ← a che serve sta roba?
 		}
 
 		// Fetch the user from strapi
@@ -48,13 +48,10 @@
 </script>
 
 {#if loading}
-	<p>loading...</p>
-{:else}
+	<Loading />
+{:else if $userStore}
 	<NavbarMain />
-	<!-- Non veramente sicuro di questo ↓, ma dovrebbe andare -->
-	{#if $userStore}
-		<slot />
-	{:else}
-		<p>Maybe something's wrong?</p>
-	{/if}
+	<slot />
+{:else}
+	<p>Maybe something's wrong?</p>
 {/if}
