@@ -1,6 +1,6 @@
 <!-- src/lib/Navbar.svelte -->
 <script lang="ts">
-	// Need this to check if user is logged
+	// Need this to get user name
 	import userStore from '$lib/stores/userStore';
 
 	// Components
@@ -12,19 +12,13 @@
 	<!-- Main link -->
 	<NavbarItem href="/inside">Join</NavbarItem>
 	<!-- Right-side links -->
-	{#if !$userStore}
-		<div>
-			<NavbarItem href="/register">Register</NavbarItem>
-		</div>
-	{:else}
-		<div>
-			<NavbarItem href="/inside/corsi">Corsi</NavbarItem>
-		</div>
-		<div>
-			<NavbarItem href="/inside/profile">{$userStore.username}</NavbarItem>
-			<LogoutButton>↖ Logout</LogoutButton>
-		</div>
-	{/if}
+	<div>
+		<NavbarItem href="/inside/corsi">Corsi</NavbarItem>
+	</div>
+	<div>
+		<NavbarItem href="/inside/profile">{$userStore.username}</NavbarItem>
+		<LogoutButton>↖ Logout</LogoutButton>
+	</div>
 </nav>
 
 <style>
