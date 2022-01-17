@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_time_meetings",
+  "info": {
+    "displayName": "Meeting",
+    "icon": "haykal",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "date": {
+      "type": "date"
+    },
+    "timeSlots": {
+      "type": "component",
+      "repeatable": true,
+      "component": "time.time-slot"
+    }
+  }
+}

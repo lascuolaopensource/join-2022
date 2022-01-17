@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_time_time_slots",
+  "info": {
+    "displayName": "Time slot",
+    "icon": "ad"
+  },
+  "options": {},
+  "attributes": {
+    "startTime": {
+      "type": "time"
+    },
+    "endTime": {
+      "type": "time"
+    }
+  }
+}
