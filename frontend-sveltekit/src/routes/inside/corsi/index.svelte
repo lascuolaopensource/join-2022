@@ -19,9 +19,10 @@
 	Error!
 {:else if $corsi.data}
 	<div class="links">
-		{#each $corsi.data.corsos as corso}
+		corsi qui
+		<!-- {#each $corsi.data.corsos as corso}
 			<a href="/inside/corsi/{corso.id}">{corso.titolo}</a>
-		{/each}
+		{/each} -->
 	</div>
 {/if}
 
