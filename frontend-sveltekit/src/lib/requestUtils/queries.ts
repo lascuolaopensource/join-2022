@@ -7,6 +7,7 @@ export const GET_CORSI = gql`
 				attributes {
 					title
 					enrollmentDeadline
+					slug
 					meetings {
 						date
 					}

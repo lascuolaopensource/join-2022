@@ -33,7 +33,7 @@
 		<CardCorso
 			title={corso.attributes.title}
 			deadline={corso.attributes.enrollmentDeadline}
-			slug="/inside"
+			href="/inside/corsi/{corso.attributes.slug}"
 		/>
 	{/each}
 {:catch error}

@@ -1,10 +1,10 @@
 <script lang="ts">
 	export let title: string;
 	export let deadline: string;
-	export let slug: string;
+	export let href: string;
 </script>
 
-<a href="./{slug}">
+<a {href}>
 	<h3>
 		{title}
 	</h3>
