@@ -4,7 +4,7 @@
 
 	import { variables } from '$lib/variables';
 	import { endpoints } from '$lib/requestUtils/endpoints';
-	import { localStorageGet } from '$lib/helpers/localStorageOps';
+	import { localStorageGet } from '$lib/utils/localStorageOps';
 	import { createAuthorizationHeader } from '$lib/requestUtils/authorizationHeader';
 
 	import Loading from '$lib/components/loading.svelte';
