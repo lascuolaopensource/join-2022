@@ -1,7 +1,7 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { mutation, setClient } from 'svelte-apollo';
 	import { POST_ISCRIZIONE } from '$lib/requestUtils/queries';
-	import createApolloClient from '$lib/requestUtils/createApolloClient';
+	import createApolloClient from '$lib/requestUtils/createGQLClient';
 
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -31,4 +31,4 @@
 <form on:submit|preventDefault={iscriviti}>
 	<textarea bind:value={lettera_motivazionale} />
 	<button type="submit">Iscriviti!</button>
-</form>
+</form> -->

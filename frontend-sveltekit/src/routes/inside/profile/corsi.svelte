@@ -1,5 +1,5 @@
-<script lang="ts">
-	import createApolloClient from '$lib/requestUtils/createApolloClient';
+<!-- <script lang="ts">
+	import createApolloClient from '$lib/requestUtils/createGQLClient';
 	import { setClient, query } from 'svelte-apollo';
 	import { GET_ISCRIZIONI } from '$lib/requestUtils/queries';
 
@@ -22,4 +22,4 @@ le tue iscrizioni ai corsi:
 			<li>{iscrizione.corso.titolo} {iscrizione.lettera_motivazionale}</li>
 		{/each}
 	</ul>
-{/if}
+{/if} -->
