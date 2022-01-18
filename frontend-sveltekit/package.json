@@ -29,11 +29,7 @@
   },
   "type": "module",
   "dependencies": {
-    "apollo-client": "^2.6.10",
-    "graphql": "^15.6.0",
-    "svelte-apollo": "^0.4.0",
     "svelte-forms-lib": "^2.0.0",
-    "uid": "^2.0.0",
     "yup": "^0.32.11"
   }
 }
