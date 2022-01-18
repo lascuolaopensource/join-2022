@@ -9,8 +9,7 @@ const baseEndpoints = {
 	forgotPassword: 'auth/forgot-password',
 	resetPassword: 'auth/reset-password',
 	checkLoginEmail: 'loginemail',
-	checkUserExists: 'userexists',
-	graphql: 'graphql'
+	checkUserExists: 'userexists'
 };
 
 /* --- */
