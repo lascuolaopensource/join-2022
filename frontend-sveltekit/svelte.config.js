@@ -8,7 +8,14 @@ const config = {
 
 	kit: {
 		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte'
+		target: '#svelte',
+
+		// This fix allows some imports
+		vite: {
+			optimizeDeps: {
+				include: ['graphql-request']
+			}
+		}
 	}
 };
 
