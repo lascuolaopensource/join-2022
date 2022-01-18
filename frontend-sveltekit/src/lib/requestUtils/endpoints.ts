@@ -2,6 +2,7 @@
 export const baseUrl = <string>import.meta.env.VITE_BACKEND_URL;
 
 // La lista di tutti gli endpoints
+// Note: GraphQL endpoint is not here cause does not require /api before
 const baseEndpoints = {
 	me: 'users/me',
 	login: 'auth/local',
@@ -23,7 +24,7 @@ function buildEndpoints(
 	const endpoints: Record<string, string> = {};
 	// For each endpoint, we add 'baseUrl'
 	Object.keys(baseEndpoints).forEach((key) => {
-		endpoints[key] = baseUrl + '/' + baseEndpoints[key];
+		endpoints[key] = baseUrl + '/api/' + baseEndpoints[key];
 	});
 	//
 	return endpoints;

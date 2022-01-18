@@ -1,8 +1,9 @@
 import { GraphQLClient } from 'graphql-request';
 import { createAuthorizationHeader } from './authorizationHeader';
+import { baseUrl } from './endpoints';
 
 export function createGQLClientAuth(token: string): GraphQLClient {
-	return new GraphQLClient('http://localhost:1337/graphql', {
+	return new GraphQLClient(baseUrl + '/graphql', {
 		headers: {
 			Authorization: createAuthorizationHeader(token)
 		}
