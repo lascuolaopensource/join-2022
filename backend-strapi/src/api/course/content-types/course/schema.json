@@ -78,6 +78,10 @@
       "relation": "manyToMany",
       "target": "api::area.area",
       "inversedBy": "courses"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
     }
   }
 }
