@@ -1,34 +1,38 @@
 <script lang="ts">
-	import { query } from 'svelte-apollo';
+	import { createGQLClientAuth } from '$lib/requestUtils/createGQLClient';
+	import { localStorageGet } from '$lib/utils/localStorageOps';
 	import { GET_CORSI } from '$lib/requestUtils/queries';
 
-	import createApolloClient from '$lib/requestUtils/createApolloClient';
-	import { setClient } from 'svelte-apollo';
+	const client = createGQLClientAuth(localStorageGet('token'));
 
-	const client = createApolloClient(localStorage.getItem('token'));
-	setClient(client);
+	async function loadCorsi() {
+		try {
+			const data = await client.request(GET_CORSI);
+			return data;
+		} catch (error) {
+			throw new Error(error);
+		}
+	}
 
-	let corsi = query(GET_CORSI);
+	const promise = loadCorsi();
+	// setClient(client);
+
+	// let corsi = query(GET_CORSI);
 </script>
 
 <h1>Corsi</h1>
 
-{#if $corsi.loading}
-	loading...
-{:else if $corsi.error}
-	Error!
-{:else if $corsi.data}
-	<div class="links">
-		corsi qui
-		<!-- {#each $corsi.data.corsos as corso}
-			<a href="/inside/corsi/{corso.id}">{corso.titolo}</a>
-		{/each} -->
-	</div>
-{/if}
+{#await promise}
+	loading
+{:then corsi}
+	<pre>{JSON.stringify(corsi, null, 2)}</pre>
+{:catch error}
+	{error}
+{/await}
 
-<style>
+<!-- <style>
 	.links {
 		display: flex;
 		flex-flow: column nowrap;
 	}
-</style>
+</style> -->
