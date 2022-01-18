@@ -51,7 +51,16 @@
 	<Loading />
 {:else if $userStore}
 	<NavbarMain />
-	<slot />
+	<div class="container">
+		<slot />
+	</div>
 {:else}
 	<p>Maybe something's wrong?</p>
 {/if}
+
+<style>
+	.container {
+		padding: 20px;
+		overflow-x: scroll;
+	}
+</style>

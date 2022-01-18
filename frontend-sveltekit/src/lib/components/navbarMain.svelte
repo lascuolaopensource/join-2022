@@ -8,7 +8,7 @@
 	import LogoutButton from './logoutButton.svelte';
 </script>
 
-<nav class="">
+<nav>
 	<!-- Main link -->
 	<NavbarItem href="/inside">Join</NavbarItem>
 	<!-- Right-side links -->
@@ -34,5 +34,7 @@
 		flex-flow: row nowrap;
 		justify-content: space-between;
 		align-items: center;
+		position: sticky;
+		top: 0;
 	}
 </style>
