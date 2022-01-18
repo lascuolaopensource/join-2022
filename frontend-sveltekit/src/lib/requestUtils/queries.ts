@@ -6,6 +6,10 @@ export const GET_CORSI = gql`
 			data {
 				attributes {
 					title
+					enrollmentDeadline
+					meetings {
+						date
+					}
 				}
 			}
 		}
