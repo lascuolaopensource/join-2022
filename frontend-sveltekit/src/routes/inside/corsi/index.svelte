@@ -1,14 +1,18 @@
-<script lang="ts">
+<script>
 	import { createGQLClientAuth } from '$lib/requestUtils/createGQLClient';
 	import { localStorageGet } from '$lib/utils/localStorageOps';
 	import { GET_CORSI } from '$lib/requestUtils/queries';
+
+	import CardCorso from '$lib/components/cardCorso.svelte';
+
+	//
 
 	const client = createGQLClientAuth(localStorageGet('token'));
 
 	async function loadCorsi() {
 		try {
 			const data = await client.request(GET_CORSI);
-			return data;
+			return data.courses.data;
 		} catch (error) {
 			throw new Error(error);
 		}
@@ -24,8 +28,14 @@
 
 {#await promise}
 	loading
-{:then corsi}
-	<pre>{JSON.stringify(corsi, null, 2)}</pre>
+{:then data}
+	{#each data as corso}
+		<CardCorso
+			title={corso.attributes.title}
+			deadline={corso.attributes.enrollmentDeadline}
+			href="/inside/corsi/{corso.attributes.slug}"
+		/>
+	{/each}
 {:catch error}
 	{error}
 {/await}

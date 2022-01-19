@@ -102,12 +102,6 @@
 	line-height: var(--text-normal-lh);
 }
 
-html,
-body,
-#svelte {
-	height: 100%;
-}
-
 p,
 h1,
 h2,

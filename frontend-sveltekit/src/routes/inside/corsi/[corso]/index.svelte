@@ -1,3 +1,4 @@
+ciao
 <!-- <script lang="ts">
 	import { query, setClient } from 'svelte-apollo';
 	import { GET_CORSO } from '$lib/requestUtils/queries';
