@@ -18,9 +18,15 @@ export const GET_CORSI = gql`
 `;
 
 export const GET_CORSO = gql`
-	query get_corso($id: ID!) {
-		corso(id: $id) {
-			titolo
+	query getCoursesBySlug($slug: String!) {
+		courses(filters: { slug: { eq: $slug } }) {
+			data {
+				id
+				attributes {
+					title
+					description
+				}
+			}
 		}
 	}
 `;
