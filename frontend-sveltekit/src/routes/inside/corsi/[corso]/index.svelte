@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
 
 	import { createGQLClientAuth } from '$lib/requestUtils/createGQLClient';
+	import { getSdk } from '$lib/requestUtils/sdk';
 	import { localStorageGet } from '$lib/utils/localStorageOps';
-	import { GET_CORSO } from '$lib/requestUtils/queries';
 
 	import SvelteMarkdown from 'svelte-markdown';
 	import Loading from '$lib/components/loading.svelte';
@@ -11,19 +11,18 @@
 	//
 
 	const client = createGQLClientAuth(localStorageGet('token'));
-	const variables = { slug: $page.params.corso };
+	const sdk = getSdk(client);
+	const slug = $page.params.corso;
 
 	async function getCorso() {
-		try {
-			const data = await client.request(GET_CORSO, variables);
-			return data.courses.data[0];
-		} catch (err) {
-			throw new Error(err);
-		}
+		const data = await sdk.getCourseBySlug({ slug });
+		return data.courses.data[0];
 	}
 
 	const promise = getCorso();
 </script>
+
+<!--  -->
 
 {#await promise}
 	<Loading />
@@ -38,6 +37,7 @@
 	{error}
 {/await}
 
+<!--  -->
 <style>
 	.cover {
 		display: block;
