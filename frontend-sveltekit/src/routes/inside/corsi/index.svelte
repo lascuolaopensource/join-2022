@@ -24,25 +24,29 @@
 	// let corsi = query(GET_CORSI);
 </script>
 
-<h1>Corsi</h1>
+<div class="container">
+	<h1 class="title">Corsi</h1>
+	{#await promise}
+		loading
+	{:then data}
+		{#each data as corso}
+			<CardCorso
+				title={corso.attributes.title}
+				deadline={corso.attributes.enrollmentDeadline}
+				href="/inside/corsi/{corso.attributes.slug}"
+			/>
+		{/each}
+	{:catch error}
+		{error}
+	{/await}
+</div>
 
-{#await promise}
-	loading
-{:then data}
-	{#each data as corso}
-		<CardCorso
-			title={corso.attributes.title}
-			deadline={corso.attributes.enrollmentDeadline}
-			href="/inside/corsi/{corso.attributes.slug}"
-		/>
-	{/each}
-{:catch error}
-	{error}
-{/await}
-
-<!-- <style>
-	.links {
-		display: flex;
-		flex-flow: column nowrap;
+<style>
+	.container {
+		padding: 20px;
 	}
-</style> -->
+
+	.title {
+		margin-bottom: 20px;
+	}
+</style>
