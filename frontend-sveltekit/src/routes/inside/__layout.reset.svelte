@@ -60,7 +60,6 @@
 
 <style>
 	.container {
-		padding: 20px;
 		overflow-x: scroll;
 	}
 </style>
