@@ -1,10 +1,18 @@
-import { gql } from '@apollo/client/core';
+import { gql } from 'graphql-request';
 
 export const GET_CORSI = gql`
 	query get_corsi {
-		corsos {
-			id
-			titolo
+		courses {
+			data {
+				attributes {
+					title
+					enrollmentDeadline
+					slug
+					meetings {
+						date
+					}
+				}
+			}
 		}
 	}
 `;
@@ -18,10 +26,18 @@ export const GET_CORSO = gql`
 `;
 
 export const POST_ISCRIZIONE = gql`
-	mutation post_iscrizione($userID: ID!, $corsoID: ID!, $lettera_motivazionale: String!) {
+	mutation post_iscrizione(
+		$userID: ID!
+		$corsoID: ID!
+		$lettera_motivazionale: String!
+	) {
 		createIscrizione(
 			input: {
-				data: { user: $userID, corso: $corsoID, lettera_motivazionale: $lettera_motivazionale }
+				data: {
+					user: $userID
+					corso: $corsoID
+					lettera_motivazionale: $lettera_motivazionale
+				}
 			}
 		) {
 			iscrizione {

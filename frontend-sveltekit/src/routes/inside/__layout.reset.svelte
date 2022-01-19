@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation';
 
 	import { createAuthorizationHeader } from '$lib/requestUtils/authorizationHeader';
-	import { localStorageGet } from '$lib/helpers/localStorageOps';
+	import { localStorageGet } from '$lib/utils/localStorageOps';
 	import { endpoints } from '$lib/requestUtils/endpoints';
 
 	import NavbarMain from '$lib/components/navbarMain.svelte';
@@ -51,7 +51,16 @@
 	<Loading />
 {:else if $userStore}
 	<NavbarMain />
-	<slot />
+	<div class="container">
+		<slot />
+	</div>
 {:else}
 	<p>Maybe something's wrong?</p>
 {/if}
+
+<style>
+	.container {
+		padding: 20px;
+		overflow-x: scroll;
+	}
+</style>

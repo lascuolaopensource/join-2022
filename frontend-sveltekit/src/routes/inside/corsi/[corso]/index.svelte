@@ -1,7 +1,8 @@
-<script lang="ts">
+ciao
+<!-- <script lang="ts">
 	import { query, setClient } from 'svelte-apollo';
 	import { GET_CORSO } from '$lib/requestUtils/queries';
-	import createApolloClient from '$lib/requestUtils/createApolloClient';
+	import createApolloClient from '$lib/requestUtils/createGQLClient';
 
 	import { page } from '$app/stores';
 	const ID: string = $page.params.corso;
@@ -17,4 +18,4 @@
 {:else}
 	{$corso.data.corso.titolo}
 	<a href="/inside/corsi/{ID}/iscrizione">Iscriviti!</a>
-{/if}
+{/if} -->

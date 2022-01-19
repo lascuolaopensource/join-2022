@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "description": "A Strapi application",
   "scripts": {
-    "develop": "source $HOME/.nvm/nvm.sh; nvm use; strapi develop",
-    "start": "source $HOME/.nvm/nvm.sh; nvm use; strapi start",
-    "build": "source $HOME/.nvm/nvm.sh; nvm use; strapi build",
-    "strapi": "source $HOME/.nvm/nvm.sh; nvm use; strapi"
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi"
   },
   "devDependencies": {},
   "dependencies": {
@@ -15,14 +15,13 @@
     "@strapi/plugin-i18n": "4.0.4",
     "@strapi/plugin-users-permissions": "4.0.4",
     "@strapi/strapi": "4.0.4",
-    "sqlite3": "5.0.2",
-    "strapi-provider-email-sendinblue": "^4.0.0"
+    "sqlite3": "5.0.2"
   },
   "author": {
     "name": "A Strapi developer"
   },
   "strapi": {
-    "uuid": "f73dddca-ad35-42e8-8ff0-3897d641d169"
+    "uuid": "b9ab16a1-5825-49f4-9921-a79771811eb0"
   },
   "engines": {
     "node": ">=12.x.x <=16.x.x",

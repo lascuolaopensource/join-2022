@@ -4,7 +4,7 @@
 	import { variables } from '$lib/variables';
 	import post from '$lib/requestUtils/post';
 	import { endpoints } from '$lib/requestUtils/endpoints';
-	import { localStorageSet } from '$lib/helpers/localStorageOps';
+	import { localStorageSet } from '$lib/utils/localStorageOps';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';

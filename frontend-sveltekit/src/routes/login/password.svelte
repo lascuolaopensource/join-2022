@@ -9,7 +9,7 @@
 		localStorageGet,
 		localStorageRemove,
 		localStorageSet
-	} from '$lib/helpers/localStorageOps';
+	} from '$lib/utils/localStorageOps';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
