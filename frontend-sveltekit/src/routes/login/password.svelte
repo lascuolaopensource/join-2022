@@ -4,12 +4,8 @@
 
 	import post from '$lib/requestUtils/post';
 	import { endpoints } from '$lib/requestUtils/endpoints';
-	import { variables } from '$lib/variables';
-	import {
-		localStorageGet,
-		localStorageRemove,
-		localStorageSet
-	} from '$lib/utils/localStorageOps';
+	import { lsKeys } from '$lib/localStorageUtils/keys';
+	import { lsGet, lsRemove, lsSet } from '$lib/localStorageUtils/ops';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -45,17 +41,17 @@
 		try {
 			// We send the login data
 			const data = await post(fetch, endpoints.login, {
-				identifier: localStorageGet(variables.localStorage.email),
+				identifier: lsGet(lsKeys.email),
 				password: $form.password
 			});
 			// Then, if successful:
 			// - we store the token in localstorage
-			localStorageSet('token', data.jwt);
+			lsSet('token', data.jwt);
 			// - we update the user store
 			$user = data.user;
 			// - we empty the temporary localstorage variables
-			localStorageRemove(variables.localStorage.email);
-			localStorageRemove(variables.localStorage.username);
+			lsRemove(lsKeys.email);
+			lsRemove(lsKeys.username);
 			// - redirect the user inside
 			goto('/inside');
 		} catch (err) {
@@ -79,7 +75,7 @@
 <OutsideBacklink href="/" label="Login" />
 
 <OutsideTitle>
-	Ciao {localStorageGet(variables.localStorage.username)}!
+	Ciao {lsGet(lsKeys.username)}!
 </OutsideTitle>
 
 <Form on:submit={handleSubmit}>

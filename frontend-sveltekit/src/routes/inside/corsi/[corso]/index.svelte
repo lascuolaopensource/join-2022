@@ -3,20 +3,20 @@
 
 	import { createGQLClientAuth } from '$lib/requestUtils/createGQLClient';
 	import { getSdk } from '$lib/requestUtils/sdk';
-	import { localStorageGet } from '$lib/utils/localStorageOps';
+	import { lsGet } from '$lib/localStorageUtils';
 
 	import SvelteMarkdown from 'svelte-markdown';
 	import Loading from '$lib/components/loading.svelte';
 
 	//
 
-	const client = createGQLClientAuth(localStorageGet('token'));
+	const client = createGQLClientAuth(lsGet('token'));
 	const sdk = getSdk(client);
 	const slug = $page.params.corso;
 
 	async function getCorso() {
 		const data = await sdk.getCourseBySlug({ slug });
-		return data.courses.data[0];
+		return data.courses.data[0].attributes;
 	}
 
 	const promise = getCorso();
@@ -28,10 +28,10 @@
 	<Loading />
 {:then corso}
 	<div class="cover">
-		<h1>{corso.attributes.title}</h1>
+		<h1>{corso.title}</h1>
 	</div>
 	<div class="markdown-body">
-		<SvelteMarkdown source={corso.attributes.description} />
+		<SvelteMarkdown source={corso.description} />
 	</div>
 	<!-- Iscriviti -->
 	<div class="iscriviti-container">

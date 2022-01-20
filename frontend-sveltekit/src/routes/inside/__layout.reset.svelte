@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation';
 
 	import { createAuthorizationHeader } from '$lib/requestUtils/authorizationHeader';
-	import { localStorageGet } from '$lib/utils/localStorageOps';
+	import { lsGet } from '$lib/localStorageUtils/ops';
 	import { endpoints } from '$lib/requestUtils/endpoints';
 
 	import NavbarMain from '$lib/components/navbarMain.svelte';
@@ -20,7 +20,7 @@
 	// Quando il componente viene chiamato:
 	onMount(async () => {
 		// Check if 'token' exists in localStorage
-		if (!localStorageGet('token')) {
+		if (!lsGet('token')) {
 			loading = false;
 			goto('/');
 		}
@@ -28,7 +28,7 @@
 		// Fetch the user from strapi
 		const res = await fetch(endpoints.me, {
 			headers: {
-				Authorization: createAuthorizationHeader(localStorageGet('token'))
+				Authorization: createAuthorizationHeader(lsGet('token'))
 			}
 		});
 

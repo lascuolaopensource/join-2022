@@ -2,9 +2,9 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	import { variables } from '$lib/variables';
+	import { lsKeys } from '$lib/localStorageUtils/keys';
+	import { lsGet } from '$lib/localStorageUtils/ops';
 	import { endpoints } from '$lib/requestUtils/endpoints';
-	import { localStorageGet } from '$lib/utils/localStorageOps';
 	import { createAuthorizationHeader } from '$lib/requestUtils/authorizationHeader';
 
 	import Loading from '$lib/components/loading.svelte';
@@ -18,7 +18,7 @@
 	// Ovvero, quando ogni pagina viene caricata
 	onMount(async () => {
 		// Prendiamo il token in localstorage
-		const token = localStorageGet(variables.localStorage.token);
+		const token = lsGet(lsKeys.token);
 
 		// Se il token 'è vuoto', significa automaticamente che non c'è nessun user
 		if (!token) {
