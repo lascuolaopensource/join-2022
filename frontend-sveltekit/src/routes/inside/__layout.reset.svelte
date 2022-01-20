@@ -1,13 +1,13 @@
+<!-- Here we check if the user is logged otherwise we send it away -->
 <script lang="ts">
-	// Here we check if the user is logged otherwise we send it away
-	import userStore from '$lib/stores/userStore';
-	import type { User } from '$lib/requestUtils/types';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	import { createAuthorizationHeader } from '$lib/requestUtils/authorizationHeader';
-	import { localStorageGet } from '$lib/utils/localStorageOps';
-	import { endpoints } from '$lib/requestUtils/endpoints';
+	import { headersAuth, endpoints } from '$lib/requestUtils';
+	import { lsGetToken } from '$lib/localStorageUtils';
+	import userStore from '$lib/stores/userStore';
+
+	//
 
 	import NavbarMain from '$lib/components/navbarMain.svelte';
 	import Loading from '$lib/components/loading.svelte';
@@ -19,47 +19,32 @@
 
 	// Quando il componente viene chiamato:
 	onMount(async () => {
-		// Check if 'token' exists in localStorage
-		if (!localStorageGet('token')) {
-			loading = false;
+		// Check if JWT token exists in localStorage, otherwise we send away
+		if (!lsGetToken()) {
 			goto('/');
 		}
 
-		// Fetch the user from strapi
+		// Fetch the user from strapi using the token (it's inside headersAuth())
 		const res = await fetch(endpoints.me, {
-			headers: {
-				Authorization: createAuthorizationHeader(localStorageGet('token'))
-			}
+			headers: headersAuth()
 		});
 
-		// Redirect if we get unauthorized error
-		if (res.status == 401) {
+		// Redirect if response is not ok
+		if (!res.ok) {
 			goto('/');
 		}
-		// Else we set the user in store
+		// Else we set the user in store and loading ends
 		else {
-			const user: User = await res.json();
+			const user = await res.json();
+			$userStore = user;
 			loading = false;
-			if (res.ok) {
-				$userStore = user;
-			}
 		}
 	});
 </script>
 
 {#if loading}
 	<Loading />
-{:else if $userStore}
-	<NavbarMain />
-	<div class="container">
-		<slot />
-	</div>
 {:else}
-	<p>Maybe something's wrong?</p>
+	<NavbarMain />
+	<slot />
 {/if}
-
-<style>
-	.container {
-		overflow-x: scroll;
-	}
-</style>

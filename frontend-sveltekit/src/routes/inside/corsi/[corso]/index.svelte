@@ -1,43 +1,45 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
+	import { GQLCLient } from '$lib/requestUtils';
 
-	import { createGQLClientAuth } from '$lib/requestUtils/createGQLClient';
-	import { localStorageGet } from '$lib/utils/localStorageOps';
-	import { GET_CORSO } from '$lib/requestUtils/queries';
+	//
 
 	import SvelteMarkdown from 'svelte-markdown';
 	import Loading from '$lib/components/loading.svelte';
 
 	//
 
-	const client = createGQLClientAuth(localStorageGet('token'));
-	const variables = { slug: $page.params.corso };
+	const client = GQLCLient();
+	const slug = $page.params.corso;
 
 	async function getCorso() {
-		try {
-			const data = await client.request(GET_CORSO, variables);
-			return data.courses.data[0];
-		} catch (err) {
-			throw new Error(err);
-		}
+		const data = await client.getCourseBySlug({ slug });
+		return data.courses.data[0].attributes;
 	}
 
 	const promise = getCorso();
 </script>
 
+<!--  -->
+
 {#await promise}
 	<Loading />
 {:then corso}
 	<div class="cover">
-		<h1>{corso.attributes.title}</h1>
+		<h1>{corso.title}</h1>
 	</div>
 	<div class="markdown-body">
-		<SvelteMarkdown source={corso.attributes.description} />
+		<SvelteMarkdown source={corso.description} />
+	</div>
+	<!-- Iscriviti -->
+	<div class="iscriviti-container">
+		<a class="iscriviti" href="{$page.url.pathname}/iscrizione">Iscriviti →</a>
 	</div>
 {:catch error}
 	{error}
 {/await}
 
+<!--  -->
 <style>
 	.cover {
 		display: block;
@@ -57,5 +59,24 @@
 
 	.markdown-body {
 		padding: 20px;
+	}
+
+	.iscriviti-container {
+		position: sticky;
+		bottom: 0;
+		width: 100%;
+		padding: 20px;
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		justify-content: flex-end;
+	}
+
+	.iscriviti {
+		padding: 20px;
+		background-color: var(--btn-bg-primary);
+		text-decoration: none;
+		color: var(--content-primary-l);
+		box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
 	}
 </style>

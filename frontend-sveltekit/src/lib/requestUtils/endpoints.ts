@@ -15,7 +15,7 @@ const baseEndpoints = {
 
 /* --- */
 
-// Questa funzione aggiunge 'baseUrl' a tutti gli endpoint
+// Questa funzione aggiunge 'baseUrl' e 'api' a tutti gli endpoint
 function buildEndpoints(
 	baseUrl: string,
 	baseEndpoints: Record<string, string>

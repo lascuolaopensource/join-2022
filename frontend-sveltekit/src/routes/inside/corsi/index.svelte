@@ -1,33 +1,25 @@
-<script>
-	import { createGQLClientAuth } from '$lib/requestUtils/createGQLClient';
-	import { localStorageGet } from '$lib/utils/localStorageOps';
-	import { GET_CORSI } from '$lib/requestUtils/queries';
+<script lang="ts">
+	import { GQLCLient } from '$lib/requestUtils';
 
 	import CardCorso from '$lib/components/cardCorso.svelte';
+	import Loading from '$lib/components/loading.svelte';
 
 	//
 
-	const client = createGQLClientAuth(localStorageGet('token'));
+	const client = GQLCLient();
 
 	async function loadCorsi() {
-		try {
-			const data = await client.request(GET_CORSI);
-			return data.courses.data;
-		} catch (error) {
-			throw new Error(error);
-		}
+		const data = await client.getCourses();
+		return data.courses.data;
 	}
 
 	const promise = loadCorsi();
-	// setClient(client);
-
-	// let corsi = query(GET_CORSI);
 </script>
 
 <div class="container">
 	<h1 class="title">Corsi</h1>
 	{#await promise}
-		loading
+		<Loading />
 	{:then data}
 		{#each data as corso}
 			<CardCorso

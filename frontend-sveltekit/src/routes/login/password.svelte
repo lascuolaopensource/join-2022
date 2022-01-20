@@ -1,18 +1,13 @@
 <script lang="ts">
-	import user from '$lib/stores/userStore';
 	import { goto } from '$app/navigation';
 
-	import post from '$lib/requestUtils/post';
-	import { endpoints } from '$lib/requestUtils/endpoints';
-	import { variables } from '$lib/variables';
-	import {
-		localStorageGet,
-		localStorageRemove,
-		localStorageSet
-	} from '$lib/utils/localStorageOps';
+	import { endpoints, post } from '$lib/requestUtils';
+	import { lsGet, lsRemove, lsSet, lsKeys } from '$lib/localStorageUtils';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
+
+	//
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -25,6 +20,8 @@
 	import { icons } from '$lib/icons';
 
 	//
+
+	let errorMsg = '';
 
 	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -39,23 +36,19 @@
 		}
 	});
 
-	//
-
 	async function login() {
 		try {
 			// We send the login data
 			const data = await post(fetch, endpoints.login, {
-				identifier: localStorageGet(variables.localStorage.email),
+				identifier: lsGet(lsKeys.email),
 				password: $form.password
 			});
 			// Then, if successful:
 			// - we store the token in localstorage
-			localStorageSet('token', data.jwt);
-			// - we update the user store
-			$user = data.user;
+			lsSet('token', data.jwt);
 			// - we empty the temporary localstorage variables
-			localStorageRemove(variables.localStorage.email);
-			localStorageRemove(variables.localStorage.username);
+			lsRemove(lsKeys.email);
+			lsRemove(lsKeys.username);
 			// - redirect the user inside
 			goto('/inside');
 		} catch (err) {
@@ -67,11 +60,6 @@
 			}
 		}
 	}
-
-	//
-
-	// This is one final error message for the result of the request
-	let errorMsg = '';
 </script>
 
 <!-- --- Markup --- -->
@@ -79,7 +67,7 @@
 <OutsideBacklink href="/" label="Login" />
 
 <OutsideTitle>
-	Ciao {localStorageGet(variables.localStorage.username)}!
+	Ciao {lsGet(lsKeys.username)}!
 </OutsideTitle>
 
 <Form on:submit={handleSubmit}>

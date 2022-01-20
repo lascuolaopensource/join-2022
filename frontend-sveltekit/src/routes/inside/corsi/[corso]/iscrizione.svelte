@@ -1,6 +1,6 @@
+ao
 <!-- <script lang="ts">
 	import { mutation, setClient } from 'svelte-apollo';
-	import { POST_ISCRIZIONE } from '$lib/requestUtils/queries';
 	import createApolloClient from '$lib/requestUtils/createGQLClient';
 
 	import { goto } from '$app/navigation';
