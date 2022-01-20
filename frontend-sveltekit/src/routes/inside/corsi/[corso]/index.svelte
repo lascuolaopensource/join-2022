@@ -7,7 +7,6 @@
 
 	import SvelteMarkdown from 'svelte-markdown';
 	import Loading from '$lib/components/loading.svelte';
-	import Button from '$lib/components/button.svelte';
 
 	//
 
@@ -36,7 +35,7 @@
 	</div>
 	<!-- Iscriviti -->
 	<div class="iscriviti-container">
-		<Button>yeye</Button>
+		<a class="iscriviti" href="{$page.url.pathname}/iscrizione">Iscriviti →</a>
 	</div>
 {:catch error}
 	{error}
@@ -67,5 +66,19 @@
 	.iscriviti-container {
 		position: sticky;
 		bottom: 0;
+		width: 100%;
+		padding: 20px;
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		justify-content: flex-end;
+	}
+
+	.iscriviti {
+		padding: 20px;
+		background-color: var(--btn-bg-primary);
+		text-decoration: none;
+		color: var(--content-primary-l);
+		box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
 	}
 </style>
