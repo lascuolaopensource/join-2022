@@ -1,19 +1,13 @@
 import { browser } from '$app/env';
+import { lsKeys } from './keys';
 
-export function lsGet(key: string, isObject = false): any {
+/**
+ * Generic functions
+ */
+
+export function lsGet(key: string): string {
 	if (browser) {
-		const item = localStorage.getItem(key);
-		if (item) {
-			if (isObject) {
-				return JSON.parse(item);
-			} else {
-				return item;
-			}
-		}
-	}
-	//
-	else {
-		return null;
+		return localStorage.getItem(key);
 	}
 }
 
@@ -27,4 +21,12 @@ export function lsRemove(key: string) {
 	if (browser) {
 		localStorage.removeItem(key);
 	}
+}
+
+/**
+ * Specific functions
+ */
+
+export function lsGetToken(): string {
+	return lsGet(lsKeys.token);
 }
