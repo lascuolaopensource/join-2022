@@ -1282,9 +1282,9 @@ export type UsersPermissionsUserRelationResponseCollection = {
 	data: Array<UsersPermissionsUserEntity>;
 };
 
-export type GetCorsiQueryVariables = Exact<{ [key: string]: never }>;
+export type GetCoursesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetCorsiQuery = {
+export type GetCoursesQuery = {
 	__typename?: 'Query';
 	courses?:
 		| {
@@ -1343,8 +1343,8 @@ export type GetCourseBySlugQuery = {
 		| undefined;
 };
 
-export const GetCorsiDocument = gql`
-	query getCorsi {
+export const GetCoursesDocument = gql`
+	query getCourses {
 		courses {
 			data {
 				attributes {
@@ -1385,17 +1385,17 @@ export function getSdk(
 	withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
 	return {
-		getCorsi(
-			variables?: GetCorsiQueryVariables,
+		getCourses(
+			variables?: GetCoursesQueryVariables,
 			requestHeaders?: Dom.RequestInit['headers']
-		): Promise<GetCorsiQuery> {
+		): Promise<GetCoursesQuery> {
 			return withWrapper(
 				(wrappedRequestHeaders) =>
-					client.request<GetCorsiQuery>(GetCorsiDocument, variables, {
+					client.request<GetCoursesQuery>(GetCoursesDocument, variables, {
 						...requestHeaders,
 						...wrappedRequestHeaders
 					}),
-				'getCorsi'
+				'getCourses'
 			);
 		},
 		getCourseBySlug(
