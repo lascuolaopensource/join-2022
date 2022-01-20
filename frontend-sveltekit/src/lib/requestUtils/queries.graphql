@@ -1,4 +1,4 @@
-query getCorsi {
+query getCourses {
 	courses {
 		data {
 			attributes {

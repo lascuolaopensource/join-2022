@@ -1,11 +1,21 @@
-export function createAuthorizationHeader(token: string): string {
-	return 'Bearer ' + token;
-}
+import { lsGetToken } from '../localStorageUtils';
 
-export function createAuthValue(token: string): string {
+/**
+ * Generic functions
+ */
+
+export function createAuthValue(token: string) {
 	return 'Bearer ' + token;
 }
 
 export function createAuthHeader(token: string) {
 	return { Authorization: createAuthValue(token) };
+}
+
+/**
+ * Specific - utility - functions
+ */
+
+export function headersAuth() {
+	return createAuthHeader(lsGetToken());
 }

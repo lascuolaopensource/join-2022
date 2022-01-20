@@ -1,22 +1,28 @@
 import { GraphQLClient } from 'graphql-request';
 import { getSdk } from '$lib/requestUtils/sdk';
-import { createAuthorizationHeader } from './authorizationHeader';
+import { headersAuth } from './authorizationHeader';
 import { baseUrl } from './endpoints';
 
-export function createGQLClientAuth(token: string): GraphQLClient {
-	return new GraphQLClient(baseUrl + '/graphql', {
-		headers: {
-			Authorization: createAuthorizationHeader(token)
-		}
-	});
-}
+const graphqlEndpoint = 'graphql';
+
+/**
+ * Generic functions
+ */
 
 export function createGQLClient(headers: HeadersInit = {}): GraphQLClient {
-	return new GraphQLClient(baseUrl + '/graphql', { headers });
+	return new GraphQLClient(baseUrl + '/' + graphqlEndpoint, {
+		headers
+	});
 }
 
 export function createGQLSdk(headers: HeadersInit = {}) {
 	return getSdk(createGQLClient(headers));
 }
 
-// Note: GraphQL endpoint does not require /api before
+/**
+ * Specific - utility - functions
+ */
+
+export function GQLCLient() {
+	return createGQLSdk(headersAuth());
+}

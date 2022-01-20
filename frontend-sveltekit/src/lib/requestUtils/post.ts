@@ -1,4 +1,4 @@
-export default async function post(
+export async function post(
 	fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
 	url: RequestInfo,
 	body: Record<string, any> | string,
@@ -31,6 +31,7 @@ export default async function post(
 			if (res.status == 404) {
 				errorMessage = res.status;
 			}
+
 			// Otherwise we have to extract the message from the object:
 			// - The first way is strapi specific:
 			//   https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi

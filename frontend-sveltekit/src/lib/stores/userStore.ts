@@ -1,8 +1,6 @@
-// src/lib/user.ts
-
 import { writable } from 'svelte/store';
-import type { User } from '../requestUtils/types';
+import type { UsersPermissionsMe } from '../requestUtils/sdk';
 
-const user = writable<User | null>(null);
+const user = writable<UsersPermissionsMe | null>(null);
 
 export default user;

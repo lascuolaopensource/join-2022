@@ -1,22 +1,20 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { GQLCLient } from '$lib/requestUtils';
 
-	import { createGQLClientAuth } from '$lib/requestUtils/createGQLClient';
-	import { getSdk } from '$lib/requestUtils/sdk';
-	import { localStorageGet } from '$lib/utils/localStorageOps';
+	//
 
 	import SvelteMarkdown from 'svelte-markdown';
 	import Loading from '$lib/components/loading.svelte';
 
 	//
 
-	const client = createGQLClientAuth(localStorageGet('token'));
-	const sdk = getSdk(client);
+	const client = GQLCLient();
 	const slug = $page.params.corso;
 
 	async function getCorso() {
-		const data = await sdk.getCourseBySlug({ slug });
-		return data.courses.data[0];
+		const data = await client.getCourseBySlug({ slug });
+		return data.courses.data[0].attributes;
 	}
 
 	const promise = getCorso();
@@ -28,10 +26,10 @@
 	<Loading />
 {:then corso}
 	<div class="cover">
-		<h1>{corso.attributes.title}</h1>
+		<h1>{corso.title}</h1>
 	</div>
 	<div class="markdown-body">
-		<SvelteMarkdown source={corso.attributes.description} />
+		<SvelteMarkdown source={corso.description} />
 	</div>
 	<!-- Iscriviti -->
 	<div class="iscriviti-container">

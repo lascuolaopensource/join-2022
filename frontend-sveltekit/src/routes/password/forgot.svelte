@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import post from '$lib/requestUtils/post';
+	import { post } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
+
+	//
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -18,6 +20,8 @@
 
 	//
 
+	let errorMsg = '';
+
 	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			email: ''
@@ -31,8 +35,6 @@
 		}
 	});
 
-	//
-
 	async function resetPassword() {
 		try {
 			// Sending the request to the server
@@ -45,10 +47,6 @@
 			errorMsg = err.message;
 		}
 	}
-
-	//
-
-	let errorMsg = '';
 </script>
 
 <!-- --- Markup --- -->
