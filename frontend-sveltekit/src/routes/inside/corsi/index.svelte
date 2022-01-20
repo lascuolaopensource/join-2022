@@ -1,18 +1,15 @@
 <script lang="ts">
-	import { createGQLClientAuth } from '$lib/requestUtils/createGQLClient';
-	import { getSdk } from '$lib/requestUtils/sdk';
-	import { lsGet } from '$lib/localStorageUtils/ops';
+	import { GQLCLient } from '$lib/requestUtils';
 
 	import CardCorso from '$lib/components/cardCorso.svelte';
 	import Loading from '$lib/components/loading.svelte';
 
 	//
 
-	const client = createGQLClientAuth(lsGet('token'));
-	const sdk = getSdk(client);
+	const client = GQLCLient();
 
 	async function loadCorsi() {
-		const data = await sdk.getCorsi();
+		const data = await client.getCourses();
 		return data.courses.data;
 	}
 

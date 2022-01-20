@@ -2,10 +2,8 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	import { lsKeys } from '$lib/localStorageUtils/keys';
-	import { lsGet } from '$lib/localStorageUtils/ops';
-	import { endpoints } from '$lib/requestUtils/endpoints';
-	import { createAuthorizationHeader } from '$lib/requestUtils/authorizationHeader';
+	import { lsGetToken } from '$lib/localStorageUtils';
+	import { endpoints, headersAuth } from '$lib/requestUtils';
 
 	import Loading from '$lib/components/loading.svelte';
 
@@ -15,26 +13,23 @@
 	let loading = true;
 
 	// ON MOUNT (Quando il componente viene chiamato)
-	// Ovvero, quando ogni pagina viene caricata
 	onMount(async () => {
 		// Prendiamo il token in localstorage
-		const token = lsGet(lsKeys.token);
+		const token = lsGetToken();
 
-		// Se il token 'è vuoto', significa automaticamente che non c'è nessun user
+		// Se il token non c'è, significa automaticamente che non c'è nessun user
 		if (!token) {
 			// Quindi termina il caricamento e si resta nella stessa pagina
 			loading = false;
 		}
 		// Se invece il token c'è, c'è un utente
 		else {
-			// Si chiede quindi a strapi se l'utente è registrato
+			// Si chiede quindi a strapi se l'utente esiste effettivamente
 			const res = await fetch(endpoints.me, {
-				headers: {
-					Authorization: createAuthorizationHeader(token)
-				}
+				headers: headersAuth()
 			});
 
-			// Se l'utente è loggato, si va direttamente all'interno
+			// Se esiste, si va all'interno
 			if (res.ok) {
 				goto('/inside');
 			}

@@ -1,21 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { GQLCLient } from '$lib/requestUtils';
 
-	import { createGQLClientAuth } from '$lib/requestUtils/createGQLClient';
-	import { getSdk } from '$lib/requestUtils/sdk';
-	import { lsGet } from '$lib/localStorageUtils';
+	//
 
 	import SvelteMarkdown from 'svelte-markdown';
 	import Loading from '$lib/components/loading.svelte';
 
 	//
 
-	const client = createGQLClientAuth(lsGet('token'));
-	const sdk = getSdk(client);
+	const client = GQLCLient();
 	const slug = $page.params.corso;
 
 	async function getCorso() {
-		const data = await sdk.getCourseBySlug({ slug });
+		const data = await client.getCourseBySlug({ slug });
 		return data.courses.data[0].attributes;
 	}
 

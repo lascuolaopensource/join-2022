@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 
-	import { lsKeys } from '$lib/localStorageUtils/keys';
-	import post from '$lib/requestUtils/post';
-	import { endpoints } from '$lib/requestUtils/endpoints';
-	import { lsSet } from '$lib/localStorageUtils/ops';
+	import { lsKeys, lsSet } from '$lib/localStorageUtils';
+	import { post, endpoints } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
+
+	//
 
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 	import Button from '$lib/components/button.svelte';
@@ -19,6 +19,9 @@
 	import { icons } from '$lib/icons';
 
 	//
+
+	// Error message for the result of the form
+	let errorMsg = '';
 
 	// Creating form
 	const { form, errors, handleChange, handleSubmit } = createForm({
@@ -54,11 +57,6 @@
 			}
 		}
 	}
-
-	//
-
-	// Error message for the result of the request
-	let errorMsg = '';
 </script>
 
 <!-- --- Markup --- -->

@@ -2,12 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
-	import post from '$lib/requestUtils/post';
-	import { endpoints } from '$lib/requestUtils/endpoints';
+	import { post, endpoints } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import { passwordValidator } from '$lib/validationTests';
+
+	//
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -20,6 +21,8 @@
 	import { icons } from '$lib/icons';
 
 	//
+
+	let errorMsg = '';
 
 	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -39,8 +42,6 @@
 		}
 	});
 
-	//
-
 	async function resetPassword() {
 		try {
 			await post(fetch, endpoints.resetPassword, {
@@ -54,10 +55,6 @@
 			errorMsg = err.message;
 		}
 	}
-
-	//
-
-	let errorMsg = '';
 </script>
 
 <!-- --- Markup --- -->

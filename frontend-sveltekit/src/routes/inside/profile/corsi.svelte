@@ -1,7 +1,6 @@
 <!-- <script lang="ts">
 	import createApolloClient from '$lib/requestUtils/createGQLClient';
 	import { setClient, query } from 'svelte-apollo';
-	import { GET_ISCRIZIONI } from '$lib/requestUtils/queries';
 
 	// Setting the GraphQL client
 	const client = createApolloClient(localStorage.getItem('token'));

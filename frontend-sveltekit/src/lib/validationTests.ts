@@ -1,5 +1,4 @@
-import post from '$lib/requestUtils/post';
-import { endpoints } from './requestUtils/endpoints';
+import { post, endpoints } from '$lib/requestUtils';
 import * as yup from 'yup';
 
 //

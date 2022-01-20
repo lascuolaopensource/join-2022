@@ -1,14 +1,13 @@
 <script lang="ts">
-	import user from '$lib/stores/userStore';
 	import { goto } from '$app/navigation';
 
-	import post from '$lib/requestUtils/post';
-	import { endpoints } from '$lib/requestUtils/endpoints';
-	import { lsKeys } from '$lib/localStorageUtils/keys';
-	import { lsGet, lsRemove, lsSet } from '$lib/localStorageUtils/ops';
+	import { endpoints, post } from '$lib/requestUtils';
+	import { lsGet, lsRemove, lsSet, lsKeys } from '$lib/localStorageUtils';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
+
+	//
 
 	import OutsideBacklink from '$lib/components/outsideBacklink.svelte';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
@@ -21,6 +20,8 @@
 	import { icons } from '$lib/icons';
 
 	//
+
+	let errorMsg = '';
 
 	const { form, errors, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -35,8 +36,6 @@
 		}
 	});
 
-	//
-
 	async function login() {
 		try {
 			// We send the login data
@@ -47,8 +46,6 @@
 			// Then, if successful:
 			// - we store the token in localstorage
 			lsSet('token', data.jwt);
-			// - we update the user store
-			$user = data.user;
 			// - we empty the temporary localstorage variables
 			lsRemove(lsKeys.email);
 			lsRemove(lsKeys.username);
@@ -63,11 +60,6 @@
 			}
 		}
 	}
-
-	//
-
-	// This is one final error message for the result of the request
-	let errorMsg = '';
 </script>
 
 <!-- --- Markup --- -->
