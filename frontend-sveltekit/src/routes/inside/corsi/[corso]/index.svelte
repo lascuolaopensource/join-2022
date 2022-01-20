@@ -7,6 +7,7 @@
 
 	import SvelteMarkdown from 'svelte-markdown';
 	import Loading from '$lib/components/loading.svelte';
+	import Button from '$lib/components/button.svelte';
 
 	//
 
@@ -33,6 +34,10 @@
 	<div class="markdown-body">
 		<SvelteMarkdown source={corso.attributes.description} />
 	</div>
+	<!-- Iscriviti -->
+	<div class="iscriviti-container">
+		<Button>yeye</Button>
+	</div>
 {:catch error}
 	{error}
 {/await}
@@ -57,5 +62,10 @@
 
 	.markdown-body {
 		padding: 20px;
+	}
+
+	.iscriviti-container {
+		position: sticky;
+		bottom: 0;
 	}
 </style>
