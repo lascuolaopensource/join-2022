@@ -8,7 +8,7 @@ import InputText from './inputText.svelte';
 import Loading from './loading.svelte';
 import LogoutButton from './logoutButton.svelte';
 import NavbarItem from './navbarItem.svelte';
-import OutsideBacklink from './outsideBacklink.svelte';
+import NavbarOutside from './navbarOutside.svelte';
 import OutsideTitle from './outsideTitle.svelte';
 import ProfileNavbar from './profileNavbar.svelte';
 import Spinner from './spinner.svelte';
@@ -24,7 +24,7 @@ export {
 	Loading,
 	LogoutButton,
 	NavbarItem,
-	OutsideBacklink,
+	NavbarOutside,
 	OutsideTitle,
 	ProfileNavbar,
 	Spinner

@@ -59,6 +59,7 @@
 	--input-border-focus: solid blue;
 	--input-border-width: 0;
 	--input-border-width-focus: 2px;
+	--input-padding: 12px;
 
 	/* Link */
 	--a-text: blue;
@@ -134,7 +135,7 @@ input {
 	border-radius: var(--border-radius);
 	color: var(--input-text);
 	background-color: var(--input-bg);
-	padding: var(--item-padding);
+	padding: var(--input-padding);
 }
 
 input:hover {
