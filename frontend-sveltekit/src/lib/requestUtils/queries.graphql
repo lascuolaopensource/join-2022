@@ -19,48 +19,33 @@ query getCourseBySlug($slug: String!) {
 			id
 			attributes {
 				title
-				description
+				slug
+				# The following are added to
+				# accelerate the enrollment form creation
+				enrollmentDeadline
+				motivationalLetterNeeded
+				cvNeeded
+				portfolioNeeded
 			}
 		}
 	}
 }
 
-# export const POST_ISCRIZIONE = gql`
-# 	mutation post_iscrizione(
-# 		$userID: ID!
-# 		$corsoID: ID!
-# 		$lettera_motivazionale: String!
-# 	) {
-# 		createIscrizione(
-# 			input: {
-# 				data: {
-# 					user: $userID
-# 					corso: $corsoID
-# 					lettera_motivazionale: $lettera_motivazionale
-# 				}
-# 			}
-# 		) {
-# 			iscrizione {
-# 				user {
-# 					username
-# 				}
-# 				corso {
-# 					titolo
-# 				}
-# 			}
-# 		}
-# 	}
-# `;
-
-# export const GET_ISCRIZIONI = gql`
-# 	query {
-# 		me {
-# 			iscrizioni {
-# 				corso {
-# 					titolo
-# 				}
-# 				lettera_motivazionale
-# 			}
-# 		}
-# 	}
-# `;
+query getCoursePage($id: ID!) {
+	course(id: $id) {
+		data {
+			attributes {
+				title
+				description
+				slug
+				meetings {
+					date
+					timeSlots {
+						startTime
+						endTime
+					}
+				}
+			}
+		}
+	}
+}
