@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { endpoints } from '$lib/requestUtils/endpoints';
-	import post from '$lib/requestUtils/post';
+	import { post, endpoints } from '$lib/requestUtils';
 
 	//
 
 	async function test() {
 		try {
-			const res = await post(fetch, endpoints.checkUserExists + `/userExists`, {
-				username: 'bbtgn' // Should return true
+			const res = await post(fetch, endpoints.checkUserExists, {
+				username: 'bbtgn' // Should return false
 			});
 			console.log(res);
 		} catch (err) {
