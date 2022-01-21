@@ -2,11 +2,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	// We need this to remove the user from the store
-	import userStore from '$lib/stores/userStore';
+	import { user } from '$lib/stores';
 
 	async function logout() {
 		localStorage.removeItem('token');
-		$userStore = null;
+		$user = null;
 		goto('/');
 	}
 </script>

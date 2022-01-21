@@ -1,5 +1,5 @@
 <script lang="ts">
-	import userStore from '$lib/stores/userStore';
+	import { user } from '$lib/stores';
 </script>
 
-<h1>Ciao {$userStore.username}! {$userStore.id}</h1>
+<h1>Ciao {$user.username}! {$user.id}</h1>

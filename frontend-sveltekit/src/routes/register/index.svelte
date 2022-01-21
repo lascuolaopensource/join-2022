@@ -5,10 +5,7 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import {
-		createUserExistsTest,
-		passwordValidator
-	} from '$lib/validationTests';
+	import { createUserExistsTest, passwordValidator } from '$lib/validators';
 
 	//
 

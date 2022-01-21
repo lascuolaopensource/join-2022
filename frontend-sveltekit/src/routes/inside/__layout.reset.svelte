@@ -5,7 +5,7 @@
 
 	import { headersAuth, endpoints } from '$lib/requestUtils';
 	import { lsGetToken } from '$lib/localStorageUtils';
-	import userStore from '$lib/stores/userStore';
+	import { user } from '$lib/stores';
 
 	//
 
@@ -35,8 +35,8 @@
 		}
 		// Else we set the user in store and loading ends
 		else {
-			const user = await res.json();
-			$userStore = user;
+			const data = await res.json();
+			$user = data;
 			loading = false;
 		}
 	});

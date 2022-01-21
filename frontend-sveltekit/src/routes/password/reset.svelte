@@ -6,7 +6,7 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import { passwordValidator } from '$lib/validationTests';
+	import { passwordValidator } from '$lib/validators';
 
 	//
 
