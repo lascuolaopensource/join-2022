@@ -193,3 +193,24 @@ small {
 .iconPrimary-d {
 	fill: var(--content-primary-d);
 }
+
+/*  */
+
+.container {
+	padding: var(--s-25);
+}
+
+.space-between > * + * {
+	margin-top: var(--s-2);
+}
+
+/*  */
+
+.backlink {
+	display: inline-block;
+	margin-bottom: var(--s-25);
+}
+
+.backlink::before {
+	content: '\2190\0020';
+}

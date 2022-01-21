@@ -21,23 +21,21 @@
 	{#await promise}
 		<Loading />
 	{:then data}
-		{#each data as corso}
-			<CardCorso
-				title={corso.attributes.title}
-				deadline={corso.attributes.enrollmentDeadline}
-				href="/inside/corsi/{corso.attributes.slug}"
-			/>
-		{/each}
+		<div class="space-between">
+			{#each data as corso}
+				<CardCorso
+					title={corso.attributes.title}
+					deadline={corso.attributes.enrollmentDeadline}
+					href="/inside/corsi/{corso.attributes.slug}"
+				/>
+			{/each}
+		</div>
 	{:catch error}
 		{error}
 	{/await}
 </div>
 
 <style>
-	.container {
-		padding: 20px;
-	}
-
 	.title {
 		margin-bottom: 20px;
 	}
