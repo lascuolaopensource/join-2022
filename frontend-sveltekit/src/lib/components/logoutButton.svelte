@@ -1,12 +1,15 @@
 <!-- src/lib/Navbar.svelte -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	// We need this to remove the user from the store
 	import { user } from '$lib/stores';
+	import { lsRemove, lsKeys } from '$lib/localStorageUtils';
 
 	async function logout() {
-		localStorage.removeItem('token');
-		$user = null;
+		// We remove the token from localstorage
+		lsRemove(lsKeys.token);
+		// // And the user from the store
+		// $user = null;
+		// Then we redirect
 		goto('/');
 	}
 </script>
