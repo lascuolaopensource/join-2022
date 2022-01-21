@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { course } from '$lib/stores';
 	import { GQLCLient } from '$lib/requestUtils';
 
 	//
@@ -10,14 +11,13 @@
 	//
 
 	const client = GQLCLient();
-	const slug = $page.params.corso;
 
-	async function getCorso() {
-		const data = await client.getCourseBySlug({ slug });
-		return data.courses.data[0].attributes;
+	async function getCoursePage() {
+		const data = await client.getCoursePage({ id: $course.id });
+		return data.course.data.attributes;
 	}
 
-	const promise = getCorso();
+	const promise = getCoursePage();
 </script>
 
 <!--  -->
@@ -28,9 +28,11 @@
 	<div class="cover">
 		<h1>{corso.title}</h1>
 	</div>
-	<div class="markdown-body">
-		<SvelteMarkdown source={corso.description} />
-	</div>
+	{#if corso.description}
+		<div class="markdown-body">
+			<SvelteMarkdown source={corso.description} />
+		</div>
+	{/if}
 	<!-- Iscriviti -->
 	<div class="iscriviti-container">
 		<a class="iscriviti" href="{$page.url.pathname}/iscrizione">Iscriviti →</a>
