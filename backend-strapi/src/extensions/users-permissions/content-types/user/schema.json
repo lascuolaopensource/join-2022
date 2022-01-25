@@ -74,6 +74,9 @@
       "relation": "oneToMany",
       "target": "api::enrollment.enrollment",
       "mappedBy": "user"
+    },
+    "phone": {
+      "type": "string"
     }
   }
 }

@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "billing_data_companies",
+  "info": {
+    "singularName": "billing-data-company",
+    "pluralName": "billing-data-companies",
+    "displayName": "Billing Data – Company"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "businessName": {
+      "type": "string",
+      "required": true
+    },
+    "vatNumber": {
+      "type": "string",
+      "required": true,
+      "regex": "/^[0-9]{11}$/",
+      "unique": true
+    },
+    "address": {
+      "type": "component",
+      "repeatable": false,
+      "component": "location.address",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "sdiCode": {
+      "type": "string",
+      "required": false,
+      "unique": true
+    }
+  }
+}
