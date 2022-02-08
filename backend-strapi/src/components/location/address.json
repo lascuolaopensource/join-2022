@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_location_addresses",
+  "info": {
+    "displayName": "Address",
+    "icon": "draw-polygon"
+  },
+  "options": {},
+  "attributes": {
+    "cap": {
+      "type": "string",
+      "required": true
+    },
+    "town": {
+      "type": "string",
+      "required": true
+    },
+    "province": {
+      "type": "string",
+      "required": true,
+      "maxLength": 2,
+      "minLength": 2,
+      "regex": "^[A-Z]{2}$",
+      "unique": false
+    },
+    "street": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import userStore from '$lib/stores/userStore';
+	import { user } from '$lib/stores';
 
-	let username = $userStore.username;
-	let email = $userStore.email;
+	let username = $user.username;
+	let email = $user.email;
 
 	let readonly = true;
 
@@ -19,8 +19,8 @@
 
 	// function undo() {
 	// 	readonly = true;
-	// 	username = $userStore.username;
-	// 	email = $userStore.email;
+	// 	username = $user.username;
+	// 	email = $user.email;
 	// }
 </script>
 

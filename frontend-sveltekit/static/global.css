@@ -59,6 +59,7 @@
 	--input-border-focus: solid blue;
 	--input-border-width: 0;
 	--input-border-width-focus: 2px;
+	--input-padding: 12px;
 
 	/* Link */
 	--a-text: blue;
@@ -134,7 +135,7 @@ input {
 	border-radius: var(--border-radius);
 	color: var(--input-text);
 	background-color: var(--input-bg);
-	padding: var(--item-padding);
+	padding: var(--input-padding);
 }
 
 input:hover {
@@ -192,4 +193,25 @@ small {
 
 .iconPrimary-d {
 	fill: var(--content-primary-d);
+}
+
+/*  */
+
+.container {
+	padding: var(--s-25);
+}
+
+.space-between > * + * {
+	margin-top: var(--s-2);
+}
+
+/*  */
+
+.backlink {
+	display: inline-block;
+	margin-bottom: var(--s-25);
+}
+
+.backlink::before {
+	content: '\2190\0020';
 }

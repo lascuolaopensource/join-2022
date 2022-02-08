@@ -1,24 +1,22 @@
 <script lang="ts">
 	import { post, endpoints } from '$lib/requestUtils';
 
-	//
-
 	async function test() {
-		try {
-			const res = await post(fetch, endpoints.checkUserExists, {
-				username: 'bbtgn' // Should return false
-			});
-			console.log(res);
-		} catch (err) {
-			console.log(err);
-		}
+		const res = await post(fetch, endpoints.checkUserExists, {
+			username: 'bbtgn' // Should return false
+		});
+		return res;
 	}
 
-	//
-
-	test();
+	const promise = test();
 </script>
 
-<!-- --- Markup --- -->
-
-ciao
+{#await promise}
+	loading...
+{:then res}
+	<pre>
+		{JSON.stringify(res, null, 4)}
+	</pre>
+{:catch err}
+	{err}
+{/await}

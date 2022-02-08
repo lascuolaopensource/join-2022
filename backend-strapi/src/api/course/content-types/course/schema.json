@@ -17,7 +17,8 @@
       "required": true
     },
     "description": {
-      "type": "richtext"
+      "type": "richtext",
+      "default": " "
     },
     "preconditionsNeeded": {
       "type": "boolean",
@@ -65,13 +66,16 @@
       "mappedBy": "course"
     },
     "cvNeeded": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "portfolioNeeded": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "motivationalLetterNeeded": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "areas": {
       "type": "relation",

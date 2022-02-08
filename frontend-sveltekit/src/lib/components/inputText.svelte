@@ -27,7 +27,7 @@
 
 <!-- Markup -->
 
-<div class="container">
+<div class="fieldcontainer">
 	<!-- Label -->
 	<div class="top">
 		{#if label != ''}
@@ -74,7 +74,7 @@
 
 <!-- Style -->
 <style>
-	.container,
+	.fieldcontainer,
 	.top,
 	.field,
 	input,
@@ -82,7 +82,7 @@
 		width: 100%;
 	}
 
-	.container {
+	.fieldcontainer {
 		display: flex;
 		flex-flow: column nowrap;
 		gap: var(--s-1);

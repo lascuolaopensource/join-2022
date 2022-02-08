@@ -1333,11 +1333,67 @@ export type GetCourseBySlugQuery = {
 						| {
 								__typename?: 'Course';
 								title: string;
-								description?: string | null | undefined;
+								slug?: string | null | undefined;
+								enrollmentDeadline?: string | null | undefined;
+								motivationalLetterNeeded?: boolean | null | undefined;
+								cvNeeded?: boolean | null | undefined;
+								portfolioNeeded?: boolean | null | undefined;
 						  }
 						| null
 						| undefined;
 				}>;
+		  }
+		| null
+		| undefined;
+};
+
+export type GetCoursePageQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
+
+export type GetCoursePageQuery = {
+	__typename?: 'Query';
+	course?:
+		| {
+				__typename?: 'CourseEntityResponse';
+				data?:
+					| {
+							__typename?: 'CourseEntity';
+							attributes?:
+								| {
+										__typename?: 'Course';
+										title: string;
+										description?: string | null | undefined;
+										slug?: string | null | undefined;
+										meetings?:
+											| Array<
+													| {
+															__typename?: 'ComponentTimeMeeting';
+															date?: string | null | undefined;
+															timeSlots?:
+																| Array<
+																		| {
+																				__typename?: 'ComponentTimeTimeSlot';
+																				startTime?: string | null | undefined;
+																				endTime?: string | null | undefined;
+																		  }
+																		| null
+																		| undefined
+																  >
+																| null
+																| undefined;
+													  }
+													| null
+													| undefined
+											  >
+											| null
+											| undefined;
+								  }
+								| null
+								| undefined;
+					  }
+					| null
+					| undefined;
 		  }
 		| null
 		| undefined;
@@ -1366,7 +1422,31 @@ export const GetCourseBySlugDocument = gql`
 				id
 				attributes {
 					title
+					slug
+					enrollmentDeadline
+					motivationalLetterNeeded
+					cvNeeded
+					portfolioNeeded
+				}
+			}
+		}
+	}
+`;
+export const GetCoursePageDocument = gql`
+	query getCoursePage($id: ID!) {
+		course(id: $id) {
+			data {
+				attributes {
+					title
 					description
+					slug
+					meetings {
+						date
+						timeSlots {
+							startTime
+							endTime
+						}
+					}
 				}
 			}
 		}
@@ -1410,6 +1490,19 @@ export function getSdk(
 						{ ...requestHeaders, ...wrappedRequestHeaders }
 					),
 				'getCourseBySlug'
+			);
+		},
+		getCoursePage(
+			variables: GetCoursePageQueryVariables,
+			requestHeaders?: Dom.RequestInit['headers']
+		): Promise<GetCoursePageQuery> {
+			return withWrapper(
+				(wrappedRequestHeaders) =>
+					client.request<GetCoursePageQuery>(GetCoursePageDocument, variables, {
+						...requestHeaders,
+						...wrappedRequestHeaders
+					}),
+				'getCoursePage'
 			);
 		}
 	};

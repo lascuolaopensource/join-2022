@@ -4,12 +4,8 @@ import { lsGetToken } from '../localStorageUtils';
  * Generic functions
  */
 
-export function createAuthValue(token: string) {
-	return 'Bearer ' + token;
-}
-
 export function createAuthHeader(token: string) {
-	return { Authorization: createAuthValue(token) };
+	return { Authorization: 'Bearer ' + token };
 }
 
 /**
@@ -17,5 +13,9 @@ export function createAuthHeader(token: string) {
  */
 
 export function headersAuth() {
-	return createAuthHeader(lsGetToken());
+	if (lsGetToken()) {
+		return createAuthHeader(lsGetToken());
+	} else {
+		return {};
+	}
 }
