@@ -21,35 +21,42 @@
 	 * In questo modo si conserva il suggerimento dei tipi
 	 */
 
-	const initialValues = { letter: '', portfolio: '', cv: '' };
-	const validationSchema = {
-		letter: yup.string().required(),
-		portfolio: urlValidator.required(),
-		cv: urlValidator.required()
+	const initialValues = {
+		name: '',
+		surname: '',
+		email: '',
+		letter: '',
+		portfolio: '',
+		cv: ''
 	};
+	// const validationSchema = {
+	// 	letter: yup.string().required(),
+	// 	portfolio: urlValidator.required(),
+	// 	cv: urlValidator.required()
+	// };
 
-	if (!$course.attributes.motivationalLetterNeeded) {
-		delete initialValues.letter;
-		delete validationSchema.letter;
-	}
+	// if (!$course.attributes.motivationalLetterNeeded) {
+	// 	delete initialValues.letter;
+	// 	delete validationSchema.letter;
+	// }
 
-	if (!$course.attributes.portfolioNeeded) {
-		delete initialValues.portfolio;
-		delete validationSchema.portfolio;
-	}
+	// if (!$course.attributes.portfolioNeeded) {
+	// 	delete initialValues.portfolio;
+	// 	delete validationSchema.portfolio;
+	// }
 
-	if (!$course.attributes.cvNeeded) {
-		delete initialValues.cv;
-		delete validationSchema.cv;
-	}
+	// if (!$course.attributes.cvNeeded) {
+	// 	delete initialValues.cv;
+	// 	delete validationSchema.cv;
+	// }
 
-	const { form, errors, handleChange, handleSubmit } = createForm({
-		initialValues,
-		validationSchema: yup.object().shape(validationSchema),
-		onSubmit: (values) => {
-			console.log(values);
-		}
-	});
+	// const { form, errors, handleChange, handleSubmit } = createForm({
+	// 	initialValues,
+	// 	validationSchema: yup.object().shape(validationSchema),
+	// 	onSubmit: (values) => {
+	// 		console.log(values);
+	// 	}
+	// });
 </script>
 
 <!--  -->
@@ -63,7 +70,7 @@
 
 <!--  -->
 
-<div class="container">
+<!-- <div class="container">
 	<h2>{$course.attributes.title}</h2>
 	<h1>Iscriviti!</h1>
 
@@ -97,11 +104,11 @@
 		{/if}
 		<Button type="submit">Iscriviti al corso!</Button>
 	</Form>
-</div>
+</div> -->
 
 <!--  -->
-<style>
+<!-- <style>
 	h1 {
 		margin-bottom: var(--s-3);
 	}
-</style>
+</style> -->
