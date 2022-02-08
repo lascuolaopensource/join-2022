@@ -15,10 +15,8 @@
 	// ON MOUNT (Quando il componente viene chiamato)
 	onMount(async () => {
 		// Prendiamo il token in localstorage
-		const token = lsGetToken();
-
 		// Se il token non c'è, significa automaticamente che non c'è nessun user
-		if (!token) {
+		if (!lsGetToken()) {
 			// Quindi termina il caricamento e si resta nella stessa pagina
 			loading = false;
 		}

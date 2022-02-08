@@ -9,12 +9,14 @@
 
 	//
 
-	import OutsideTitle from '$lib/components/outsideTitle.svelte';
-	import Button from '$lib/components/button.svelte';
-	import InputText from '$lib/components/inputText.svelte';
-	import FormGroup from '$lib/components/formGroup.svelte';
-	import Form from '$lib/components/form.svelte';
-	import FormError from '$lib/components/formError.svelte';
+	import {
+		OutsideTitle,
+		Button,
+		InputText,
+		FormGroup,
+		Form,
+		FormError
+	} from '$lib/components';
 
 	import { icons } from '$lib/icons';
 
