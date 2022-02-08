@@ -119,6 +119,15 @@ export type BooleanFilterInput = {
 	startsWith?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type ComponentLocationAddress = {
+	__typename?: 'ComponentLocationAddress';
+	cap: Scalars['String'];
+	id: Scalars['ID'];
+	province: Scalars['String'];
+	street: Scalars['String'];
+	town: Scalars['String'];
+};
+
 export type ComponentTimeMeeting = {
 	__typename?: 'ComponentTimeMeeting';
 	date?: Maybe<Scalars['Date']>;
@@ -346,10 +355,10 @@ export type Enrollment = {
 	createdAt?: Maybe<Scalars['DateTime']>;
 	cvUrl?: Maybe<Scalars['String']>;
 	motivationalLetter?: Maybe<Scalars['String']>;
+	owner?: Maybe<UsersPermissionsUserEntityResponse>;
 	portfolioUrl?: Maybe<Scalars['String']>;
 	state: Enum_Enrollment_State;
 	updatedAt?: Maybe<Scalars['DateTime']>;
-	user?: Maybe<UsersPermissionsUserEntityResponse>;
 };
 
 export type EnrollmentEntity = {
@@ -378,19 +387,19 @@ export type EnrollmentFiltersInput = {
 	motivationalLetter?: InputMaybe<StringFilterInput>;
 	not?: InputMaybe<EnrollmentFiltersInput>;
 	or?: InputMaybe<Array<InputMaybe<EnrollmentFiltersInput>>>;
+	owner?: InputMaybe<UsersPermissionsUserFiltersInput>;
 	portfolioUrl?: InputMaybe<StringFilterInput>;
 	state?: InputMaybe<StringFilterInput>;
 	updatedAt?: InputMaybe<DateTimeFilterInput>;
-	user?: InputMaybe<UsersPermissionsUserFiltersInput>;
 };
 
 export type EnrollmentInput = {
 	course?: InputMaybe<Scalars['ID']>;
 	cvUrl?: InputMaybe<Scalars['String']>;
 	motivationalLetter?: InputMaybe<Scalars['String']>;
+	owner?: InputMaybe<Scalars['ID']>;
 	portfolioUrl?: InputMaybe<Scalars['String']>;
 	state?: InputMaybe<Enum_Enrollment_State>;
-	user?: InputMaybe<Scalars['ID']>;
 };
 
 export type EnrollmentRelationResponseCollection = {
@@ -429,6 +438,7 @@ export type FloatFilterInput = {
 
 export type GenericMorph =
 	| Area
+	| ComponentLocationAddress
 	| ComponentTimeMeeting
 	| ComponentTimeTimeSlot
 	| Course
@@ -1286,117 +1296,51 @@ export type GetCoursesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCoursesQuery = {
 	__typename?: 'Query';
-	courses?:
-		| {
-				__typename?: 'CourseEntityResponseCollection';
-				data: Array<{
-					__typename?: 'CourseEntity';
-					attributes?:
-						| {
-								__typename?: 'Course';
-								title: string;
-								enrollmentDeadline?: string | null | undefined;
-								slug?: string | null | undefined;
-								meetings?:
-									| Array<
-											| {
-													__typename?: 'ComponentTimeMeeting';
-													date?: string | null | undefined;
-											  }
-											| null
-											| undefined
-									  >
-									| null
-									| undefined;
-						  }
-						| null
-						| undefined;
-				}>;
-		  }
-		| null
-		| undefined;
+	courses?: {
+		__typename?: 'CourseEntityResponseCollection';
+		data: Array<{
+			__typename?: 'CourseEntity';
+			attributes?: {
+				__typename?: 'Course';
+				title: string;
+				enrollmentDeadline?: string | null;
+				slug?: string | null;
+				meetings?: Array<{
+					__typename?: 'ComponentTimeMeeting';
+					date?: string | null;
+				} | null> | null;
+			} | null;
+		}>;
+	} | null;
 };
 
-export type GetCourseBySlugQueryVariables = Exact<{
+export type GetCoursePageBySlugQueryVariables = Exact<{
 	slug: Scalars['String'];
 }>;
 
-export type GetCourseBySlugQuery = {
+export type GetCoursePageBySlugQuery = {
 	__typename?: 'Query';
-	courses?:
-		| {
-				__typename?: 'CourseEntityResponseCollection';
-				data: Array<{
-					__typename?: 'CourseEntity';
-					id?: string | null | undefined;
-					attributes?:
-						| {
-								__typename?: 'Course';
-								title: string;
-								slug?: string | null | undefined;
-								enrollmentDeadline?: string | null | undefined;
-								motivationalLetterNeeded?: boolean | null | undefined;
-								cvNeeded?: boolean | null | undefined;
-								portfolioNeeded?: boolean | null | undefined;
-						  }
-						| null
-						| undefined;
-				}>;
-		  }
-		| null
-		| undefined;
-};
-
-export type GetCoursePageQueryVariables = Exact<{
-	id: Scalars['ID'];
-}>;
-
-export type GetCoursePageQuery = {
-	__typename?: 'Query';
-	course?:
-		| {
-				__typename?: 'CourseEntityResponse';
-				data?:
-					| {
-							__typename?: 'CourseEntity';
-							attributes?:
-								| {
-										__typename?: 'Course';
-										title: string;
-										description?: string | null | undefined;
-										slug?: string | null | undefined;
-										meetings?:
-											| Array<
-													| {
-															__typename?: 'ComponentTimeMeeting';
-															date?: string | null | undefined;
-															timeSlots?:
-																| Array<
-																		| {
-																				__typename?: 'ComponentTimeTimeSlot';
-																				startTime?: string | null | undefined;
-																				endTime?: string | null | undefined;
-																		  }
-																		| null
-																		| undefined
-																  >
-																| null
-																| undefined;
-													  }
-													| null
-													| undefined
-											  >
-											| null
-											| undefined;
-								  }
-								| null
-								| undefined;
-					  }
-					| null
-					| undefined;
-		  }
-		| null
-		| undefined;
+	courses?: {
+		__typename?: 'CourseEntityResponseCollection';
+		data: Array<{
+			__typename?: 'CourseEntity';
+			attributes?: {
+				__typename?: 'Course';
+				title: string;
+				description?: string | null;
+				slug?: string | null;
+				meetings?: Array<{
+					__typename?: 'ComponentTimeMeeting';
+					date?: string | null;
+					timeSlots?: Array<{
+						__typename?: 'ComponentTimeTimeSlot';
+						startTime?: string | null;
+						endTime?: string | null;
+					} | null> | null;
+				} | null> | null;
+			} | null;
+		}>;
+	} | null;
 };
 
 export const GetCoursesDocument = gql`
@@ -1415,26 +1359,9 @@ export const GetCoursesDocument = gql`
 		}
 	}
 `;
-export const GetCourseBySlugDocument = gql`
-	query getCourseBySlug($slug: String!) {
+export const GetCoursePageBySlugDocument = gql`
+	query getCoursePageBySlug($slug: String!) {
 		courses(filters: { slug: { eq: $slug } }) {
-			data {
-				id
-				attributes {
-					title
-					slug
-					enrollmentDeadline
-					motivationalLetterNeeded
-					cvNeeded
-					portfolioNeeded
-				}
-			}
-		}
-	}
-`;
-export const GetCoursePageDocument = gql`
-	query getCoursePage($id: ID!) {
-		course(id: $id) {
 			data {
 				attributes {
 					title
@@ -1478,31 +1405,18 @@ export function getSdk(
 				'getCourses'
 			);
 		},
-		getCourseBySlug(
-			variables: GetCourseBySlugQueryVariables,
+		getCoursePageBySlug(
+			variables: GetCoursePageBySlugQueryVariables,
 			requestHeaders?: Dom.RequestInit['headers']
-		): Promise<GetCourseBySlugQuery> {
+		): Promise<GetCoursePageBySlugQuery> {
 			return withWrapper(
 				(wrappedRequestHeaders) =>
-					client.request<GetCourseBySlugQuery>(
-						GetCourseBySlugDocument,
+					client.request<GetCoursePageBySlugQuery>(
+						GetCoursePageBySlugDocument,
 						variables,
 						{ ...requestHeaders, ...wrappedRequestHeaders }
 					),
-				'getCourseBySlug'
-			);
-		},
-		getCoursePage(
-			variables: GetCoursePageQueryVariables,
-			requestHeaders?: Dom.RequestInit['headers']
-		): Promise<GetCoursePageQuery> {
-			return withWrapper(
-				(wrappedRequestHeaders) =>
-					client.request<GetCoursePageQuery>(GetCoursePageDocument, variables, {
-						...requestHeaders,
-						...wrappedRequestHeaders
-					}),
-				'getCoursePage'
+				'getCoursePageBySlug'
 			);
 		}
 	};

@@ -13,26 +13,8 @@ query getCourses {
 	}
 }
 
-query getCourseBySlug($slug: String!) {
+query getCoursePageBySlug($slug: String!) {
 	courses(filters: { slug: { eq: $slug } }) {
-		data {
-			id
-			attributes {
-				title
-				slug
-				# The following are added to
-				# accelerate the enrollment form creation
-				enrollmentDeadline
-				motivationalLetterNeeded
-				cvNeeded
-				portfolioNeeded
-			}
-		}
-	}
-}
-
-query getCoursePage($id: ID!) {
-	course(id: $id) {
 		data {
 			attributes {
 				title

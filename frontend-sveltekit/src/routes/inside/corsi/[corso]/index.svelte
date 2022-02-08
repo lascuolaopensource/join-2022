@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { course } from '$lib/stores';
 	import { GQLCLient } from '$lib/requestUtils';
 
 	//
@@ -11,13 +10,16 @@
 	//
 
 	const client = GQLCLient();
+	const slug = $page.params.corso;
 
-	async function getCoursePage() {
-		const data = await client.getCoursePage({ id: $course.id });
-		return data.course.data.attributes;
+	async function getCorso() {
+		// Fetching the course basic info (id, title, slug)
+		const data = await client.getCoursePageBySlug({ slug });
+		// And we save it the store
+		return data.courses.data[0].attributes;
 	}
 
-	const promise = getCoursePage();
+	const promise = getCorso();
 </script>
 
 <!--  -->
