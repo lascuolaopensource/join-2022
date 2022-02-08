@@ -1,4 +1,4 @@
-# È tutto rotto!
+# È tutto rotto!
 
 Per reinstallare conviene installare una copia fresca di strapi e trascinarci dentro database e schema.
 

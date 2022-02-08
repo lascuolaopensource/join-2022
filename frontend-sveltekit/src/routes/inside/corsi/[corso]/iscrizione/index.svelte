@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { course } from '$lib/stores';
+	import { course, user } from '$lib/stores';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -54,10 +54,16 @@
 
 <!--  -->
 
+<pre>
+	{JSON.stringify($user, null, 2)}
+</pre>
+<pre>
+	{JSON.stringify($course, null, 2)}
+</pre>
+
+<!--  -->
+
 <div class="container">
-	<a class="backlink" href="/inside/corsi/{$course.attributes.slug}"
-		>Torna al corso</a
-	>
 	<h2>{$course.attributes.title}</h2>
 	<h1>Iscriviti!</h1>
 
