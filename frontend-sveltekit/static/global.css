@@ -39,10 +39,10 @@
 	--s-0: 4px;
 	--s-1: 8px;
 	--s-2: 16px;
-	--s-25: 24px;
-	--s-3: 32px;
-	--s-35: 40px;
-	--s-4: 48px;
+	--s-3: 24px;
+	--s-4: 32px;
+	--s-5: 40px;
+	--s-6: 48px;
 
 	/* Button */
 	--btn-text-primary: black;
@@ -198,7 +198,7 @@ small {
 /*  */
 
 .container {
-	padding: var(--s-25);
+	padding: var(--s-3);
 }
 
 .space-between > * + * {
@@ -209,7 +209,7 @@ small {
 
 .backlink {
 	display: inline-block;
-	margin-bottom: var(--s-25);
+	margin-bottom: var(--s-3);
 }
 
 .backlink::before {

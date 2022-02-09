@@ -98,7 +98,7 @@
 		width: 100%;
 		justify-content: center;
 		align-items: center;
-		margin-top: var(--s-4);
+		margin-top: var(--s-6);
 	}
 
 	.registrati {

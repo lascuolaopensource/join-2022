@@ -1,9 +1,9 @@
 <h1>
-    <slot />
+	<slot />
 </h1>
 
 <style>
-    h1 {
-        margin-bottom: var(--s-4);
-    }
+	h1 {
+		margin-bottom: var(--s-6);
+	}
 </style>

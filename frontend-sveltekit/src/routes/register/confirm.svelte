@@ -14,6 +14,6 @@
 <!-- --- Style --- -->
 <style>
 	p {
-		margin-bottom: var(--s-3);
+		margin-bottom: var(--s-4);
 	}
 </style>

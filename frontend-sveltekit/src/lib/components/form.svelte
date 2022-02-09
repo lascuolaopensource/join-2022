@@ -6,6 +6,6 @@
 	form {
 		display: flex;
 		flex-flow: column nowrap;
-		gap: var(--s-4);
+		gap: var(--s-6);
 	}
 </style>
