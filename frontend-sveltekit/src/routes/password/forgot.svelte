@@ -1,53 +1,52 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { post } from '$lib/requestUtils';
+	import { post, endpoints } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 
 	//
 
+	import { OutsideTitle } from '$lib/components';
+
 	import {
-		OutsideTitle,
-		Button,
-		InputText,
-		FormGroup,
 		Form,
-		FormError
-	} from '$lib/components';
+		TextField,
+		SubmitButton,
+		FormError,
+		setFormError
+	} from '$lib/components/form';
 
 	import { icons } from '$lib/icons';
-	import { endpoints } from '$lib/requestUtils/endpoints';
 
 	//
 
-	let errorMsg = '';
+	const initialValues = {
+		email: ''
+	};
 
-	const { form, errors, handleChange, handleSubmit } = createForm({
-		initialValues: {
-			email: ''
-		},
-		validationSchema: yup.object().shape({
-			email: yup.string().email().required()
-		}),
-		onSubmit: (values) => {
-			errorMsg = '';
-			resetPassword();
-		}
+	const validationSchema = yup.object().shape({
+		email: yup.string().email().required()
 	});
 
-	async function resetPassword() {
+	async function onSubmit(values: typeof initialValues) {
 		try {
 			// Sending the request to the server
 			await post(fetch, endpoints.forgotPassword, {
-				email: $form.email
+				email: values.email
 			});
 			// If response is ok we send the user to a confirmation message
 			goto('/password/forgotconfirm');
 		} catch (err) {
-			errorMsg = err.message;
+			setFormError(err.message);
 		}
 	}
+
+	const formContext = createForm({
+		initialValues,
+		validationSchema,
+		onSubmit
+	});
 </script>
 
 <!-- --- Markup --- -->
@@ -56,21 +55,14 @@
 
 <OutsideTitle>Resetta la password</OutsideTitle>
 
-<Form on:submit={handleSubmit}>
-	<FormError {errorMsg} />
-	<FormGroup>
-		<InputText
-			id="email"
-			type="email"
-			label="Email"
-			labelIcon={icons.fields.email}
-			placeholder="Inserisci la tua email"
-			required
-			tabindex={1}
-			bind:value={$form.email}
-			on:blur={handleChange}
-			error={$errors.email}
-		/>
-	</FormGroup>
-	<Button tabindex={2} type="submit">Recupera password</Button>
+<Form {formContext}>
+	<TextField
+		name="email"
+		type="email"
+		placeholder="Inserisci la tua email"
+		labelText="Email"
+		labelIcon={icons.fields.email}
+	/>
+	<FormError />
+	<SubmitButton>Recupera password</SubmitButton>
 </Form>
