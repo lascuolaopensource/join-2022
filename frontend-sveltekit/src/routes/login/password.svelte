@@ -9,40 +9,34 @@
 
 	//
 
+	import { OutsideTitle } from '$lib/components';
+
 	import {
-		OutsideTitle,
-		Button,
-		InputText,
-		FormGroup,
 		Form,
-		FormError
-	} from '$lib/components';
+		TextField,
+		SubmitButton,
+		FormError,
+		setFormError
+	} from '$lib/components/form';
 
 	import { icons } from '$lib/icons';
 
 	//
 
-	let errorMsg = '';
+	const initialValues = {
+		password: ''
+	};
 
-	const { form, errors, handleChange, handleSubmit } = createForm({
-		initialValues: {
-			password: ''
-		},
-		validationSchema: yup.object().shape({
-			password: yup.string().required()
-		}),
-		onSubmit: (values) => {
-			errorMsg = '';
-			login();
-		}
+	const validationSchema = yup.object().shape({
+		password: yup.string().required()
 	});
 
-	async function login() {
+	async function onSubmit(values: typeof initialValues) {
 		try {
 			// We send the login data
 			const data = await post(fetch, endpoints.login, {
 				identifier: lsGet(lsKeys.email),
-				password: $form.password
+				password: values.password
 			});
 			// Then, if successful:
 			// - we store the token in localstorage
@@ -55,12 +49,18 @@
 		} catch (err) {
 			// Soluzione temporanea
 			if (err.message == 'Invalid identifier or password') {
-				errorMsg = 'Password errata';
+				setFormError('Password errata');
 			} else {
-				errorMsg = err.message;
+				setFormError(err.message);
 			}
 		}
 	}
+
+	const formContext = createForm({
+		initialValues,
+		validationSchema,
+		onSubmit
+	});
 </script>
 
 <!-- --- Markup --- -->
@@ -71,25 +71,18 @@
 	Ciao {lsGet(lsKeys.username)}!
 </OutsideTitle>
 
-<Form on:submit={handleSubmit}>
-	<FormError {errorMsg} />
-	<FormGroup>
-		<InputText
-			id="password"
-			type="password"
-			label="Password"
-			labelIcon={icons.fields.password}
-			placeholder="Inserisci la tua password"
-			required
-			link={{
-				label: 'Password dimenticata?',
-				href: '/password/forgot'
-			}}
-			tabindex={1}
-			bind:value={$form.password}
-			on:blur={handleChange}
-			error={$errors.password}
-		/>
-	</FormGroup>
-	<Button type="submit" tabindex={2}>Avanti</Button>
+<Form {formContext}>
+	<TextField
+		name="password"
+		type="password"
+		placeholder="Inserisci la tua password"
+		labelText="Password"
+		labelIcon={icons.fields.password}
+		labelLink={{
+			text: 'Password dimenticata?',
+			href: '/password/forgot'
+		}}
+	/>
+	<FormError />
+	<SubmitButton>Login</SubmitButton>
 </Form>

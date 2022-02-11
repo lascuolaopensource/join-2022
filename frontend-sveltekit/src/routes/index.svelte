@@ -9,82 +9,69 @@
 
 	//
 
+	import { OutsideTitle } from '$lib/components';
 	import {
-		OutsideTitle,
-		Button,
-		InputText,
-		FormGroup,
 		Form,
-		FormError
-	} from '$lib/components';
-
+		FormError,
+		TextField,
+		SubmitButton,
+		setFormError
+	} from '$lib/components/form';
 	import { icons } from '$lib/icons';
 
 	//
 
-	// Error message for the result of the form
-	let errorMsg = '';
+	const initialValues = {
+		email: ''
+	};
 
-	// Creating form
-	const { form, errors, handleChange, handleSubmit } = createForm({
-		initialValues: {
-			email: ''
-		},
-		validationSchema: yup.object().shape({
-			email: yup.string().email().required()
-		}),
-		onSubmit: (values) => {
-			errorMsg = '';
-			checkEmail();
-		}
+	const validationSchema = yup.object().shape({
+		email: yup.string().email().required()
 	});
 
-	//
-
-	async function checkEmail() {
+	async function onSubmit(values: typeof initialValues) {
+		// This function checks if email exists
 		try {
 			const data = await post(fetch, endpoints.checkLoginEmail, {
-				email: $form.email
+				email: values.email
 			});
 			// We store email and username in localstorage
 			lsSet(lsKeys.email, data.email);
 			lsSet(lsKeys.username, data.username);
 			// And redirect the user to the password
 			goto('/login/password');
-		} catch (err) {
-			if (err.message == '404') {
-				errorMsg = "L'email non è corretta";
+		} catch (e) {
+			if (e?.message == '404') {
+				setFormError("L'email non è corretta");
 			} else {
-				errorMsg = err.message;
+				throw e;
 			}
 		}
 	}
+
+	const formContext = createForm({
+		initialValues,
+		validationSchema,
+		onSubmit
+	});
 </script>
 
-<!-- --- Markup --- -->
+<!--  -->
 
 <OutsideTitle>Login</OutsideTitle>
 
-<Form on:submit={handleSubmit}>
-	<FormError {errorMsg} />
-	<FormGroup>
-		<InputText
-			id="email"
-			type="email"
-			label="Email"
-			labelIcon={icons.fields.email}
-			placeholder="Inserisci la tua email"
-			required
-			tabindex={1}
-			bind:value={$form.email}
-			on:blur={handleChange}
-			error={$errors.email}
-		/>
-	</FormGroup>
-	<Button type="submit" tabindex={2}>Avanti</Button>
+<Form {formContext}>
+	<TextField
+		name="email"
+		type="email"
+		placeholder="Inserisci la tua email"
+		labelText="Email"
+		labelIcon={icons.fields.email}
+	/>
+	<FormError />
+	<SubmitButton>Avanti</SubmitButton>
 </Form>
 
-<!-- Registration link -->
 <div class="message">
 	<p>Non hai un account?</p>
 	<a href="/register" class="registrati">Registrati!</a>
@@ -98,7 +85,7 @@
 		width: 100%;
 		justify-content: center;
 		align-items: center;
-		margin-top: var(--s-4);
+		margin-top: var(--s-6);
 	}
 
 	.registrati {

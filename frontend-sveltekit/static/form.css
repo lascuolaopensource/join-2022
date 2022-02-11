@@ -1,0 +1,44 @@
+/* Form */
+
+.form {
+	width: 100%;
+}
+
+.form > * + * {
+	margin-top: var(--s-3);
+}
+
+/* Form error */
+
+.form__err {
+	width: 100%;
+	padding: var(--s-2);
+	background-color: var(--alert-color);
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.form__err__text {
+	flex-grow: 1;
+	color: var(--content-primary-d);
+	margin: 0 var(--s-2);
+}
+
+.form__err__btn {
+	border: none;
+	background: none;
+	width: 36px;
+	height: 36px;
+}
+
+.form__err__btn:hover {
+	background-color: rgba(255, 255, 255, 0.3);
+	cursor: pointer;
+}
+
+.form__err__icon,
+.form__err__btn__icon {
+	fill: white;
+}

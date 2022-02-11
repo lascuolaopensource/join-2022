@@ -1,0 +1,116 @@
+<script lang="ts">
+	import { setContext, onDestroy } from 'svelte';
+	import { createForm } from 'svelte-forms-lib';
+	import { key } from './key';
+	import { clearFormError } from './formErrorStore';
+	// import { writable } from 'svelte/store';
+
+	//
+
+	export let initialValues = {};
+	export let validate = null;
+	export let validationSchema = null;
+	export let onSubmit = () => {
+		throw new Error(
+			'onSubmit is a required property in <Form /> when using the fallback context'
+		);
+	};
+
+	// Creating form
+	// (We also export it in case one wants to pass a created form)
+	export let formContext = createForm({
+		initialValues,
+		onSubmit,
+		validate,
+		validationSchema
+	});
+
+	// Getting form props
+	const {
+		form,
+		errors,
+		touched,
+		state,
+		handleChange,
+		handleSubmit,
+		updateField,
+		updateInitialValues,
+		updateTouched,
+		updateValidateField,
+		validateField,
+		isValid,
+		isSubmitting
+	} = formContext;
+
+	// This functions wraps around handleSubmit
+	// Clears the error when the submit happens
+	function handleSubmitClearErr(e: Event) {
+		clearFormError();
+		handleSubmit(e);
+	}
+
+	// We also clear the error when the form is destroyed
+	onDestroy(clearFormError);
+
+	// Setting context
+	setContext(key, {
+		form,
+		errors,
+		touched,
+		state,
+		handleChange,
+		handleSubmit,
+		updateField,
+		updateInitialValues,
+		updateTouched,
+		updateValidateField,
+		validateField,
+		isValid,
+		isSubmitting
+	});
+
+	//
+
+	// // $isValid doesn't seem to work when the form is empty
+	// // Questo store serve per attivare il bottone di submit quando:
+	// // - tutti i campi sono stati compilati
+	// // - il form è valido
+	// const isFilledAndValid = writable<boolean>(false);
+	// $: $isFilledAndValid = Object.values($touched).every((e) => e) && $isValid;
+
+	//
+
+	// This function is needed to remove error on:input
+	// function clearError(e: Event) {
+	// 	const target = e.target as HTMLInputElement;
+	// 	$errors[target.name] = '';
+	// }
+
+	//
+
+	// // Questo serve per eseguire la validazione dopo un po' di tempo:
+	// // https://schier.co/blog/wait-for-user-to-stop-typing-using-javascript
+
+	// // Questo store conserva il timeout attivo
+	// const timeout = writable<any>(null);
+
+	// // Questa funzione viene eseguita sul 'keyup' o simili
+	// function handleChangeWait(e) {
+	// 	// Clear the timeout if it has already been set.
+	// 	// This will prevent the previous task from executing
+	// 	// if it has been less than <MILLISECONDS>
+	// 	clearTimeout($timeout);
+
+	// 	// Make a new timeout set to go off in 1000ms (1 second)
+	// 	$timeout = setTimeout(function () {
+	// 		handleChange(e);
+	// 		$timeout = null;
+	// 	}, 1000);
+	// }
+</script>
+
+<!--  -->
+
+<form class="form" on:submit={handleSubmitClearErr} {...$$restProps}>
+	<slot />
+</form>

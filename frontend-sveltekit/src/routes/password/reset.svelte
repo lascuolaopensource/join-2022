@@ -10,52 +10,52 @@
 
 	//
 
+	import { OutsideTitle } from '$lib/components';
+
 	import {
-		OutsideTitle,
-		Button,
-		InputText,
-		FormGroup,
 		Form,
-		FormError
-	} from '$lib/components';
+		TextField,
+		SubmitButton,
+		FormError,
+		setFormError
+	} from '$lib/components/form';
 
 	import { icons } from '$lib/icons';
 
 	//
 
-	let errorMsg = '';
+	const initialValues = {
+		password: '',
+		passwordConfirm: ''
+	};
 
-	const { form, errors, handleChange, handleSubmit } = createForm({
-		initialValues: {
-			password: '',
-			passwordConfirm: ''
-		},
-		validationSchema: yup.object().shape({
-			password: passwordValidator,
-			passwordConfirm: passwordValidator.oneOf(
-				[yup.ref('password'), null],
-				'Passwords must match'
-			)
-		}),
-		onSubmit: (values) => {
-			errorMsg = '';
-			resetPassword();
-		}
+	const validationSchema = yup.object().shape({
+		password: passwordValidator,
+		passwordConfirm: passwordValidator.oneOf(
+			[yup.ref('password'), null],
+			'Passwords must match'
+		)
 	});
 
-	async function resetPassword() {
+	async function onSubmit(values: typeof initialValues) {
 		try {
 			await post(fetch, endpoints.resetPassword, {
 				code: $page.url.searchParams.get('code'),
-				password: $form.password,
-				passwordConfirmation: $form.passwordConfirm
+				password: values.password,
+				passwordConfirmation: values.passwordConfirm
 			});
 			// If response is ok we send the user to some confirmation
 			goto('/password/resetconfirm');
 		} catch (err) {
-			errorMsg = err.message;
+			setFormError(err.message);
 		}
 	}
+
+	const formContext = createForm({
+		initialValues,
+		validationSchema,
+		onSubmit
+	});
 </script>
 
 <!-- --- Markup --- -->
@@ -64,33 +64,21 @@
 
 <OutsideTitle>Cambio password</OutsideTitle>
 
-<Form on:submit={handleSubmit}>
-	<FormError {errorMsg} />
-	<FormGroup>
-		<InputText
-			id="password"
-			type="password"
-			label="Password"
-			labelIcon={icons.fields.password}
-			placeholder="Inserisci la nuova password"
-			required
-			tabindex={1}
-			bind:value={$form.password}
-			on:blur={handleChange}
-			error={$errors.password}
-		/>
-		<InputText
-			id="passwordConfirm"
-			type="password"
-			label="Password"
-			labelIcon={icons.fields.password}
-			placeholder="Conferma la nuova password"
-			required
-			tabindex={2}
-			bind:value={$form.passwordConfirm}
-			on:blur={handleChange}
-			error={$errors.passwordConfirm}
-		/>
-	</FormGroup>
-	<Button type="submit" tabindex={3}>Reset password</Button>
+<Form {formContext}>
+	<TextField
+		name="password"
+		type="password"
+		labelText="Password"
+		labelIcon={icons.fields.password}
+		placeholder="Inserisci la nuova password"
+	/>
+	<TextField
+		name="passwordConfirm"
+		type="password"
+		labelText="Conferma password"
+		labelIcon={icons.fields.password}
+		placeholder="Conferma la nuova password"
+	/>
+	<FormError />
+	<SubmitButton>Reset password</SubmitButton>
 </Form>

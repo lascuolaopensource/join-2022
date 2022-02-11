@@ -1,9 +1,10 @@
 <script lang="ts">
-	import OutsideTitle from '$lib/components/outsideTitle.svelte';
+	import { OutsideTitle, OutsideBacklink } from '$lib/components';
 </script>
 
 <!-- --- Markup --- -->
 
+<OutsideBacklink href="/" text="Torna alla home" />
 <OutsideTitle>Grazie per esserti registrato!</OutsideTitle>
 
 <p>

@@ -1,10 +1,10 @@
 <script lang="ts">
 	export let href: string;
-	export let label: string;
+	export let text: string;
 </script>
 
 <div>
-	<a class="back" {href}>← {label}</a>
+	<a class="out__backlink" {href}>← {text}</a>
 </div>
 
 <style>
