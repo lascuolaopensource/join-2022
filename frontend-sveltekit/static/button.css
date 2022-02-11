@@ -1,0 +1,39 @@
+.btn {
+	padding: var(--input-padding);
+	border-radius: var(--border-radius);
+	border: none;
+}
+
+.btn:hover {
+	cursor: pointer;
+}
+
+.btn-primary {
+	background-color: var(--btn-bg-primary);
+	color: var(--btn-text-primary);
+}
+
+.btn-primary:hover {
+	background-color: var(--btn-bg-primary-hover);
+}
+
+.btn-secondary {
+	background-color: gray;
+}
+
+.btn-secondary:hover {
+	background-color: black;
+}
+
+.btn-tertiary {
+	background-color: transparent;
+}
+
+.btn-tertiary:hover {
+	background-color: var(--tertiary-hover-light);
+}
+
+.btn[disabled] {
+	background-color: rgba(0, 0, 0, 0.05);
+	color: rgba(0, 0, 0, 0.2);
+}

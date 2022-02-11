@@ -1,120 +1,44 @@
-/* Font sizes */
+/* Form */
 
-.field__label__text,
-.field__input {
-	font-size: var(--text-normal);
-	line-height: var(--text-normal-lh);
+.form {
+	width: 100%;
 }
 
-.field__label__link,
-.field__helperText,
-.field__error__text {
-	font-size: var(--text-small);
-	line-height: var(--text-small-lh);
-}
-
-/* Main container */
-
-.field > * + * {
-	margin-top: var(--s-1);
-}
-
-.field + .field {
+.form > * + * {
 	margin-top: var(--s-3);
 }
 
-/* Field areas */
+/* Form error */
 
-.field__top {
+.form__err {
+	width: 100%;
+	padding: var(--s-2);
+	background-color: var(--alert-color);
 	display: flex;
-	flex-flow: row wrap;
+	flex-flow: row nowrap;
 	align-items: center;
 	justify-content: space-between;
 }
 
-.field__bottom {
-	display: flex;
-	flex-flow: column nowrap;
+.form__err__text {
+	flex-grow: 1;
+	color: var(--content-primary-d);
+	margin: 0 var(--s-2);
 }
 
-.field__bottom > * + * {
-	margin-top: var(--s-0);
+.form__err__btn {
+	border: none;
+	background: none;
+	width: 36px;
+	height: 36px;
 }
 
-/* Label */
-
-.field__label {
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
+.form__err__btn:hover {
+	background-color: rgba(255, 255, 255, 0.3);
+	cursor: pointer;
 }
 
-.field__label__text {
-	color: var(--content-secondary-l);
-}
-
-.field__label__icon {
-	fill: var(--content-secondary-l);
-	margin-right: var(--s-0);
-}
-
-.field__label__link {
-	color: var(--a-text);
-}
-
-/* Field */
-
-.field__input {
-	width: 100%;
-	border: var(--input-border);
-	border-radius: var(--border-radius);
-	color: var(--input-text);
-	background-color: var(--input-bg);
-	padding: var(--input-padding);
-}
-
-.field__input::placeholder {
-	color: var(--content-tertiary-l);
-}
-
-.field__input:hover {
-	background-color: var(--input-bg-hover);
-	/* cursor: pointer; */
-}
-
-.field__input:focus,
-.field__input:active {
-	outline: var(--input-border-width-focus) var(--input-border-focus);
-}
-
-.field__input-error {
-	outline: var(--input-border-width-focus) solid var(--alert-color);
-}
-
-.field__input:focus:hover,
-.field__input:active:hover {
-	background-color: var(--input-bg);
-}
-
-/* Helper */
-
-.field__helperText {
-	color: var(--content-tertiary-l);
-}
-
-/* Error */
-
-.field__error {
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
-}
-
-.field__error__text {
-	color: var(--alert-color);
-	margin-left: var(--s-0);
-}
-
-.field__error__icon {
-	fill: var(--alert-color);
+.form__err__icon,
+.form__err__btn__icon {
+	fill: white;
 }

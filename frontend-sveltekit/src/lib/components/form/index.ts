@@ -1,4 +1,7 @@
 import Form from './form.svelte';
-import Field from './field.svelte';
+import FormError from './formError.svelte';
+import TextField from './textField.svelte';
+import SubmitButton from './submitButton.svelte';
+import { setFormError } from './formErrorStore';
 
-export { Form, Field };
+export { Form, FormError, TextField, SubmitButton, setFormError };
