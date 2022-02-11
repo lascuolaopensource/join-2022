@@ -1343,6 +1343,31 @@ export type GetCoursePageBySlugQuery = {
 	} | null;
 };
 
+export type GetCourseEnrollmentBySlugQueryVariables = Exact<{
+	slug: Scalars['String'];
+}>;
+
+export type GetCourseEnrollmentBySlugQuery = {
+	__typename?: 'Query';
+	courses?: {
+		__typename?: 'CourseEntityResponseCollection';
+		data: Array<{
+			__typename?: 'CourseEntity';
+			id?: string | null;
+			attributes?: {
+				__typename?: 'Course';
+				title: string;
+				slug?: string | null;
+				enrollmentDeadline?: string | null;
+				motivationalLetterNeeded?: boolean | null;
+				cvNeeded?: boolean | null;
+				portfolioNeeded?: boolean | null;
+				price?: number | null;
+			} | null;
+		}>;
+	} | null;
+};
+
 export const GetCoursesDocument = gql`
 	query getCourses {
 		courses {
@@ -1374,6 +1399,24 @@ export const GetCoursePageBySlugDocument = gql`
 							endTime
 						}
 					}
+				}
+			}
+		}
+	}
+`;
+export const GetCourseEnrollmentBySlugDocument = gql`
+	query getCourseEnrollmentBySlug($slug: String!) {
+		courses(filters: { slug: { eq: $slug } }) {
+			data {
+				id
+				attributes {
+					title
+					slug
+					enrollmentDeadline
+					motivationalLetterNeeded
+					cvNeeded
+					portfolioNeeded
+					price
 				}
 			}
 		}
@@ -1417,6 +1460,20 @@ export function getSdk(
 						{ ...requestHeaders, ...wrappedRequestHeaders }
 					),
 				'getCoursePageBySlug'
+			);
+		},
+		getCourseEnrollmentBySlug(
+			variables: GetCourseEnrollmentBySlugQueryVariables,
+			requestHeaders?: Dom.RequestInit['headers']
+		): Promise<GetCourseEnrollmentBySlugQuery> {
+			return withWrapper(
+				(wrappedRequestHeaders) =>
+					client.request<GetCourseEnrollmentBySlugQuery>(
+						GetCourseEnrollmentBySlugDocument,
+						variables,
+						{ ...requestHeaders, ...wrappedRequestHeaders }
+					),
+				'getCourseEnrollmentBySlug'
 			);
 		}
 	};
