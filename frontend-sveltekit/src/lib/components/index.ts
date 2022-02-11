@@ -6,6 +6,7 @@ import LogoutButton from './logoutButton.svelte';
 import NavbarItem from './navbarItem.svelte';
 import NavbarOutside from './navbarOutside.svelte';
 import OutsideTitle from './outsideTitle.svelte';
+import OutsideBacklink from './outsideBacklink.svelte';
 import ProfileNavbar from './profileNavbar.svelte';
 import Spinner from './spinner.svelte';
 
@@ -18,6 +19,7 @@ export {
 	NavbarItem,
 	NavbarOutside,
 	OutsideTitle,
+	OutsideBacklink,
 	ProfileNavbar,
 	Spinner
 };
