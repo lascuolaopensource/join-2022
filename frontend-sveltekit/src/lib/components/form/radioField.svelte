@@ -24,7 +24,7 @@
 
 <!--  -->
 
-<FieldWrapper fieldName="" {labelText} {labelIcon} {labelLink} {helperText}>
+<FieldWrapper fieldName={name} {labelText} {labelIcon} {labelLink} {helperText}>
 	<div class="field__radio">
 		{#each items as item, i}
 			<div class="field__radio__item">

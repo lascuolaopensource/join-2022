@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import { key } from '../key';
+	import get from 'get-value';
 
 	import FieldError from './fieldError.svelte';
 
@@ -16,7 +17,7 @@
 
 <!--  -->
 
-{#if helperText || $errors[fieldName]}
+{#if helperText || get($errors, fieldName)}
 	<div class="field__bottom">
 		<!-- Helper text -->
 		{#if helperText}
