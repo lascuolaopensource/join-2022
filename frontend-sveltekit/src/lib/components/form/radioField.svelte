@@ -19,7 +19,7 @@
 
 	//
 
-	const { form, errors, handleChange } = getContext(key);
+	const { form, handleChange } = getContext(key);
 </script>
 
 <!--  -->
