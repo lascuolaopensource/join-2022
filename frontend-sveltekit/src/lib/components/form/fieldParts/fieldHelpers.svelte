@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { key } from '../key';
+	import { formKey } from '../form.svelte';
+	import get from 'get-value';
 
 	import FieldError from './fieldError.svelte';
 
@@ -11,12 +12,12 @@
 
 	//
 
-	const { errors } = getContext(key);
+	const { errors } = getContext(formKey);
 </script>
 
 <!--  -->
 
-{#if helperText || $errors[fieldName]}
+{#if helperText || get($errors, fieldName)}
 	<div class="field__bottom">
 		<!-- Helper text -->
 		{#if helperText}

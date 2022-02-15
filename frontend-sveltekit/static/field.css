@@ -1,6 +1,7 @@
 /* Font sizes */
 
 .field__label__text,
+.field__radio__text,
 .field__input {
 	font-size: var(--text-normal);
 	line-height: var(--text-normal-lh);
@@ -113,4 +114,33 @@
 
 .field__error__icon {
 	fill: var(--alert-color);
+}
+
+/* Radio */
+
+.field__radio {
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+.field__radio > * + * {
+	margin-top: var(--s-1);
+}
+
+.field__radio__item {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+
+.field__radio__circle {
+	border: 0px;
+	width: 2em;
+	height: 2em;
+	background-color: var(--input-bg);
+}
+
+.field__radio__text {
+	color: var(--content-primary-l);
+	margin-left: var(--s-1);
 }

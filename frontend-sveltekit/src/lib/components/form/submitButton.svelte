@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { key } from './key';
+	import { formKey } from './form.svelte';
 
-	// const { isValid } = getContext(key);
+	// const { isValid } = getContext(formKey);
 </script>
 
 <!--  -->

@@ -31,3 +31,20 @@ query getCoursePageBySlug($slug: String!) {
 		}
 	}
 }
+
+query getCourseEnrollmentBySlug($slug: String!) {
+	courses(filters: { slug: { eq: $slug } }) {
+		data {
+			id
+			attributes {
+				title
+				slug
+				enrollmentDeadline
+				motivationalLetterNeeded
+				cvNeeded
+				portfolioNeeded
+				price
+			}
+		}
+	}
+}
