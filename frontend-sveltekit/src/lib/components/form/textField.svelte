@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { key } from './key';
+	import { formKey } from './form.svelte';
 	import get from 'get-value';
 
 	import FieldWrapper from './fieldParts/fieldWrapper.svelte';
@@ -28,7 +28,7 @@
 
 	//
 
-	const { form, errors, handleChange } = getContext(key);
+	const { form, errors, handleChange } = getContext(formKey);
 </script>
 
 <!--  -->

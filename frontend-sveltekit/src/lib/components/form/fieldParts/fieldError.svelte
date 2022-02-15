@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { key } from '../key';
+	import { formKey } from '../form.svelte';
 	import { icons } from '../icons';
 	import get from 'get-value';
 
 	export let fieldName: string;
 
-	const { errors } = getContext(key);
+	const { errors } = getContext(formKey);
 </script>
 
 <!--  -->

@@ -1,7 +1,10 @@
+<script lang="ts" context="module">
+	export const formKey = 'formKey';
+</script>
+
 <script lang="ts">
 	import { setContext, onDestroy } from 'svelte';
 	import { createForm } from 'svelte-forms-lib';
-	import { key } from './key';
 	import { clearFormError } from './formError.svelte';
 	// import { writable } from 'svelte/store';
 
@@ -53,7 +56,7 @@
 	onDestroy(clearFormError);
 
 	// Setting context
-	setContext(key, {
+	setContext(formKey, {
 		form,
 		errors,
 		touched,
