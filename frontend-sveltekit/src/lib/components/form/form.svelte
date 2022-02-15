@@ -2,7 +2,7 @@
 	import { setContext, onDestroy } from 'svelte';
 	import { createForm } from 'svelte-forms-lib';
 	import { key } from './key';
-	import { clearFormError } from './formErrorStore';
+	import { clearFormError } from './formError.svelte';
 	// import { writable } from 'svelte/store';
 
 	//
