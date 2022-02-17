@@ -41,8 +41,6 @@
 		pagesState,
 		onBack
 	});
-
-	console.log($$props);
 </script>
 
 <!--  -->
