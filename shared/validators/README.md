@@ -1,5 +1,7 @@
 # Note
 
+- `microbundle` deve essere installato come `devDependency`
+  - altrimenti quando si importa la libreria creata vengono importati anche tutte le dipendenze di microbundle
 - In `package.json`:
   - `"version"` deve essere impostato, altrimenti yarn da errore
     - la versione deve necessariamente avere questo schema: `N.N.N`
