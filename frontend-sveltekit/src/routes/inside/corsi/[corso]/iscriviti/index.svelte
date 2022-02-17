@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { baseUrl, sdk } from '$lib/requestUtils';
+	import { baseUrl } from '$lib/requestUtils';
 
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ params, fetch, session, stuff }) {
@@ -18,7 +18,10 @@
 </script>
 
 <script lang="ts">
-	import { MultipageForm } from '$lib/components/form';
+	import type { sdk } from '$lib/requestUtils';
+	import { post, endpoints } from '$lib/requestUtils';
+
+	import { MultipageForm, setFormError } from '$lib/components/form';
 	import {
 		Billing,
 		Contacts,
@@ -31,7 +34,11 @@
 	let c = course.data[0] as sdk.CourseEntity;
 
 	async function handleSubmit(values) {
-		console.log(values);
+		try {
+			const req = await post(fetch, endpoints.enroll, values);
+		} catch (e) {
+			setFormError(e);
+		}
 	}
 </script>
 
