@@ -12,7 +12,7 @@
   "typings": "./dist/index.d.ts",
   "scripts": {
     "build": "microbundle --no-compress",
-    "dev": "microbundle watch"
+    "dev": "microbundle watch --no-compress"
   },
   "devDependencies": {
     "microbundle": "^0.14.2"
