@@ -77,7 +77,15 @@ var billingVal = yup.object({
     sdi: yup.string().required()
   }).when("billingOption", thenReq(billingOptions[2])),
   // Generici
-  email: yup.string().email().required(),
+  email: yup.string().email().when("billingOption", {
+    is: billingOptions[0],
+    then: function then(schema) {
+      return schema.nullable();
+    },
+    otherwise: function otherwise(schema) {
+      return schema.required();
+    }
+  }),
   address: addressVal
 });
 /**
@@ -90,7 +98,7 @@ var enrollVal = yup.object({
   evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
   billingNeeded: yup["boolean"]().required(),
   billing: billingVal.when("billingNeeded", thenReq(true))
-});
+}).required();
 
 export { addressVal, billingOptions, billingVal, cfVal, enrollVal, evaluationVal, phoneVal, urlVal, userVal };
 //# sourceMappingURL=index.module.js.map

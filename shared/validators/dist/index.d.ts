@@ -89,7 +89,7 @@ export declare const billingVal: import("yup/lib/object").OptionalObjectSchema<{
         vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }>>;
-    email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
     address: import("yup/lib/object").RequiredObjectSchema<{
         cap: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         town: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
@@ -126,7 +126,7 @@ export declare const billingVal: import("yup/lib/object").OptionalObjectSchema<{
         vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }>>;
-    email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
     address: import("yup/lib/object").RequiredObjectSchema<{
         cap: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         town: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
@@ -142,7 +142,7 @@ export declare const billingVal: import("yup/lib/object").OptionalObjectSchema<{
 /**
  * Form validator
  */
-export declare const enrollVal: import("yup/lib/object").OptionalObjectSchema<{
+export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
     user: import("yup/lib/object").RequiredObjectSchema<{
         exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
         data: import("yup/lib/object").OptionalObjectSchema<{
@@ -208,7 +208,7 @@ export declare const enrollVal: import("yup/lib/object").OptionalObjectSchema<{
             vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         }>>;
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
         address: import("yup/lib/object").RequiredObjectSchema<{
             cap: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             town: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
@@ -245,7 +245,7 @@ export declare const enrollVal: import("yup/lib/object").OptionalObjectSchema<{
             vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         }>>;
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
         address: import("yup/lib/object").RequiredObjectSchema<{
             cap: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             town: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
@@ -324,7 +324,7 @@ export declare const enrollVal: import("yup/lib/object").OptionalObjectSchema<{
             vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         }>>;
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
         address: import("yup/lib/object").RequiredObjectSchema<{
             cap: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             town: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
@@ -361,7 +361,7 @@ export declare const enrollVal: import("yup/lib/object").OptionalObjectSchema<{
             vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         }>>;
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
         address: import("yup/lib/object").RequiredObjectSchema<{
             cap: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             town: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;

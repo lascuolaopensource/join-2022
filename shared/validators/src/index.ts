@@ -80,7 +80,14 @@ export const billingVal = yup.object({
     })
     .when("billingOption", thenReq(billingOptions[2])),
   // Generici
-  email: yup.string().email().required(),
+  email: yup
+    .string()
+    .email()
+    .when("billingOption", {
+      is: billingOptions[0],
+      then: (schema: yup.AnySchema) => schema.nullable(),
+      otherwise: (schema: yup.AnySchema) => schema.required(),
+    }),
   address: addressVal,
 });
 
@@ -88,10 +95,12 @@ export const billingVal = yup.object({
  * Form validator
  */
 
-export const enrollVal = yup.object({
-  user: userVal,
-  evaluationNeeded: yup.boolean().required(),
-  evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
-  billingNeeded: yup.boolean().required(),
-  billing: billingVal.when("billingNeeded", thenReq(true)),
-});
+export const enrollVal = yup
+  .object({
+    user: userVal,
+    evaluationNeeded: yup.boolean().required(),
+    evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
+    billingNeeded: yup.boolean().required(),
+    billing: billingVal.when("billingNeeded", thenReq(true)),
+  })
+  .required();
