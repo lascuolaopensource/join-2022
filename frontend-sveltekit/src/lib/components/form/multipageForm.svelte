@@ -5,6 +5,7 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { FormError } from '$lib/components/form';
 
 	export let handleSubmit: (pagesState) => Promise<void>;
 	export let pages: Array<Function>;
@@ -46,6 +47,7 @@
 
 <!--  -->
 
+<FormError />
 <svelte:component
 	this={pages[$index]}
 	initialValues={pagesState[$index]}
