@@ -19,7 +19,7 @@
 
 <script lang="ts">
 	import type { sdk } from '$lib/requestUtils';
-	import { post, endpoints } from '$lib/requestUtils';
+	import { post, endpoints, headersAuth } from '$lib/requestUtils';
 
 	import { MultipageForm, setFormError } from '$lib/components/form';
 	import {
@@ -35,7 +35,7 @@
 
 	async function handleSubmit(values) {
 		try {
-			const req = await post(fetch, endpoints.enroll, values);
+			const req = await post(fetch, endpoints.enroll, values, headersAuth());
 		} catch (e) {
 			setFormError(e);
 		}
