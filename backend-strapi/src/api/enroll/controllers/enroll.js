@@ -9,7 +9,7 @@ module.exports = {
         console.log(ctx.request.body);
         console.log(ctx.state.user);
         try {
-            ctx.body = "ok";
+            ctx.body = { ok: "ok" };
         } catch (err) {
             ctx.body = err;
         }
