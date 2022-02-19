@@ -1,5 +1,6 @@
 import * as yup from "yup";
-import { re, thenReq } from "./utils";
+import { number } from "yup/lib/locale";
+import { re, thenReq, thenNull } from "./utils";
 
 /**
  * Util
@@ -9,21 +10,32 @@ export const urlVal = yup.string().matches(re.url);
 export const cfVal = yup.string().matches(re.cf);
 
 /**
- * Contacts
+ * User
  */
 
-export const userVal = yup
-  .object({
-    exists: yup.boolean().required(),
-    data: yup
-      .object({
-        email: yup.string().email().required(),
-        name: yup.string().required(),
-        surname: yup.string().required(),
-      })
-      .when("exists", thenReq(false)),
-  })
-  .required();
+export const userVal = yup.object({
+  exists: yup.boolean().required(),
+  data: yup
+    .object({
+      email: yup.string().email().required(),
+      name: yup.string().required(),
+      surname: yup.string().required(),
+    })
+    .when("exists", thenReq(false)),
+});
+
+export interface FUser {
+  exists: boolean;
+  data: {
+    email: string;
+    name: string;
+    surname: string;
+  };
+}
+
+/**
+ * Phone
+ */
 
 export const phoneVal = yup.string().required();
 
@@ -40,23 +52,44 @@ export const evaluationVal = yup.object({
   cv: urlVal.when("cvNeeded", thenReq(true)),
 });
 
+export interface FEvaluation {
+  letterNeeded: boolean;
+  letter: string;
+  portfolioNeeded: boolean;
+  portfolio: string;
+  cvNeeded: boolean;
+  cv: string;
+}
+/**
+ * Address
+ */
+
+export const addressVal = yup.object({
+  cap: yup.string().required(),
+  town: yup.string().required(),
+  province: yup.string().required(),
+  street: yup.string().required(),
+});
+
+export interface FAddress {
+  cap: string;
+  town: string;
+  province: string;
+  street: string;
+}
+
 /**
  * Billing
  */
 
-export const addressVal = yup
-  .object({
-    cap: yup.string().required(),
-    town: yup.string().required(),
-    province: yup.string().required(),
-    street: yup.string().required(),
-  })
-  .required();
-
-export const billingOptions = ["me", "person", "company"];
+export const billingOptions = ["me", "person", "company"] as const;
+type BillingOptions = typeof billingOptions[number];
 
 export const billingVal = yup.object({
-  billingOption: yup.string().oneOf(billingOptions).required(),
+  billingOption: yup
+    .string()
+    .oneOf(billingOptions as any)
+    .required(),
   // Me
   me: yup
     .object({
@@ -83,24 +116,51 @@ export const billingVal = yup.object({
   email: yup
     .string()
     .email()
-    .when("billingOption", {
-      is: billingOptions[0],
-      then: (schema: yup.AnySchema) => schema.nullable(),
-      otherwise: (schema: yup.AnySchema) => schema.required(),
-    }),
-  address: addressVal,
+    .when("billingOption", thenNull(billingOptions[0])),
+  address: addressVal.required(),
 });
 
+export interface FBilling {
+  billingOption: BillingOptions;
+  me: {
+    cf: string;
+  };
+  person: {
+    name: string;
+    surname: string;
+    cf: string;
+  };
+  company: {
+    name: string;
+    vat: string;
+    sdi: string;
+  };
+  email: string;
+  address: FAddress;
+}
+
 /**
- * Form validator
+ * Enrollment
  */
 
 export const enrollVal = yup
   .object({
-    user: userVal,
+    courseId: yup.number().required(),
+    user: userVal.required(),
+    phone: phoneVal.required(),
     evaluationNeeded: yup.boolean().required(),
     evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
     billingNeeded: yup.boolean().required(),
     billing: billingVal.when("billingNeeded", thenReq(true)),
   })
   .required();
+
+export interface FEnroll {
+  courseId: number;
+  user: FUser;
+  phone: string;
+  evaluationNeeded: boolean;
+  evaluation: FEvaluation;
+  billingNeeded: boolean;
+  billing: FBilling;
+}

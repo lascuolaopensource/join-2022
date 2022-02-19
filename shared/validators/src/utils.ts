@@ -12,3 +12,11 @@ export function thenReq(value: boolean | string) {
     otherwise: (schema: yup.AnySchema) => schema.nullable(),
   };
 }
+
+export function thenNull(value: boolean | string) {
+  return {
+    is: value,
+    then: (schema: yup.AnySchema) => schema.nullable(),
+    otherwise: (schema: yup.AnySchema) => schema.required(),
+  };
+}
