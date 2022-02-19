@@ -1,5 +1,4 @@
 import * as yup from "yup";
-import { number } from "yup/lib/locale";
 import { re, thenReq, thenNull } from "./utils";
 
 /**
