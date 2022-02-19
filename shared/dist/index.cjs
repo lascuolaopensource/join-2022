@@ -35,6 +35,17 @@ function thenReq(value) {
     }
   };
 }
+function thenNull(value) {
+  return {
+    is: value,
+    then: function then(schema) {
+      return schema.nullable();
+    },
+    otherwise: function otherwise(schema) {
+      return schema.required();
+    }
+  };
+}
 
 /**
  * Util
@@ -43,7 +54,7 @@ function thenReq(value) {
 var urlVal = yup__namespace.string().matches(re.url);
 var cfVal = yup__namespace.string().matches(re.cf);
 /**
- * Contacts
+ * User
  */
 
 var userVal = yup__namespace.object({
@@ -53,7 +64,11 @@ var userVal = yup__namespace.object({
     name: yup__namespace.string().required(),
     surname: yup__namespace.string().required()
   }).when("exists", thenReq(false))
-}).required();
+});
+/**
+ * Phone
+ */
+
 var phoneVal = yup__namespace.string().required();
 /**
  * Evaluation
@@ -68,7 +83,7 @@ var evaluationVal = yup__namespace.object({
   cv: urlVal.when("cvNeeded", thenReq(true))
 });
 /**
- * Billing
+ * Address
  */
 
 var addressVal = yup__namespace.object({
@@ -76,7 +91,11 @@ var addressVal = yup__namespace.object({
   town: yup__namespace.string().required(),
   province: yup__namespace.string().required(),
   street: yup__namespace.string().required()
-}).required();
+});
+/**
+ * Billing
+ */
+
 var billingOptions = ["me", "person", "company"];
 var billingVal = yup__namespace.object({
   billingOption: yup__namespace.string().oneOf(billingOptions).required(),
@@ -97,36 +116,35 @@ var billingVal = yup__namespace.object({
     sdi: yup__namespace.string().required()
   }).when("billingOption", thenReq(billingOptions[2])),
   // Generici
-  email: yup__namespace.string().email().when("billingOption", {
-    is: billingOptions[0],
-    then: function then(schema) {
-      return schema.nullable();
-    },
-    otherwise: function otherwise(schema) {
-      return schema.required();
-    }
-  }),
-  address: addressVal
+  email: yup__namespace.string().email().when("billingOption", thenNull(billingOptions[0])),
+  address: addressVal.required()
 });
 /**
- * Form validator
+ * Enrollment
  */
 
 var enrollVal = yup__namespace.object({
-  user: userVal,
+  courseId: yup__namespace.number().required(),
+  user: userVal.required(),
+  phone: phoneVal.required(),
   evaluationNeeded: yup__namespace["boolean"]().required(),
   evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
   billingNeeded: yup__namespace["boolean"]().required(),
   billing: billingVal.when("billingNeeded", thenReq(true))
 }).required();
 
-exports.addressVal = addressVal;
-exports.billingOptions = billingOptions;
-exports.billingVal = billingVal;
-exports.cfVal = cfVal;
-exports.enrollVal = enrollVal;
-exports.evaluationVal = evaluationVal;
-exports.phoneVal = phoneVal;
-exports.urlVal = urlVal;
-exports.userVal = userVal;
+var index = {
+  __proto__: null,
+  urlVal: urlVal,
+  cfVal: cfVal,
+  userVal: userVal,
+  phoneVal: phoneVal,
+  evaluationVal: evaluationVal,
+  addressVal: addressVal,
+  billingOptions: billingOptions,
+  billingVal: billingVal,
+  enrollVal: enrollVal
+};
+
+exports.validators = index;
 //# sourceMappingURL=index.cjs.map

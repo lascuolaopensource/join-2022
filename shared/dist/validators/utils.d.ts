@@ -8,3 +8,8 @@ export declare function thenReq(value: boolean | string): {
     then: (schema: yup.AnySchema) => any;
     otherwise: (schema: yup.AnySchema) => any;
 };
+export declare function thenNull(value: boolean | string): {
+    is: string | boolean;
+    then: (schema: yup.AnySchema) => any;
+    otherwise: (schema: yup.AnySchema) => any;
+};

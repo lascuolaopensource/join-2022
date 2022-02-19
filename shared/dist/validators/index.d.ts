@@ -5,9 +5,9 @@ import * as yup from "yup";
 export declare const urlVal: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
 export declare const cfVal: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
 /**
- * Contacts
+ * User
  */
-export declare const userVal: import("yup/lib/object").RequiredObjectSchema<{
+export declare const userVal: import("yup/lib/object").OptionalObjectSchema<{
     exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
     data: import("yup/lib/object").OptionalObjectSchema<{
         email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
@@ -30,6 +30,17 @@ export declare const userVal: import("yup/lib/object").RequiredObjectSchema<{
         surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }>>;
 }>>;
+export interface FUser {
+    exists: boolean;
+    data: {
+        email: string;
+        name: string;
+        surname: string;
+    };
+}
+/**
+ * Phone
+ */
 export declare const phoneVal: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
 /**
  * Evaluation
@@ -49,10 +60,18 @@ export declare const evaluationVal: import("yup/lib/object").OptionalObjectSchem
     cvNeeded: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
     cv: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
 }>>;
+export interface FEvaluation {
+    letterNeeded: boolean;
+    letter: string;
+    portfolioNeeded: boolean;
+    portfolio: string;
+    cvNeeded: boolean;
+    cv: string;
+}
 /**
- * Billing
+ * Address
  */
-export declare const addressVal: import("yup/lib/object").RequiredObjectSchema<{
+export declare const addressVal: import("yup/lib/object").OptionalObjectSchema<{
     cap: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     town: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     province: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
@@ -63,7 +82,17 @@ export declare const addressVal: import("yup/lib/object").RequiredObjectSchema<{
     province: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     street: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
 }>>;
-export declare const billingOptions: string[];
+export interface FAddress {
+    cap: string;
+    town: string;
+    province: string;
+    street: string;
+}
+/**
+ * Billing
+ */
+export declare const billingOptions: readonly ["me", "person", "company"];
+declare type BillingOptions = typeof billingOptions[number];
 export declare const billingVal: import("yup/lib/object").OptionalObjectSchema<{
     billingOption: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     me: import("yup/lib/object").OptionalObjectSchema<{
@@ -139,10 +168,29 @@ export declare const billingVal: import("yup/lib/object").OptionalObjectSchema<{
         street: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }>>;
 }>>;
+export interface FBilling {
+    billingOption: BillingOptions;
+    me: {
+        cf: string;
+    };
+    person: {
+        name: string;
+        surname: string;
+        cf: string;
+    };
+    company: {
+        name: string;
+        vat: string;
+        sdi: string;
+    };
+    email: string;
+    address: FAddress;
+}
 /**
- * Form validator
+ * Enrollment
  */
 export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
+    courseId: import("yup/lib/number").RequiredNumberSchema<number, import("yup/lib/types").AnyObject>;
     user: import("yup/lib/object").RequiredObjectSchema<{
         exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
         data: import("yup/lib/object").OptionalObjectSchema<{
@@ -166,6 +214,7 @@ export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
             surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         }>>;
     }>>;
+    phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     evaluationNeeded: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
     evaluation: import("yup/lib/object").OptionalObjectSchema<{
         letterNeeded: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
@@ -259,6 +308,7 @@ export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
         }>>;
     }>>;
 }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
+    courseId: import("yup/lib/number").RequiredNumberSchema<number, import("yup/lib/types").AnyObject>;
     user: import("yup/lib/object").RequiredObjectSchema<{
         exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
         data: import("yup/lib/object").OptionalObjectSchema<{
@@ -282,6 +332,7 @@ export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
             surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         }>>;
     }>>;
+    phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     evaluationNeeded: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
     evaluation: import("yup/lib/object").OptionalObjectSchema<{
         letterNeeded: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
@@ -375,3 +426,13 @@ export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
         }>>;
     }>>;
 }>>;
+export interface FEnroll {
+    courseId: number;
+    user: FUser;
+    phone: string;
+    evaluationNeeded: boolean;
+    evaluation: FEvaluation;
+    billingNeeded: boolean;
+    billing: FBilling;
+}
+export {};

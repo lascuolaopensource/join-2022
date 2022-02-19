@@ -15,6 +15,17 @@ function thenReq(value) {
     }
   };
 }
+function thenNull(value) {
+  return {
+    is: value,
+    then: function then(schema) {
+      return schema.nullable();
+    },
+    otherwise: function otherwise(schema) {
+      return schema.required();
+    }
+  };
+}
 
 /**
  * Util
@@ -23,7 +34,7 @@ function thenReq(value) {
 var urlVal = yup.string().matches(re.url);
 var cfVal = yup.string().matches(re.cf);
 /**
- * Contacts
+ * User
  */
 
 var userVal = yup.object({
@@ -33,7 +44,11 @@ var userVal = yup.object({
     name: yup.string().required(),
     surname: yup.string().required()
   }).when("exists", thenReq(false))
-}).required();
+});
+/**
+ * Phone
+ */
+
 var phoneVal = yup.string().required();
 /**
  * Evaluation
@@ -48,7 +63,7 @@ var evaluationVal = yup.object({
   cv: urlVal.when("cvNeeded", thenReq(true))
 });
 /**
- * Billing
+ * Address
  */
 
 var addressVal = yup.object({
@@ -56,7 +71,11 @@ var addressVal = yup.object({
   town: yup.string().required(),
   province: yup.string().required(),
   street: yup.string().required()
-}).required();
+});
+/**
+ * Billing
+ */
+
 var billingOptions = ["me", "person", "company"];
 var billingVal = yup.object({
   billingOption: yup.string().oneOf(billingOptions).required(),
@@ -77,28 +96,35 @@ var billingVal = yup.object({
     sdi: yup.string().required()
   }).when("billingOption", thenReq(billingOptions[2])),
   // Generici
-  email: yup.string().email().when("billingOption", {
-    is: billingOptions[0],
-    then: function then(schema) {
-      return schema.nullable();
-    },
-    otherwise: function otherwise(schema) {
-      return schema.required();
-    }
-  }),
-  address: addressVal
+  email: yup.string().email().when("billingOption", thenNull(billingOptions[0])),
+  address: addressVal.required()
 });
 /**
- * Form validator
+ * Enrollment
  */
 
 var enrollVal = yup.object({
-  user: userVal,
+  courseId: yup.number().required(),
+  user: userVal.required(),
+  phone: phoneVal.required(),
   evaluationNeeded: yup["boolean"]().required(),
   evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
   billingNeeded: yup["boolean"]().required(),
   billing: billingVal.when("billingNeeded", thenReq(true))
 }).required();
 
-export { addressVal, billingOptions, billingVal, cfVal, enrollVal, evaluationVal, phoneVal, urlVal, userVal };
+var index = {
+  __proto__: null,
+  urlVal: urlVal,
+  cfVal: cfVal,
+  userVal: userVal,
+  phoneVal: phoneVal,
+  evaluationVal: evaluationVal,
+  addressVal: addressVal,
+  billingOptions: billingOptions,
+  billingVal: billingVal,
+  enrollVal: enrollVal
+};
+
+export { index as validators };
 //# sourceMappingURL=index.module.js.map
