@@ -37,9 +37,9 @@
 	"dependencies": {
 		"get-value": "^3.0.1",
 		"graphql-request": "^3.7.0",
+		"shared": "file:../shared",
 		"svelte-forms-lib": "^2.0.0",
 		"svelte-markdown": "^0.2.2",
-		"validators": "file:../shared/validators",
 		"yup": "^0.32.11"
 	}
 }
