@@ -5,7 +5,7 @@
 	import { post, endpoints } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
+	import { f } from 'shared';
 
 	//
 
@@ -21,20 +21,16 @@
 
 	//
 
-	const initialValues = {
-		email: ''
-	};
-
-	const validationSchema = yup.object().shape({
-		email: yup.string().email().required()
-	});
-
-	async function onSubmit(values: typeof initialValues) {
+	async function onSubmit(values: f.loginEmail.leBody) {
 		// This function checks if email exists
 		try {
-			const data = await post(fetch, endpoints.checkLoginEmail, {
-				email: values.email
-			});
+			const data: f.loginEmail.leResponse = await post(
+				fetch,
+				endpoints.checkLoginEmail,
+				{
+					email: values.email
+				}
+			);
 			// We store email and username in localstorage
 			lsSet(lsKeys.email, data.email);
 			lsSet(lsKeys.username, data.username);
@@ -50,8 +46,8 @@
 	}
 
 	const formContext = createForm({
-		initialValues,
-		validationSchema,
+		initialValues: f.loginEmail.leValues,
+		validationSchema: f.loginEmail.leSchema,
 		onSubmit
 	});
 </script>
