@@ -5,7 +5,7 @@ module.exports = {
             path: "/enroll",
             handler: "enroll.index",
             config: {
-                policies: [],
+                policies: ["is-payload-valid"],
                 middlewares: [],
             },
         },
