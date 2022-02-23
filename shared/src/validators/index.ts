@@ -13,30 +13,32 @@ export const cfVal = yup.string().matches(re.cf);
  */
 
 export const userVal = yup.object({
-  exists: yup.boolean().required(),
-  data: yup
-    .object({
-      email: yup.string().email().required(),
-      name: yup.string().required(),
-      surname: yup.string().required(),
-    })
-    .when("exists", thenReq(false)),
+  email: yup.string().email().required(),
+  name: yup.string().required(),
+  surname: yup.string().required(),
 });
 
 export interface FUser {
-  exists: boolean;
-  data: {
-    email: string;
-    name: string;
-    surname: string;
-  };
+  email: string;
+  name: string;
+  surname: string;
 }
 
 /**
- * Phone
+ * Contacts
  */
 
-export const phoneVal = yup.string().required();
+export const contactsVal = yup.object({
+  userExists: yup.boolean().required(),
+  user: userVal.when("userExists", thenReq(false)),
+  phone: yup.string().required(),
+});
+
+export interface FContacts {
+  userExists: boolean;
+  user: FUser;
+  phone: string;
+}
 
 /**
  * Evaluation
@@ -145,8 +147,7 @@ export interface FBilling {
 export const enrollVal = yup
   .object({
     courseId: yup.number().required(),
-    user: userVal.required(),
-    phone: phoneVal.required(),
+    contacts: contactsVal.required(),
     evaluationNeeded: yup.boolean().required(),
     evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
     billingNeeded: yup.boolean().required(),
@@ -156,8 +157,7 @@ export const enrollVal = yup
 
 export interface FEnroll {
   courseId: number;
-  user: FUser;
-  phone: string;
+  contacts: FContacts;
   evaluationNeeded: boolean;
   evaluation: FEvaluation;
   billingNeeded: boolean;

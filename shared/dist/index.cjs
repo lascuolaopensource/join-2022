@@ -58,18 +58,19 @@ var cfVal = yup__namespace.string().matches(re.cf);
  */
 
 var userVal = yup__namespace.object({
-  exists: yup__namespace["boolean"]().required(),
-  data: yup__namespace.object({
-    email: yup__namespace.string().email().required(),
-    name: yup__namespace.string().required(),
-    surname: yup__namespace.string().required()
-  }).when("exists", thenReq(false))
+  email: yup__namespace.string().email().required(),
+  name: yup__namespace.string().required(),
+  surname: yup__namespace.string().required()
 });
 /**
- * Phone
+ * Contacts
  */
 
-var phoneVal = yup__namespace.string().required();
+var contactsVal = yup__namespace.object({
+  userExists: yup__namespace["boolean"]().required(),
+  user: userVal.when("userExists", thenReq(false)),
+  phone: yup__namespace.string().required()
+});
 /**
  * Evaluation
  */
@@ -125,8 +126,7 @@ var billingVal = yup__namespace.object({
 
 var enrollVal = yup__namespace.object({
   courseId: yup__namespace.number().required(),
-  user: userVal.required(),
-  phone: phoneVal.required(),
+  contacts: contactsVal.required(),
   evaluationNeeded: yup__namespace["boolean"]().required(),
   evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
   billingNeeded: yup__namespace["boolean"]().required(),
@@ -138,7 +138,7 @@ var index = {
   urlVal: urlVal,
   cfVal: cfVal,
   userVal: userVal,
-  phoneVal: phoneVal,
+  contactsVal: contactsVal,
   evaluationVal: evaluationVal,
   addressVal: addressVal,
   billingOptions: billingOptions,

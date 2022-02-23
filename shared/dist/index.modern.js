@@ -30,18 +30,19 @@ const cfVal = yup.string().matches(re.cf);
  */
 
 const userVal = yup.object({
-  exists: yup.boolean().required(),
-  data: yup.object({
-    email: yup.string().email().required(),
-    name: yup.string().required(),
-    surname: yup.string().required()
-  }).when("exists", thenReq(false))
+  email: yup.string().email().required(),
+  name: yup.string().required(),
+  surname: yup.string().required()
 });
 /**
- * Phone
+ * Contacts
  */
 
-const phoneVal = yup.string().required();
+const contactsVal = yup.object({
+  userExists: yup.boolean().required(),
+  user: userVal.when("userExists", thenReq(false)),
+  phone: yup.string().required()
+});
 /**
  * Evaluation
  */
@@ -97,8 +98,7 @@ const billingVal = yup.object({
 
 const enrollVal = yup.object({
   courseId: yup.number().required(),
-  user: userVal.required(),
-  phone: phoneVal.required(),
+  contacts: contactsVal.required(),
   evaluationNeeded: yup.boolean().required(),
   evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
   billingNeeded: yup.boolean().required(),
@@ -110,7 +110,7 @@ var index = {
   urlVal: urlVal,
   cfVal: cfVal,
   userVal: userVal,
-  phoneVal: phoneVal,
+  contactsVal: contactsVal,
   evaluationVal: evaluationVal,
   addressVal: addressVal,
   billingOptions: billingOptions,
