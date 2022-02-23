@@ -1,1 +1,2 @@
-export * as validators from "./validators";
+export * as f from "./forms";
+export * as t from "./types";
