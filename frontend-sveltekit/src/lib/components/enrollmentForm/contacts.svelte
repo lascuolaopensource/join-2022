@@ -1,26 +1,31 @@
 <script lang="ts">
 	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
+	import { validators } from 'shared';
 
 	import { Form, TextField, FormPage } from '$lib/components/form';
 
 	//
 
+	export let userExists: boolean;
+
 	export let onSubmit: (values) => Promise<void>;
 
-	export let initialValues = {
-		email: '',
-		name: '',
-		surname: '',
+	export let initialValues: validators.FContacts = {
+		userExists,
+		user: {
+			email: '',
+			name: '',
+			surname: ''
+		},
 		phone: ''
 	};
 
-	const validationSchema = yup.object({
-		email: yup.string().email().required(),
-		name: yup.string().required(),
-		surname: yup.string().required(),
-		phone: yup.string().required()
-	});
+	// Serve per facilitare la logica di validazione
+	if (userExists) {
+		initialValues.user = null;
+	}
+
+	const validationSchema = validators.contactsVal;
 
 	const formContext = createForm({ initialValues, validationSchema, onSubmit });
 </script>
@@ -31,9 +36,12 @@
 	<FormPage>
 		<h1>Dati di contatto</h1>
 
-		<TextField name="name" labelText="Nome" />
-		<TextField name="surname" labelText="Cognome" />
-		<TextField name="email" labelText="Email" type="email" />
+		{#if !userExists}
+			<TextField name="user.name" labelText="Nome" />
+			<TextField name="user.surname" labelText="Cognome" />
+			<TextField name="user.email" labelText="Email" type="email" />
+		{/if}
+
 		<TextField
 			name="phone"
 			labelText="Numero di telefono"

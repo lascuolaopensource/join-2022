@@ -1,82 +1,73 @@
 <script lang="ts">
 	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
+	import { validators } from 'shared';
 
 	import { Form, TextField, RadioField, FormPage } from '$lib/components/form';
 
 	//
 
-	export let onSubmit: (values: typeof initialValues) => void;
+	export let onSubmit: (values: validators.FBilling) => void;
 
-	const billingOptions = ['person', 'company'];
+	const billingOptions = validators.billingOptions;
 	const radioValues = [
-		{ value: billingOptions[0], label: 'Persona fisica' },
-		{ value: billingOptions[1], label: 'Attività commerciale' }
+		{ value: billingOptions[0], label: 'Io' },
+		{ value: billingOptions[1], label: 'Qualcun altro per me' },
+		{ value: billingOptions[2], label: 'Attività commerciale' }
 	];
 
-	export let initialValues = {
-		billingOption: '',
-		// Persona fisica
-		person: {
-			name: '',
-			surname: '',
-			cf: ''
-		},
-		// Azienda
-		company: {
-			name: '',
-			vat: '',
-			sdi: ''
-		},
-		// Generici
-		email: '',
-		address: {
-			cap: '',
-			town: '',
-			street: '',
-			province: ''
-		}
+	const me = {
+		cf: ''
 	};
 
-	const validationSchema = yup.object({
-		billingOption: yup.string().oneOf(billingOptions).required(),
-		// Persona fisica
-		person: yup.object().when('billingOption', {
-			is: billingOptions[0],
-			then: (schema) =>
-				schema.required().shape({
-					name: yup.string().required(),
-					surname: yup.string().required(),
-					cf: yup.string().required()
-				}),
-			otherwise: (schema) => schema.nullable()
-		}),
-		// Azienda
-		company: yup.object().when('billingOption', {
-			is: billingOptions[1],
-			then: (schema) =>
-				schema.required().shape({
-					name: yup.string().required(),
-					vat: yup.string().required(),
-					sdi: yup.string().required()
-				}),
-			otherwise: (schema) => schema.nullable()
-		}),
+	const person = {
+		name: '',
+		surname: '',
+		cf: ''
+	};
+
+	const company = {
+		name: '',
+		vat: '',
+		sdi: ''
+	};
+
+	const address = {
+		cap: '',
+		town: '',
+		street: '',
+		province: ''
+	};
+
+	export let initialValues: validators.FBilling = {
+		billingOption: null,
+		// Opzioni
+		me,
+		person,
+		company,
 		// Generici
-		email: yup.string().email().required(),
-		address: yup
-			.object({
-				cap: yup.string().required(),
-				town: yup.string().required(),
-				province: yup.string().required(),
-				street: yup.string().required()
-			})
-			.required()
-	});
+		email: '',
+		address
+	};
+
+	const validationSchema = validators.billingVal;
 
 	const formContext = createForm({ initialValues, validationSchema, onSubmit });
 
 	const { form } = formContext;
+
+	$: if ($form.billingOption == billingOptions[0]) {
+		$form.me = me;
+		$form.person = null;
+		$form.company = null;
+	} else if ($form.billingOption == billingOptions[1]) {
+		$form.me = null;
+		$form.person = person;
+		$form.company = null;
+	} else if ($form.billingOption == billingOptions[2]) {
+		$form.me = null;
+		$form.person = null;
+		$form.company = company;
+	}
 </script>
 
 <!--  -->
@@ -95,18 +86,23 @@
 			<hr />
 
 			{#if $form.billingOption == billingOptions[0]}
+				<!-- Io -->
+				<TextField name="me.cf" labelText="Codice fiscale" type="text" />
+			{:else if $form.billingOption == billingOptions[1]}
 				<!-- Persona fisica -->
 				<TextField name="person.name" labelText="Nome" type="text" />
 				<TextField name="person.surname" labelText="Cognome" type="text" />
 				<TextField name="person.cf" labelText="Codice fiscale" type="text" />
-			{:else if $form.billingOption == billingOptions[1]}
+			{:else if $form.billingOption == billingOptions[2]}
 				<!-- Azienda -->
 				<TextField name="company.name" labelText="Nome società" type="text" />
 				<TextField name="company.vat" labelText="Partita IVA" type="text" />
 				<TextField name="company.sdi" labelText="Codice SDI" type="text" />
 			{/if}
 
-			<TextField name="email" labelText="Email" type="email" />
+			{#if $form.billingOption != billingOptions[0]}
+				<TextField name="email" labelText="Email" type="email" />
+			{/if}
 
 			<h2>Indirizzo</h2>
 			<TextField name="address.street" labelText="Indirizzo" type="text" />

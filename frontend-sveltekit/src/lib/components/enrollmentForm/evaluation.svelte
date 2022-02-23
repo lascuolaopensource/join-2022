@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
+	import { validators } from 'shared';
 
 	import {
 		Form,
@@ -17,7 +17,7 @@
 
 	export let onSubmit: (values) => void;
 
-	export let initialValues = {
+	export let initialValues: validators.FEvaluation = {
 		letterNeeded,
 		letter: '',
 		portfolioNeeded,
@@ -26,29 +26,7 @@
 		cv: ''
 	};
 
-	const validationSchema = yup.object({
-		//
-		letterNeeded: yup.boolean().required(),
-		letter: yup.string().when('letterNeeded', {
-			is: true,
-			then: (schema) => schema.required(),
-			otherwise: (schema) => schema.nullable()
-		}),
-		//
-		portfolioNeeded: yup.boolean().required(),
-		portfolio: yup.string().when('portfolioNeeded', {
-			is: true,
-			then: (schema) => schema.required(),
-			otherwise: (schema) => schema.nullable()
-		}),
-		//
-		cvNeeded: yup.boolean().required(),
-		cv: yup.string().when('cvNeeded', {
-			is: true,
-			then: (schema) => schema.required(),
-			otherwise: (schema) => schema.nullable()
-		})
-	});
+	const validationSchema = validators.evaluationVal;
 
 	const formContext = createForm({ initialValues, validationSchema, onSubmit });
 </script>
