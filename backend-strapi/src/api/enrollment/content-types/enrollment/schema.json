@@ -42,6 +42,18 @@
       "relation": "manyToOne",
       "target": "api::course.course",
       "inversedBy": "enrollments"
+    },
+    "phoneNumber": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::phone-number.phone-number",
+      "required": true
+    },
+    "payment": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::payment.payment",
+      "inversedBy": "enrollment"
     }
   }
 }
