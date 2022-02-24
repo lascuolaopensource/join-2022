@@ -1,7 +1,6 @@
 import * as yup from "yup";
 import * as contacts from "./contacts";
 import * as evaluation from "./evaluation";
-import * as billing from "./billing";
 import { thenReq } from "./utils";
 
 /**
@@ -13,19 +12,17 @@ export const enSchema = yup.object({
     contacts: contacts.cSchema,
     evaluationNeeded: yup.boolean().required(),
     evaluation: evaluation.evSchema.when("evaluationNeeded", thenReq(true)),
-    billingNeeded: yup.boolean().required(),
-    billing: billing.bSchema.when("billingNeeded", thenReq(true)),
 });
 
+export type enFormBody = [contacts.cType, evaluation.evType?];
+
 export interface enType {
-    courseId: number;
+    courseId: string;
     contacts: contacts.cType;
     evaluationNeeded: boolean;
     evaluation: evaluation.evType;
-    billingNeeded: boolean;
-    billing: billing.bType;
 }
 
 export interface enResponse {
-    paymentId: string;
+    paymentId: string | null;
 }
