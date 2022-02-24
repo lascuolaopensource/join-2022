@@ -1,41 +1,19 @@
 "use strict";
-
-/**
- * A set of functions called "actions" for `userExists`
- */
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const shared_1 = require("shared");
 module.exports = {
-  /**
-   * This function checks if a user with some props exists
-   * The props have to match the user's fields,
-   * otherwise you get a 'Bad Request' error
-   */
-  async index(ctx) {
-    // Prendiamo il body della richiesta, che deve essere di tipo:
-    // - {username: "username"}
-    // - {email: "email"}
-    const body = ctx.request.body;
-
-    // Se l'oggetto NON:
-    // - ha solo una chiave
-    // - la chiave è "email" o "username"
-    // Allora si manda un errore
-    if (
-      !(
-        Object.keys(body).length == 1 &&
-        ("email" in body || "username" in body)
-      )
-    ) {
-      ctx.throw(400);
-    }
-
-    // Quindi si cerca per un utente con quella mail o quell'username
-    // https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/single-operations.html#findone
-    const user = await strapi.db
-      .query("plugin::users-permissions.user")
-      .findOne({ where: body });
-
-    // findOne emette 404 se non trova nulla
-    return { exists: user ? true : false };
-  },
+    async index(ctx) {
+        const body = ctx.request.body;
+        try {
+            await shared_1.f.userExists.ueSchema.validate(body);
+        }
+        catch (e) {
+            ctx.badRequest();
+        }
+        const users = await strapi.entityService.findMany("plugin::users-permissions.user", {
+            filters: body,
+        });
+        return { exists: users.length ? true : false };
+    },
 };
+//# sourceMappingURL=userexists.js.map

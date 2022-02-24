@@ -48,6 +48,33 @@ var loginEmail = {
 };
 
 /**
+ * LoginPassword
+ */
+
+var lpValues = {
+  password: ""
+};
+var lpSchema = yup.object({
+  password: yup.string().required()
+});
+
+var loginPassword = {
+    __proto__: null,
+    lpValues: lpValues,
+    lpSchema: lpSchema
+};
+
+var ueSchema = yup.object({
+  email: emailSchema.optional(),
+  username: yup.string().optional()
+});
+
+var userExists = {
+    __proto__: null,
+    ueSchema: ueSchema
+};
+
+/**
  * Util
  */
 
@@ -140,7 +167,9 @@ var index$1 = {
     billingOptions: billingOptions,
     billingVal: billingVal,
     enrollVal: enrollVal,
-    loginEmail: loginEmail
+    loginEmail: loginEmail,
+    loginPassword: loginPassword,
+    userExists: userExists
 };
 
 var PublicationState;

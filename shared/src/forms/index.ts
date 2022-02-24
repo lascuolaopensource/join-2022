@@ -164,3 +164,5 @@ export interface FEnroll {
 //
 
 export * as loginEmail from "./loginEmail";
+export * as loginPassword from "./loginPassword";
+export * as userExists from "./userExists";

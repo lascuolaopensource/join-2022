@@ -71,6 +71,33 @@
     };
 
     /**
+     * LoginPassword
+     */
+
+    var lpValues = {
+      password: ""
+    };
+    var lpSchema = yup__namespace.object({
+      password: yup__namespace.string().required()
+    });
+
+    var loginPassword = {
+        __proto__: null,
+        lpValues: lpValues,
+        lpSchema: lpSchema
+    };
+
+    var ueSchema = yup__namespace.object({
+      email: emailSchema.optional(),
+      username: yup__namespace.string().optional()
+    });
+
+    var userExists = {
+        __proto__: null,
+        ueSchema: ueSchema
+    };
+
+    /**
      * Util
      */
 
@@ -163,7 +190,9 @@
         billingOptions: billingOptions,
         billingVal: billingVal,
         enrollVal: enrollVal,
-        loginEmail: loginEmail
+        loginEmail: loginEmail,
+        loginPassword: loginPassword,
+        userExists: userExists
     };
 
     var PublicationState;

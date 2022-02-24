@@ -24,3 +24,9 @@ export function thenNull(value: boolean | string) {
         otherwise: (schema: yup.AnySchema) => schema.required(),
     };
 }
+
+export const nullOrReq = {
+    is: (v: string | boolean | number) => v == true,
+    then: (s: yup.AnySchema) => s.nullable(),
+    otherwise: (s: yup.AnySchema) => s.required(),
+};
