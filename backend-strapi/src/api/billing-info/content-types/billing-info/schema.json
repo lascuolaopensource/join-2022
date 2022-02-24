@@ -31,6 +31,12 @@
       "max": 1,
       "min": 1,
       "required": true
+    },
+    "payment": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::payment.payment",
+      "inversedBy": "billing"
     }
   }
 }

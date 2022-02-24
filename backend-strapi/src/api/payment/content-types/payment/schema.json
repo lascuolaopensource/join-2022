@@ -13,13 +13,19 @@
   "attributes": {
     "hash": {
       "type": "uid",
-      "minLength": 16
+      "required": true
+    },
+    "billing": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::billing-info.billing-info",
+      "inversedBy": "payment"
     },
     "enrollment": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::enrollment.enrollment",
-      "inversedBy": "payment"
+      "mappedBy": "payment"
     }
   }
 }

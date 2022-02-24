@@ -21,6 +21,7 @@
     "state": {
       "type": "enumeration",
       "enum": [
+        "awaitingPayment",
         "pending",
         "approved",
         "rejected"
