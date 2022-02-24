@@ -16,3 +16,8 @@ export declare function thenNull(value: boolean | string): {
     then: (schema: yup.AnySchema) => any;
     otherwise: (schema: yup.AnySchema) => any;
 };
+export declare const nullOrReq: {
+    is: (v: string | boolean | number) => boolean;
+    then: (s: yup.AnySchema) => any;
+    otherwise: (s: yup.AnySchema) => any;
+};

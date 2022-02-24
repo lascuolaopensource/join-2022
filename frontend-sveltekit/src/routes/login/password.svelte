@@ -5,7 +5,7 @@
 	import { lsGet, lsRemove, lsSet, lsKeys } from '$lib/localStorageUtils';
 
 	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
+	import { f } from 'shared';
 
 	//
 
@@ -23,15 +23,7 @@
 
 	//
 
-	const initialValues = {
-		password: ''
-	};
-
-	const validationSchema = yup.object().shape({
-		password: yup.string().required()
-	});
-
-	async function onSubmit(values: typeof initialValues) {
+	async function onSubmit(values: f.loginPassword.lpBody) {
 		try {
 			// We send the login data
 			const data = await post(fetch, endpoints.login, {
@@ -57,8 +49,8 @@
 	}
 
 	const formContext = createForm({
-		initialValues,
-		validationSchema,
+		initialValues: f.loginPassword.lpValues,
+		validationSchema: f.loginPassword.lpSchema,
 		onSubmit
 	});
 </script>

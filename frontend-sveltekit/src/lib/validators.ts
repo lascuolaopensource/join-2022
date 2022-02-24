@@ -1,9 +1,10 @@
 import { post, endpoints } from '$lib/requestUtils';
 import * as yup from 'yup';
+import type { f } from 'shared';
 
 //
 
-export function createUserExistsTest(param: 'email' | 'username') {
+export function createUserExistsTest(param: f.userExists.ueParam) {
 	return async (value, testContext) => {
 		try {
 			// Creating body for post request
@@ -11,7 +12,7 @@ export function createUserExistsTest(param: 'email' | 'username') {
 			body[param] = value;
 
 			// Sending post request
-			const res: { exists: boolean } = await post(
+			const res: f.userExists.ueResponse = await post(
 				fetch,
 				endpoints.checkUserExists,
 				body

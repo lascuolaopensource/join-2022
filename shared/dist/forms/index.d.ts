@@ -434,3 +434,5 @@ export interface FEnroll {
     billing: FBilling;
 }
 export * as loginEmail from "./loginEmail";
+export * as loginPassword from "./loginPassword";
+export * as userExists from "./userExists";

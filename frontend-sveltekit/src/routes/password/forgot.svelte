@@ -3,7 +3,7 @@
 	import { post, endpoints } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
-	import * as yup from 'yup';
+	import { f } from 'shared';
 
 	//
 
@@ -21,20 +21,10 @@
 
 	//
 
-	const initialValues = {
-		email: ''
-	};
-
-	const validationSchema = yup.object().shape({
-		email: yup.string().email().required()
-	});
-
-	async function onSubmit(values: typeof initialValues) {
+	async function onSubmit(values: f.loginEmail.leBody) {
 		try {
 			// Sending the request to the server
-			await post(fetch, endpoints.forgotPassword, {
-				email: values.email
-			});
+			await post(fetch, endpoints.forgotPassword, values);
 			// If response is ok we send the user to a confirmation message
 			goto('/password/forgotconfirm');
 		} catch (err) {
@@ -43,8 +33,8 @@
 	}
 
 	const formContext = createForm({
-		initialValues,
-		validationSchema,
+		initialValues: f.loginEmail.leValues,
+		validationSchema: f.loginEmail.leSchema,
 		onSubmit
 	});
 </script>
