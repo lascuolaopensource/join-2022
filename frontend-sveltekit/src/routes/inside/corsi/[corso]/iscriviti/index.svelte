@@ -11,70 +11,67 @@
 		return {
 			status: response.status,
 			props: {
-				course: response.ok && (await response.json())
+				slug,
+				courseRes: response.ok && (await response.json())
 			}
 		};
 	}
 </script>
 
 <script lang="ts">
-	import type { sdk } from '$lib/requestUtils';
 	import { post, endpoints, headersAuth } from '$lib/requestUtils';
 	import { user } from '$lib/stores';
 
 	import { MultipageForm, setFormError } from '$lib/components/form';
-	import {
-		Billing,
-		Contacts,
-		Evaluation
-	} from '$lib/components/enrollmentForm';
-	import type { f } from 'shared';
+	import { Contacts, Evaluation } from '$lib/components/formPages';
+	import type { t, f } from 'shared';
+	import { h } from 'shared';
+	import { goto } from '$app/navigation';
 
 	//
 
-	export let course;
-	let c = course.data[0] as sdk.CourseEntity;
+	export let slug: string;
+	export let courseRes: t.CourseEntityResponseCollection;
 
-	const pages = [Contacts, Evaluation, Billing];
-	// In extraprops bisogna passare anche 'userexists'
+	//
 
-	function isBillingNeeded(c: sdk.CourseEntity): boolean {
-		return c.attributes.price > 0;
+	// Extracting course
+	const course: t.CourseEntity = courseRes.data[0];
+	// Shorthand for course attributes
+	const c: t.Course = course.attributes;
+
+	// Getting course props
+	const letterNeeded = c.motivationalLetterNeeded;
+	const portfolioNeeded = c.portfolioNeeded;
+	const cvNeeded = c.cvNeeded;
+
+	//
+
+	// Form pages
+	const pages = [Contacts, Evaluation];
+
+	// Removing evaluation if not needed
+	if (!h.isEvaluationNeeded(c)) {
+		pages.pop();
 	}
 
-	function isEvaluationNeeded(c: sdk.CourseEntity): boolean {
-		return (
-			c.attributes.cvNeeded ||
-			c.attributes.motivationalLetterNeeded ||
-			c.attributes.portfolioNeeded
-		);
-	}
-
-	async function handleSubmit(values) {
+	async function handleSubmit(values: f.enroll.enFormBody) {
 		try {
 			// Getting evaluation
-			let evaluation = null;
-			if (isEvaluationNeeded(c)) {
+			let evaluation: f.evaluation.evType = null;
+			if (h.isEvaluationNeeded(c)) {
 				evaluation = values[1];
 			}
 
-			// Getting billing
-			let billing = null;
-			if (isEvaluationNeeded(c) && isBillingNeeded(c)) {
-				billing = values[2];
-			} else if (!isEvaluationNeeded(c) && isBillingNeeded(c)) {
-				billing = values[1];
-			}
-
+			// Building payload
 			const payload: f.enroll.enType = {
-				courseId: parseInt(c.id),
+				courseId: course.id,
 				contacts: values[0],
-				evaluationNeeded: isEvaluationNeeded(c),
-				evaluation,
-				billingNeeded: isBillingNeeded(c),
-				billing
+				evaluationNeeded: h.isEvaluationNeeded(c),
+				evaluation
 			};
 
+			// Getting response
 			const req: f.enroll.enResponse = await post(
 				fetch,
 				endpoints.enroll,
@@ -82,20 +79,29 @@
 				headersAuth()
 			);
 
-			console.log(req.paymentId);
+			console.log(req);
+
+			// Going to payment
+			if (req.paymentId) {
+				goto(`/inside/corsi/${slug}/iscriviti/payment-${req.paymentId}`);
+			} else {
+				goto(`/inside/corsi/${slug}/iscriviti/confirm`);
+			}
 		} catch (e) {
 			setFormError(e);
 		}
 	}
 </script>
 
+<!--  -->
+
 <MultipageForm
 	{pages}
 	{handleSubmit}
 	extraProps={{
-		letterNeeded: true,
-		portfolioNeeded: true,
-		cvNeeded: true,
+		letterNeeded,
+		portfolioNeeded,
+		cvNeeded,
 		userExists: $user ? true : false
 	}}
 />
