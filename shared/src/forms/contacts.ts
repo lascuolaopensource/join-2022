@@ -7,7 +7,7 @@ import { thenReq } from "./utils";
 
 export const cValues = {
     exists: false,
-    data: {
+    user: {
         email: "",
         name: "",
         surname: "",
@@ -17,7 +17,7 @@ export const cValues = {
 
 export const cSchema = yup.object({
     exists: yup.boolean().required(),
-    data: yup
+    user: yup
         .object({
             email: yup.string().email().required(),
             name: yup.string().required(),

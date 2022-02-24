@@ -5,4 +5,5 @@ declare namespace strapi {
     const utils;
     const db;
     const entityService;
+    const log;
 }
