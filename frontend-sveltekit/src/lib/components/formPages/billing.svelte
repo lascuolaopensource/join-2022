@@ -2,13 +2,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import { f } from 'shared';
 
-	import {
-		Form,
-		TextField,
-		RadioField,
-		FormPage,
-		FormError
-	} from '$lib/components/form';
+	import { Form, TextField, RadioField, FormPage } from '$lib/components/form';
 
 	//
 
@@ -90,8 +84,6 @@
 				<TextField name="address.cap" labelText="CAP" type="text" />
 			</div>
 		{/if}
-
-		<FormError />
 	</FormPage>
 </Form>
 
