@@ -27,9 +27,7 @@
 			const data: f.loginEmail.leResponse = await post(
 				fetch,
 				endpoints.checkLoginEmail,
-				{
-					email: values.email
-				}
+				values
 			);
 			// We store email and username in localstorage
 			lsSet(lsKeys.email, data.email);
