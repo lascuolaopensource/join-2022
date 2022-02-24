@@ -25,3 +25,7 @@ export interface enType {
     billingNeeded: boolean;
     billing: billing.bType;
 }
+
+export interface enResponse {
+    paymentId: string;
+}
