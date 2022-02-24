@@ -100,7 +100,7 @@ var userExists = {
 
 var cValues = {
   exists: false,
-  data: {
+  user: {
     email: "",
     name: "",
     surname: ""
@@ -109,7 +109,7 @@ var cValues = {
 };
 var cSchema = yup__namespace.object({
   exists: yup__namespace["boolean"]().required(),
-  data: yup__namespace.object({
+  user: yup__namespace.object({
     email: yup__namespace.string().email().required(),
     name: yup__namespace.string().required(),
     surname: yup__namespace.string().required()
@@ -287,6 +287,7 @@ var PublicationState;
 var Enum_Enrollment_State;
 
 (function (Enum_Enrollment_State) {
+  Enum_Enrollment_State["AwaitingPayment"] = "awaitingPayment";
   Enum_Enrollment_State["Pending"] = "pending";
   Enum_Enrollment_State["Approved"] = "approved";
   Enum_Enrollment_State["Rejected"] = "rejected";

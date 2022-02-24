@@ -72,7 +72,7 @@ var userExists = {
 
 const cValues = {
   exists: false,
-  data: {
+  user: {
     email: "",
     name: "",
     surname: ""
@@ -81,7 +81,7 @@ const cValues = {
 };
 const cSchema = yup.object({
   exists: yup.boolean().required(),
-  data: yup.object({
+  user: yup.object({
     email: yup.string().email().required(),
     name: yup.string().required(),
     surname: yup.string().required()
@@ -259,6 +259,7 @@ var PublicationState;
 var Enum_Enrollment_State;
 
 (function (Enum_Enrollment_State) {
+  Enum_Enrollment_State["AwaitingPayment"] = "awaitingPayment";
   Enum_Enrollment_State["Pending"] = "pending";
   Enum_Enrollment_State["Approved"] = "approved";
   Enum_Enrollment_State["Rejected"] = "rejected";
