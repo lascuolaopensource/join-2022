@@ -23,4 +23,4 @@ export const evSchema = yup.object({
     cv: urlSchema.when("cvNeeded", thenReq(true)),
 });
 
-export type evBody = typeof evValues;
+export type evType = typeof evValues;

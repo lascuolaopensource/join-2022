@@ -19,9 +19,9 @@ export const enSchema = yup.object({
 
 export interface enType {
     courseId: number;
-    contacts: contacts.cBody;
+    contacts: contacts.cType;
     evaluationNeeded: boolean;
-    evaluation: evaluation.evBody;
+    evaluation: evaluation.evType;
     billingNeeded: boolean;
     billing: billing.bType;
 }

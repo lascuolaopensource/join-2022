@@ -21,7 +21,7 @@
 
 	//
 
-	async function onSubmit(values: f.loginEmail.leBody) {
+	async function onSubmit(values: f.loginEmail.leType) {
 		try {
 			// Sending the request to the server
 			await post(fetch, endpoints.forgotPassword, values);

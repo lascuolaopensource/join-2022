@@ -13,7 +13,7 @@ export const leSchema = yup.object({
     email: emailSchema.required(),
 });
 
-export type leBody = typeof leValues;
+export type leType = typeof leValues;
 
 export type leResponse = {
     email: string;

@@ -27,4 +27,4 @@ export const cSchema = yup.object({
     phone: yup.string().required(),
 });
 
-export type cBody = typeof cValues;
+export type cType = typeof cValues;

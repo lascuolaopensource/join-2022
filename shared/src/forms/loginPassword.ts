@@ -12,4 +12,4 @@ export const lpSchema = yup.object({
     password: yup.string().required(),
 });
 
-export type lpBody = typeof lpValues;
+export type lpType = typeof lpValues;

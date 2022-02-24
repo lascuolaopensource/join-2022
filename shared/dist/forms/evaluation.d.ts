@@ -25,4 +25,4 @@ export declare const evSchema: import("yup/lib/object").OptionalObjectSchema<{
     cvNeeded: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
     cv: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
 }>>;
-export declare type evBody = typeof evValues;
+export declare type evType = typeof evValues;

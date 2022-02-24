@@ -35,4 +35,4 @@ export declare const cSchema: import("yup/lib/object").OptionalObjectSchema<{
     }>>;
     phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
 }>>;
-export declare type cBody = typeof cValues;
+export declare type cType = typeof cValues;

@@ -13,7 +13,7 @@ module.exports = {
      */
     async index(ctx: any): Promise<f.userExists.ueResponse> {
         // Prendiamo il body della richiesta:
-        const body: f.userExists.ueBody = ctx.request.body;
+        const body: f.userExists.ueType = ctx.request.body;
 
         // Validiamo il body
         try {
