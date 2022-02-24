@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createForm } from 'svelte-forms-lib';
-	import { validators } from 'shared';
+	import { f } from 'shared';
 
 	import {
 		Form,
@@ -11,24 +11,26 @@
 
 	//
 
-	export let letterNeeded;
-	export let portfolioNeeded;
-	export let cvNeeded;
+	export let letterNeeded: boolean;
+	export let portfolioNeeded: boolean;
+	export let cvNeeded: boolean;
 
 	export let onSubmit: (values) => void;
+	export let initialValues = f.evaluation.evValues;
 
-	export let initialValues: validators.FEvaluation = {
-		letterNeeded,
-		letter: '',
-		portfolioNeeded,
-		portfolio: '',
-		cvNeeded,
-		cv: ''
-	};
+	//
 
-	const validationSchema = validators.evaluationVal;
+	// Initial values setup
+	initialValues.letterNeeded = letterNeeded;
+	initialValues.portfolioNeeded = portfolioNeeded;
+	initialValues.cvNeeded = cvNeeded;
 
-	const formContext = createForm({ initialValues, validationSchema, onSubmit });
+	// Creating form
+	const formContext = createForm({
+		initialValues,
+		validationSchema: f.evaluation.evSchema,
+		onSubmit
+	});
 </script>
 
 <!--  -->

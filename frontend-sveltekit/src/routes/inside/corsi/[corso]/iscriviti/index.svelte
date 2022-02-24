@@ -28,7 +28,7 @@
 		Contacts,
 		Evaluation
 	} from '$lib/components/enrollmentForm';
-	import type { validators } from 'shared';
+	import type { f } from 'shared';
 
 	//
 
@@ -66,7 +66,7 @@
 				billing = values[1];
 			}
 
-			const payload: validators.FEnroll = {
+			const payload: f.enroll.enType = {
 				courseId: parseInt(c.id),
 				contacts: values[0],
 				evaluationNeeded: isEvaluationNeeded(c),
@@ -75,7 +75,14 @@
 				billing
 			};
 
-			const req = await post(fetch, endpoints.enroll, payload, headersAuth());
+			const req: f.enroll.enResponse = await post(
+				fetch,
+				endpoints.enroll,
+				payload,
+				headersAuth()
+			);
+
+			console.log(req.paymentId);
 		} catch (e) {
 			setFormError(e);
 		}

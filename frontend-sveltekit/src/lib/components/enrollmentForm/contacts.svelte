@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createForm } from 'svelte-forms-lib';
-	import { validators } from 'shared';
+	import { f } from 'shared';
 
 	import { Form, TextField, FormPage } from '$lib/components/form';
 
@@ -9,25 +9,24 @@
 	export let userExists: boolean;
 
 	export let onSubmit: (values) => Promise<void>;
+	export let initialValues = f.contacts.cValues;
 
-	export let initialValues: validators.FContacts = {
-		userExists,
-		user: {
-			email: '',
-			name: '',
-			surname: ''
-		},
-		phone: ''
-	};
+	//
+
+	// Impostiamo userExists
+	initialValues.exists = userExists;
 
 	// Serve per facilitare la logica di validazione
 	if (userExists) {
 		initialValues.user = null;
 	}
 
-	const validationSchema = validators.contactsVal;
-
-	const formContext = createForm({ initialValues, validationSchema, onSubmit });
+	// Creating form
+	const formContext = createForm({
+		initialValues,
+		validationSchema: f.contacts.cSchema,
+		onSubmit
+	});
 </script>
 
 <!--  -->

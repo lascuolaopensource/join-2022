@@ -1,72 +1,48 @@
 <script lang="ts">
 	import { createForm } from 'svelte-forms-lib';
-	import { validators } from 'shared';
+	import { f } from 'shared';
 
-	import { Form, TextField, RadioField, FormPage } from '$lib/components/form';
+	import {
+		Form,
+		TextField,
+		RadioField,
+		FormPage,
+		FormError
+	} from '$lib/components/form';
 
 	//
 
-	export let onSubmit: (values: validators.FBilling) => void;
+	export let onSubmit: (values) => void;
+	export let initialValues = f.billing.bValues;
 
-	const billingOptions = validators.billingOptions;
+	//
+
+	const billingOptions = f.billing.bOptions;
 	const radioValues = [
 		{ value: billingOptions[0], label: 'Io' },
 		{ value: billingOptions[1], label: 'Qualcun altro per me' },
 		{ value: billingOptions[2], label: 'Attività commerciale' }
 	];
 
-	const me = {
-		cf: ''
-	};
-
-	const person = {
-		name: '',
-		surname: '',
-		cf: ''
-	};
-
-	const company = {
-		name: '',
-		vat: '',
-		sdi: ''
-	};
-
-	const address = {
-		cap: '',
-		town: '',
-		street: '',
-		province: ''
-	};
-
-	export let initialValues: validators.FBilling = {
-		billingOption: null,
-		// Opzioni
-		me,
-		person,
-		company,
-		// Generici
-		email: '',
-		address
-	};
-
-	const validationSchema = validators.billingVal;
-
-	const formContext = createForm({ initialValues, validationSchema, onSubmit });
-
+	const formContext = createForm({
+		initialValues,
+		validationSchema: f.billing.bSchema,
+		onSubmit
+	});
 	const { form } = formContext;
 
 	$: if ($form.billingOption == billingOptions[0]) {
-		$form.me = me;
+		$form.me = f.billing.bMeValues;
 		$form.person = null;
 		$form.company = null;
 	} else if ($form.billingOption == billingOptions[1]) {
 		$form.me = null;
-		$form.person = person;
+		$form.person = f.billing.bPersonValues;
 		$form.company = null;
 	} else if ($form.billingOption == billingOptions[2]) {
 		$form.me = null;
 		$form.person = null;
-		$form.company = company;
+		$form.company = f.billing.bCompanyValues;
 	}
 </script>
 
@@ -114,6 +90,8 @@
 				<TextField name="address.cap" labelText="CAP" type="text" />
 			</div>
 		{/if}
+
+		<FormError />
 	</FormPage>
 </Form>
 
