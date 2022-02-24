@@ -95,31 +95,47 @@ var userExists = {
 };
 
 /**
- * Util
+ * Contacts
  */
 
-/**
- * User
- */
-
-var userVal = yup__namespace.object({
+var cValues = {
+  exists: false,
+  data: {
+    email: "",
+    name: "",
+    surname: ""
+  },
+  phone: ""
+};
+var cSchema = yup__namespace.object({
   exists: yup__namespace["boolean"]().required(),
   data: yup__namespace.object({
     email: yup__namespace.string().email().required(),
     name: yup__namespace.string().required(),
     surname: yup__namespace.string().required()
-  }).when("exists", thenReq(false))
+  }).when("exists", thenReq(false)),
+  phone: yup__namespace.string().required()
 });
-/**
- * Phone
- */
 
-var phoneVal = yup__namespace.string().required();
+var contacts = {
+    __proto__: null,
+    cValues: cValues,
+    cSchema: cSchema
+};
+
 /**
  * Evaluation
  */
 
-var evaluationVal = yup__namespace.object({
+var evValues = {
+  letterNeeded: true,
+  letter: "",
+  portfolioNeeded: true,
+  portfolio: "",
+  cvNeeded: true,
+  cv: ""
+};
+var evSchema = yup__namespace.object({
   letterNeeded: yup__namespace["boolean"]().required(),
   letter: yup__namespace.string().when("letterNeeded", thenReq(true)),
   portfolioNeeded: yup__namespace["boolean"]().required(),
@@ -127,69 +143,138 @@ var evaluationVal = yup__namespace.object({
   cvNeeded: yup__namespace["boolean"]().required(),
   cv: urlSchema.when("cvNeeded", thenReq(true))
 });
+
+var evaluation = {
+    __proto__: null,
+    evValues: evValues,
+    evSchema: evSchema
+};
+
+/**
+ * Me
+ */
+
+var bMeValues = {
+  cf: ""
+};
+var bMeSchema = yup__namespace.object({
+  cf: cfSchema
+});
+/**
+ * Person
+ */
+
+var bPersonValues = {
+  name: "",
+  surname: "",
+  cf: ""
+};
+var bPersonSchema = yup__namespace.object({
+  name: yup__namespace.string().required(),
+  surname: yup__namespace.string().required(),
+  cf: cfSchema
+});
+/**
+ * Company
+ */
+
+var bCompanyValues = {
+  name: "",
+  vat: "",
+  sdi: ""
+};
+var bCompanySchema = yup__namespace.object({
+  name: yup__namespace.string().required(),
+  vat: yup__namespace.string().required(),
+  sdi: yup__namespace.string().required()
+});
 /**
  * Address
  */
 
-var addressVal = yup__namespace.object({
+var bAddressValues = {
+  cap: "",
+  town: "",
+  street: "",
+  province: ""
+};
+var bAddressSchema = yup__namespace.object({
   cap: yup__namespace.string().required(),
   town: yup__namespace.string().required(),
   province: yup__namespace.string().required(),
   street: yup__namespace.string().required()
 });
 /**
+ * Billing options
+ */
+
+var bOptions = ["me", "person", "company"];
+/**
  * Billing
  */
 
-var billingOptions = ["me", "person", "company"];
-var billingVal = yup__namespace.object({
-  billingOption: yup__namespace.string().oneOf(billingOptions).required(),
+var bValues = {
+  billingOption: null,
+  me: bMeValues,
+  person: bPersonValues,
+  company: bCompanyValues,
+  email: "",
+  address: bAddressValues
+};
+var bSchema = yup__namespace.object({
+  // Modalità
+  billingOption: yup__namespace.string().oneOf(bOptions).required(),
   // Me
-  me: yup__namespace.object({
-    cf: cfSchema
-  }).when("billingOption", thenReq(billingOptions[0])),
-  // Persona fisica
-  person: yup__namespace.object({
-    name: yup__namespace.string().required(),
-    surname: yup__namespace.string().required(),
-    cf: cfSchema
-  }).when("billingOption", thenReq(billingOptions[1])),
-  // Azienda
-  company: yup__namespace.object({
-    name: yup__namespace.string().required(),
-    vat: yup__namespace.string().required(),
-    sdi: yup__namespace.string().required()
-  }).when("billingOption", thenReq(billingOptions[2])),
+  me: bMeSchema.when("billingOption", thenReq(bOptions[0])),
+  person: bPersonSchema.when("billingOption", thenReq(bOptions[1])),
+  company: bCompanySchema.when("billingOption", thenReq(bOptions[2])),
   // Generici
-  email: yup__namespace.string().email().when("billingOption", thenNull(billingOptions[0])),
-  address: addressVal.required()
+  email: yup__namespace.string().email().when("billingOption", thenNull(bOptions[0])),
+  address: bAddressSchema.required()
 });
+
+var billing = {
+    __proto__: null,
+    bMeValues: bMeValues,
+    bMeSchema: bMeSchema,
+    bPersonValues: bPersonValues,
+    bPersonSchema: bPersonSchema,
+    bCompanyValues: bCompanyValues,
+    bCompanySchema: bCompanySchema,
+    bAddressValues: bAddressValues,
+    bAddressSchema: bAddressSchema,
+    bOptions: bOptions,
+    bValues: bValues,
+    bSchema: bSchema
+};
+
 /**
- * Enrollment
+ * Enrollment form
  */
 
-var enrollVal = yup__namespace.object({
+var enSchema = yup__namespace.object({
   courseId: yup__namespace.number().required(),
-  user: userVal.required(),
-  phone: phoneVal.required(),
+  contacts: cSchema,
   evaluationNeeded: yup__namespace["boolean"]().required(),
-  evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
+  evaluation: evSchema.when("evaluationNeeded", thenReq(true)),
   billingNeeded: yup__namespace["boolean"]().required(),
-  billing: billingVal.when("billingNeeded", thenReq(true))
-}).required(); //
+  billing: bSchema.when("billingNeeded", thenReq(true))
+});
+
+var enroll = {
+    __proto__: null,
+    enSchema: enSchema
+};
 
 var index$1 = {
     __proto__: null,
-    userVal: userVal,
-    phoneVal: phoneVal,
-    evaluationVal: evaluationVal,
-    addressVal: addressVal,
-    billingOptions: billingOptions,
-    billingVal: billingVal,
-    enrollVal: enrollVal,
     loginEmail: loginEmail,
     loginPassword: loginPassword,
-    userExists: userExists
+    userExists: userExists,
+    enroll: enroll,
+    billing: billing,
+    contacts: contacts,
+    evaluation: evaluation
 };
 
 var PublicationState;

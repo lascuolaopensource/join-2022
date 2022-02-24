@@ -75,31 +75,47 @@ var userExists = {
 };
 
 /**
- * Util
+ * Contacts
  */
 
-/**
- * User
- */
-
-var userVal = yup.object({
+var cValues = {
+  exists: false,
+  data: {
+    email: "",
+    name: "",
+    surname: ""
+  },
+  phone: ""
+};
+var cSchema = yup.object({
   exists: yup["boolean"]().required(),
   data: yup.object({
     email: yup.string().email().required(),
     name: yup.string().required(),
     surname: yup.string().required()
-  }).when("exists", thenReq(false))
+  }).when("exists", thenReq(false)),
+  phone: yup.string().required()
 });
-/**
- * Phone
- */
 
-var phoneVal = yup.string().required();
+var contacts = {
+    __proto__: null,
+    cValues: cValues,
+    cSchema: cSchema
+};
+
 /**
  * Evaluation
  */
 
-var evaluationVal = yup.object({
+var evValues = {
+  letterNeeded: true,
+  letter: "",
+  portfolioNeeded: true,
+  portfolio: "",
+  cvNeeded: true,
+  cv: ""
+};
+var evSchema = yup.object({
   letterNeeded: yup["boolean"]().required(),
   letter: yup.string().when("letterNeeded", thenReq(true)),
   portfolioNeeded: yup["boolean"]().required(),
@@ -107,69 +123,138 @@ var evaluationVal = yup.object({
   cvNeeded: yup["boolean"]().required(),
   cv: urlSchema.when("cvNeeded", thenReq(true))
 });
+
+var evaluation = {
+    __proto__: null,
+    evValues: evValues,
+    evSchema: evSchema
+};
+
+/**
+ * Me
+ */
+
+var bMeValues = {
+  cf: ""
+};
+var bMeSchema = yup.object({
+  cf: cfSchema
+});
+/**
+ * Person
+ */
+
+var bPersonValues = {
+  name: "",
+  surname: "",
+  cf: ""
+};
+var bPersonSchema = yup.object({
+  name: yup.string().required(),
+  surname: yup.string().required(),
+  cf: cfSchema
+});
+/**
+ * Company
+ */
+
+var bCompanyValues = {
+  name: "",
+  vat: "",
+  sdi: ""
+};
+var bCompanySchema = yup.object({
+  name: yup.string().required(),
+  vat: yup.string().required(),
+  sdi: yup.string().required()
+});
 /**
  * Address
  */
 
-var addressVal = yup.object({
+var bAddressValues = {
+  cap: "",
+  town: "",
+  street: "",
+  province: ""
+};
+var bAddressSchema = yup.object({
   cap: yup.string().required(),
   town: yup.string().required(),
   province: yup.string().required(),
   street: yup.string().required()
 });
 /**
+ * Billing options
+ */
+
+var bOptions = ["me", "person", "company"];
+/**
  * Billing
  */
 
-var billingOptions = ["me", "person", "company"];
-var billingVal = yup.object({
-  billingOption: yup.string().oneOf(billingOptions).required(),
+var bValues = {
+  billingOption: null,
+  me: bMeValues,
+  person: bPersonValues,
+  company: bCompanyValues,
+  email: "",
+  address: bAddressValues
+};
+var bSchema = yup.object({
+  // Modalità
+  billingOption: yup.string().oneOf(bOptions).required(),
   // Me
-  me: yup.object({
-    cf: cfSchema
-  }).when("billingOption", thenReq(billingOptions[0])),
-  // Persona fisica
-  person: yup.object({
-    name: yup.string().required(),
-    surname: yup.string().required(),
-    cf: cfSchema
-  }).when("billingOption", thenReq(billingOptions[1])),
-  // Azienda
-  company: yup.object({
-    name: yup.string().required(),
-    vat: yup.string().required(),
-    sdi: yup.string().required()
-  }).when("billingOption", thenReq(billingOptions[2])),
+  me: bMeSchema.when("billingOption", thenReq(bOptions[0])),
+  person: bPersonSchema.when("billingOption", thenReq(bOptions[1])),
+  company: bCompanySchema.when("billingOption", thenReq(bOptions[2])),
   // Generici
-  email: yup.string().email().when("billingOption", thenNull(billingOptions[0])),
-  address: addressVal.required()
+  email: yup.string().email().when("billingOption", thenNull(bOptions[0])),
+  address: bAddressSchema.required()
 });
+
+var billing = {
+    __proto__: null,
+    bMeValues: bMeValues,
+    bMeSchema: bMeSchema,
+    bPersonValues: bPersonValues,
+    bPersonSchema: bPersonSchema,
+    bCompanyValues: bCompanyValues,
+    bCompanySchema: bCompanySchema,
+    bAddressValues: bAddressValues,
+    bAddressSchema: bAddressSchema,
+    bOptions: bOptions,
+    bValues: bValues,
+    bSchema: bSchema
+};
+
 /**
- * Enrollment
+ * Enrollment form
  */
 
-var enrollVal = yup.object({
+var enSchema = yup.object({
   courseId: yup.number().required(),
-  user: userVal.required(),
-  phone: phoneVal.required(),
+  contacts: cSchema,
   evaluationNeeded: yup["boolean"]().required(),
-  evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
+  evaluation: evSchema.when("evaluationNeeded", thenReq(true)),
   billingNeeded: yup["boolean"]().required(),
-  billing: billingVal.when("billingNeeded", thenReq(true))
-}).required(); //
+  billing: bSchema.when("billingNeeded", thenReq(true))
+});
+
+var enroll = {
+    __proto__: null,
+    enSchema: enSchema
+};
 
 var index$1 = {
     __proto__: null,
-    userVal: userVal,
-    phoneVal: phoneVal,
-    evaluationVal: evaluationVal,
-    addressVal: addressVal,
-    billingOptions: billingOptions,
-    billingVal: billingVal,
-    enrollVal: enrollVal,
     loginEmail: loginEmail,
     loginPassword: loginPassword,
-    userExists: userExists
+    userExists: userExists,
+    enroll: enroll,
+    billing: billing,
+    contacts: contacts,
+    evaluation: evaluation
 };
 
 var PublicationState;
