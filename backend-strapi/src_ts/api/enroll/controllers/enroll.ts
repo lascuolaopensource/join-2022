@@ -1,6 +1,6 @@
 "use strict";
 
-import { f, t } from "shared";
+import { f, t, h } from "shared";
 import { nanoid } from "nanoid";
 
 /**
@@ -11,11 +11,26 @@ module.exports = {
     index: async (ctx: any, next: any) => {
         strapi.log.info("In enroll controller.");
 
-        // Getting the body of the request
+        /**
+         * Getting the body of the request
+         */
+
         const body: f.enroll.enType = ctx.request.body;
         console.log(body);
 
-        // Getting the user
+        /**
+         * Getting the course
+         */
+
+        const course: t.ID<t.Course> = await strapi.entityService.findOne(
+            "api::course.course",
+            body.courseId
+        );
+
+        /**
+         * Getting the user
+         */
+
         let user: t.ID<t.UsersPermissionsUser>;
 
         // If user doesn't exist, we create it
@@ -51,28 +66,41 @@ module.exports = {
             user = ctx.state.user;
         }
 
-        // Create phone
+        /**
+         * Create phone
+         */
+
         const phoneNumberData: t.PhoneNumberInput = {
             number: body.contacts.phone,
         };
+
         const phoneNumber: t.ID<t.PhoneNumber> =
             await strapi.entityService.create(
                 "api::phone-number.phone-number",
                 { data: phoneNumberData }
             );
 
-        // Create payment
-        const paymentData: t.PaymentInput = {
-            hash: nanoid(36),
-        };
-        const payment: t.ID<t.Payment> = await strapi.entityService.create(
-            "api::payment.payment",
-            {
-                data: paymentData,
-            }
-        );
+        /**
+         * Create payment if needed
+         */
 
-        // Create enrollment
+        let paymentData: t.PaymentInput | null = null;
+        let payment: t.ID<t.Payment> | null = null;
+
+        if (h.isBillingNeeded(course)) {
+            paymentData = {
+                hash: nanoid(36),
+            };
+            payment = await strapi.entityService.create(
+                "api::payment.payment",
+                { data: paymentData }
+            );
+        }
+
+        /**
+         * Create enrollment
+         */
+
         const enrollmentData: t.EnrollmentInput = {
             owner: user.id,
             cvUrl: body.evaluation.cv,
@@ -80,9 +108,12 @@ module.exports = {
             motivationalLetter: body.evaluation.letter,
             course: body.courseId.toString(),
             phoneNumber: phoneNumber.id,
-            state: t.Enum_Enrollment_State.AwaitingPayment,
-            payment: payment.id,
+            state: payment
+                ? t.Enum_Enrollment_State.AwaitingPayment
+                : t.Enum_Enrollment_State.Pending,
+            payment: payment ? payment.id : null,
         };
+
         const enrollment = await strapi.entityService.create(
             "api::enrollment.enrollment",
             { data: enrollmentData }
@@ -90,7 +121,7 @@ module.exports = {
 
         // Returning payment id
         const response: f.enroll.enResponse = {
-            paymentId: paymentData.hash as string,
+            paymentId: paymentData ? (paymentData.hash as string) : null,
         };
         ctx.body = response;
     },

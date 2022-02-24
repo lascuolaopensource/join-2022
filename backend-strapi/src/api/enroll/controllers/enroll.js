@@ -7,6 +7,7 @@ module.exports = {
         strapi.log.info("In enroll controller.");
         const body = ctx.request.body;
         console.log(body);
+        const course = await strapi.entityService.findOne("api::course.course", body.courseId);
         let user;
         if (!body.contacts.exists) {
             const newUserData = {
@@ -30,12 +31,14 @@ module.exports = {
             number: body.contacts.phone,
         };
         const phoneNumber = await strapi.entityService.create("api::phone-number.phone-number", { data: phoneNumberData });
-        const paymentData = {
-            hash: (0, nanoid_1.nanoid)(36),
-        };
-        const payment = await strapi.entityService.create("api::payment.payment", {
-            data: paymentData,
-        });
+        let paymentData = null;
+        let payment = null;
+        if (shared_1.h.isBillingNeeded(course)) {
+            paymentData = {
+                hash: (0, nanoid_1.nanoid)(36),
+            };
+            payment = await strapi.entityService.create("api::payment.payment", { data: paymentData });
+        }
         const enrollmentData = {
             owner: user.id,
             cvUrl: body.evaluation.cv,
@@ -43,12 +46,14 @@ module.exports = {
             motivationalLetter: body.evaluation.letter,
             course: body.courseId.toString(),
             phoneNumber: phoneNumber.id,
-            state: shared_1.t.Enum_Enrollment_State.AwaitingPayment,
-            payment: payment.id,
+            state: payment
+                ? shared_1.t.Enum_Enrollment_State.AwaitingPayment
+                : shared_1.t.Enum_Enrollment_State.Pending,
+            payment: payment ? payment.id : null,
         };
         const enrollment = await strapi.entityService.create("api::enrollment.enrollment", { data: enrollmentData });
         const response = {
-            paymentId: paymentData.hash,
+            paymentId: paymentData ? paymentData.hash : null,
         };
         ctx.body = response;
     },
