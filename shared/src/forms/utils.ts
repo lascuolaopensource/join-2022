@@ -13,14 +13,22 @@ export function thenReq(value: boolean | string) {
     return {
         is: value,
         then: (schema: yup.AnySchema) => schema.required(),
-        otherwise: (schema: yup.AnySchema) => schema.nullable(),
+        otherwise: (schema: yup.AnySchema) => schema.optional(),
+    };
+}
+
+export function thenUrlReq(value: boolean | string) {
+    return {
+        is: value,
+        then: (schema: yup.AnySchema) => urlSchema.required(),
+        otherwise: (schema: yup.AnySchema) => schema.optional(),
     };
 }
 
 export function thenNull(value: boolean | string) {
     return {
         is: value,
-        then: (schema: yup.AnySchema) => schema.nullable(),
+        then: (schema: yup.AnySchema) => schema.optional(),
         otherwise: (schema: yup.AnySchema) => schema.required(),
     };
 }
