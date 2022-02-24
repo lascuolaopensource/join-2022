@@ -6,52 +6,40 @@ import * as yup from "yup";
  * User
  */
 export declare const userVal: import("yup/lib/object").OptionalObjectSchema<{
-    email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
+    data: import("yup/lib/object").OptionalObjectSchema<{
+        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
+        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    }>>;
 }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-    email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
+    data: import("yup/lib/object").OptionalObjectSchema<{
+        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
+        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    }>>;
 }>>;
 export interface FUser {
-    email: string;
-    name: string;
-    surname: string;
+    exists: boolean;
+    data: {
+        email: string;
+        name: string;
+        surname: string;
+    };
 }
 /**
- * Contacts
+ * Phone
  */
-export declare const contactsVal: import("yup/lib/object").OptionalObjectSchema<{
-    userExists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-    user: import("yup/lib/object").OptionalObjectSchema<{
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    }>>;
-    phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-}, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-    userExists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-    user: import("yup/lib/object").OptionalObjectSchema<{
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    }>>;
-    phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-}>>;
-export interface FContacts {
-    userExists: boolean;
-    user: FUser;
-    phone: string;
-}
+export declare const phoneVal: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
 /**
  * Evaluation
  */
@@ -201,9 +189,9 @@ export interface FBilling {
  */
 export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
     courseId: import("yup/lib/number").RequiredNumberSchema<number, import("yup/lib/types").AnyObject>;
-    contacts: import("yup/lib/object").RequiredObjectSchema<{
-        userExists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-        user: import("yup/lib/object").OptionalObjectSchema<{
+    user: import("yup/lib/object").RequiredObjectSchema<{
+        exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
+        data: import("yup/lib/object").OptionalObjectSchema<{
             email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
@@ -212,10 +200,9 @@ export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
             name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         }>>;
-        phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-        userExists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-        user: import("yup/lib/object").OptionalObjectSchema<{
+        exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
+        data: import("yup/lib/object").OptionalObjectSchema<{
             email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
@@ -224,8 +211,8 @@ export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
             name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         }>>;
-        phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }>>;
+    phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     evaluationNeeded: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
     evaluation: import("yup/lib/object").OptionalObjectSchema<{
         letterNeeded: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
@@ -320,9 +307,9 @@ export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
     }>>;
 }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
     courseId: import("yup/lib/number").RequiredNumberSchema<number, import("yup/lib/types").AnyObject>;
-    contacts: import("yup/lib/object").RequiredObjectSchema<{
-        userExists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-        user: import("yup/lib/object").OptionalObjectSchema<{
+    user: import("yup/lib/object").RequiredObjectSchema<{
+        exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
+        data: import("yup/lib/object").OptionalObjectSchema<{
             email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
@@ -331,10 +318,9 @@ export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
             name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         }>>;
-        phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-        userExists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-        user: import("yup/lib/object").OptionalObjectSchema<{
+        exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
+        data: import("yup/lib/object").OptionalObjectSchema<{
             email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
@@ -343,8 +329,8 @@ export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
             name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
             surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         }>>;
-        phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }>>;
+    phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     evaluationNeeded: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
     evaluation: import("yup/lib/object").OptionalObjectSchema<{
         letterNeeded: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
@@ -440,10 +426,13 @@ export declare const enrollVal: import("yup/lib/object").RequiredObjectSchema<{
 }>>;
 export interface FEnroll {
     courseId: number;
-    contacts: FContacts;
+    user: FUser;
+    phone: string;
     evaluationNeeded: boolean;
     evaluation: FEvaluation;
     billingNeeded: boolean;
     billing: FBilling;
 }
 export * as loginEmail from "./loginEmail";
+export * as loginPassword from "./loginPassword";
+export * as userExists from "./userExists";
