@@ -37,7 +37,18 @@
           return schema.required();
         },
         otherwise: function otherwise(schema) {
-          return schema.nullable();
+          return schema.optional();
+        }
+      };
+    }
+    function thenUrlReq(value) {
+      return {
+        is: value,
+        then: function then(schema) {
+          return urlSchema.required();
+        },
+        otherwise: function otherwise(schema) {
+          return schema.optional();
         }
       };
     }
@@ -45,7 +56,7 @@
       return {
         is: value,
         then: function then(schema) {
-          return schema.nullable();
+          return schema.optional();
         },
         otherwise: function otherwise(schema) {
           return schema.required();
@@ -142,15 +153,31 @@
       letterNeeded: yup__namespace["boolean"]().required(),
       letter: yup__namespace.string().when("letterNeeded", thenReq(true)),
       portfolioNeeded: yup__namespace["boolean"]().required(),
-      portfolio: urlSchema.when("portfolioNeeded", thenReq(true)),
+      portfolio: yup__namespace.string().when("portfolioNeeded", thenUrlReq(true)),
       cvNeeded: yup__namespace["boolean"]().required(),
-      cv: urlSchema.when("cvNeeded", thenReq(true))
+      cv: yup__namespace.string().when("cvNeeded", thenUrlReq(true))
     });
 
     var evaluation = {
         __proto__: null,
         evValues: evValues,
         evSchema: evSchema
+    };
+
+    /**
+     * Enrollment form
+     */
+
+    var enSchema = yup__namespace.object({
+      courseId: yup__namespace.number().required(),
+      contacts: cSchema,
+      evaluationNeeded: yup__namespace["boolean"]().required(),
+      evaluation: evSchema.when("evaluationNeeded", thenReq(true))
+    });
+
+    var enroll = {
+        __proto__: null,
+        enSchema: enSchema
     };
 
     /**
@@ -251,25 +278,7 @@
         bSchema: bSchema
     };
 
-    /**
-     * Enrollment form
-     */
-
-    var enSchema = yup__namespace.object({
-      courseId: yup__namespace.number().required(),
-      contacts: cSchema,
-      evaluationNeeded: yup__namespace["boolean"]().required(),
-      evaluation: evSchema.when("evaluationNeeded", thenReq(true)),
-      billingNeeded: yup__namespace["boolean"]().required(),
-      billing: bSchema.when("billingNeeded", thenReq(true))
-    });
-
-    var enroll = {
-        __proto__: null,
-        enSchema: enSchema
-    };
-
-    var index$1 = {
+    var index$2 = {
         __proto__: null,
         loginEmail: loginEmail,
         loginPassword: loginPassword,
@@ -296,14 +305,28 @@
       Enum_Enrollment_State["Rejected"] = "rejected";
     })(Enum_Enrollment_State || (Enum_Enrollment_State = {}));
 
-    var index = {
+    var index$1 = {
         __proto__: null,
         get PublicationState () { return PublicationState; },
         get Enum_Enrollment_State () { return Enum_Enrollment_State; }
     };
 
-    exports.f = index$1;
-    exports.t = index;
+    function isBillingNeeded(c) {
+      return c.price > 0;
+    }
+    function isEvaluationNeeded(c) {
+      return c.cvNeeded || c.motivationalLetterNeeded || c.portfolioNeeded;
+    }
+
+    var index = {
+        __proto__: null,
+        isBillingNeeded: isBillingNeeded,
+        isEvaluationNeeded: isEvaluationNeeded
+    };
+
+    exports.f = index$2;
+    exports.h = index;
+    exports.t = index$1;
 
 }));
 //# sourceMappingURL=index.umd.js.map

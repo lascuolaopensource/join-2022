@@ -11,6 +11,11 @@ export declare function thenReq(value: boolean | string): {
     then: (schema: yup.AnySchema) => any;
     otherwise: (schema: yup.AnySchema) => any;
 };
+export declare function thenUrlReq(value: boolean | string): {
+    is: string | boolean;
+    then: (schema: yup.AnySchema) => import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    otherwise: (schema: yup.AnySchema) => any;
+};
 export declare function thenNull(value: boolean | string): {
     is: string | boolean;
     then: (schema: yup.AnySchema) => any;
