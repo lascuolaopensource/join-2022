@@ -5,7 +5,8 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
-	import { FormError } from '$lib/components/form';
+
+	//
 
 	export let handleSubmit: (pagesState) => Promise<void>;
 	export let pages: Array<Function>;
@@ -14,7 +15,8 @@
 
 	//
 
-	let index = writable(0);
+	const index = writable(0);
+	const pagesState = [];
 
 	function onBack(values) {
 		pagesState[$index] = values;
@@ -22,8 +24,6 @@
 			$index -= 1;
 		}
 	}
-
-	const pagesState = [];
 
 	async function onSubmit(values) {
 		pagesState[$index] = values;
@@ -45,7 +45,6 @@
 
 <!--  -->
 
-<FormError />
 <svelte:component
 	this={pages[$index]}
 	initialValues={pagesState[$index]}

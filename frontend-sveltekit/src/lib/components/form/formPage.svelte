@@ -4,6 +4,7 @@
 	import { multipageKey } from './multipageForm.svelte';
 
 	import SubmitButton from './submitButton.svelte';
+	import FormError from './formError.svelte';
 
 	//
 	const { form } = getContext(formKey);
@@ -21,6 +22,7 @@
 <!--  -->
 
 <slot />
+<FormError />
 <div class="form__page__btns">
 	<div class="form__page__back">
 		{#if $index > 0}
