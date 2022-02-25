@@ -11,20 +11,20 @@ function thenReq(value) {
   return {
     is: value,
     then: schema => schema.required(),
-    otherwise: schema => schema.optional()
+    otherwise: schema => schema.nullable().optional()
   };
 }
 function thenUrlReq(value) {
   return {
     is: value,
     then: schema => urlSchema.required(),
-    otherwise: schema => schema.optional()
+    otherwise: schema => schema.nullable().optional()
   };
 }
 function thenNull(value) {
   return {
     is: value,
-    then: schema => schema.optional(),
+    then: schema => schema.nullable().optional(),
     otherwise: schema => schema.required()
   };
 }
@@ -203,7 +203,14 @@ const bAddressSchema = yup.object({
  * Billing options
  */
 
-const bOptions = ["me", "person", "company"];
+const bOptions = ["me", "person", "company"]; // Lista dei componenti per la zona dinamica
+// Reference: strapi-backend/src/api/billing-info/content-types/billing-info/schema.json
+
+const bOptionsComp = {
+  company: "billing.company",
+  person: "billing.person",
+  me: "billing.me"
+};
 /**
  * Billing
  */
@@ -239,8 +246,23 @@ var billing = {
     bAddressValues: bAddressValues,
     bAddressSchema: bAddressSchema,
     bOptions: bOptions,
+    bOptionsComp: bOptionsComp,
     bValues: bValues,
     bSchema: bSchema
+};
+
+/**
+ * Payment
+ */
+
+const pSchema = yup.object({
+  paymentHash: yup.string(),
+  billing: bSchema.required()
+});
+
+var payment = {
+    __proto__: null,
+    pSchema: pSchema
 };
 
 var index$2 = {
@@ -251,7 +273,8 @@ var index$2 = {
     enroll: enroll,
     billing: billing,
     contacts: contacts,
-    evaluation: evaluation
+    evaluation: evaluation,
+    payment: payment
 };
 
 var PublicationState;

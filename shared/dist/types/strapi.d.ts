@@ -256,6 +256,11 @@ export declare type ComponentBillingCompany = {
     vat: Scalars['String'];
     sdi: Scalars['String'];
 };
+export declare type ComponentBillingMe = {
+    __typename?: 'ComponentBillingMe';
+    id: Scalars['ID'];
+    cf: Scalars['String'];
+};
 export declare type ComponentBillingPerson = {
     __typename?: 'ComponentBillingPerson';
     id: Scalars['ID'];
@@ -627,7 +632,7 @@ export declare type AreaRelationResponseCollection = {
     __typename?: 'AreaRelationResponseCollection';
     data: Array<AreaEntity>;
 };
-export declare type BillingInfoDataDynamicZone = ComponentBillingCompany | ComponentBillingPerson | Error;
+export declare type BillingInfoDataDynamicZone = ComponentBillingCompany | ComponentBillingPerson | ComponentBillingMe | Error;
 export declare type BillingInfoFiltersInput = {
     id?: Maybe<IdFilterInput>;
     email?: Maybe<StringFilterInput>;
@@ -966,7 +971,7 @@ export declare type UserInfoRelationResponseCollection = {
     __typename?: 'UserInfoRelationResponseCollection';
     data: Array<UserInfoEntity>;
 };
-export declare type GenericMorph = ComponentBillingCompany | ComponentBillingPerson | ComponentLocationAddress | ComponentTimeMeeting | ComponentTimeTimeSlot | UploadFile | I18NLocale | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser | Area | BillingInfo | Course | Enrollment | Payment | PhoneNumber | UserInfo;
+export declare type GenericMorph = ComponentBillingCompany | ComponentBillingMe | ComponentBillingPerson | ComponentLocationAddress | ComponentTimeMeeting | ComponentTimeTimeSlot | UploadFile | I18NLocale | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser | Area | BillingInfo | Course | Enrollment | Payment | PhoneNumber | UserInfo;
 export declare type FileInfoInput = {
     name?: Maybe<Scalars['String']>;
     alternativeText?: Maybe<Scalars['String']>;

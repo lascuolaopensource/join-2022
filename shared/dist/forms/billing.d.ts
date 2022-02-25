@@ -72,6 +72,11 @@ export declare type bAddressType = typeof bAddressValues;
  * Billing options
  */
 export declare const bOptions: readonly ["me", "person", "company"];
+export declare const bOptionsComp: {
+    company: string;
+    person: string;
+    me: string;
+};
 export declare type bOptionsType = typeof bOptions[number];
 /**
  * Billing
