@@ -79,8 +79,6 @@
 				headersAuth()
 			);
 
-			console.log(req);
-
 			// Going to payment
 			if (req.paymentId) {
 				goto(`/shared/payment-${req.paymentId}`);
