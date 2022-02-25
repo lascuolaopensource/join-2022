@@ -11,7 +11,8 @@ const baseEndpoints = {
 	resetPassword: 'auth/reset-password',
 	checkLoginEmail: 'loginemail',
 	checkUserExists: 'userexists',
-	enroll: 'enroll'
+	enroll: 'enroll',
+	pay: 'pay'
 };
 
 /* --- */
