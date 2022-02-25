@@ -65,16 +65,27 @@ module.exports = {
             billingData.email = body.billing.email;
         }
 
-        console.log(billingData);
-
-        const billing = await strapi.entityService.create(
+        const billing: t.ID<t.BillingInfo> = await strapi.entityService.create(
             "api::billing-info.billing-info",
             { data: billingData }
         );
 
-        // // if (body.billingNeeded) {
-        // //     // Create billing
-        // // }
-        // // }
+        /**
+         * Updating payment with billing
+         */
+
+        await strapi.entityService.update("api::payment.payment", payment.id, {
+            data: {
+                billing: billing.id,
+            },
+        });
+
+        /**
+         *
+         */
+
+        // Si paga
+        // Se il pagamento ha successo si segna che ha avuto successo
+        // E l'enrollment deve essere segnato come pagato
     },
 };

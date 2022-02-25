@@ -38,8 +38,12 @@ module.exports = {
             billingData.data?.push(dataCompany);
             billingData.email = body.billing.email;
         }
-        console.log(billingData);
         const billing = await strapi.entityService.create("api::billing-info.billing-info", { data: billingData });
+        await strapi.entityService.update("api::payment.payment", payment.id, {
+            data: {
+                billing: billing.id,
+            },
+        });
     },
 };
 //# sourceMappingURL=pay.js.map
