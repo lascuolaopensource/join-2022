@@ -81,23 +81,6 @@ module.exports = {
             );
 
         /**
-         * Create payment if needed
-         */
-
-        let paymentData: t.PaymentInput | null = null;
-        let payment: t.ID<t.Payment> | null = null;
-
-        if (h.isBillingNeeded(course)) {
-            paymentData = {
-                hash: nanoid(36),
-            };
-            payment = await strapi.entityService.create(
-                "api::payment.payment",
-                { data: paymentData }
-            );
-        }
-
-        /**
          * Create enrollment
          */
 
@@ -108,16 +91,50 @@ module.exports = {
             motivationalLetter: body.evaluation.letter,
             course: body.courseId.toString(),
             phoneNumber: phoneNumber.id,
-            state: payment
-                ? t.Enum_Enrollment_State.AwaitingPayment
-                : t.Enum_Enrollment_State.Pending,
-            payment: payment ? payment.id : null,
+            state: t.Enum_Enrollment_State.Pending,
         };
 
-        const enrollment = await strapi.entityService.create(
-            "api::enrollment.enrollment",
-            { data: enrollmentData }
-        );
+        const enrollment: t.ID<t.Enrollment> =
+            await strapi.entityService.create("api::enrollment.enrollment", {
+                data: enrollmentData,
+            });
+
+        /**
+         * Create payment if needed
+         */
+
+        let paymentData: t.PaymentInput | null = null;
+        let payment: t.ID<t.Payment> | null = null;
+
+        if (h.isBillingNeeded(course)) {
+            // Creating payment
+            paymentData = {
+                enrollment: enrollment.id,
+                hash: nanoid(),
+            };
+            console.log(paymentData);
+
+            payment = await strapi.entityService.create(
+                "api::payment.payment",
+                { data: paymentData }
+            );
+
+            // Adding to enrollment
+            await strapi.entityService.update(
+                "api::enrollment.enrollment",
+                enrollment.id,
+                {
+                    data: {
+                        payment: payment?.id,
+                        state: t.Enum_Enrollment_State.AwaitingPayment,
+                    },
+                }
+            );
+        }
+
+        /**
+         * Returning
+         */
 
         // Returning payment id
         const response: f.enroll.enResponse = {

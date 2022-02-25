@@ -31,14 +31,6 @@ module.exports = {
             number: body.contacts.phone,
         };
         const phoneNumber = await strapi.entityService.create("api::phone-number.phone-number", { data: phoneNumberData });
-        let paymentData = null;
-        let payment = null;
-        if (shared_1.h.isBillingNeeded(course)) {
-            paymentData = {
-                hash: (0, nanoid_1.nanoid)(36),
-            };
-            payment = await strapi.entityService.create("api::payment.payment", { data: paymentData });
-        }
         const enrollmentData = {
             owner: user.id,
             cvUrl: body.evaluation.cv,
@@ -46,12 +38,27 @@ module.exports = {
             motivationalLetter: body.evaluation.letter,
             course: body.courseId.toString(),
             phoneNumber: phoneNumber.id,
-            state: payment
-                ? shared_1.t.Enum_Enrollment_State.AwaitingPayment
-                : shared_1.t.Enum_Enrollment_State.Pending,
-            payment: payment ? payment.id : null,
+            state: shared_1.t.Enum_Enrollment_State.Pending,
         };
-        const enrollment = await strapi.entityService.create("api::enrollment.enrollment", { data: enrollmentData });
+        const enrollment = await strapi.entityService.create("api::enrollment.enrollment", {
+            data: enrollmentData,
+        });
+        let paymentData = null;
+        let payment = null;
+        if (shared_1.h.isBillingNeeded(course)) {
+            paymentData = {
+                enrollment: enrollment.id,
+                hash: (0, nanoid_1.nanoid)(),
+            };
+            console.log(paymentData);
+            payment = await strapi.entityService.create("api::payment.payment", { data: paymentData });
+            await strapi.entityService.update("api::enrollment.enrollment", enrollment.id, {
+                data: {
+                    payment: payment?.id,
+                    state: shared_1.t.Enum_Enrollment_State.AwaitingPayment,
+                },
+            });
+        }
         const response = {
             paymentId: paymentData ? paymentData.hash : null,
         };
