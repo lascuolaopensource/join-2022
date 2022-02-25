@@ -83,9 +83,9 @@
 
 			// Going to payment
 			if (req.paymentId) {
-				goto(`/inside/corsi/${slug}/iscriviti/payment-${req.paymentId}`);
+				goto(`/shared/payment-${req.paymentId}`);
 			} else {
-				goto(`/inside/corsi/${slug}/iscriviti/confirm`);
+				goto(`/shared/${slug}/enrollConfirm`);
 			}
 		} catch (e) {
 			setFormError(e);

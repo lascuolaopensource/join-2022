@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 
 	import { headersAuth, endpoints } from '$lib/requestUtils';
 	import { lsGetToken } from '$lib/localStorageUtils';
@@ -13,7 +12,7 @@
 	// Si serve usare per "nascondere" lo slot fino a quando il caricamento non è completo
 	let loading = true;
 
-	// Quando il componente viene chiamato:
+	// Quando il componente viene chiamato la prima volta:
 	onMount(async () => {
 		// Check if JWT token exists in localStorage
 		if (lsGetToken()) {
@@ -27,7 +26,6 @@
 				$user = data;
 			}
 		}
-
 		// In any case, loading ends
 		loading = false;
 	});
