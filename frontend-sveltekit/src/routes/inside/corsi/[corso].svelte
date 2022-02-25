@@ -37,7 +37,7 @@
 	{/if}
 	<!-- Iscriviti -->
 	<div class="iscriviti-container">
-		<a class="iscriviti" href="{$page.url.pathname}/iscriviti">Iscriviti →</a>
+		<a class="iscriviti" href="/shared/{slug}/enroll">Iscriviti →</a>
 	</div>
 {:catch error}
 	{error}
