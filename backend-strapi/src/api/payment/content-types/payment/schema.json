@@ -4,7 +4,8 @@
   "info": {
     "singularName": "payment",
     "pluralName": "payments",
-    "displayName": "Payment"
+    "displayName": "Payment",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -19,13 +20,19 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::billing-info.billing-info",
-      "inversedBy": "payment"
+      "mappedBy": "payment"
     },
     "enrollment": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::enrollment.enrollment",
       "mappedBy": "payment"
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "payments"
     }
   }
 }
