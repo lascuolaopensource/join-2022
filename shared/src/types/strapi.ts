@@ -268,6 +268,12 @@ export type ComponentBillingCompany = {
   sdi: Scalars['String'];
 };
 
+export type ComponentBillingMe = {
+  __typename?: 'ComponentBillingMe';
+  id: Scalars['ID'];
+  cf: Scalars['String'];
+};
+
 export type ComponentBillingPerson = {
   __typename?: 'ComponentBillingPerson';
   id: Scalars['ID'];
@@ -696,7 +702,7 @@ export type AreaRelationResponseCollection = {
   data: Array<AreaEntity>;
 };
 
-export type BillingInfoDataDynamicZone = ComponentBillingCompany | ComponentBillingPerson | Error;
+export type BillingInfoDataDynamicZone = ComponentBillingCompany | ComponentBillingPerson | ComponentBillingMe | Error;
 
 
 export type BillingInfoFiltersInput = {
@@ -1089,7 +1095,7 @@ export type UserInfoRelationResponseCollection = {
   data: Array<UserInfoEntity>;
 };
 
-export type GenericMorph = ComponentBillingCompany | ComponentBillingPerson | ComponentLocationAddress | ComponentTimeMeeting | ComponentTimeTimeSlot | UploadFile | I18NLocale | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser | Area | BillingInfo | Course | Enrollment | Payment | PhoneNumber | UserInfo;
+export type GenericMorph = ComponentBillingCompany | ComponentBillingMe | ComponentBillingPerson | ComponentLocationAddress | ComponentTimeMeeting | ComponentTimeTimeSlot | UploadFile | I18NLocale | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser | Area | BillingInfo | Course | Enrollment | Payment | PhoneNumber | UserInfo;
 
 export type FileInfoInput = {
   name?: Maybe<Scalars['String']>;

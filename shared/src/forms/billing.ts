@@ -77,6 +77,14 @@ export type bAddressType = typeof bAddressValues;
 
 export const bOptions = ["me", "person", "company"] as const;
 
+// Lista dei componenti per la zona dinamica
+// Reference: strapi-backend/src/api/billing-info/content-types/billing-info/schema.json
+export const bOptionsComp = {
+    company: "billing.company",
+    person: "billing.person",
+    me: "billing.me",
+};
+
 export type bOptionsType = typeof bOptions[number];
 
 /**
