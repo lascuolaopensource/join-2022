@@ -964,6 +964,8 @@ export type PaymentFiltersInput = {
   billing?: Maybe<BillingInfoFiltersInput>;
   enrollment?: Maybe<EnrollmentFiltersInput>;
   owner?: Maybe<UsersPermissionsUserFiltersInput>;
+  confirmCode?: Maybe<StringFilterInput>;
+  confirmed?: Maybe<BooleanFilterInput>;
   createdAt?: Maybe<DateTimeFilterInput>;
   updatedAt?: Maybe<DateTimeFilterInput>;
   and?: Maybe<Array<Maybe<PaymentFiltersInput>>>;
@@ -976,6 +978,8 @@ export type PaymentInput = {
   billing?: Maybe<Scalars['ID']>;
   enrollment?: Maybe<Scalars['ID']>;
   owner?: Maybe<Scalars['ID']>;
+  confirmCode?: Maybe<Scalars['String']>;
+  confirmed?: Maybe<Scalars['Boolean']>;
 };
 
 export type Payment = {
@@ -984,6 +988,8 @@ export type Payment = {
   billing?: Maybe<BillingInfoEntityResponse>;
   enrollment?: Maybe<EnrollmentEntityResponse>;
   owner?: Maybe<UsersPermissionsUserEntityResponse>;
+  confirmCode: Scalars['String'];
+  confirmed?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };

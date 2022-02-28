@@ -33,6 +33,14 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "payments"
+    },
+    "confirmCode": {
+      "type": "uid",
+      "required": true
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
