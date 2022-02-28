@@ -81,7 +81,7 @@
 
 			// Going to payment
 			if (req.paymentId) {
-				goto(`/shared/payment-${req.paymentId}`);
+				goto(`/shared/payments/${req.paymentId}`);
 			} else {
 				goto(`/shared/${slug}/enrollConfirm`);
 			}
