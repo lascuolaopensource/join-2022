@@ -1,7 +1,6 @@
 "use strict";
 
-import { f, t, h } from "shared";
-import { nanoid } from "nanoid";
+import { f, t } from "shared";
 
 /**
  * A set of functions called "actions" for `pay`
