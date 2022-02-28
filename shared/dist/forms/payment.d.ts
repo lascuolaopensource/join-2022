@@ -162,3 +162,20 @@ export interface pType {
     paymentHash: string | number;
     billing: billing.bType;
 }
+export interface pResType {
+    sessionUrl: string | null;
+}
+/**
+ * Payment confirmation
+ */
+export declare const pConfirmSchema: import("yup/lib/object").OptionalObjectSchema<{
+    confirmCode: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+}, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
+    confirmCode: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+}>>;
+export interface pConfirmType {
+    confirmCode: string;
+}
+export interface pConfirmResType {
+    confirmed: boolean;
+}
