@@ -573,6 +573,7 @@ export type UsersPermissionsUserFiltersInput = {
   role?: Maybe<UsersPermissionsRoleFiltersInput>;
   enrollments?: Maybe<EnrollmentFiltersInput>;
   userInfo?: Maybe<UserInfoFiltersInput>;
+  payments?: Maybe<PaymentFiltersInput>;
   createdAt?: Maybe<DateTimeFilterInput>;
   updatedAt?: Maybe<DateTimeFilterInput>;
   and?: Maybe<Array<Maybe<UsersPermissionsUserFiltersInput>>>;
@@ -592,6 +593,7 @@ export type UsersPermissionsUserInput = {
   role?: Maybe<Scalars['ID']>;
   enrollments?: Maybe<Array<Maybe<Scalars['ID']>>>;
   userInfo?: Maybe<Scalars['ID']>;
+  payments?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type UsersPermissionsUser = {
@@ -604,6 +606,7 @@ export type UsersPermissionsUser = {
   role?: Maybe<UsersPermissionsRoleEntityResponse>;
   enrollments?: Maybe<EnrollmentRelationResponseCollection>;
   userInfo?: Maybe<UserInfoEntityResponse>;
+  payments?: Maybe<PaymentRelationResponseCollection>;
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -611,6 +614,13 @@ export type UsersPermissionsUser = {
 
 export type UsersPermissionsUserEnrollmentsArgs = {
   filters?: Maybe<EnrollmentFiltersInput>;
+  pagination?: Maybe<PaginationArg>;
+  sort?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+
+export type UsersPermissionsUserPaymentsArgs = {
+  filters?: Maybe<PaymentFiltersInput>;
   pagination?: Maybe<PaginationArg>;
   sort?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
@@ -726,7 +736,7 @@ export type BillingInfoInput = {
 export type BillingInfo = {
   __typename?: 'BillingInfo';
   address: ComponentLocationAddress;
-  email: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
   data: Array<Maybe<BillingInfoDataDynamicZone>>;
   payment?: Maybe<PaymentEntityResponse>;
   createdAt?: Maybe<Scalars['DateTime']>;
@@ -953,6 +963,7 @@ export type PaymentFiltersInput = {
   hash?: Maybe<StringFilterInput>;
   billing?: Maybe<BillingInfoFiltersInput>;
   enrollment?: Maybe<EnrollmentFiltersInput>;
+  owner?: Maybe<UsersPermissionsUserFiltersInput>;
   createdAt?: Maybe<DateTimeFilterInput>;
   updatedAt?: Maybe<DateTimeFilterInput>;
   and?: Maybe<Array<Maybe<PaymentFiltersInput>>>;
@@ -964,6 +975,7 @@ export type PaymentInput = {
   hash?: Maybe<Scalars['String']>;
   billing?: Maybe<Scalars['ID']>;
   enrollment?: Maybe<Scalars['ID']>;
+  owner?: Maybe<Scalars['ID']>;
 };
 
 export type Payment = {
@@ -971,6 +983,7 @@ export type Payment = {
   hash: Scalars['String'];
   billing?: Maybe<BillingInfoEntityResponse>;
   enrollment?: Maybe<EnrollmentEntityResponse>;
+  owner?: Maybe<UsersPermissionsUserEntityResponse>;
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -990,6 +1003,11 @@ export type PaymentEntityResponseCollection = {
   __typename?: 'PaymentEntityResponseCollection';
   data: Array<PaymentEntity>;
   meta: ResponseCollectionMeta;
+};
+
+export type PaymentRelationResponseCollection = {
+  __typename?: 'PaymentRelationResponseCollection';
+  data: Array<PaymentEntity>;
 };
 
 export type PhoneNumberFiltersInput = {
