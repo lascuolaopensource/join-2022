@@ -6,7 +6,7 @@ export const re = {
 };
 
 export const urlSchema = yup.string().matches(re.url);
-export const cfSchema = yup.string().matches(re.cf);
+export const cfSchema = yup.string().uppercase().matches(re.cf);
 export const emailSchema = yup.string().email();
 
 export function thenReq(value: boolean | string) {
