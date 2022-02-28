@@ -9,5 +9,14 @@ module.exports = {
                 middlewares: [],
             },
         },
+        {
+            method: "POST",
+            path: "/pay/confirm",
+            handler: "pay.confirm",
+            config: {
+                policies: [],
+                middlewares: [],
+            },
+        },
     ],
 };

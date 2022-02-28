@@ -12,7 +12,8 @@ const baseEndpoints = {
 	checkLoginEmail: 'loginemail',
 	checkUserExists: 'userexists',
 	enroll: 'enroll',
-	pay: 'pay'
+	pay: 'pay',
+	payConfirm: 'pay/confirm'
 };
 
 /* --- */
