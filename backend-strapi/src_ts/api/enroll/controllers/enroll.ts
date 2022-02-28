@@ -112,6 +112,8 @@ module.exports = {
                 enrollment: enrollment.id,
                 hash: nanoid(),
                 owner: user.id,
+                confirmCode: nanoid(),
+                confirmed: false,
             };
             console.log(paymentData);
 

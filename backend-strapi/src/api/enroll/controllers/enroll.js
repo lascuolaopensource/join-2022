@@ -50,6 +50,8 @@ module.exports = {
                 enrollment: enrollment.id,
                 hash: (0, nanoid_1.nanoid)(),
                 owner: user.id,
+                confirmCode: (0, nanoid_1.nanoid)(),
+                confirmed: false,
             };
             console.log(paymentData);
             payment = await strapi.entityService.create("api::payment.payment", { data: paymentData });
