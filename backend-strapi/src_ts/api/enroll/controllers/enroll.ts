@@ -111,6 +111,7 @@ module.exports = {
             paymentData = {
                 enrollment: enrollment.id,
                 hash: nanoid(),
+                owner: user.id,
             };
             console.log(paymentData);
 
