@@ -29,7 +29,7 @@
 	<textarea
 		{name}
 		id={name}
-		class="field__input"
+		class="field__input field__input__textarea"
 		class:field__input-error={$errors[name]}
 		{placeholder}
 		on:keyup={handleChange}

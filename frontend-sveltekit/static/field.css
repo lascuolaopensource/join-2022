@@ -144,3 +144,8 @@
 	color: var(--content-primary-l);
 	margin-left: var(--s-1);
 }
+
+.field__input__textarea {
+	resize: vertical;
+	min-height: 200px;
+}
