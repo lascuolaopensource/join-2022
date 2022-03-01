@@ -15,7 +15,7 @@ module.exports = {
          * Getting the body of the request
          */
 
-        const body: f.enroll.enType = ctx.request.body;
+        const body: f.enroll.enRequest = ctx.request.body;
         console.log(body);
 
         /**
@@ -106,13 +106,13 @@ module.exports = {
         let paymentData: t.PaymentInput | null = null;
         let payment: t.ID<t.Payment> | null = null;
 
-        if (h.isBillingNeeded(course)) {
+        if (h.isPaymentNeeded(course)) {
             // Creating payment
             paymentData = {
                 enrollment: enrollment.id,
-                hash: nanoid(),
+                hash: nanoid(32),
                 owner: user.id,
-                confirmCode: nanoid(),
+                confirmCode: nanoid(32),
                 confirmed: false,
             };
             console.log(paymentData);
@@ -139,10 +139,12 @@ module.exports = {
          * Returning
          */
 
-        // Returning payment id
-        const response: f.enroll.enResponse = {
-            paymentId: paymentData ? (paymentData.hash as string) : null,
-        };
-        ctx.body = response;
+        if (paymentData) {
+            return { paymentId: paymentData.hash };
+        }
+        //
+        else {
+            return {};
+        }
     },
 };

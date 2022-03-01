@@ -45,12 +45,12 @@ module.exports = {
         });
         let paymentData = null;
         let payment = null;
-        if (shared_1.h.isBillingNeeded(course)) {
+        if (shared_1.h.isPaymentNeeded(course)) {
             paymentData = {
                 enrollment: enrollment.id,
-                hash: (0, nanoid_1.nanoid)(),
+                hash: (0, nanoid_1.nanoid)(32),
                 owner: user.id,
-                confirmCode: (0, nanoid_1.nanoid)(),
+                confirmCode: (0, nanoid_1.nanoid)(32),
                 confirmed: false,
             };
             console.log(paymentData);
@@ -62,10 +62,12 @@ module.exports = {
                 },
             });
         }
-        const response = {
-            paymentId: paymentData ? paymentData.hash : null,
-        };
-        ctx.body = response;
+        if (paymentData) {
+            return { paymentId: paymentData.hash };
+        }
+        else {
+            return {};
+        }
     },
 };
 //# sourceMappingURL=enroll.js.map
