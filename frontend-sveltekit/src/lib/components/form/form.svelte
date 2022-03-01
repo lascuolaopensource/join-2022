@@ -89,7 +89,7 @@
 		}
 	});
 
-	// DEL: This function clears localstorage when submitting
+	// DEL: This function clears localstorage on component destroy
 	function clearStorage() {
 		localStorage.removeItem(formLSKey);
 	}
