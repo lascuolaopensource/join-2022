@@ -50,20 +50,6 @@
 	} = formContext;
 
 	/**
-	 * Error management
-	 */
-
-	// This functions wraps around handleSubmit
-	// Clears the error when the submit happens
-	function handleSubmitClearErr(e: Event) {
-		clearFormError();
-		handleSubmit(e);
-	}
-
-	// We also clear the error when the form is destroyed
-	onDestroy(clearFormError);
-
-	/**
 	 * Setting context
 	 */
 
@@ -84,24 +70,50 @@
 	});
 
 	/**
+	 * Error management
+	 */
+
+	// We clear the error when the form is destroyed
+	onDestroy(() => {
+		clearFormError();
+	});
+
+	/**
 	 * LocalStorage management
 	 */
 
 	//  Key used in form localstorage
 	const formLSKey = 'form-' + name;
 
-	// Saving in localstorage when editing
+	// SET: Saving in localstorage when editing
 	$: if ($state.isModified) {
 		localStorage.setItem(formLSKey, JSON.stringify($form));
 	}
 
-	// On mount, we check if there's
+	// GET: On mount, we check if there's
 	onMount(() => {
 		const formLSData = localStorage.getItem(formLSKey);
 		if (formLSData) {
 			$form = JSON.parse(formLSData);
 		}
 	});
+
+	// DEL: This function clears localstorage when submitting
+	function clearStorage() {
+		localStorage.removeItem(formLSKey);
+	}
+
+	/**
+	 * Handle submit
+	 */
+
+	// This functions wraps around handleSubmit
+	// Adds some routine tasks
+	function handleSubmitRoutine(e: Event) {
+		clearFormError();
+		clearStorage();
+		handleSubmit(e);
+	}
 
 	//
 
@@ -145,6 +157,6 @@
 
 <!--  -->
 
-<form class="form" on:submit={handleSubmitClearErr} {...$$restProps}>
+<form class="form" on:submit={handleSubmitRoutine} {...$$restProps}>
 	<slot />
 </form>
