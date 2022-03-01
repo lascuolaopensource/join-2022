@@ -1,25 +1,26 @@
 import * as yup from "yup";
 import * as contacts from "./contacts";
 import * as evaluation from "./evaluation";
-import { thenReq } from "./utils";
 
 /**
  * Enrollment form
  */
 
+export const enValues = {
+    courseId: "",
+    contacts: contacts.cValues,
+    evaluation: evaluation.evValues,
+};
+
 export const enSchema = yup.object({
-    courseId: yup.number().required(),
+    courseId: yup.string().required(),
     contacts: contacts.cSchema,
-    evaluationNeeded: yup.boolean().required(),
-    evaluation: evaluation.evSchema.when("evaluationNeeded", thenReq(true)),
+    evaluation: evaluation.evSchema,
 });
 
-export type enFormBody = [contacts.cType, evaluation.evType?];
-
-export interface enType {
+export interface enRequest {
     courseId: string;
     contacts: contacts.cType;
-    evaluationNeeded: boolean;
     evaluation: evaluation.evType;
 }
 
