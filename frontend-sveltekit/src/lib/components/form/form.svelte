@@ -3,12 +3,16 @@
 </script>
 
 <script lang="ts">
-	import { setContext, onDestroy } from 'svelte';
+	import { setContext, onDestroy, onMount } from 'svelte';
 	import { createForm } from 'svelte-forms-lib';
 	import { clearFormError } from './formError.svelte';
 	// import { writable } from 'svelte/store';
 
 	//
+
+	export let name: string = 'name';
+	// Questa variabile serve per salvare il form nel localstorage
+	// Quindi deve essere unica per ogni form
 
 	export let initialValues = {};
 	export let validate = null;
@@ -45,6 +49,10 @@
 		isSubmitting
 	} = formContext;
 
+	/**
+	 * Error management
+	 */
+
 	// This functions wraps around handleSubmit
 	// Clears the error when the submit happens
 	function handleSubmitClearErr(e: Event) {
@@ -55,7 +63,10 @@
 	// We also clear the error when the form is destroyed
 	onDestroy(clearFormError);
 
-	// Setting context
+	/**
+	 * Setting context
+	 */
+
 	setContext(formKey, {
 		form,
 		errors,
@@ -70,6 +81,26 @@
 		validateField,
 		isValid,
 		isSubmitting
+	});
+
+	/**
+	 * LocalStorage management
+	 */
+
+	//  Key used in form localstorage
+	const formLSKey = 'form-' + name;
+
+	// Saving in localstorage when editing
+	$: if ($state.isModified) {
+		localStorage.setItem(formLSKey, JSON.stringify($form));
+	}
+
+	// On mount, we check if there's
+	onMount(() => {
+		const formLSData = localStorage.getItem(formLSKey);
+		if (formLSData) {
+			$form = JSON.parse(formLSData);
+		}
 	});
 
 	//
