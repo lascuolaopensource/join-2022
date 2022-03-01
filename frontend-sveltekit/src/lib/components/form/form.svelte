@@ -70,15 +70,6 @@
 	});
 
 	/**
-	 * Error management
-	 */
-
-	// We clear the error when the form is destroyed
-	onDestroy(() => {
-		clearFormError();
-	});
-
-	/**
 	 * LocalStorage management
 	 */
 
@@ -104,16 +95,25 @@
 	}
 
 	/**
-	 * Handle submit
+	 * Error management
 	 */
 
-	// This functions wraps around handleSubmit
-	// Adds some routine tasks
-	function handleSubmitRoutine(e: Event) {
+	// Quando si effettua il submit, bisogna eliminare l'errore
+	// Lato utente è più chiaro
+	function handleSubmitClearErr(e: Event) {
 		clearFormError();
-		clearStorage();
 		handleSubmit(e);
 	}
+
+	/**
+	 * Handle form destruction
+	 */
+
+	// We clear the error and the localstorage
+	onDestroy(() => {
+		clearStorage();
+		clearFormError();
+	});
 
 	//
 
@@ -157,6 +157,6 @@
 
 <!--  -->
 
-<form class="form" on:submit={handleSubmitRoutine} {...$$restProps}>
+<form class="form" on:submit={handleSubmitClearErr}>
 	<slot />
 </form>
