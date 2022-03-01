@@ -133,15 +133,20 @@ var evaluation = {
  * Enrollment form
  */
 
+const enValues = {
+  courseId: "",
+  contacts: cValues,
+  evaluation: evValues
+};
 const enSchema = yup.object({
-  courseId: yup.number().required(),
+  courseId: yup.string().required(),
   contacts: cSchema,
-  evaluationNeeded: yup.boolean().required(),
-  evaluation: evSchema.when("evaluationNeeded", thenReq(true))
+  evaluation: evSchema
 });
 
 var enroll = {
     __proto__: null,
+    enValues: enValues,
     enSchema: enSchema
 };
 
@@ -307,7 +312,7 @@ var index$1 = {
     get Enum_Enrollment_State () { return Enum_Enrollment_State; }
 };
 
-function isBillingNeeded(c) {
+function isPaymentNeeded(c) {
   return c.price > 0;
 }
 function isEvaluationNeeded(c) {
@@ -316,7 +321,7 @@ function isEvaluationNeeded(c) {
 
 var index = {
     __proto__: null,
-    isBillingNeeded: isBillingNeeded,
+    isPaymentNeeded: isPaymentNeeded,
     isEvaluationNeeded: isEvaluationNeeded
 };
 

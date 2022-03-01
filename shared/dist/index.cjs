@@ -165,15 +165,20 @@ var evaluation = {
  * Enrollment form
  */
 
+var enValues = {
+  courseId: "",
+  contacts: cValues,
+  evaluation: evValues
+};
 var enSchema = yup__namespace.object({
-  courseId: yup__namespace.number().required(),
+  courseId: yup__namespace.string().required(),
   contacts: cSchema,
-  evaluationNeeded: yup__namespace["boolean"]().required(),
-  evaluation: evSchema.when("evaluationNeeded", thenReq(true))
+  evaluation: evSchema
 });
 
 var enroll = {
     __proto__: null,
+    enValues: enValues,
     enSchema: enSchema
 };
 
@@ -339,7 +344,7 @@ var index$1 = {
     get Enum_Enrollment_State () { return Enum_Enrollment_State; }
 };
 
-function isBillingNeeded(c) {
+function isPaymentNeeded(c) {
   return c.price > 0;
 }
 function isEvaluationNeeded(c) {
@@ -348,7 +353,7 @@ function isEvaluationNeeded(c) {
 
 var index = {
     __proto__: null,
-    isBillingNeeded: isBillingNeeded,
+    isPaymentNeeded: isPaymentNeeded,
     isEvaluationNeeded: isEvaluationNeeded
 };
 
