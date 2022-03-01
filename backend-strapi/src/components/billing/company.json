@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_billing_companies",
+  "info": {
+    "displayName": "Company",
+    "icon": "address-book"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "vat": {
+      "type": "string",
+      "required": true
+    },
+    "sdi": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

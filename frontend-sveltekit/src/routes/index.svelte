@@ -21,7 +21,7 @@
 
 	//
 
-	async function onSubmit(values: f.loginEmail.leBody) {
+	async function onSubmit(values: f.loginEmail.leType) {
 		// This function checks if email exists
 		try {
 			const data: f.loginEmail.leResponse = await post(

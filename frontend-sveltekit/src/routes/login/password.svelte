@@ -23,7 +23,7 @@
 
 	//
 
-	async function onSubmit(values: f.loginPassword.lpBody) {
+	async function onSubmit(values: f.loginPassword.lpType) {
 		try {
 			// We send the login data
 			const data = await post(fetch, endpoints.login, {

@@ -6,21 +6,29 @@ export const re = {
 };
 
 export const urlSchema = yup.string().matches(re.url);
-export const cfSchema = yup.string().matches(re.cf);
+export const cfSchema = yup.string().uppercase().matches(re.cf);
 export const emailSchema = yup.string().email();
 
 export function thenReq(value: boolean | string) {
     return {
         is: value,
         then: (schema: yup.AnySchema) => schema.required(),
-        otherwise: (schema: yup.AnySchema) => schema.nullable(),
+        otherwise: (schema: yup.AnySchema) => schema.nullable().optional(),
+    };
+}
+
+export function thenUrlReq(value: boolean | string) {
+    return {
+        is: value,
+        then: (schema: yup.AnySchema) => urlSchema.required(),
+        otherwise: (schema: yup.AnySchema) => schema.nullable().optional(),
     };
 }
 
 export function thenNull(value: boolean | string) {
     return {
         is: value,
-        then: (schema: yup.AnySchema) => schema.nullable(),
+        then: (schema: yup.AnySchema) => schema.nullable().optional(),
         otherwise: (schema: yup.AnySchema) => schema.required(),
     };
 }

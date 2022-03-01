@@ -9,7 +9,7 @@ module.exports = {
      */
     async index(ctx: any): Promise<f.loginEmail.leResponse | void> {
         // Prendiamo il body della richiesta
-        const body: f.loginEmail.leBody = ctx.request.body;
+        const body: f.loginEmail.leType = ctx.request.body;
 
         // Validiamo il body
         try {

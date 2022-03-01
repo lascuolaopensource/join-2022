@@ -63,16 +63,22 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "userInfo": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::user-info.user-info",
-      "mappedBy": "user"
-    },
     "enrollments": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::enrollment.enrollment",
+      "mappedBy": "owner"
+    },
+    "userInfo": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-info.user-info",
+      "inversedBy": "owner"
+    },
+    "payments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::payment.payment",
       "mappedBy": "owner"
     }
   }

@@ -6,7 +6,7 @@ export async function post(
 ) {
 	// We try to send the POST request
 	try {
-		// If body is not form data,
+		// If body is not form data (e.g. is an object)
 		if (!(body instanceof FormData)) {
 			// We convert it to stringified object
 			body = JSON.stringify(body);

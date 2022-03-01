@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "phone_numbers",
+  "info": {
+    "singularName": "phone-number",
+    "pluralName": "phone-numbers",
+    "displayName": "Phone Number"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "number": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

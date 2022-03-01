@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "billing_infos",
+  "info": {
+    "singularName": "billing-info",
+    "pluralName": "billing-infos",
+    "displayName": "Billing Data",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "address": {
+      "type": "component",
+      "repeatable": false,
+      "component": "location.address",
+      "required": true
+    },
+    "email": {
+      "type": "email"
+    },
+    "data": {
+      "type": "dynamiczone",
+      "components": [
+        "billing.company",
+        "billing.person",
+        "billing.me"
+      ],
+      "max": 1,
+      "min": 1,
+      "required": true
+    },
+    "payment": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::payment.payment",
+      "inversedBy": "billing"
+    }
+  }
+}

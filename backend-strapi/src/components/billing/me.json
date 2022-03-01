@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_billing_us",
+  "info": {
+    "displayName": "Me",
+    "icon": "angle-double-down"
+  },
+  "options": {},
+  "attributes": {
+    "cf": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

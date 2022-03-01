@@ -5,19 +5,26 @@ const re = {
   cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/
 };
 const urlSchema = yup.string().matches(re.url);
-const cfSchema = yup.string().matches(re.cf);
+const cfSchema = yup.string().uppercase().matches(re.cf);
 const emailSchema = yup.string().email();
 function thenReq(value) {
   return {
     is: value,
     then: schema => schema.required(),
-    otherwise: schema => schema.nullable()
+    otherwise: schema => schema.nullable().optional()
+  };
+}
+function thenUrlReq(value) {
+  return {
+    is: value,
+    then: schema => urlSchema.required(),
+    otherwise: schema => schema.nullable().optional()
   };
 }
 function thenNull(value) {
   return {
     is: value,
-    then: schema => schema.nullable(),
+    then: schema => schema.nullable().optional(),
     otherwise: schema => schema.required()
   };
 }
@@ -67,101 +74,215 @@ var userExists = {
 };
 
 /**
- * Util
+ * Contacts
  */
 
-/**
- * User
- */
-
-const userVal = yup.object({
+const cValues = {
+  exists: false,
+  user: {
+    email: "",
+    name: "",
+    surname: ""
+  },
+  phone: ""
+};
+const cSchema = yup.object({
   exists: yup.boolean().required(),
-  data: yup.object({
+  user: yup.object({
     email: yup.string().email().required(),
     name: yup.string().required(),
     surname: yup.string().required()
-  }).when("exists", thenReq(false))
+  }).when("exists", thenReq(false)),
+  phone: yup.string().required()
 });
-/**
- * Phone
- */
 
-const phoneVal = yup.string().required();
+var contacts = {
+    __proto__: null,
+    cValues: cValues,
+    cSchema: cSchema
+};
+
 /**
  * Evaluation
  */
 
-const evaluationVal = yup.object({
+const evValues = {
+  letterNeeded: true,
+  letter: "",
+  portfolioNeeded: true,
+  portfolio: "",
+  cvNeeded: true,
+  cv: ""
+};
+const evSchema = yup.object({
   letterNeeded: yup.boolean().required(),
   letter: yup.string().when("letterNeeded", thenReq(true)),
   portfolioNeeded: yup.boolean().required(),
-  portfolio: urlSchema.when("portfolioNeeded", thenReq(true)),
+  portfolio: yup.string().when("portfolioNeeded", thenUrlReq(true)),
   cvNeeded: yup.boolean().required(),
-  cv: urlSchema.when("cvNeeded", thenReq(true))
+  cv: yup.string().when("cvNeeded", thenUrlReq(true))
+});
+
+var evaluation = {
+    __proto__: null,
+    evValues: evValues,
+    evSchema: evSchema
+};
+
+/**
+ * Enrollment form
+ */
+
+const enSchema = yup.object({
+  courseId: yup.number().required(),
+  contacts: cSchema,
+  evaluationNeeded: yup.boolean().required(),
+  evaluation: evSchema.when("evaluationNeeded", thenReq(true))
+});
+
+var enroll = {
+    __proto__: null,
+    enSchema: enSchema
+};
+
+/**
+ * Me
+ */
+
+const bMeValues = {
+  cf: ""
+};
+const bMeSchema = yup.object({
+  cf: cfSchema
+});
+/**
+ * Person
+ */
+
+const bPersonValues = {
+  name: "",
+  surname: "",
+  cf: ""
+};
+const bPersonSchema = yup.object({
+  name: yup.string().required(),
+  surname: yup.string().required(),
+  cf: cfSchema
+});
+/**
+ * Company
+ */
+
+const bCompanyValues = {
+  name: "",
+  vat: "",
+  sdi: ""
+};
+const bCompanySchema = yup.object({
+  name: yup.string().required(),
+  vat: yup.string().required(),
+  sdi: yup.string().required()
 });
 /**
  * Address
  */
 
-const addressVal = yup.object({
+const bAddressValues = {
+  cap: "",
+  town: "",
+  street: "",
+  province: ""
+};
+const bAddressSchema = yup.object({
   cap: yup.string().required(),
   town: yup.string().required(),
   province: yup.string().required(),
   street: yup.string().required()
 });
 /**
+ * Billing options
+ */
+
+const bOptions = ["me", "person", "company"]; // Lista dei componenti per la zona dinamica
+// Reference: strapi-backend/src/api/billing-info/content-types/billing-info/schema.json
+
+const bOptionsComp = {
+  company: "billing.company",
+  person: "billing.person",
+  me: "billing.me"
+};
+/**
  * Billing
  */
 
-const billingOptions = ["me", "person", "company"];
-const billingVal = yup.object({
-  billingOption: yup.string().oneOf(billingOptions).required(),
+const bValues = {
+  billingOption: null,
+  me: bMeValues,
+  person: bPersonValues,
+  company: bCompanyValues,
+  email: "",
+  address: bAddressValues
+};
+const bSchema = yup.object({
+  // Modalità
+  billingOption: yup.string().oneOf(bOptions).required(),
   // Me
-  me: yup.object({
-    cf: cfSchema
-  }).when("billingOption", thenReq(billingOptions[0])),
-  // Persona fisica
-  person: yup.object({
-    name: yup.string().required(),
-    surname: yup.string().required(),
-    cf: cfSchema
-  }).when("billingOption", thenReq(billingOptions[1])),
-  // Azienda
-  company: yup.object({
-    name: yup.string().required(),
-    vat: yup.string().required(),
-    sdi: yup.string().required()
-  }).when("billingOption", thenReq(billingOptions[2])),
+  me: bMeSchema.when("billingOption", thenReq(bOptions[0])),
+  person: bPersonSchema.when("billingOption", thenReq(bOptions[1])),
+  company: bCompanySchema.when("billingOption", thenReq(bOptions[2])),
   // Generici
-  email: yup.string().email().when("billingOption", thenNull(billingOptions[0])),
-  address: addressVal.required()
+  email: yup.string().email().when("billingOption", thenNull(bOptions[0])),
+  address: bAddressSchema.required()
 });
+
+var billing = {
+    __proto__: null,
+    bMeValues: bMeValues,
+    bMeSchema: bMeSchema,
+    bPersonValues: bPersonValues,
+    bPersonSchema: bPersonSchema,
+    bCompanyValues: bCompanyValues,
+    bCompanySchema: bCompanySchema,
+    bAddressValues: bAddressValues,
+    bAddressSchema: bAddressSchema,
+    bOptions: bOptions,
+    bOptionsComp: bOptionsComp,
+    bValues: bValues,
+    bSchema: bSchema
+};
+
 /**
- * Enrollment
+ * Payment
  */
 
-const enrollVal = yup.object({
-  courseId: yup.number().required(),
-  user: userVal.required(),
-  phone: phoneVal.required(),
-  evaluationNeeded: yup.boolean().required(),
-  evaluation: evaluationVal.when("evaluationNeeded", thenReq(true)),
-  billingNeeded: yup.boolean().required(),
-  billing: billingVal.when("billingNeeded", thenReq(true))
-}).required(); //
+const pSchema = yup.object({
+  paymentHash: yup.string(),
+  billing: bSchema.required()
+});
+/**
+ * Payment confirmation
+ */
 
-var index$1 = {
+const pConfirmSchema = yup.object({
+  confirmCode: yup.string().required()
+});
+
+var payment = {
     __proto__: null,
-    userVal: userVal,
-    phoneVal: phoneVal,
-    evaluationVal: evaluationVal,
-    addressVal: addressVal,
-    billingOptions: billingOptions,
-    billingVal: billingVal,
-    enrollVal: enrollVal,
+    pSchema: pSchema,
+    pConfirmSchema: pConfirmSchema
+};
+
+var index$2 = {
+    __proto__: null,
     loginEmail: loginEmail,
     loginPassword: loginPassword,
-    userExists: userExists
+    userExists: userExists,
+    enroll: enroll,
+    billing: billing,
+    contacts: contacts,
+    evaluation: evaluation,
+    payment: payment
 };
 
 var PublicationState;
@@ -174,16 +295,30 @@ var PublicationState;
 var Enum_Enrollment_State;
 
 (function (Enum_Enrollment_State) {
+  Enum_Enrollment_State["AwaitingPayment"] = "awaitingPayment";
   Enum_Enrollment_State["Pending"] = "pending";
   Enum_Enrollment_State["Approved"] = "approved";
   Enum_Enrollment_State["Rejected"] = "rejected";
 })(Enum_Enrollment_State || (Enum_Enrollment_State = {}));
 
-var index = {
+var index$1 = {
     __proto__: null,
     get PublicationState () { return PublicationState; },
     get Enum_Enrollment_State () { return Enum_Enrollment_State; }
 };
 
-export { index$1 as f, index as t };
+function isBillingNeeded(c) {
+  return c.price > 0;
+}
+function isEvaluationNeeded(c) {
+  return c.cvNeeded || c.motivationalLetterNeeded || c.portfolioNeeded;
+}
+
+var index = {
+    __proto__: null,
+    isBillingNeeded: isBillingNeeded,
+    isEvaluationNeeded: isEvaluationNeeded
+};
+
+export { index$2 as f, index as h, index$1 as t };
 //# sourceMappingURL=index.modern.js.map

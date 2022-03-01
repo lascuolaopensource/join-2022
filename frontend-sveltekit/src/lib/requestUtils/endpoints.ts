@@ -10,7 +10,10 @@ const baseEndpoints = {
 	forgotPassword: 'auth/forgot-password',
 	resetPassword: 'auth/reset-password',
 	checkLoginEmail: 'loginemail',
-	checkUserExists: 'userexists'
+	checkUserExists: 'userexists',
+	enroll: 'enroll',
+	pay: 'pay',
+	payConfirm: 'pay/confirm'
 };
 
 /* --- */
