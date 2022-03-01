@@ -10,8 +10,8 @@ module.exports = {
             },
         },
         {
-            method: "POST",
-            path: "/pay/confirm",
+            method: "GET",
+            path: "/pay/confirm/:code",
             handler: "pay.confirm",
             config: {
                 policies: [],

@@ -127,18 +127,12 @@ module.exports = {
         strapi.log.info("In payConfirm controller");
 
         /**
-         * Getting body
-         */
-
-        const body: f.payment.pConfirmType = ctx.request.body;
-
-        /**
          * Getting payment
          */
 
         const paymentRes: [t.ID<t.Payment>] =
             await strapi.entityService.findMany("api::payment.payment", {
-                filters: { confirmCode: body.confirmCode },
+                filters: { confirmCode: ctx.params.code },
             });
         const payment = paymentRes[0];
 

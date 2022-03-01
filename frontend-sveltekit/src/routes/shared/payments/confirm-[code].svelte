@@ -4,25 +4,14 @@
 
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ params, fetch, session, stuff }) {
-		// Creating body
-		const body: f.payment.pConfirmType = {
-			confirmCode: params.code
-		};
-
 		// Sending request
-		const res = await fetch(endpoints.payConfirm, {
-			method: 'POST',
-			body: JSON.stringify(body),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
+		const res = await fetch(endpoints.payConfirm + `/${params.code}`);
 
-		const resCont = await res.json();
+		const resCont: f.payment.pConfirmResType = await res.json();
 
 		return {
 			props: {
-				confirm: resCont
+				confirm: resCont.confirmed
 			}
 		};
 	}
