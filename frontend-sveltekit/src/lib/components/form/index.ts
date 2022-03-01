@@ -1,12 +1,9 @@
 import Form from './form.svelte';
-import TextField from './textField.svelte';
-import TextAreaField from './textAreaField.svelte';
-import RadioField from './radioField.svelte';
+import TextField from './fields/textField.svelte';
+import TextAreaField from './fields/textAreaField.svelte';
+import RadioField from './fields/radioField.svelte';
 import SubmitButton from './submitButton.svelte';
-import MultipageForm from './multipageForm.svelte';
-import FormPage from './formPage.svelte';
-import FormError from './formError.svelte';
-import { setFormError } from './formError.svelte';
+import FormError, { setFormError } from './formError.svelte';
 
 export {
 	Form,
@@ -15,7 +12,5 @@ export {
 	TextAreaField,
 	SubmitButton,
 	setFormError,
-	RadioField,
-	MultipageForm,
-	FormPage
+	RadioField
 };

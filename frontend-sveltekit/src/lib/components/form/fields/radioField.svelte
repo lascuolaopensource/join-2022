@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { formKey } from './form.svelte';
+	import { formKey } from '../form.svelte';
 	import get from 'get-value';
 
-	import FieldWrapper from './fieldParts/fieldWrapper.svelte';
+	import FieldWrapper from '../fieldParts/fieldWrapper.svelte';
 
 	//
 
