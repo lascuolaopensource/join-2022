@@ -1,6 +1,6 @@
 import * as t from "../types";
 
-export function isBillingNeeded(c: t.Course): boolean {
+export function isPaymentNeeded(c: t.Course): boolean {
     return c.price > 0;
 }
 
