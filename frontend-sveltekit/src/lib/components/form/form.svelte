@@ -10,7 +10,7 @@
 
 	//
 
-	export let name: string = 'name';
+	export let lsKey: string = 'form';
 	// Questa variabile serve per salvare il form nel localstorage
 	// Quindi deve essere unica per ogni form
 
@@ -73,17 +73,14 @@
 	 * LocalStorage management
 	 */
 
-	//  Key used in form localstorage
-	const formLSKey = 'form-' + name;
-
 	// SET: Saving in localstorage when editing
 	$: if ($state.isModified) {
-		localStorage.setItem(formLSKey, JSON.stringify($form));
+		localStorage.setItem(lsKey, JSON.stringify($form));
 	}
 
 	// GET: On mount, we check if there's
 	onMount(() => {
-		const formLSData = localStorage.getItem(formLSKey);
+		const formLSData = localStorage.getItem(lsKey);
 		if (formLSData) {
 			$form = JSON.parse(formLSData);
 		}
@@ -91,7 +88,7 @@
 
 	// DEL: This function clears localstorage on component destroy
 	function clearStorage() {
-		localStorage.removeItem(formLSKey);
+		localStorage.removeItem(lsKey);
 	}
 
 	/**

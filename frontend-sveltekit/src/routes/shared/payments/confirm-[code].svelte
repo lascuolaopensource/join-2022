@@ -19,8 +19,12 @@
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { lsKeys } from '$lib/localStorageUtils';
 
 	export let confirm: boolean;
+
+	// Clearing form stored in localstorage
+	localStorage.removeItem(lsKeys.paymentForm);
 
 	if (confirm) {
 		goto('/');

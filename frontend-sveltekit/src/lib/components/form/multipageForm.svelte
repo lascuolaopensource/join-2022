@@ -3,6 +3,13 @@
 </script>
 
 <script lang="ts">
+	/**
+	 * Nota: quando si creano le pagine del form
+	 * bisogna sempre dare un nome al form, per il localstorage
+	 *
+	 * O per lo meno ricordarsi che la singola pagina salva in localstorage
+	 */
+
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 

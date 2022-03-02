@@ -4,6 +4,7 @@
 	import { post, headersAuth, endpoints } from '$lib/requestUtils';
 	import { setFormError } from '$lib/components/form';
 	import { f } from 'shared';
+	import { lsKeys } from '$lib/localStorageUtils';
 
 	import { createForm } from 'svelte-forms-lib';
 	import {
@@ -18,6 +19,9 @@
 
 	async function onSubmit(values: f.billing.bType) {
 		try {
+			// Si svuota il localstorage
+			localStorage.removeItem(lsKeys.paymentForm);
+
 			// Creazione body
 			const body: f.payment.pType = {
 				paymentHash: $page.params.hash,
@@ -80,7 +84,7 @@
 
 <!--  -->
 
-<Form {formContext}>
+<Form {formContext} lsKey={lsKeys.paymentForm}>
 	<h1>Dati di fatturazione</h1>
 
 	<RadioField name="billingOption" items={radioValues} labelText="Chi paga?" />
