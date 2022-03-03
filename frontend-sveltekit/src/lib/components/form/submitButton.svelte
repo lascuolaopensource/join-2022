@@ -7,6 +7,8 @@
 
 <!--  -->
 
-<button type="submit" class="btn btn-primary">
-	<slot />
-</button>
+<div class="submit__container">
+	<button type="submit" class="btn btn-primary">
+		<slot />
+	</button>
+</div>

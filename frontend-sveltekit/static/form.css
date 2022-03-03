@@ -1,6 +1,7 @@
 /* Form */
 
 .form {
+	position: relative;
 	width: 100%;
 }
 
@@ -41,4 +42,32 @@
 .form__err__icon,
 .form__err__btn__icon {
 	fill: white;
+}
+
+/* Form loading */
+
+.form__loading {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	margin: 0; /* This counters form > * + * */
+
+	background-color: rgba(255, 255, 255, 0.75);
+
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+}
+
+/* Submit button */
+
+.submit__container {
+	width: 100%;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-end;
 }
