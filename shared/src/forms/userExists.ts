@@ -7,7 +7,7 @@ import { emailSchema } from "./utils";
 
 export type ueParam = "email" | "username";
 
-export type ueType = Record<ueParam, string>;
+export type ueType = Partial<Record<ueParam, string>>;
 
 export const ueSchema = yup.object({
     email: emailSchema.optional(),
