@@ -1,28 +1,39 @@
-export async function post(
+export async function request(
 	fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
 	url: RequestInfo,
-	body: Record<string, any> | string,
+	method: 'GET' | 'POST' | 'PUT' = 'GET',
+	body: Record<string, any> = null,
 	headers: HeadersInit = {}
 ) {
-	// We try to send the POST request
 	try {
-		// If body is not form data (e.g. is an object)
-		if (!(body instanceof FormData)) {
-			// We convert it to stringified object
-			body = JSON.stringify(body);
-			// And we add to the headers (aka we tell to the server)
-			// that the data we're sending is actually a JSON
+		/**
+		 * Building RequestInit
+		 */
+		const init: RequestInit = {};
+
+		// Adding method
+		init.method = method;
+
+		// Adding body
+		if (body && method != 'GET') {
+			init.body = JSON.stringify(body);
 			headers['Content-Type'] = 'application/json';
 		}
 
-		// We send the request
-		const res = await fetch(url, {
-			method: 'POST',
-			body,
-			headers
-		});
+		// Adding headers
+		init.headers = headers;
 
-		// If the response is not okay
+		/**
+		 * Sending request
+		 */
+
+		const res = await fetch(url, init);
+
+		/**
+		 * Response handling
+		 */
+
+		// ERROR
 		if (!res.ok) {
 			// We have to collect the error message
 			let errorMessage;
@@ -31,7 +42,6 @@ export async function post(
 			if (res.status == 404) {
 				errorMessage = res.status;
 			}
-
 			// Otherwise we have to extract the message from the object:
 			// - The first way is strapi specific:
 			//   https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi
@@ -48,10 +58,8 @@ export async function post(
 			// Then we throw the error
 			throw new Error(errorMessage);
 		}
-
-		// If the respose is okay
+		// OK
 		else {
-			// We return the data
 			const data = await res.json();
 			return data;
 		}
