@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 
 	import { lsKeys, lsSet } from '$lib/localStorageUtils';
-	import { post, endpoints } from '$lib/requestUtils';
+	import { req } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
 	import { f } from 'shared';
@@ -24,14 +24,10 @@
 	async function onSubmit(values: f.loginEmail.leType) {
 		// This function checks if email exists
 		try {
-			const data: f.loginEmail.leResponse = await post(
-				fetch,
-				endpoints.checkLoginEmail,
-				values
-			);
+			const res = await req.loginEmail(values);
 			// We store email and username in localstorage
-			lsSet(lsKeys.email, data.email);
-			lsSet(lsKeys.username, data.username);
+			lsSet(lsKeys.email, res.email);
+			lsSet(lsKeys.username, res.username);
 			// And redirect the user to the password
 			goto('/login/password');
 		} catch (e) {

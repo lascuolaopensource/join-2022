@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 
-	import { endpoints, post } from '$lib/requestUtils';
+	import { req } from '$lib/requestUtils';
 	import { lsGet, lsRemove, lsSet, lsKeys } from '$lib/localStorageUtils';
 
 	import { createForm } from 'svelte-forms-lib';
@@ -26,13 +26,13 @@
 	async function onSubmit(values: f.loginPassword.lpType) {
 		try {
 			// We send the login data
-			const data = await post(fetch, endpoints.login, {
+			const res = await req.login({
 				identifier: lsGet(lsKeys.email),
 				password: values.password
 			});
 			// Then, if successful:
 			// - we store the token in localstorage
-			lsSet('token', data.jwt);
+			lsSet('token', res.jwt);
 			// - we empty the temporary localstorage variables
 			lsRemove(lsKeys.email);
 			lsRemove(lsKeys.username);

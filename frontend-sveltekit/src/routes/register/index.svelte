@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 
-	import { post, endpoints } from '$lib/requestUtils';
+	import { req } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -53,12 +53,9 @@
 	async function onSubmit(values: typeof initialValues) {
 		// This function registers a user
 		try {
-			// IMPORTANT! Since post is an async function, we need to put await before
-			await post(fetch, endpoints.register, {
-				username: values.username,
-				email: values.email,
-				password: values.password
-			});
+			// IMPORTANT! Since request is an async function, we need to put await before
+			const res = await req.register(values);
+			console.log(res);
 			// If successful, we redirect
 			goto('/register/thanks');
 		} catch (e) {
