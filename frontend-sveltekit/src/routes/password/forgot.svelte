@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { post, endpoints } from '$lib/requestUtils';
+	import { req } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
 	import { f } from 'shared';
@@ -24,7 +24,7 @@
 	async function onSubmit(values: f.loginEmail.leType) {
 		try {
 			// Sending the request to the server
-			await post(fetch, endpoints.forgotPassword, values);
+			await req.forgotPassword(values);
 			// If response is ok we send the user to a confirmation message
 			goto('/password/forgotconfirm');
 		} catch (err) {

@@ -1,25 +1,21 @@
 <script lang="ts" context="module">
-	import { baseUrl } from '$lib/requestUtils';
+	import { req } from '$lib/requestUtils';
 
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ params, fetch, session, stuff }) {
 		const slug = params.course;
-		const response = await fetch(
-			baseUrl + '/api/courses?filters[slug][$eq]=' + slug
-		);
+		const course = await req.getCourseBySlug(slug, fetch);
 
 		return {
-			status: response.status,
 			props: {
 				slug,
-				courseRes: response.ok && (await response.json())
+				course
 			}
 		};
 	}
 </script>
 
 <script lang="ts">
-	import { post, endpoints, headersAuth } from '$lib/requestUtils';
 	import { user } from '$lib/stores';
 
 	import { createForm } from 'svelte-forms-lib';
@@ -40,14 +36,12 @@
 	 */
 
 	export let slug: string;
-	export let courseRes: t.CourseEntityResponseCollection;
+	export let course: t.CourseEntity;
 
 	/**
 	 * Getting course info to build form
 	 */
 
-	// Extracting course
-	const course: t.CourseEntity = courseRes.data[0];
 	// Shorthand for course attributes
 	const c: t.Course = course.attributes;
 
@@ -82,12 +76,7 @@
 	async function onSubmit(values: f.enroll.enRequest) {
 		try {
 			// Getting response
-			const res: f.enroll.enResponse = await post(
-				fetch,
-				endpoints.enroll,
-				values,
-				headersAuth()
-			);
+			const res = await req.enroll(values);
 
 			// Going to payment
 			if (res.paymentId) {

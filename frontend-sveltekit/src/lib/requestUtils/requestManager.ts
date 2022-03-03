@@ -45,6 +45,13 @@ export const req = {
 		return await request(fetchFn, b + 'api/auth/local/register', 'POST', body);
 	},
 
+	userExists: async (
+		body: f.userExists.ueType,
+		fetchFn = fetch
+	): Promise<f.userExists.ueResponse> => {
+		return await request(fetchFn, b + 'api/userexists', 'POST', body);
+	},
+
 	/**
 	 * Password
 	 */
