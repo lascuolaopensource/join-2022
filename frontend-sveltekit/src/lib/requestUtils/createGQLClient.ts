@@ -1,7 +1,7 @@
 import { GraphQLClient } from 'graphql-request';
 import { getSdk } from '$lib/requestUtils/sdk';
 import { headersAuth } from './authorizationHeader';
-import { baseUrl } from './endpoints';
+import { baseUrl } from './baseUrl';
 
 const graphqlEndpoint = 'graphql';
 

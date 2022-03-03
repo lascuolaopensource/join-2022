@@ -1,7 +1,7 @@
 import type { t, f } from 'shared';
-import { request } from '.';
-import { headersAuth } from '.';
-import { baseUrl } from '.';
+import { request } from './request';
+import { headersAuth } from './authorizationHeader';
+import { baseUrl } from './baseUrl';
 
 const b = baseUrl + '/';
 
