@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
-	import { post, endpoints } from '$lib/requestUtils';
+	import { req } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -25,13 +25,15 @@
 	//
 
 	const initialValues = {
+		code: $page.url.searchParams.get('code'),
 		password: '',
-		passwordConfirm: ''
+		passwordConfirmation: ''
 	};
 
 	const validationSchema = yup.object().shape({
+		code: yup.string().required(),
 		password: passwordValidator,
-		passwordConfirm: passwordValidator.oneOf(
+		passwordConfirmation: passwordValidator.oneOf(
 			[yup.ref('password'), null],
 			'Passwords must match'
 		)
@@ -39,11 +41,7 @@
 
 	async function onSubmit(values: typeof initialValues) {
 		try {
-			await post(fetch, endpoints.resetPassword, {
-				code: $page.url.searchParams.get('code'),
-				password: values.password,
-				passwordConfirmation: values.passwordConfirm
-			});
+			await req.resetPassword(values);
 			// If response is ok we send the user to some confirmation
 			goto('/password/resetconfirm');
 		} catch (err) {
@@ -73,7 +71,7 @@
 		placeholder="Inserisci la nuova password"
 	/>
 	<TextField
-		name="passwordConfirm"
+		name="passwordConfirmation"
 		type="password"
 		labelText="Conferma password"
 		labelIcon={icons.fields.password}

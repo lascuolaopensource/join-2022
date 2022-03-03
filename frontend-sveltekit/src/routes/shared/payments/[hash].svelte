@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { post, headersAuth, endpoints } from '$lib/requestUtils';
+	import { req } from '$lib/requestUtils';
 	import { setFormError } from '$lib/components/form';
 	import { f } from 'shared';
 	import { lsKeys } from '$lib/localStorageUtils';
@@ -29,12 +29,7 @@
 			};
 
 			// Invio richiesta
-			const res: f.payment.pResType = await post(
-				fetch,
-				endpoints.pay,
-				body,
-				headersAuth()
-			);
+			const res = await req.pay(body);
 
 			// Si va al pagamento se la risposta è positiva
 			if (res.sessionUrl) {

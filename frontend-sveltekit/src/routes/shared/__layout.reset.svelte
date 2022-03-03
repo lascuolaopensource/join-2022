@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import { headersAuth, endpoints } from '$lib/requestUtils';
+	import { req } from '$lib/requestUtils';
 	import { lsGetToken } from '$lib/localStorageUtils';
 	import { user } from '$lib/stores';
 
@@ -14,20 +14,17 @@
 
 	// Quando il componente viene chiamato la prima volta:
 	onMount(async () => {
-		// Check if JWT token exists in localStorage
-		if (lsGetToken()) {
-			// Fetch the user from strapi using the token (it's inside headersAuth())
-			const res = await fetch(endpoints.me, {
-				headers: headersAuth()
-			});
-			// Saving user in store if found
-			if (res.ok) {
-				const data = await res.json();
-				$user = data;
+		try {
+			// Check if JWT token exists in localStorage
+			// Then, check if user exists and save in store
+			if (lsGetToken()) {
+				const res = await req.me(fetch);
+				$user = res;
 			}
+		} finally {
+			// In any case, loading ends
+			loading = false;
 		}
-		// In any case, loading ends
-		loading = false;
 	});
 </script>
 

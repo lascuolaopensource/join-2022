@@ -3,8 +3,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	import { headersAuth, endpoints } from '$lib/requestUtils';
-	import { lsGetToken } from '$lib/localStorageUtils';
+	import { req } from '$lib/requestUtils';
 	import { user } from '$lib/stores';
 
 	//
@@ -19,25 +18,15 @@
 
 	// Quando il componente viene chiamato:
 	onMount(async () => {
-		// Check if JWT token exists in localStorage, otherwise we send away
-		if (!lsGetToken()) {
-			goto('/');
-		}
-
-		// Fetch the user from strapi using the token (it's inside headersAuth())
-		const res = await fetch(endpoints.me, {
-			headers: headersAuth()
-		});
-
-		// Redirect if response is not ok
-		if (!res.ok) {
-			goto('/');
-		}
-		// Else we set the user in store and loading ends
-		else {
-			const data = await res.json();
-			$user = data;
+		try {
+			// Fetch the user from strapi
+			const res = await req.me();
+			$user = res;
+			// Loading ends in that case
 			loading = false;
+		} catch (e) {
+			// Redirect if user is not found
+			goto('/');
 		}
 	});
 </script>
