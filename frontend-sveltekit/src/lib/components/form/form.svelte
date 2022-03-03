@@ -6,6 +6,7 @@
 	import { setContext, onDestroy, onMount } from 'svelte';
 	import { createForm } from 'svelte-forms-lib';
 	import { clearFormError } from './formError.svelte';
+	import Spinner from '$lib/components/spinner.svelte';
 	// import { writable } from 'svelte/store';
 
 	//
@@ -155,5 +156,10 @@
 <!--  -->
 
 <form class="form" on:submit={handleSubmitClearErr}>
+	<!-- Content -->
 	<slot />
+	<!-- Loading spinner -->
+	{#if $isSubmitting}
+		<div class="form__loading"><Spinner /></div>
+	{/if}
 </form>
