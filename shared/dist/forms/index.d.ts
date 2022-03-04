@@ -6,3 +6,4 @@ export * as billing from "./billing";
 export * as contacts from "./contacts";
 export * as evaluation from "./evaluation";
 export * as payment from "./payment";
+export * as register from "./register";
