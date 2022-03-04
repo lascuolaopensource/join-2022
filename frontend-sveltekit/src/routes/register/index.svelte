@@ -24,20 +24,15 @@
 	//
 
 	const initialValues = {
-		username: '',
+		name: '',
+		surname: '',
 		email: '',
 		password: ''
 	};
 
 	const validationSchema = yup.object().shape({
-		username: yup
-			.string()
-			.required()
-			.test({
-				name: 'usernameExists',
-				message: "L'username esiste già",
-				test: createUserExistsTest('username')
-			}),
+		name: yup.string().required(),
+		surname: yup.string().required(),
 		email: yup
 			.string()
 			.email()
@@ -53,9 +48,17 @@
 	async function onSubmit(values: typeof initialValues) {
 		// This function registers a user
 		try {
-			// IMPORTANT! Since request is an async function, we need to put await before
-			const res = await req.register(values);
-			console.log(res);
+			// Creating user
+			const res = await req.register({
+				username: values.email,
+				email: values.email,
+				password: values.password
+			});
+			// // Creating user-info
+			// const userInfo = await req.createUserInfo(
+			// 	{ name: values.name, surname: values.surname, owner: res.user.id },
+			// 	res.jwt
+			// );
 			// If successful, we redirect
 			goto('/register/thanks');
 		} catch (e) {
@@ -78,11 +81,18 @@
 
 <Form {formContext}>
 	<TextField
-		name="username"
+		name="name"
 		type="text"
-		labelText="Username"
+		labelText="Nome"
 		labelIcon={icons.fields.username}
-		placeholder="Inserisci il tuo username"
+		placeholder="Inserisci il tuo nome"
+	/>
+	<TextField
+		name="surname"
+		type="text"
+		labelText="Cognome"
+		labelIcon={icons.fields.username}
+		placeholder="Inserisci il tuo cognome"
 	/>
 	<TextField
 		name="email"
