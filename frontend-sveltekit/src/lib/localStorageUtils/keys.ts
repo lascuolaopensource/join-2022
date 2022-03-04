@@ -1,6 +1,6 @@
 export const lsKeys = {
 	email: 'email',
-	username: 'username',
+	name: 'name',
 	token: 'token',
 	course: 'course',
 	paymentForm: 'paymentForm'
