@@ -4,7 +4,7 @@
     "compilerOptions": {
         "outDir": "./src",
         "rootDir": "./src_ts",
-        "sourceMap": true,
+        "sourceMap": false,
         "removeComments": true
     }
 }
