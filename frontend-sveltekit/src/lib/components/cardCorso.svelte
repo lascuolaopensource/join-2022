@@ -21,6 +21,10 @@
 		background-color: rgba(0, 0, 0, 0.1);
 	}
 
+	a:hover {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+
 	.arrow {
 		width: 100%;
 		text-align: right;

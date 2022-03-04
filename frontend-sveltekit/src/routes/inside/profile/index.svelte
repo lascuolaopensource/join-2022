@@ -24,8 +24,10 @@
 	// }
 </script>
 
-<input {readonly} type="text" bind:value={username} />
-<input {readonly} type="text" bind:value={email} />
+<!-- <input {readonly} type="text" bind:value={username} />
+<input {readonly} type="text" bind:value={email} /> -->
+
+Qui ci saranno le tue info personali
 
 <!-- {#if readonly}
 	<button on:click={edit}>Edit data</button>

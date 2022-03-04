@@ -22,3 +22,4 @@ le tue iscrizioni ai corsi:
 		{/each}
 	</ul>
 {/if} -->
+Qui ci saranno tutti i tuoi corsi

@@ -73,9 +73,9 @@
 
 	/* Main navbar */
 	--nav-main-bg: black;
-	--nav-main-item-bg: transparent;
+	--nav-main-item-bg: rgba(255, 255, 255, 0.2);
 	--nav-main-item-text: white;
-	--nav-main-item-hover: rgba(255, 255, 255, 0.3);
+	--nav-main-item-hover: rgba(255, 255, 255, 0.4);
 	--nav-main-item-bg-active: white;
 	--nav-main-item-text-active: black;
 

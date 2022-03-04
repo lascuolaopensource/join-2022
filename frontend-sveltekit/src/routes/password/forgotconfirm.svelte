@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 </script>
 

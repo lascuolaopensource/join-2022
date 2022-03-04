@@ -7,8 +7,8 @@
 	async function logout() {
 		// We remove the token from localstorage
 		lsRemove(lsKeys.token);
-		// // And the user from the store
-		// $user = null;
+		// And the user from the store
+		$user = null;
 		// Then we redirect
 		await goto('/');
 	}

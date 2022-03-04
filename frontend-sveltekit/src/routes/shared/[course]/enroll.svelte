@@ -104,6 +104,13 @@
 
 <!--  -->
 
+{#if $user}
+	<a class="backlink" href="/inside/corsi/{slug}">Torna al corso</a>
+{/if}
+
+<h2>{course.attributes.title}</h2>
+<h1>Iscriviti</h1>
+
 <Form {formContext}>
 	<!-- Contatti -->
 
@@ -152,3 +159,10 @@
 		{/if}
 	</SubmitButton>
 </Form>
+
+<!--  -->
+<style>
+	h1 {
+		margin-bottom: var(--s-3);
+	}
+</style>
