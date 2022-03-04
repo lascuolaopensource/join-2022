@@ -35,7 +35,7 @@
 			lsSet('token', res.jwt);
 			// - we empty the temporary localstorage variables
 			lsRemove(lsKeys.email);
-			lsRemove(lsKeys.username);
+			lsRemove(lsKeys.name);
 			// - redirect the user inside
 			await goto('/inside');
 		} catch (err) {
@@ -60,7 +60,7 @@
 <a href="/" class="backlink">Login</a>
 
 <OutsideTitle>
-	Ciao {lsGet(lsKeys.username)}!
+	Ciao {lsGet(lsKeys.name)}!
 </OutsideTitle>
 
 <Form {formContext}>
