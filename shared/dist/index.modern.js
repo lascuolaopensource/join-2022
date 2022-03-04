@@ -278,6 +278,10 @@ var payment = {
     pConfirmSchema: pConfirmSchema
 };
 
+var register = {
+    __proto__: null
+};
+
 var index$2 = {
     __proto__: null,
     loginEmail: loginEmail,
@@ -287,7 +291,8 @@ var index$2 = {
     billing: billing,
     contacts: contacts,
     evaluation: evaluation,
-    payment: payment
+    payment: payment,
+    register: register
 };
 
 var PublicationState;

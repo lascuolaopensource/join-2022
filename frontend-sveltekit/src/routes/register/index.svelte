@@ -6,6 +6,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import { createUserExistsTest, passwordValidator } from '$lib/validators';
+	import type { f } from 'shared';
 
 	//
 
@@ -23,21 +24,16 @@
 
 	//
 
-	const initialValues = {
-		username: '',
+	const initialValues: f.register.reType = {
+		name: '',
+		surname: '',
 		email: '',
 		password: ''
 	};
 
 	const validationSchema = yup.object().shape({
-		username: yup
-			.string()
-			.required()
-			.test({
-				name: 'usernameExists',
-				message: "L'username esiste già",
-				test: createUserExistsTest('username')
-			}),
+		name: yup.string().required(),
+		surname: yup.string().required(),
 		email: yup
 			.string()
 			.email()
@@ -50,14 +46,13 @@
 		password: passwordValidator
 	});
 
-	async function onSubmit(values: typeof initialValues) {
+	async function onSubmit(values: f.register.reType) {
 		// This function registers a user
 		try {
-			// IMPORTANT! Since request is an async function, we need to put await before
+			// Creating user
 			const res = await req.register(values);
-			console.log(res);
 			// If successful, we redirect
-			goto('/register/thanks');
+			await goto('/register/thanks');
 		} catch (e) {
 			setFormError(e.message);
 		}
@@ -78,11 +73,18 @@
 
 <Form {formContext}>
 	<TextField
-		name="username"
+		name="name"
 		type="text"
-		labelText="Username"
+		labelText="Nome"
 		labelIcon={icons.fields.username}
-		placeholder="Inserisci il tuo username"
+		placeholder="Inserisci il tuo nome"
+	/>
+	<TextField
+		name="surname"
+		type="text"
+		labelText="Cognome"
+		labelIcon={icons.fields.username}
+		placeholder="Inserisci il tuo cognome"
 	/>
 	<TextField
 		name="email"

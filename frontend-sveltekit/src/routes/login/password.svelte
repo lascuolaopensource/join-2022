@@ -37,7 +37,7 @@
 			lsRemove(lsKeys.email);
 			lsRemove(lsKeys.username);
 			// - redirect the user inside
-			goto('/inside');
+			await goto('/inside');
 		} catch (err) {
 			// Soluzione temporanea
 			if (err.message == 'Invalid identifier or password') {

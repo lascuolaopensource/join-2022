@@ -88,4 +88,3 @@ module.exports = {
         };
     },
 };
-//# sourceMappingURL=pay.js.map

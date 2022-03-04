@@ -39,10 +39,10 @@ export const req = {
 	},
 
 	register: async (
-		body: t.UsersPermissionsRegisterInput,
+		body: f.register.reType,
 		fetchFn = fetch
 	): Promise<t.LoginResponse> => {
-		return await request(fetchFn, b + 'api/auth/local/register', 'POST', body);
+		return await request(fetchFn, b + 'api/register-user', 'POST', body);
 	},
 
 	userExists: async (

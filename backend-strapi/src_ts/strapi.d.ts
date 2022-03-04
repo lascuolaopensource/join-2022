@@ -6,4 +6,8 @@ declare namespace strapi {
     const db;
     const entityService;
     const log;
+    const query;
+    const plugin;
+    const store;
+    const getModel;
 }

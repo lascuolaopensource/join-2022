@@ -12,4 +12,3 @@ module.exports = async (policyContext, config, { strapi }) => {
         return false;
     }
 };
-//# sourceMappingURL=isPayloadValid.js.map

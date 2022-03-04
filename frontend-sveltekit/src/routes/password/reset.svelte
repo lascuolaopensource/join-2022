@@ -43,7 +43,7 @@
 		try {
 			await req.resetPassword(values);
 			// If response is ok we send the user to some confirmation
-			goto('/password/resetconfirm');
+			await goto('/password/resetconfirm');
 		} catch (err) {
 			setFormError(err.message);
 		}

@@ -4,6 +4,7 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import { f } from 'shared';
+	import { lsGet, lsKeys } from '$lib/localStorageUtils';
 
 	//
 
@@ -26,10 +27,15 @@
 			// Sending the request to the server
 			await req.forgotPassword(values);
 			// If response is ok we send the user to a confirmation message
-			goto('/password/forgotconfirm');
+			await goto('/password/forgotconfirm');
 		} catch (err) {
 			setFormError(err.message);
 		}
+	}
+
+	// Adding email from localstorage
+	if (lsGet(lsKeys.email)) {
+		f.loginEmail.leValues.email = lsGet(lsKeys.email);
 	}
 
 	const formContext = createForm({

@@ -29,7 +29,7 @@
 			lsSet(lsKeys.email, res.email);
 			lsSet(lsKeys.username, res.username);
 			// And redirect the user to the password
-			goto('/login/password');
+			await goto('/login/password');
 		} catch (e) {
 			if (e?.message == '404') {
 				setFormError("L'email non è corretta");

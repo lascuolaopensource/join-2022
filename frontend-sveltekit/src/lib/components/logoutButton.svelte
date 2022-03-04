@@ -10,7 +10,7 @@
 		// // And the user from the store
 		// $user = null;
 		// Then we redirect
-		goto('/');
+		await goto('/');
 	}
 </script>
 
