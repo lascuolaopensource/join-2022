@@ -27,7 +27,7 @@
 			const res = await req.loginEmail(values);
 			// We store email and username in localstorage
 			lsSet(lsKeys.email, res.email);
-			lsSet(lsKeys.username, res.username);
+			lsSet(lsKeys.name, res.name);
 			// And redirect the user to the password
 			await goto('/login/password');
 		} catch (e) {
