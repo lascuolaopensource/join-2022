@@ -6,6 +6,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import { createUserExistsTest, passwordValidator } from '$lib/validators';
+	import type { f } from 'shared';
 
 	//
 
@@ -23,7 +24,7 @@
 
 	//
 
-	const initialValues = {
+	const initialValues: f.register.reType = {
 		name: '',
 		surname: '',
 		email: '',
@@ -45,20 +46,11 @@
 		password: passwordValidator
 	});
 
-	async function onSubmit(values: typeof initialValues) {
+	async function onSubmit(values: f.register.reType) {
 		// This function registers a user
 		try {
 			// Creating user
-			const res = await req.register({
-				username: values.email,
-				email: values.email,
-				password: values.password
-			});
-			// // Creating user-info
-			// const userInfo = await req.createUserInfo(
-			// 	{ name: values.name, surname: values.surname, owner: res.user.id },
-			// 	res.jwt
-			// );
+			const res = await req.register(values);
 			// If successful, we redirect
 			goto('/register/thanks');
 		} catch (e) {
