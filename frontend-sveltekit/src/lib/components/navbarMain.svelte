@@ -1,7 +1,7 @@
 <!-- src/lib/Navbar.svelte -->
 <script lang="ts">
 	// Need this to get user name
-	import { user } from '$lib/stores';
+	import { userInfo } from '$lib/stores';
 
 	// Components
 	import NavbarItem from './navbarItem.svelte';
@@ -16,7 +16,7 @@
 		<NavbarItem href="/inside/corsi">Corsi</NavbarItem>
 	</div>
 	<div>
-		<NavbarItem href="/inside/profile">{$user.username}</NavbarItem>
+		<NavbarItem href="/inside/profile">{$userInfo.name}</NavbarItem>
 		<LogoutButton>↖ Logout</LogoutButton>
 	</div>
 </nav>
@@ -36,5 +36,6 @@
 		align-items: center;
 		position: sticky;
 		top: 0;
+		z-index: 99;
 	}
 </style>

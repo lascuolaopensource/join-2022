@@ -1,5 +1,18 @@
 <script lang="ts">
-	import { user } from '$lib/stores';
+	import { userInfo } from '$lib/stores';
 </script>
 
-<h1>Ciao {$user.username}! {$user.id}</h1>
+<!--  -->
+
+<div class="container">
+	<h1>Ciao {$userInfo.name}!</h1>
+	<a href="/inside/corsi">Beccati sti corsi</a>
+</div>
+
+<!--  -->
+<style>
+	a {
+		display: block;
+		margin-top: var(--s-2);
+	}
+</style>

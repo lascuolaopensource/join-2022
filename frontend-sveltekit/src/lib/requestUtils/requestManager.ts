@@ -52,6 +52,23 @@ export const req = {
 		return await request(fetchFn, b + 'api/userexists', 'POST', body);
 	},
 
+	getUserInfo: async (
+		userId: string | number,
+		fetchFn = fetch
+	): Promise<t.UserInfoEntity> => {
+		const res: t.UserInfoEntityResponseCollection = await request(
+			fetchFn,
+			b + `api/user-infos?filters[owner][id][$eq]=${userId}`,
+			'GET',
+			null,
+			headersAuth()
+		);
+		if (!res.data[0]) {
+			throw new Error('UserInfo not found');
+		}
+		return res.data[0];
+	},
+
 	/**
 	 * Password
 	 */
