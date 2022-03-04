@@ -33,7 +33,7 @@
 
 			// Si va al pagamento se la risposta è positiva
 			if (res.sessionUrl) {
-				goto(res.sessionUrl);
+				await goto(res.sessionUrl);
 			} else {
 				throw new Error(
 					'Could not create payment session, please try again later or contact admin if error persists'

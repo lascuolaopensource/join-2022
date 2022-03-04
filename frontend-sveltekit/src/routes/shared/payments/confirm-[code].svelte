@@ -22,9 +22,13 @@
 	// Clearing form stored in localstorage
 	localStorage.removeItem(lsKeys.paymentForm);
 
-	if (confirm) {
-		goto('/');
+	async function goHome() {
+		if (confirm) {
+			await goto('/');
+		}
 	}
+
+	goHome();
 </script>
 
 hey

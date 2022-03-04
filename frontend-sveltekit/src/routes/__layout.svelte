@@ -25,7 +25,7 @@
 			try {
 				// Si chiede quindi a strapi se l'utente esiste effettivamente
 				const res = await req.me();
-				goto('/inside');
+				await goto('/inside');
 			} catch (e) {
 				loading = false;
 			}

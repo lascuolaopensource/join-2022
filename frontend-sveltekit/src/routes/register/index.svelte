@@ -52,7 +52,7 @@
 			// Creating user
 			const res = await req.register(values);
 			// If successful, we redirect
-			goto('/register/thanks');
+			await goto('/register/thanks');
 		} catch (e) {
 			setFormError(e.message);
 		}

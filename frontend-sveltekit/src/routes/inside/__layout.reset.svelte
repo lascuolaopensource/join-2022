@@ -26,7 +26,7 @@
 			loading = false;
 		} catch (e) {
 			// Redirect if user is not found
-			goto('/');
+			await goto('/');
 		}
 	});
 </script>

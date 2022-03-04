@@ -1,8 +1,11 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import OutsideTitle from '$lib/components/outsideTitle.svelte';
 </script>
 
 <!-- --- Markup --- -->
+
+<a class="backlink" href="/">Torna alla home</a>
 
 <OutsideTitle>Recupera password</OutsideTitle>
 

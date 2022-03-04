@@ -80,11 +80,11 @@
 
 			// Going to payment
 			if (res.paymentId) {
-				goto(`/shared/payments/${res.paymentId}`);
+				await goto(`/shared/payments/${res.paymentId}`);
 			}
 			//
 			else {
-				goto(`/shared/${slug}/enrollConfirm`);
+				await goto(`/shared/${slug}/enrollConfirm`);
 			}
 		} catch (e) {
 			setFormError(e);
