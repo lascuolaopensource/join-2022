@@ -17,7 +17,7 @@ export type leType = typeof leValues;
 
 export type leResponse = {
     email: string;
-    username: string;
+    name: string;
 };
 
 export const enum leErrors {

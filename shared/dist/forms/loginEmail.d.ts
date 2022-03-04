@@ -12,7 +12,7 @@ export declare const leSchema: import("yup/lib/object").OptionalObjectSchema<{
 export declare type leType = typeof leValues;
 export declare type leResponse = {
     email: string;
-    username: string;
+    name: string;
 };
 export declare const enum leErrors {
     notFound = "leNotFound",
