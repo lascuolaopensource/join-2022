@@ -12,10 +12,14 @@ module.exports = {
         }
         const users = await strapi.entityService.findMany("plugin::users-permissions.user", {
             filters: body,
+            populate: {
+                userInfo: true,
+            },
         });
         if (users.length == 1) {
             const user = users[0];
-            return { email: user.email, username: user.username };
+            const userInfo = user.userInfo;
+            return { email: user.email, name: userInfo.name };
         }
         else {
             ctx.notFound("leNotFound");

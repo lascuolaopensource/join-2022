@@ -24,13 +24,17 @@ module.exports = {
                 "plugin::users-permissions.user",
                 {
                     filters: body,
+                    populate: {
+                        userInfo: true,
+                    },
                 }
             );
 
         // Se c'è un risultato ritorniamo utente con username e email
         if (users.length == 1) {
             const user = users[0];
-            return { email: user.email, username: user.username };
+            const userInfo = user.userInfo as t.UserInfo;
+            return { email: user.email, name: userInfo.name as string };
         }
         // Altrimenti, 404
         else {
