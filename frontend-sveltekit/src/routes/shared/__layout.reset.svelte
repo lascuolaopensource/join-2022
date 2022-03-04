@@ -3,9 +3,9 @@
 
 	import { req } from '$lib/requestUtils';
 	import { lsGetToken } from '$lib/localStorageUtils';
-	import { user } from '$lib/stores';
+	import { user, userInfo } from '$lib/stores';
 
-	import { Loading } from '$lib/components';
+	import { Loading, NavbarOutside, NavbarMain } from '$lib/components';
 
 	//
 
@@ -18,8 +18,12 @@
 			// Check if JWT token exists in localStorage
 			// Then, check if user exists and save in store
 			if (lsGetToken()) {
-				const res = await req.me(fetch);
-				$user = res;
+				// Fetch the user from strapi
+				const UserRes = await req.me();
+				$user = UserRes;
+				// Fetch the user's info
+				const UserInfoRes = await req.getUserInfo(UserRes.id);
+				$userInfo = UserInfoRes.attributes;
 			}
 		} finally {
 			// In any case, loading ends
@@ -33,6 +37,11 @@
 {#if loading}
 	<Loading />
 {:else}
+	{#if $user}
+		<NavbarMain />
+	{:else}
+		<NavbarOutside />
+	{/if}
 	<div class="container">
 		<slot />
 	</div>
