@@ -6,6 +6,6 @@ export declare type Comp<T> = Partial<T> & {
     __component: string;
 };
 export interface LoginResponse {
-    jwt?: string;
+    jwt: string;
     user: UsersPermissionsMe;
 }
