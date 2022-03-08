@@ -6,10 +6,6 @@
 
 import { t } from "shared";
 
-const crypto = require("crypto");
-
-const _ = require("lodash");
-
 const utils = require("@strapi/utils");
 const { ApplicationError } = utils.errors;
 const { sanitize } = utils;
@@ -53,7 +49,7 @@ module.exports = {
          */
 
         if (!settings.allow_register) {
-            throw new Error("Register action is currently disabled");
+            throw new ApplicationError("Register action is currently disabled");
         }
 
         /**
@@ -78,7 +74,7 @@ module.exports = {
             .findOne({ where: { type: settings.default_role } });
 
         if (!role) {
-            throw new Error("Impossible to find the default role");
+            throw new ApplicationError("Impossible to find the default role");
         }
 
         userParams.role = role.id;
@@ -119,7 +115,7 @@ module.exports = {
         }
         // Altrimenti, si restituisce anche il token JSON
         else {
-            const jwt = getService("jwt").issue(_.pick(user, ["id"]));
+            const jwt = getService("jwt").issue(user.id);
             return ctx.send({
                 jwt,
                 user: sanitizedUser,
