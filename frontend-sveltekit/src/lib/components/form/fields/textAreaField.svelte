@@ -30,7 +30,7 @@
 		{name}
 		id={name}
 		class="field__input field__input__textarea"
-		class:field__input-error={$errors[name]}
+		class:field__input-error={get($errors, name)}
 		{placeholder}
 		on:keyup={handleChange}
 		on:blur={handleChange}>{get($form, name)}</textarea
