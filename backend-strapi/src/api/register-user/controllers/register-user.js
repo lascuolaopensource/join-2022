@@ -28,7 +28,6 @@ module.exports = {
             provider: "local",
         };
         userParams.email = userParams.email.toLowerCase();
-        userParams.password = await getService("user").hashPassword(userParams);
         const role = await strapi
             .query("plugin::users-permissions.role")
             .findOne({ where: { type: settings.default_role } });

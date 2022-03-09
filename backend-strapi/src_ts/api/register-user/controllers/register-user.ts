@@ -65,9 +65,6 @@ module.exports = {
         // Making email lowercase
         userParams.email = userParams.email.toLowerCase();
 
-        // Hashing password
-        userParams.password = await getService("user").hashPassword(userParams);
-
         // Adding role
         const role = await strapi
             .query("plugin::users-permissions.role")
