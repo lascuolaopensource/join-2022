@@ -13,6 +13,7 @@ function sanitizeUser(user, ctx) {
 }
 module.exports = {
     index: async (ctx, next) => {
+        const body = ctx.request.body;
         const pluginStore = await strapi.store({
             type: "plugin",
             name: "users-permissions",
@@ -24,10 +25,11 @@ module.exports = {
             throw new ApplicationError("Register action is currently disabled");
         }
         const userParams = {
-            ...ctx.request.body,
             provider: "local",
+            password: body.password,
         };
-        userParams.email = userParams.email.toLowerCase();
+        userParams.email = body.email.toLowerCase();
+        userParams.username = userParams.email;
         const role = await strapi
             .query("plugin::users-permissions.role")
             .findOne({ where: { type: settings.default_role } });
@@ -38,18 +40,21 @@ module.exports = {
         if (!settings.email_confirmation) {
             userParams.confirmed = true;
         }
-        const user = await strapi
-            .query("plugin::users-permissions.user")
-            .create({ data: userParams });
+        const user = await getService("user").add(userParams);
         const newUserInfoData = {
-            name: userParams.name,
-            surname: userParams.surname,
+            name: body.name,
+            surname: body.surname,
             owner: user.id,
         };
         const newUserInfo = await strapi.entityService.create("api::user-info.user-info", { data: newUserInfoData });
         const sanitizedUser = await sanitizeUser(user, ctx);
         if (settings.email_confirmation) {
-            await getService("user").sendConfirmationEmail(sanitizedUser);
+            try {
+                await getService("user").sendConfirmationEmail(sanitizedUser);
+            }
+            catch (e) {
+                throw new ApplicationError(e.message);
+            }
             return ctx.send({ user: sanitizedUser });
         }
         else {

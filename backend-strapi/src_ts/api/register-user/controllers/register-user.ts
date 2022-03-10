@@ -4,7 +4,7 @@
  * Imports
  */
 
-import { t } from "shared";
+import { t, f } from "shared";
 
 const utils = require("@strapi/utils");
 const { ApplicationError } = utils.errors;
@@ -32,6 +32,11 @@ function sanitizeUser(user: any, ctx: any) {
 module.exports = {
     index: async (ctx: any, next: any) => {
         /**
+         * Saving body
+         */
+        const body: f.register.reType = ctx.request.body;
+
+        /**
          * Getting registration settings
          */
 
@@ -57,13 +62,16 @@ module.exports = {
          */
 
         // Adding 'local' provider
-        const userParams = {
-            ...ctx.request.body,
+        const userParams: any = {
             provider: "local",
+            password: body.password,
         };
 
         // Making email lowercase
-        userParams.email = userParams.email.toLowerCase();
+        userParams.email = body.email.toLowerCase();
+
+        // Adding username
+        userParams.username = userParams.email;
 
         // Adding role
         const role = await strapi
@@ -86,14 +94,12 @@ module.exports = {
         }
 
         // Creating user
-        const user = await strapi
-            .query("plugin::users-permissions.user")
-            .create({ data: userParams });
+        const user = await getService("user").add(userParams);
 
         // Creating userInfo
         const newUserInfoData: t.UserInfoInput = {
-            name: userParams.name,
-            surname: userParams.surname,
+            name: body.name,
+            surname: body.surname,
             owner: user.id,
         };
         const newUserInfo: t.UserInfo = await strapi.entityService.create(
@@ -107,7 +113,11 @@ module.exports = {
 
         // Invio della mail di conferma e si restituisce l'utente
         if (settings.email_confirmation) {
-            await getService("user").sendConfirmationEmail(sanitizedUser);
+            try {
+                await getService("user").sendConfirmationEmail(sanitizedUser);
+            } catch (e) {
+                throw new ApplicationError((e as any).message);
+            }
             return ctx.send({ user: sanitizedUser });
         }
         // Altrimenti, si restituisce anche il token JSON
