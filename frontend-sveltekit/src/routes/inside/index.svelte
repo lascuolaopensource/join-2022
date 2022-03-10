@@ -6,7 +6,7 @@
 
 <div class="container">
 	<h1>Ciao {$userInfo.name}!</h1>
-	<a href="/inside/corsi">Beccati sti corsi</a>
+	<a href="/inside/courses/active">Beccati sti corsi</a>
 </div>
 
 <!--  -->

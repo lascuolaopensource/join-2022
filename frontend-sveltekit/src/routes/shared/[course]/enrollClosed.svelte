@@ -4,5 +4,5 @@
 
 Purtroppo le iscrizioni al corso sono chiuse! :(
 {#if $user}
-	<a href="/inside/corsi">Vai ai corsi</a>
+	<a href="/inside/courses/active">Vai ai corsi</a>
 {/if}

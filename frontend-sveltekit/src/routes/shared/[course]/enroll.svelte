@@ -120,7 +120,7 @@
 <!--  -->
 
 {#if $user}
-	<a class="backlink" href="/inside/corsi/{slug}">Torna al corso</a>
+	<a class="backlink" href="/inside/course/{slug}">Torna al corso</a>
 {/if}
 
 <h2>{course.attributes.title}</h2>
