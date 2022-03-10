@@ -31,7 +31,7 @@
       "type": "boolean"
     },
     "enrollmentDeadline": {
-      "type": "date"
+      "type": "datetime"
     },
     "enrollmentMin": {
       "type": "integer"
