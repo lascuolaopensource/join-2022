@@ -13,7 +13,7 @@
 	<NavbarItem href="/inside">Join</NavbarItem>
 	<!-- Right-side links -->
 	<div>
-		<NavbarItem href="/inside/corsi">Corsi</NavbarItem>
+		<NavbarItem href="/inside/courses">Corsi</NavbarItem>
 	</div>
 	<div>
 		<NavbarItem href="/inside/profile">{$userInfo.name}</NavbarItem>
@@ -29,7 +29,7 @@
 
 	nav {
 		background-color: var(--nav-main-bg);
-		padding: var(--container-padding);
+		padding: var(--s-1);
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: space-between;

@@ -25,6 +25,7 @@
 		padding: var(--item-padding);
 		background-color: var(--nav-main-item-bg);
 		color: var(--nav-main-item-text);
+		line-height: var(--text-normal);
 	}
 
 	button:hover {
