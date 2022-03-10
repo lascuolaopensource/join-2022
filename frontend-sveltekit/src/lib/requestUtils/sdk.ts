@@ -1,6 +1,6 @@
 import type { GraphQLClient } from 'graphql-request';
+import { gql } from 'graphql-request';
 import type * as Dom from 'graphql-request/dist/types.dom';
-import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -1430,10 +1430,7 @@ export type SdkFunctionWrapper = <T>(
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
-export function getSdk(
-	client: GraphQLClient,
-	withWrapper: SdkFunctionWrapper = defaultWrapper
-) {
+export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
 	return {
 		getCourses(
 			variables?: GetCoursesQueryVariables,
@@ -1454,11 +1451,10 @@ export function getSdk(
 		): Promise<GetCoursePageBySlugQuery> {
 			return withWrapper(
 				(wrappedRequestHeaders) =>
-					client.request<GetCoursePageBySlugQuery>(
-						GetCoursePageBySlugDocument,
-						variables,
-						{ ...requestHeaders, ...wrappedRequestHeaders }
-					),
+					client.request<GetCoursePageBySlugQuery>(GetCoursePageBySlugDocument, variables, {
+						...requestHeaders,
+						...wrappedRequestHeaders
+					}),
 				'getCoursePageBySlug'
 			);
 		},

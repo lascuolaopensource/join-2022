@@ -1,5 +1,5 @@
-import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-node';
+import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -8,13 +8,7 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
-		adapter: adapter({ out: 'build' }),
-		// This fix allows some imports
-		vite: {
-			optimizeDeps: {
-				include: ['graphql-request']
-			}
-		}
+		adapter: adapter({ out: 'build' })
 	}
 };
 
