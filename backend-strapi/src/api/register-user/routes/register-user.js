@@ -6,7 +6,7 @@ module.exports = {
             handler: "register-user.index",
             config: {
                 policies: [],
-                middlewares: [],
+                middlewares: ["plugin::users-permissions.rateLimit"],
             },
         },
     ],
