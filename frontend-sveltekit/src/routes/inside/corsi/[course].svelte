@@ -1,47 +1,49 @@
-<script lang="ts">
-	import { page } from '$app/stores';
-	import { GQLCLient } from '$lib/requestUtils';
+<script lang="ts" context="module">
+	import { req } from '$lib/requestUtils';
 
-	//
+	/** @type {import('@sveltejs/kit').Load} */
+	export async function load({ params, fetch, session, stuff }) {
+		const slug = params.course;
+		const course = await req.getCourseBySlug(slug, fetch);
 
-	import SvelteMarkdown from 'svelte-markdown';
-	import Loading from '$lib/components/loading.svelte';
-
-	//
-
-	const client = GQLCLient();
-	const slug = $page.params.corso;
-
-	async function getCorso() {
-		// Fetching the course basic info (id, title, slug)
-		const data = await client.getCoursePageBySlug({ slug });
-		// And we save it the store
-		return data.courses.data[0].attributes;
+		return {
+			props: {
+				slug,
+				course
+			}
+		};
 	}
+</script>
 
-	const promise = getCorso();
+<script lang="ts">
+	import { h } from 'shared';
+	import type { t } from 'shared';
+	import SvelteMarkdown from 'svelte-markdown';
+
+	export let course: t.CourseEntity;
+	export let slug: string;
+
+	const c = course.attributes;
 </script>
 
 <!--  -->
 
-{#await promise}
-	<Loading />
-{:then corso}
-	<div class="cover">
-		<h1>{corso.title}</h1>
+<!-- Core corso -->
+<div class="cover">
+	<h1>{c.title}</h1>
+</div>
+{#if c.description}
+	<div class="markdown-body">
+		<SvelteMarkdown source={c.description} />
 	</div>
-	{#if corso.description}
-		<div class="markdown-body">
-			<SvelteMarkdown source={corso.description} />
-		</div>
-	{/if}
-	<!-- Iscriviti -->
+{/if}
+
+<!-- Iscriviti -->
+{#if h.course.isEnrollable(c)}
 	<div class="iscriviti-container">
 		<a class="iscriviti" href="/shared/{slug}/enroll">Iscriviti →</a>
 	</div>
-{:catch error}
-	{error}
-{/await}
+{/if}
 
 <!--  -->
 <style>
