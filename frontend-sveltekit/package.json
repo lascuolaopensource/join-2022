@@ -33,7 +33,6 @@
   "type": "module",
   "dependencies": {
     "@sveltejs/adapter-node": "^1.0.0-next.71",
-    "dotenv": "^16.0.0",
     "get-value": "^3.0.1",
     "graphql-request": "^4.0.0",
     "shared": "file:../shared",
