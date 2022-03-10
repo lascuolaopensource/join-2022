@@ -23,13 +23,17 @@
 		Form,
 		TextField,
 		TextAreaField,
-		setFormError
+		setFormError,
+		SubmitButton
 	} from '$lib/components/form';
 	import type { t } from 'shared';
-	import { f } from 'shared';
-	import { h } from 'shared';
+	import { f, h } from 'shared';
+
 	import { goto } from '$app/navigation';
-	import SubmitButton from '$lib/components/form/submitButton.svelte';
+
+	import { Callout } from '$lib/components';
+
+	import { s } from '$lib/strings';
 
 	/**
 	 * Exports
@@ -111,7 +115,41 @@
 <h2>{course.attributes.title}</h2>
 <h1>Iscriviti</h1>
 
+{#if !$user}
+	<Callout>
+		Hai già un account Join? Prima di iscriverti al corso
+		<a href="/">effettua il login</a>!
+	</Callout>
+{/if}
+
+<div class="spacer" style="margin-top: var(--s-3)" />
+
 <Form {formContext}>
+	<!-- Info -->
+	<hr />
+
+	{#if !$user || c.motivationalLetterNeeded || paymentNeeded}
+		<div>
+			<h2>{s.enroll.info.title}</h2>
+			<ul>
+				<!--  -->
+				{#if !$user}
+					<li>{s.enroll.info.accountCreation}</li>
+				{/if}
+				<!--  -->
+				{#if c.motivationalLetterNeeded}
+					<li>{s.enroll.info.letter}</li>
+				{/if}
+				<!--  -->
+				{#if paymentNeeded}
+					<li>{s.enroll.info.payment}</li>
+				{/if}
+			</ul>
+		</div>
+	{/if}
+
+	<hr />
+
 	<!-- Contatti -->
 
 	{#if !$user}
@@ -153,9 +191,9 @@
 
 	<SubmitButton>
 		{#if paymentNeeded}
-			Vai al pagamento
+			{s.enroll.button.payment}
 		{:else}
-			Iscriviti!
+			{s.enroll.button.enroll}
 		{/if}
 	</SubmitButton>
 </Form>
