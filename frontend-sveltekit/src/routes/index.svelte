@@ -10,14 +10,8 @@
 	//
 
 	import { OutsideTitle } from '$lib/components';
-	import {
-		Form,
-		FormError,
-		TextField,
-		SubmitButton,
-		setFormError
-	} from '$lib/components/form';
-	import { icons } from '$lib/icons';
+	import { Form, FormError, TextField, SubmitButton, setFormError } from '$lib/components/form';
+	import { icons } from '$lib/icons/icons.svelte';
 
 	//
 

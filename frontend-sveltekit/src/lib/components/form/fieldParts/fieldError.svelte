@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import { formKey } from '../form.svelte';
-	import { icons } from '../icons';
+	import { icons } from '$lib/icons/icons.svelte';
 	import get from 'get-value';
 
 	export let fieldName: string;
@@ -13,9 +13,7 @@
 
 {#if get($errors, fieldName)}
 	<div class="field__error">
-		<svelte:component this={icons.error} class="field__error__icon" />
-		<small class="field__error__text" {...$$props}
-			>{get($errors, fieldName)}</small
-		>
+		<svelte:component this={icons.form.error} class="field__error__icon" />
+		<small class="field__error__text" {...$$props}>{get($errors, fieldName)}</small>
 	</div>
 {/if}
