@@ -1,3 +1,11 @@
+/**
+ * Questa funzione:
+ * – accetta fetch come argomento perchè in sveltekit esistono due tipi di fetch
+ *   • quello base che si usa sul client
+ *   • una versione speciale che si usa sul server (dentro load)
+ * - accetta come body direttamente un oggetto, niente FormData
+ */
+
 export async function request(
 	fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
 	url: RequestInfo,
