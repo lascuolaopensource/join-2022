@@ -215,3 +215,18 @@ small {
 .backlink::before {
 	content: '\2190\0020';
 }
+
+/* Callout */
+
+.callout {
+	padding: var(--s-2);
+	background-color: #fff7cc;
+	border-left: 4px solid #ffe033;
+}
+
+/* Lists */
+
+li {
+	margin-top: var(--s-1);
+	margin-left: 1em;
+}
