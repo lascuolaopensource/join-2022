@@ -358,11 +358,20 @@
     function isEvaluationNeeded(c) {
       return c.cvNeeded || c.motivationalLetterNeeded || c.portfolioNeeded;
     }
+    function isEnrollable(c) {
+      return Date.now() < Date.parse(c.enrollmentDeadline);
+    }
+
+    var course = {
+        __proto__: null,
+        isPaymentNeeded: isPaymentNeeded,
+        isEvaluationNeeded: isEvaluationNeeded,
+        isEnrollable: isEnrollable
+    };
 
     var index = {
         __proto__: null,
-        isPaymentNeeded: isPaymentNeeded,
-        isEvaluationNeeded: isEvaluationNeeded
+        course: course
     };
 
     exports.f = index$2;
