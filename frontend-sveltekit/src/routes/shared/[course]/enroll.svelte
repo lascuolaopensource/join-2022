@@ -1,17 +1,28 @@
 <script lang="ts" context="module">
 	import { req } from '$lib/requestUtils';
+	import { h } from 'shared';
 
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ params, fetch, session, stuff }) {
 		const slug = params.course;
 		const course = await req.getCourseBySlug(slug, fetch);
 
-		return {
-			props: {
-				slug,
-				course
-			}
-		};
+		// Ci si può ancora iscrivere al corso si ritornano i dati
+		if (h.course.isEnrollable(course.attributes)) {
+			return {
+				props: {
+					slug,
+					course
+				}
+			};
+		}
+		// Altrimenti si reindirizza
+		else {
+			return {
+				status: 302,
+				redirect: `/shared/${slug}/enrollClosed`
+			};
+		}
 	}
 </script>
 
@@ -27,7 +38,7 @@
 		SubmitButton
 	} from '$lib/components/form';
 	import type { t } from 'shared';
-	import { f, h } from 'shared';
+	import { f } from 'shared';
 
 	import { goto } from '$app/navigation';
 
@@ -50,8 +61,8 @@
 	const c: t.Course = course.attributes;
 
 	// Getting course info
-	const paymentNeeded = h.isPaymentNeeded(c);
-	const evaluationNeeded = h.isEvaluationNeeded(c);
+	const paymentNeeded = h.course.isPaymentNeeded(c);
+	const evaluationNeeded = h.course.isEvaluationNeeded(c);
 
 	/**
 	 * Form - Initial values
