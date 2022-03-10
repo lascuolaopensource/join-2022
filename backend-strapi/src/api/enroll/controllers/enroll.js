@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const shared_1 = require("shared");
 const nanoid_1 = require("nanoid");
+function getService(name) {
+    return strapi.plugin("users-permissions").service(name);
+}
 module.exports = {
     index: async (ctx, next) => {
         strapi.log.info("In enroll controller.");
@@ -12,10 +15,11 @@ module.exports = {
         if (!body.contacts.exists) {
             const newUserData = {
                 email: body.contacts.user.email,
-                username: (0, nanoid_1.nanoid)(8),
-                password: (0, nanoid_1.nanoid)(8),
+                username: body.contacts.user.email,
+                password: (0, nanoid_1.nanoid)(16),
+                provider: "local",
             };
-            const newUser = await strapi.entityService.create("plugin::users-permissions.user", { data: newUserData });
+            const newUser = await getService("user").add(newUserData);
             user = newUser;
             const newUserInfoData = {
                 name: body.contacts.user.name,

@@ -4,6 +4,14 @@ import { f, t, h } from "shared";
 import { nanoid } from "nanoid";
 
 /**
+ * Helpers
+ */
+
+function getService(name: string) {
+    return strapi.plugin("users-permissions").service(name);
+}
+
+/**
  * A set of functions called "actions" for `enroll`
  */
 
@@ -38,14 +46,11 @@ module.exports = {
             // Creating user
             const newUserData: t.UsersPermissionsUserInput = {
                 email: body.contacts.user.email,
-                username: nanoid(8),
-                password: nanoid(8),
+                username: body.contacts.user.email,
+                password: nanoid(16),
+                provider: "local",
             };
-            const newUser: t.ID<t.UsersPermissionsUser> =
-                await strapi.entityService.create(
-                    "plugin::users-permissions.user",
-                    { data: newUserData }
-                );
+            const newUser = await getService("user").add(newUserData);
 
             // Saving user
             user = newUser;
