@@ -21,6 +21,8 @@
 
 <style>
 	a {
+		display: inline-block;
+		width: fit-content;
 		text-decoration: none;
 		padding: var(--item-padding);
 		border-radius: var(--border-radius);

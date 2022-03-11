@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const shared_1 = require("shared");
 const nanoid_1 = require("nanoid");
+const utils_1 = require("../../../utils");
 function getService(name) {
     return strapi.plugin("users-permissions").service(name);
 }
@@ -9,8 +10,7 @@ module.exports = {
     index: async (ctx, next) => {
         strapi.log.info("In enroll controller.");
         const body = ctx.request.body;
-        console.log(body);
-        const course = await strapi.entityService.findOne("api::course.course", body.courseId);
+        const course = await (0, utils_1.getCourseByID)(body.courseId);
         let user;
         if (!body.contacts.exists) {
             const newUserData = {
@@ -49,7 +49,7 @@ module.exports = {
         });
         let paymentData = null;
         let payment = null;
-        if (shared_1.h.isPaymentNeeded(course)) {
+        if (shared_1.h.course.isPaymentNeeded(course)) {
             paymentData = {
                 enrollment: enrollment.id,
                 hash: (0, nanoid_1.nanoid)(32),

@@ -6,7 +6,7 @@ module.exports = {
             handler: "pay.index",
             config: {
                 policies: [],
-                middlewares: ["plugin::users-permissions.rateLimit"],
+                middlewares: [],
             },
         },
         {
@@ -15,7 +15,7 @@ module.exports = {
             handler: "pay.confirm",
             config: {
                 policies: [],
-                middlewares: ["plugin::users-permissions.rateLimit"],
+                middlewares: [],
             },
         },
     ],

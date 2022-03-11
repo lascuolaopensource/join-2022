@@ -1,2 +1,2 @@
-export * from "./strapi";
-export * from "./strapiFixes";
+export * from "./types";
+export * from "./typesFixes";

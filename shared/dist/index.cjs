@@ -1,4 +1,5 @@
 var yup = require('yup');
+var graphqlTag = require('graphql-tag');
 
 function _interopNamespace(e) {
     if (e && e.__esModule) return e;
@@ -314,7 +315,7 @@ var register = {
     __proto__: null
 };
 
-var index$2 = {
+var index$3 = {
     __proto__: null,
     loginEmail: loginEmail,
     loginPassword: loginPassword,
@@ -327,6 +328,15 @@ var index$2 = {
     register: register
 };
 
+var Enum_Enrollment_State;
+
+(function (Enum_Enrollment_State) {
+  Enum_Enrollment_State["Approved"] = "approved";
+  Enum_Enrollment_State["AwaitingPayment"] = "awaitingPayment";
+  Enum_Enrollment_State["Pending"] = "pending";
+  Enum_Enrollment_State["Rejected"] = "rejected";
+})(Enum_Enrollment_State || (Enum_Enrollment_State = {}));
+
 var PublicationState;
 
 (function (PublicationState) {
@@ -334,19 +344,10 @@ var PublicationState;
   PublicationState["Preview"] = "PREVIEW";
 })(PublicationState || (PublicationState = {}));
 
-var Enum_Enrollment_State;
-
-(function (Enum_Enrollment_State) {
-  Enum_Enrollment_State["AwaitingPayment"] = "awaitingPayment";
-  Enum_Enrollment_State["Pending"] = "pending";
-  Enum_Enrollment_State["Approved"] = "approved";
-  Enum_Enrollment_State["Rejected"] = "rejected";
-})(Enum_Enrollment_State || (Enum_Enrollment_State = {}));
-
-var index$1 = {
+var index$2 = {
     __proto__: null,
-    get PublicationState () { return PublicationState; },
-    get Enum_Enrollment_State () { return Enum_Enrollment_State; }
+    get Enum_Enrollment_State () { return Enum_Enrollment_State; },
+    get PublicationState () { return PublicationState; }
 };
 
 function isPaymentNeeded(c) {
@@ -355,14 +356,58 @@ function isPaymentNeeded(c) {
 function isEvaluationNeeded(c) {
   return c.cvNeeded || c.motivationalLetterNeeded || c.portfolioNeeded;
 }
+function isEnrollable(c) {
+  return Date.now() < Date.parse(c.enrollmentDeadline);
+}
+
+var course = {
+    __proto__: null,
+    isPaymentNeeded: isPaymentNeeded,
+    isEvaluationNeeded: isEvaluationNeeded,
+    isEnrollable: isEnrollable
+};
+
+var index$1 = {
+    __proto__: null,
+    course: course
+};
+
+function _taggedTemplateLiteralLoose(strings, raw) {
+  if (!raw) {
+    raw = strings.slice(0);
+  }
+
+  strings.raw = raw;
+  return strings;
+}
+
+var _templateObject;
+var getCoursePageBySlug = graphqlTag.gql(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n\tquery getCoursePageBySlug($slug: String!) {\n\t\tcourses(filters: { slug: { eq: $slug } }) {\n\t\t\tdata {\n\t\t\t\tattributes {\n\t\t\t\t\ttitle\n\t\t\t\t\tdescription\n\t\t\t\t\tslug\n\t\t\t\t\tmeetings {\n\t\t\t\t\t\tdate\n\t\t\t\t\t\ttimeSlots {\n\t\t\t\t\t\t\tstartTime\n\t\t\t\t\t\t\tendTime\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n"]))); // export const getCourseEnrollmentBySlug = gql`
+// 	query getCourseEnrollmentBySlug($slug: String!) {
+// 		courses(filters: { slug: { eq: $slug } }) {
+// 			data {
+// 				id
+// 				attributes {
+// 					title
+// 					slug
+// 					enrollmentDeadline
+// 					motivationalLetterNeeded
+// 					cvNeeded
+// 					portfolioNeeded
+// 					price
+// 				}
+// 			}
+// 		}
+// 	}
+// `;
 
 var index = {
     __proto__: null,
-    isPaymentNeeded: isPaymentNeeded,
-    isEvaluationNeeded: isEvaluationNeeded
+    getCoursePageBySlug: getCoursePageBySlug
 };
 
-exports.f = index$2;
-exports.h = index;
-exports.t = index$1;
+exports.f = index$3;
+exports.gql = index;
+exports.h = index$1;
+exports.t = index$2;
 //# sourceMappingURL=index.cjs.map

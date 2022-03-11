@@ -127,12 +127,24 @@ export const req = {
 	): Promise<t.CourseEntity> => {
 		const res: t.CourseEntityResponseCollection = await request(
 			fetchFn,
-			b + `api/courses?filters[slug][$eq]=${slug}`,
-			'GET'
+			b + `api/courses?filters[slug][$eq]=${slug}`
 		);
 		if (!res.data[0]) {
 			throw new Error('Course not found');
 		}
 		return res.data[0];
+	},
+
+	getCoursesByDeadline: async (
+		mode: 'expired' | 'future',
+		fetchFn = fetch
+	): Promise<t.CourseEntityResponseCollection> => {
+		const today = new Date().toISOString();
+		const filter = mode == 'expired' ? 'lt' : 'gt';
+		return await request(
+			fetchFn,
+			b +
+				`api/courses?filters[enrollmentDeadline][$${filter}]=${today}&populate[0]=meetings&populate[1]=meetings.timeSlots`
+		);
 	}
 };

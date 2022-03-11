@@ -9,6 +9,14 @@
 	margin-top: var(--s-3);
 }
 
+.form > * + hr {
+	margin-top: var(--s-4);
+}
+
+.form > hr + * {
+	margin-top: var(--s-4);
+}
+
 /* Form error */
 
 .form__err {

@@ -5,8 +5,8 @@ module.exports = {
             path: "/enroll",
             handler: "enroll.index",
             config: {
-                policies: ["is-payload-valid"],
-                middlewares: ["plugin::users-permissions.rateLimit"],
+                policies: ["is-payload-valid", "is-enrollable"],
+                middlewares: [],
             },
         },
     ],
