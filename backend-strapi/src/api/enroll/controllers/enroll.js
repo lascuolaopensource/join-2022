@@ -49,7 +49,7 @@ module.exports = {
         });
         let paymentData = null;
         let payment = null;
-        if (shared_1.h.isPaymentNeeded(course)) {
+        if (shared_1.h.course.isPaymentNeeded(course)) {
             paymentData = {
                 enrollment: enrollment.id,
                 hash: (0, nanoid_1.nanoid)(32),

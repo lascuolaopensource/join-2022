@@ -111,7 +111,7 @@ module.exports = {
         let paymentData: t.PaymentInput | null = null;
         let payment: t.ID<t.Payment> | null = null;
 
-        if (h.isPaymentNeeded(course)) {
+        if (h.course.isPaymentNeeded(course)) {
             // Creating payment
             paymentData = {
                 enrollment: enrollment.id,
