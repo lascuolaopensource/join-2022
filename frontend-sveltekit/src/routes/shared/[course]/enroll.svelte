@@ -32,6 +32,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import {
 		Form,
+		FormError,
 		TextField,
 		TextAreaField,
 		setFormError,
@@ -197,6 +198,10 @@
 	{#if evaluationNeeded}
 		<hr />
 	{/if}
+
+	<!-- Error -->
+
+	<FormError />
 
 	<!-- Submit -->
 
