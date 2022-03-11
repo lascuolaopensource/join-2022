@@ -2,6 +2,7 @@
 
 import { f, t, h } from "shared";
 import { nanoid } from "nanoid";
+import { getCourseByID } from "../../../utils";
 
 /**
  * Helpers
@@ -19,21 +20,11 @@ module.exports = {
     index: async (ctx: any, next: any) => {
         strapi.log.info("In enroll controller.");
 
-        /**
-         * Getting the body of the request
-         */
-
+        // Getting the body of the request
         const body: f.enroll.enRequest = ctx.request.body;
-        console.log(body);
 
-        /**
-         * Getting the course
-         */
-
-        const course: t.ID<t.Course> = await strapi.entityService.findOne(
-            "api::course.course",
-            body.courseId
-        );
+        // Getting the course
+        const course = await getCourseByID(body.courseId);
 
         /**
          * Getting the user
