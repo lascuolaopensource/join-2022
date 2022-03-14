@@ -1,14 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const utils = require("@strapi/utils");
+const { PolicyError } = utils.errors;
 const shared_1 = require("shared");
+const utils_1 = require("../../../utils");
 module.exports = async (policyContext, config, { strapi }) => {
     strapi.log.info("In isPayloadValid policy.");
     try {
-        await shared_1.f.enroll.enSchema.validate(policyContext.request.body);
-        return true;
+        const body = policyContext.request.body;
+        await shared_1.f.enroll.enSchema.validate(body);
+        const course = await (0, utils_1.getCourseByID)(body.courseId);
+        const check_cv = course.cvNeeded == body.evaluation.cvNeeded;
+        const check_letter = course.motivationalLetterNeeded == body.evaluation.letterNeeded;
+        const check_portfolio = course.portfolioNeeded == body.evaluation.portfolioNeeded;
+        if (check_cv && check_letter && check_portfolio) {
+            return true;
+        }
+        else {
+            throw new Error();
+        }
     }
     catch (e) {
         console.log(e);
-        return false;
+        throw new PolicyError("invalidPayload", {
+            policy: "isPayloadValid",
+        });
     }
 };
