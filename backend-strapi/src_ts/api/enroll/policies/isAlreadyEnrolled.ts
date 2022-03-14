@@ -3,7 +3,7 @@
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
 
-import { t, f, h } from "shared";
+import { t, f } from "shared";
 import { getCourseByID } from "../../../utils";
 
 /**
