@@ -7,7 +7,7 @@ import { f, h } from "shared";
 import { getCourseByID } from "../../../utils";
 
 /**
- * `isPayloadValid` policy.
+ * `isEnrollable` policy.
  */
 
 module.exports = async (policyContext: any, config: any, { strapi }: any) => {
