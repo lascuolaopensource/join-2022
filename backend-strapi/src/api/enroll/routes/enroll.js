@@ -8,6 +8,7 @@ module.exports = {
                 policies: [
                     "is-payload-valid",
                     "is-enrollable",
+                    "user-exists",
                     "is-already-enrolled",
                 ],
                 middlewares: [],
