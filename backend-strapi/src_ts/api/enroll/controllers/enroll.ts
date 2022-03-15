@@ -2,7 +2,7 @@
 
 import { f, t, h } from "shared";
 import { nanoid } from "nanoid";
-import { getCourseByID } from "../../../utils";
+import { getCourseByID, generateSecureString } from "../../../utils";
 
 /**
  * Helpers
@@ -38,7 +38,7 @@ module.exports = {
             const newUserData: t.UsersPermissionsUserInput = {
                 email: body.contacts.user.email,
                 username: body.contacts.user.email,
-                password: nanoid(16),
+                password: generateSecureString(24),
                 provider: "local",
             };
             const newUser = await getService("user").add(newUserData);
@@ -106,9 +106,9 @@ module.exports = {
             // Creating payment
             paymentData = {
                 enrollment: enrollment.id,
-                hash: nanoid(32),
+                hash: generateSecureString(64),
                 owner: user.id,
-                confirmCode: nanoid(32),
+                confirmCode: generateSecureString(64),
                 confirmed: false,
             };
             console.log(paymentData);

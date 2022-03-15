@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const shared_1 = require("shared");
-const nanoid_1 = require("nanoid");
 const utils_1 = require("../../../utils");
 function getService(name) {
     return strapi.plugin("users-permissions").service(name);
@@ -16,7 +15,7 @@ module.exports = {
             const newUserData = {
                 email: body.contacts.user.email,
                 username: body.contacts.user.email,
-                password: (0, nanoid_1.nanoid)(16),
+                password: (0, utils_1.generateSecureString)(24),
                 provider: "local",
             };
             const newUser = await getService("user").add(newUserData);
@@ -52,9 +51,9 @@ module.exports = {
         if (shared_1.h.course.isPaymentNeeded(course)) {
             paymentData = {
                 enrollment: enrollment.id,
-                hash: (0, nanoid_1.nanoid)(32),
+                hash: (0, utils_1.generateSecureString)(64),
                 owner: user.id,
-                confirmCode: (0, nanoid_1.nanoid)(32),
+                confirmCode: (0, utils_1.generateSecureString)(64),
                 confirmed: false,
             };
             console.log(paymentData);
