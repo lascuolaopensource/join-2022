@@ -38,6 +38,7 @@
 		setFormError,
 		SubmitButton
 	} from '$lib/components/form';
+	import { Loading } from '$lib/components';
 	import type { t } from 'shared';
 	import { f } from 'shared';
 
@@ -53,6 +54,19 @@
 
 	export let slug: string;
 	export let course: t.CourseEntity;
+
+	/**
+	 * Sending the user away if already enrolled
+	 */
+
+	const promise = (async function () {
+		if ($user) {
+			const res = await req.isUserEnrolled(course.id);
+			if (res.enrolled) {
+				await goto('/inside/profile');
+			}
+		}
+	})();
 
 	/**
 	 * Getting course info to build form
@@ -120,99 +134,106 @@
 
 <!--  -->
 
-{#if $user}
-	<a class="backlink" href="/inside/course/{slug}">Torna al corso</a>
-{/if}
-
-<h2>{course.attributes.title}</h2>
-<h1>Iscriviti</h1>
-
-{#if !$user}
-	<Callout>
-		Hai già un account Join? Prima di iscriverti al corso
-		<a href="/">effettua il login</a>!
-	</Callout>
-{/if}
-
-<div class="spacer" style="margin-top: var(--s-3)" />
-
-<Form {formContext}>
-	<!-- Info -->
-	<hr />
-
-	{#if !$user || c.motivationalLetterNeeded || paymentNeeded}
-		<div>
-			<h2>{s.enroll.info.title}</h2>
-			<ul>
-				<!--  -->
-				{#if !$user}
-					<li>{s.enroll.info.accountCreation}</li>
-				{/if}
-				<!--  -->
-				{#if c.motivationalLetterNeeded}
-					<li>{s.enroll.info.letter}</li>
-				{/if}
-				<!--  -->
-				{#if paymentNeeded}
-					<li>{s.enroll.info.payment}</li>
-				{/if}
-			</ul>
-		</div>
+{#await promise}
+	<Loading />
+{:then res}
+	{#if $user}
+		<a class="backlink" href="/inside/course/{slug}">Torna al corso</a>
 	{/if}
 
-	<hr />
-
-	<!-- Contatti -->
+	<h2>{course.attributes.title}</h2>
+	<h1>Iscriviti</h1>
 
 	{#if !$user}
-		<TextField name="contacts.user.name" labelText="Nome" />
-		<TextField name="contacts.user.surname" labelText="Cognome" />
-		<TextField name="contacts.user.email" labelText="Email" type="email" />
+		<Callout>
+			Hai già un account Join? Prima di iscriverti al corso
+			<a href="/">effettua il login</a>!
+		</Callout>
 	{/if}
 
-	<TextField
-		name="contacts.phone"
-		labelText="Numero di telefono"
-		type="text"
-		helperText="Ti chiediamo il numero di telefono per contattarti solo in casi di urgenza. Sarà eliminato al termine del corso."
-	/>
+	<div class="spacer" style="margin-top: var(--s-3)" />
 
-	<hr />
-
-	<!-- Valutazione -->
-
-	{#if c.cvNeeded}
-		<TextField name="evaluation.cv" labelText="Link al CV" type="text" />
-	{/if}
-	{#if c.portfolioNeeded}
-		<TextField
-			name="evaluation.portfolio"
-			labelText="Link al portfolio"
-			type="text"
-		/>
-	{/if}
-	{#if c.motivationalLetterNeeded}
-		<TextAreaField name="evaluation.letter" labelText="Lettera motivazionale" />
-	{/if}
-
-	{#if evaluationNeeded}
+	<Form {formContext}>
+		<!-- Info -->
 		<hr />
-	{/if}
 
-	<!-- Error -->
-
-	<FormError />
-
-	<!-- Submit -->
-
-	<SubmitButton>
-		{#if paymentNeeded}
-			{s.enroll.button.payment}
-		{:else}
-			{s.enroll.button.enroll}
+		{#if !$user || c.motivationalLetterNeeded || paymentNeeded}
+			<div>
+				<h2>{s.enroll.info.title}</h2>
+				<ul>
+					<!--  -->
+					{#if !$user}
+						<li>{s.enroll.info.accountCreation}</li>
+					{/if}
+					<!--  -->
+					{#if c.motivationalLetterNeeded}
+						<li>{s.enroll.info.letter}</li>
+					{/if}
+					<!--  -->
+					{#if paymentNeeded}
+						<li>{s.enroll.info.payment}</li>
+					{/if}
+				</ul>
+			</div>
 		{/if}
-	</SubmitButton>
-</Form>
+
+		<hr />
+
+		<!-- Contatti -->
+
+		{#if !$user}
+			<TextField name="contacts.user.name" labelText="Nome" />
+			<TextField name="contacts.user.surname" labelText="Cognome" />
+			<TextField name="contacts.user.email" labelText="Email" type="email" />
+		{/if}
+
+		<TextField
+			name="contacts.phone"
+			labelText="Numero di telefono"
+			type="text"
+			helperText="Ti chiediamo il numero di telefono per contattarti solo in casi di urgenza. Sarà eliminato al termine del corso."
+		/>
+
+		<hr />
+
+		<!-- Valutazione -->
+
+		{#if c.cvNeeded}
+			<TextField name="evaluation.cv" labelText="Link al CV" type="text" />
+		{/if}
+		{#if c.portfolioNeeded}
+			<TextField
+				name="evaluation.portfolio"
+				labelText="Link al portfolio"
+				type="text"
+			/>
+		{/if}
+		{#if c.motivationalLetterNeeded}
+			<TextAreaField
+				name="evaluation.letter"
+				labelText="Lettera motivazionale"
+			/>
+		{/if}
+
+		{#if evaluationNeeded}
+			<hr />
+		{/if}
+
+		<!-- Error -->
+
+		<FormError />
+
+		<!-- Submit -->
+
+		<SubmitButton>
+			{#if paymentNeeded}
+				{s.enroll.button.payment}
+			{:else}
+				{s.enroll.button.enroll}
+			{/if}
+		</SubmitButton>
+	</Form>
+{/await}
 
 <!--  -->
 <style>

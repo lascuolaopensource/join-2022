@@ -1,11 +1,22 @@
 import { t } from "shared";
 
-export async function getCourseByID(
-    id: string | number
-): Promise<t.ID<t.Course>> {
+export const entities = {
+    course: "api::course.course",
+    user: "plugin::users-permissions.user",
+};
+
+export async function getCourseByID(id: string | number, options = {}) {
     const course: t.ID<t.Course> = await strapi.entityService.findOne(
-        "api::course.course",
-        id
+        entities.course,
+        id,
+        options
     );
     return course;
+}
+
+export async function getUserByEmail(email: string) {
+    const user: t.ID<t.UsersPermissionsUser> = await strapi
+        .query(entities.user)
+        .findOne({ where: { email } });
+    return user;
 }
