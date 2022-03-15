@@ -48,7 +48,10 @@
 			{#if isUserEnrolled.enrolled}
 				<div class="btn btn-shadow" disabled>Sei già iscritto!</div>
 			{:else}
-				<a class="iscriviti" href="/shared/{slug}/enroll">Iscriviti →</a>
+				<a
+					class="btn btn-primary btn-big btn-shadow"
+					href="/shared/{slug}/enroll">Iscriviti →</a
+				>
 			{/if}
 		{/await}
 	</div>
@@ -85,17 +88,5 @@
 		flex-flow: row nowrap;
 		align-items: center;
 		justify-content: flex-end;
-	}
-
-	.iscriviti {
-		padding: 20px;
-		background-color: var(--btn-bg-primary);
-		text-decoration: none;
-		color: var(--content-primary-l);
-		box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.25);
-	}
-
-	.iscriviti:hover {
-		background-color: var(--btn-bg-primary-hover);
 	}
 </style>
