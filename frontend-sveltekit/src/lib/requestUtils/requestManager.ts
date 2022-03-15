@@ -1,4 +1,4 @@
-import type { t, f } from 'shared';
+import type { t, f, e } from 'shared';
 import { request } from './request';
 import { headersAuth } from './authorizationHeader';
 import { baseUrl } from './baseUrl';
@@ -67,6 +67,19 @@ export const req = {
 			throw new Error('UserInfo not found');
 		}
 		return res.data[0];
+	},
+
+	isUserEnrolled: async (
+		courseID: string,
+		fetchFn = fetch
+	): Promise<e.IsUserEnrolled.res> => {
+		return await request(
+			fetchFn,
+			b + `api/is-user-enrolled/${courseID}`,
+			'GET',
+			null,
+			headersAuth()
+		);
 	},
 
 	/**
