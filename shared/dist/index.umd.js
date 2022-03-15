@@ -317,7 +317,7 @@
         __proto__: null
     };
 
-    var index$3 = {
+    var index$4 = {
         __proto__: null,
         loginEmail: loginEmail,
         loginPassword: loginPassword,
@@ -346,7 +346,7 @@
       PublicationState["Preview"] = "PREVIEW";
     })(PublicationState || (PublicationState = {}));
 
-    var index$2 = {
+    var index$3 = {
         __proto__: null,
         get Enum_Enrollment_State () { return Enum_Enrollment_State; },
         get PublicationState () { return PublicationState; }
@@ -369,7 +369,7 @@
         isEnrollable: isEnrollable
     };
 
-    var index$1 = {
+    var index$2 = {
         __proto__: null,
         course: course
     };
@@ -403,15 +403,25 @@
     // 	}
     // `;
 
-    var index = {
+    var index$1 = {
         __proto__: null,
         getCoursePageBySlug: getCoursePageBySlug
     };
 
-    exports.f = index$3;
-    exports.gql = index;
-    exports.h = index$1;
-    exports.t = index$2;
+    var IsUserEnrolled = {
+        __proto__: null
+    };
+
+    var index = {
+        __proto__: null,
+        IsUserEnrolled: IsUserEnrolled
+    };
+
+    exports.e = index;
+    exports.f = index$4;
+    exports.gql = index$1;
+    exports.h = index$2;
+    exports.t = index$3;
 
 }));
 //# sourceMappingURL=index.umd.js.map
