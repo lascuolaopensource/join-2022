@@ -1,4 +1,5 @@
 import { t } from "shared";
+import crypto from "crypto";
 
 export const entities = {
     course: "api::course.course",
@@ -19,4 +20,8 @@ export async function getUserByEmail(email: string) {
         .query(entities.user)
         .findOne({ where: { email } });
     return user;
+}
+
+export function generateSecureString(length: number): string {
+    return crypto.randomBytes(length).toString("hex");
 }
