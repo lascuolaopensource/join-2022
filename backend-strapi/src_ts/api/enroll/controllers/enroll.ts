@@ -1,8 +1,19 @@
 "use strict";
 
 import { f, t, h } from "shared";
-import { nanoid } from "nanoid";
-import { getCourseByID, generateSecureString } from "../../../utils";
+import {
+    getCourseByID,
+    generateSecureString,
+    emailManager,
+    enrollEmail,
+    entities,
+    getUserPemissionsSettings,
+    registerUser,
+    RegisterUserInput,
+    createConfirmationTokenURL,
+} from "../../../utils";
+
+import crypto from "crypto";
 
 /**
  * Helpers
@@ -26,40 +37,67 @@ module.exports = {
         // Getting the course
         const course = await getCourseByID(body.courseId);
 
+        // Getting user-permissions settings
+        const settings = await getUserPemissionsSettings();
+
         /**
          * Getting the user
          */
 
         let user: t.ID<t.UsersPermissionsUser>;
+        let userName: string;
+        let userPassword: string = "";
+        let confirmationUrl: string = "";
+        // Tutte queste info sono qui
+        // perchè verranno richiamate successivamente
+        // per l'invio della mail di conferma
 
         // If user doesn't exist, we create it
         if (!body.contacts.exists) {
-            // Creating user
-            const newUserData: t.UsersPermissionsUserInput = {
+            /**
+             * Creating user data
+             */
+
+            userPassword = generateSecureString(24);
+            userName = body.contacts.user.name;
+
+            // Collecting user data for input
+            const newUserData: RegisterUserInput = {
                 email: body.contacts.user.email,
                 username: body.contacts.user.email,
-                password: generateSecureString(24),
-                provider: "local",
-            };
-            const newUser = await getService("user").add(newUserData);
-
-            // Saving user
-            user = newUser;
-
-            // Creating userinfo
-            const newUserInfoData: t.UserInfoInput = {
+                password: userPassword,
                 name: body.contacts.user.name,
                 surname: body.contacts.user.surname,
-                owner: user.id,
             };
-            const newUserInfo: t.UserInfo = await strapi.entityService.create(
-                "api::user-info.user-info",
-                { data: newUserInfoData }
-            );
 
-            // TODO: Send confirmation email and password
-        } else {
+            // Adding confirmation token if needed
+            if (settings.email_confirmation) {
+                // Creating confirmation data
+                const confirmation = createConfirmationTokenURL();
+                // Adding code to user data
+                newUserData.confirmationToken = confirmation.token;
+                // Saving confirmation link
+                confirmationUrl = confirmation.url;
+            }
+
+            // Creating user
+            user = await registerUser(newUserData);
+        }
+        // Otherwise, we pick the user in context
+        else {
             user = ctx.state.user;
+
+            // Getting user with userinfo
+            const userWithInfo: t.ID<t.UsersPermissionsUser> =
+                await strapi.entityService.findOne(entities.user, user.id, {
+                    populate: ["userInfo"],
+                });
+
+            // Getting userInfo
+            const userInfo = userWithInfo.userInfo as any as t.ID<t.UserInfo>;
+
+            // Saving name
+            userName = userInfo.name as string;
         }
 
         /**
@@ -101,6 +139,7 @@ module.exports = {
 
         let paymentData: t.PaymentInput | null = null;
         let payment: t.ID<t.Payment> | null = null;
+        let paymentUrl = "";
 
         if (h.course.isPaymentNeeded(course)) {
             // Creating payment
@@ -111,7 +150,6 @@ module.exports = {
                 confirmCode: generateSecureString(64),
                 confirmed: false,
             };
-            console.log(paymentData);
 
             payment = await strapi.entityService.create(
                 "api::payment.payment",
@@ -129,6 +167,44 @@ module.exports = {
                     },
                 }
             );
+
+            // Creating payment url
+            paymentUrl = `${process.env.FRONTEND_URL}/shared/payments/${paymentData.hash}`;
+        }
+
+        /**
+         * Confirmation email
+         */
+
+        // Building arguments
+
+        const args: enrollEmail.IEnrollEmailTemplateArgs = {
+            COURSE_TITLE: course.title,
+            USER_NAME: userName,
+        };
+
+        // Adding payment
+        if (paymentData) {
+            args.PAYMENT_URL = paymentUrl;
+        }
+
+        // Adding user
+        if (!body.contacts.exists && userPassword) {
+            args.USER_ACCOUNT = {
+                EMAIL: user.email,
+                PASSWORD: userPassword,
+            };
+            // If confirmation email
+            if (settings.email_confirmation) {
+                args.USER_ACCOUNT.CONFIRMATION_URL = confirmationUrl;
+            }
+        }
+
+        // Sending email
+        try {
+            await emailManager.enroll(user.email, args);
+        } catch (e) {
+            throw e;
         }
 
         /**
