@@ -10,25 +10,35 @@ module.exports = {
         strapi.log.info("In enroll controller.");
         const body = ctx.request.body;
         const course = await (0, utils_1.getCourseByID)(body.courseId);
+        const settings = await (0, utils_1.getUserPemissionsSettings)();
         let user;
+        let userName;
+        let userPassword = "";
+        let confirmationUrl = "";
         if (!body.contacts.exists) {
+            userPassword = (0, utils_1.generateSecureString)(24);
+            userName = body.contacts.user.name;
             const newUserData = {
                 email: body.contacts.user.email,
                 username: body.contacts.user.email,
-                password: (0, utils_1.generateSecureString)(24),
-                provider: "local",
-            };
-            const newUser = await getService("user").add(newUserData);
-            user = newUser;
-            const newUserInfoData = {
+                password: userPassword,
                 name: body.contacts.user.name,
                 surname: body.contacts.user.surname,
-                owner: user.id,
             };
-            const newUserInfo = await strapi.entityService.create("api::user-info.user-info", { data: newUserInfoData });
+            if (settings.email_confirmation) {
+                const confirmation = (0, utils_1.createConfirmationTokenURL)();
+                newUserData.confirmationToken = confirmation.token;
+                confirmationUrl = confirmation.url;
+            }
+            user = await (0, utils_1.registerUser)(newUserData);
         }
         else {
             user = ctx.state.user;
+            const userWithInfo = await strapi.entityService.findOne(utils_1.entities.user, user.id, {
+                populate: ["userInfo"],
+            });
+            const userInfo = userWithInfo.userInfo;
+            userName = userInfo.name;
         }
         const phoneNumberData = {
             number: body.contacts.phone,
@@ -48,6 +58,7 @@ module.exports = {
         });
         let paymentData = null;
         let payment = null;
+        let paymentUrl = "";
         if (shared_1.h.course.isPaymentNeeded(course)) {
             paymentData = {
                 enrollment: enrollment.id,
@@ -56,7 +67,6 @@ module.exports = {
                 confirmCode: (0, utils_1.generateSecureString)(64),
                 confirmed: false,
             };
-            console.log(paymentData);
             payment = await strapi.entityService.create("api::payment.payment", { data: paymentData });
             await strapi.entityService.update("api::enrollment.enrollment", enrollment.id, {
                 data: {
@@ -64,6 +74,29 @@ module.exports = {
                     state: shared_1.t.Enum_Enrollment_State.AwaitingPayment,
                 },
             });
+            paymentUrl = `${process.env.FRONTEND_URL}/shared/payments/${paymentData.hash}`;
+        }
+        const args = {
+            COURSE_TITLE: course.title,
+            USER_NAME: userName,
+        };
+        if (paymentData) {
+            args.PAYMENT_URL = paymentUrl;
+        }
+        if (!body.contacts.exists && userPassword) {
+            args.USER_ACCOUNT = {
+                EMAIL: user.email,
+                PASSWORD: userPassword,
+            };
+            if (settings.email_confirmation) {
+                args.USER_ACCOUNT.CONFIRMATION_URL = confirmationUrl;
+            }
+        }
+        try {
+            await utils_1.emailManager.enroll(user.email, args);
+        }
+        catch (e) {
+            throw e;
         }
         if (paymentData) {
             return { paymentId: paymentData.hash };
