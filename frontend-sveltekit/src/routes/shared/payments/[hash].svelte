@@ -1,9 +1,36 @@
+<script lang="ts" context="module">
+	/** @type {import('@sveltejs/kit').Load} */
+	export async function load({ params, fetch, session, stuff }) {
+		try {
+			const paymentInfo = await req.getPayment(params.hash);
+			if (paymentInfo.payment.confirmed) {
+				return {
+					status: 302,
+					redirect: `/shared/payments/alreadyConfirmed`
+				};
+			}
+			return {
+				props: {
+					paymentInfo
+				}
+			};
+		} catch (e) {
+			console.log(e.message, 'paymentNotExisting');
+			return {
+					status: 302,
+					redirect: `/shared/payments/notExisting`
+				};
+		}
+	}
+</script>
+
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { req } from '$lib/requestUtils';
 	import { setFormError } from '$lib/components/form';
 	import { f } from 'shared';
+	import type { e } from 'shared';
 	import { lsKeys } from '$lib/localStorageUtils';
 
 	import { createForm } from 'svelte-forms-lib';
@@ -14,6 +41,10 @@
 		SubmitButton,
 		FormError
 	} from '$lib/components/form';
+
+	//
+
+	export let paymentInfo: e.pay.getPayment.Res;
 
 	//
 
@@ -52,6 +83,8 @@
 		{ value: billingOptions[2], label: 'Attività commerciale' }
 	];
 
+	// Adding
+
 	// Creating form
 	const formContext = createForm({
 		initialValues: f.billing.bValues,
@@ -75,12 +108,40 @@
 		$form.person = null;
 		$form.company = f.billing.bCompanyValues;
 	}
+
+	// Formatter setup for price
+	const formatter = new Intl.NumberFormat('it-IT', {
+		style: 'currency',
+		currency: 'EUR'
+	});
+
+	// Label for email field
+	let emailLabel: string;
+	$: if ($form.billingOption == billingOptions[2]) {
+		emailLabel = 'PEC';
+	} else {
+		emailLabel = 'Email';
+	}
 </script>
 
 <!--  -->
 
+<h1>Pagamento</h1>
+<table>
+	<tr>
+		<th>Oggetto</th>
+		<td>{paymentInfo.relation.type} – {paymentInfo.relation.subject}</td>
+	</tr>
+	<tr>
+		<th>Prezzo</th>
+		<td>
+			{formatter.format(paymentInfo.relation.price)}
+		</td>
+	</tr>
+</table>
+
 <Form {formContext} lsKey={lsKeys.paymentForm}>
-	<h1>Dati di fatturazione</h1>
+	<h2>Dati di fatturazione</h2>
 
 	<RadioField name="billingOption" items={radioValues} labelText="Chi paga?" />
 
@@ -99,11 +160,15 @@
 			<!-- Azienda -->
 			<TextField name="company.name" labelText="Nome società" type="text" />
 			<TextField name="company.vat" labelText="Partita IVA" type="text" />
-			<TextField name="company.sdi" labelText="Codice SDI" type="text" />
+			<TextField
+				name="company.sdi"
+				labelText="Codice SDI (opzionale)"
+				type="text"
+			/>
 		{/if}
 
 		{#if $form.billingOption != billingOptions[0]}
-			<TextField name="email" labelText="Email" type="email" />
+			<TextField name="email" labelText={emailLabel} type="email" />
 		{/if}
 
 		<hr />
@@ -133,5 +198,28 @@
 
 	.field-w50 {
 		width: 50%;
+	}
+
+	td,
+	th {
+		padding: var(--s-1);
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin-top: var(--s-2);
+		margin-bottom: var(--s-3);
+	}
+
+	td,
+	th,
+	table {
+		border: 1px solid gray;
+	}
+
+	th {
+		width: auto;
+		text-align: left;
 	}
 </style>
