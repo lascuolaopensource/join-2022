@@ -1,3 +1,4 @@
+"use strict";
 module.exports = {
     routes: [
         {
@@ -5,7 +6,7 @@ module.exports = {
             path: "/pay",
             handler: "pay.index",
             config: {
-                policies: [],
+                policies: ["is-already-confirmed"],
                 middlewares: [],
             },
         },
@@ -13,6 +14,15 @@ module.exports = {
             method: "GET",
             path: "/pay/confirm/:code",
             handler: "pay.confirm",
+            config: {
+                policies: ["is-already-confirmed"],
+                middlewares: [],
+            },
+        },
+        {
+            method: "GET",
+            path: "/pay/get-payment/:hash",
+            handler: "pay.getPayment",
             config: {
                 policies: [],
                 middlewares: [],

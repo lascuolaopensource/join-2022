@@ -17,7 +17,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createConfirmationTokenURL = exports.getService = exports.getUserPemissionsSettings = exports.generateSecureString = exports.getUserByEmail = exports.getCourseByID = exports.entities = exports.registerUser = void 0;
+exports.getPaymentByHash = exports.createConfirmationTokenURL = exports.getService = exports.getUserPemissionsSettings = exports.generateSecureString = exports.getUserByEmail = exports.getCourseByID = exports.entities = exports.registerUser = void 0;
 const crypto_1 = __importDefault(require("crypto"));
 const urlJoin = require("url-join");
 const { getAbsoluteServerUrl } = require("@strapi/utils");
@@ -28,6 +28,8 @@ exports.entities = {
     course: "api::course.course",
     user: "plugin::users-permissions.user",
     userInfo: "api::user-info.user-info",
+    payment: "api::payment.payment",
+    billingInfo: "api::billing-info.billing-info",
 };
 async function getCourseByID(id, options = {}) {
     const course = await strapi.entityService.findOne(exports.entities.course, id, options);
@@ -70,3 +72,47 @@ function createConfirmationTokenURL() {
     };
 }
 exports.createConfirmationTokenURL = createConfirmationTokenURL;
+async function getPaymentByHash(hash) {
+    const payments = await strapi.entityService.findMany(exports.entities.payment, {
+        filters: {
+            hash: {
+                $eq: hash,
+            },
+        },
+        populate: {
+            billing: {
+                populate: ["data", "address"],
+            },
+            enrollment: {
+                populate: {
+                    course: {
+                        fields: ["title", "price"],
+                    },
+                },
+            },
+        },
+    });
+    if (!payments.length) {
+        throw new Error("paymentNotFound");
+    }
+    const payment = payments[0];
+    const billing = payment.billing;
+    const billingAddress = billing.address;
+    const billingData = billing.data[0];
+    const enrollment = payment.enrollment;
+    const course = enrollment.course;
+    const relation = {
+        subject: course.title,
+        price: course.price,
+        type: "Corso",
+    };
+    return {
+        payment,
+        billing: {
+            address: billingAddress,
+            data: billingData,
+        },
+        relation,
+    };
+}
+exports.getPaymentByHash = getPaymentByHash;

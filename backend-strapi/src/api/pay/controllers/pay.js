@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const shared_1 = require("shared");
 const stripe_1 = __importDefault(require("stripe"));
+const utils_1 = require("../../../utils");
 const stripe = new stripe_1.default(process.env.STRIPE_KEY, {
     apiVersion: "2020-08-27",
 });
@@ -12,10 +13,8 @@ module.exports = {
     index: async (ctx, next) => {
         strapi.log.info("In pay controller");
         const body = ctx.request.body;
-        const paymentRes = await strapi.entityService.findMany("api::payment.payment", {
-            filters: { hash: body.paymentHash },
-        });
-        const payment = paymentRes[0];
+        const paymentInfo = await (0, utils_1.getPaymentByHash)(body.paymentHash);
+        const payment = paymentInfo.payment;
         const billingData = {
             payment: payment.id,
             address: body.billing.address,
@@ -45,8 +44,8 @@ module.exports = {
             billingData.data?.push(dataCompany);
             billingData.email = body.billing.email;
         }
-        const billing = await strapi.entityService.create("api::billing-info.billing-info", { data: billingData });
-        await strapi.entityService.update("api::payment.payment", payment.id, {
+        const billing = await strapi.entityService.create(utils_1.entities.billingInfo, { data: billingData });
+        await strapi.entityService.update(utils_1.entities.payment, payment.id, {
             data: {
                 billing: billing.id,
             },
@@ -57,9 +56,9 @@ module.exports = {
                     price_data: {
                         currency: "eur",
                         product_data: {
-                            name: "T-shirt",
+                            name: `${paymentInfo.relation.type} – ${paymentInfo.relation.subject}`,
                         },
-                        unit_amount: 2000,
+                        unit_amount: paymentInfo.relation.price * 100,
                     },
                     quantity: 1,
                 },
@@ -74,11 +73,11 @@ module.exports = {
     },
     confirm: async (ctx, next) => {
         strapi.log.info("In payConfirm controller");
-        const paymentRes = await strapi.entityService.findMany("api::payment.payment", {
+        const paymentRes = await strapi.entityService.findMany(utils_1.entities.payment, {
             filters: { confirmCode: ctx.params.code },
         });
         const payment = paymentRes[0];
-        await strapi.entityService.update("api::payment.payment", payment.id, {
+        await strapi.entityService.update(utils_1.entities.payment, payment.id, {
             data: {
                 confirmed: true,
             },
@@ -86,5 +85,9 @@ module.exports = {
         return {
             confirmed: true,
         };
+    },
+    getPayment: async (ctx, next) => {
+        strapi.log.info("In pay/getPayment controller");
+        return await (0, utils_1.getPaymentByHash)(ctx.params.hash);
     },
 };
