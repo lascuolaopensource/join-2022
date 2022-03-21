@@ -159,7 +159,7 @@ export declare const pSchema: import("yup/lib/object").OptionalObjectSchema<{
     }>>;
 }>>;
 export interface pType {
-    paymentHash: string | number;
+    paymentHash: string;
     billing: billing.bType;
 }
 export interface pResType {
