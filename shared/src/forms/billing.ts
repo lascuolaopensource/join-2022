@@ -6,11 +6,11 @@ import { thenReq, thenNull, cfSchema } from "./utils";
  */
 
 export const bMeValues = {
-    cf: "",
+	cf: "",
 };
 
 export const bMeSchema = yup.object({
-    cf: cfSchema,
+	cf: cfSchema,
 });
 
 export type bMeType = typeof bMeValues;
@@ -20,15 +20,15 @@ export type bMeType = typeof bMeValues;
  */
 
 export const bPersonValues = {
-    name: "",
-    surname: "",
-    cf: "",
+	name: "",
+	surname: "",
+	cf: "",
 };
 
 export const bPersonSchema = yup.object({
-    name: yup.string().required(),
-    surname: yup.string().required(),
-    cf: cfSchema,
+	name: yup.string().required(),
+	surname: yup.string().required(),
+	cf: cfSchema,
 });
 
 export type bPersonType = typeof bPersonValues;
@@ -38,15 +38,15 @@ export type bPersonType = typeof bPersonValues;
  */
 
 export const bCompanyValues = {
-    name: "",
-    vat: "",
-    sdi: "",
+	name: "",
+	vat: "",
+	sdi: "",
 };
 
 export const bCompanySchema = yup.object({
-    name: yup.string().required(),
-    vat: yup.string().required(),
-    sdi: yup.string().required(),
+	name: yup.string().required(),
+	vat: yup.string().required(),
+	sdi: yup.string(),
 });
 
 export type bCompanyType = typeof bCompanyValues;
@@ -56,17 +56,17 @@ export type bCompanyType = typeof bCompanyValues;
  */
 
 export const bAddressValues = {
-    cap: "",
-    town: "",
-    street: "",
-    province: "",
+	cap: "",
+	town: "",
+	street: "",
+	province: "",
 };
 
 export const bAddressSchema = yup.object({
-    cap: yup.string().required(),
-    town: yup.string().required(),
-    province: yup.string().required(),
-    street: yup.string().required(),
+	cap: yup.string().required(),
+	town: yup.string().required(),
+	province: yup.string().required(),
+	street: yup.string().required(),
 });
 
 export type bAddressType = typeof bAddressValues;
@@ -80,9 +80,9 @@ export const bOptions = ["me", "person", "company"] as const;
 // Lista dei componenti per la zona dinamica
 // Reference: strapi-backend/src/api/billing-info/content-types/billing-info/schema.json
 export const bOptionsComp = {
-    company: "billing.company",
-    person: "billing.person",
-    me: "billing.me",
+	company: "billing.company",
+	person: "billing.person",
+	me: "billing.me",
 };
 
 export type bOptionsType = typeof bOptions[number];
@@ -92,34 +92,34 @@ export type bOptionsType = typeof bOptions[number];
  */
 
 export const bValues: bType = {
-    billingOption: null,
-    me: bMeValues,
-    person: bPersonValues,
-    company: bCompanyValues,
-    email: "",
-    address: bAddressValues,
+	billingOption: null,
+	me: bMeValues,
+	person: bPersonValues,
+	company: bCompanyValues,
+	email: "",
+	address: bAddressValues,
 };
 
 export const bSchema = yup.object({
-    // Modalità
-    billingOption: yup
-        .string()
-        .oneOf(bOptions as any)
-        .required(),
-    // Me
-    me: bMeSchema.when("billingOption", thenReq(bOptions[0])),
-    person: bPersonSchema.when("billingOption", thenReq(bOptions[1])),
-    company: bCompanySchema.when("billingOption", thenReq(bOptions[2])),
-    // Generici
-    email: yup.string().email().when("billingOption", thenNull(bOptions[0])),
-    address: bAddressSchema.required(),
+	// Modalità
+	billingOption: yup
+		.string()
+		.oneOf(bOptions as any)
+		.required(),
+	// Me
+	me: bMeSchema.when("billingOption", thenReq(bOptions[0])),
+	person: bPersonSchema.when("billingOption", thenReq(bOptions[1])),
+	company: bCompanySchema.when("billingOption", thenReq(bOptions[2])),
+	// Generici
+	email: yup.string().email().when("billingOption", thenNull(bOptions[0])),
+	address: bAddressSchema.required(),
 });
 
 export interface bType {
-    billingOption: bOptionsType;
-    me: bMeType;
-    person: bPersonType;
-    company: bCompanyType;
-    email: string;
-    address: bAddressType;
+	billingOption: bOptionsType;
+	me: bMeType;
+	person: bPersonType;
+	company: bCompanyType;
+	email: string;
+	address: bAddressType;
 }
