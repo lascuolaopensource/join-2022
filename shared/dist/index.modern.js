@@ -1,13 +1,13 @@
 import * as yup from 'yup';
 import { gql } from 'graphql-tag';
 
-const re = {
+const re$1 = {
   url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
   cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/
 };
-const urlSchema = yup.string().matches(re.url);
-const cfSchema = yup.string().uppercase().matches(re.cf);
-const emailSchema = yup.string().email();
+const urlSchema = yup.string().matches(re$1.url);
+const cfSchema = yup.string().uppercase().matches(re$1.cf);
+const emailSchema$1 = yup.string().email();
 function thenReq(value) {
   return {
     is: value,
@@ -38,7 +38,7 @@ const leValues = {
   email: ""
 };
 const leSchema = yup.object({
-  email: emailSchema.required()
+  email: emailSchema$1.required()
 });
 
 var loginEmail = {
@@ -62,16 +62,6 @@ var loginPassword = {
     __proto__: null,
     lpValues: lpValues,
     lpSchema: lpSchema
-};
-
-const ueSchema = yup.object({
-  email: emailSchema.optional(),
-  username: yup.string().optional()
-});
-
-var userExists = {
-    __proto__: null,
-    ueSchema: ueSchema
 };
 
 /**
@@ -287,7 +277,6 @@ var index$5 = {
     __proto__: null,
     loginEmail: loginEmail,
     loginPassword: loginPassword,
-    userExists: userExists,
     enroll: enroll,
     billing: billing,
     contacts: contacts,
@@ -405,10 +394,23 @@ var index$1 = {
     getPaymentInfo: getPaymentInfo
 };
 
+const re = {
+  url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
+  cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/
+};
+yup.string().matches(re.url);
+yup.string().uppercase().matches(re.cf);
+const emailSchema = yup.string().email();
+
+const UserExistsSchema = yup.object({
+  email: emailSchema.required()
+});
+
 var index = {
     __proto__: null,
     IsUserEnrolled: IsUserEnrolled,
-    pay: index$1
+    pay: index$1,
+    UserExistsSchema: UserExistsSchema
 };
 
 export { index as e, index$5 as f, index$2 as gql, index$3 as h, index$4 as t };
