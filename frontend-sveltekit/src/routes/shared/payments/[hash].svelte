@@ -2,13 +2,25 @@
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ params, fetch, session, stuff }) {
 		try {
-			const paymentInfo = await req.getPayment(params.hash);
+			const paymentInfo = await req.getPaymentInfo(params.hash);
+
+			// Redirecting if already confirmed
 			if (paymentInfo.payment.confirmed) {
 				return {
 					status: 302,
 					redirect: `/shared/payments/alreadyConfirmed`
 				};
 			}
+
+			// Redirecting if expired
+			if (Date.now() > Date.parse(paymentInfo.payment.expiration)) {
+				return {
+					status: 302,
+					redirect: `/shared/payments/expired`
+				};
+			}
+
+			//
 			return {
 				props: {
 					paymentInfo
@@ -17,9 +29,9 @@
 		} catch (e) {
 			console.log(e.message, 'paymentNotExisting');
 			return {
-					status: 302,
-					redirect: `/shared/payments/notExisting`
-				};
+				status: 302,
+				redirect: `/shared/payments/notExisting`
+			};
 		}
 	}
 </script>
@@ -32,6 +44,7 @@
 	import { f } from 'shared';
 	import type { e } from 'shared';
 	import { lsKeys } from '$lib/localStorageUtils';
+	import { s } from '$lib/strings';
 
 	import { createForm } from 'svelte-forms-lib';
 	import {
@@ -42,11 +55,15 @@
 		FormError
 	} from '$lib/components/form';
 
-	//
-
-	export let paymentInfo: e.pay.getPayment.Res;
+	import { Callout } from '$lib/components';
 
 	//
+
+	export let paymentInfo: e.pay.getPaymentInfo.Res;
+
+	/**
+	 * Form setup
+	 */
 
 	async function onSubmit(values: f.billing.bType) {
 		try {
@@ -60,7 +77,7 @@
 			};
 
 			// Invio richiesta
-			const res = await req.pay(body);
+			const res = await req.pay($page.params.hash, body);
 
 			// Si va al pagamento se la risposta è positiva
 			if (res.sessionUrl) {
@@ -109,6 +126,10 @@
 		$form.company = f.billing.bCompanyValues;
 	}
 
+	/**
+	 * Preparing variables - Formatting strings
+	 */
+
 	// Formatter setup for price
 	const formatter = new Intl.NumberFormat('it-IT', {
 		style: 'currency',
@@ -122,25 +143,51 @@
 	} else {
 		emailLabel = 'Email';
 	}
+
+	// Payment deadline
+	const deadline = new Date(Date.parse(paymentInfo.payment.expiration));
 </script>
 
 <!--  -->
 
 <h1>Pagamento</h1>
+
+<Callout>
+	{s.pay.callout}
+</Callout>
+
 <table>
 	<tr>
 		<th>Oggetto</th>
-		<td>{paymentInfo.relation.type} – {paymentInfo.relation.subject}</td>
+		<td>{paymentInfo.details.category} – {paymentInfo.details.title}</td>
 	</tr>
 	<tr>
 		<th>Prezzo</th>
 		<td>
-			{formatter.format(paymentInfo.relation.price)}
+			{formatter.format(paymentInfo.details.price)}
+		</td>
+	</tr>
+	<tr>
+		<th>Scadenza pagamento</th>
+		<td>
+			{deadline.toLocaleDateString('IT-it')}
 		</td>
 	</tr>
 </table>
 
+<div class="notes">
+	<h2>{s.pay.info}</h2>
+	<ul>
+		<li>{s.pay.dataAgain}</li>
+		<li>{s.pay.link}</li>
+	</ul>
+</div>
+
 <Form {formContext} lsKey={lsKeys.paymentForm}>
+	<hr />
+
+	<!--  -->
+
 	<h2>Dati di fatturazione</h2>
 
 	<RadioField name="billingOption" items={radioValues} labelText="Chi paga?" />
@@ -206,9 +253,9 @@
 	}
 
 	table {
-		width: 100%;
+		/* width: 100%; */
 		border-collapse: collapse;
-		margin-top: var(--s-2);
+		margin-top: var(--s-3);
 		margin-bottom: var(--s-3);
 	}
 
@@ -221,5 +268,13 @@
 	th {
 		width: auto;
 		text-align: left;
+	}
+
+	h1 {
+		margin-bottom: var(--s-3);
+	}
+
+	.notes {
+		margin-bottom: var(--s-3);
 	}
 </style>
