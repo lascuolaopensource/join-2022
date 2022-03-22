@@ -1,1 +1,1 @@
-export * as getPayment from "./getPayment";
+export * as getPaymentInfo from "./getPaymentInfo";

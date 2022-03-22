@@ -787,6 +787,7 @@ export declare type Payment = {
     confirmed?: Maybe<Scalars['Boolean']>;
     createdAt?: Maybe<Scalars['DateTime']>;
     enrollment?: Maybe<EnrollmentEntityResponse>;
+    expiration: Scalars['DateTime'];
     hash: Scalars['String'];
     owner?: Maybe<UsersPermissionsUserEntityResponse>;
     updatedAt?: Maybe<Scalars['DateTime']>;
@@ -812,6 +813,7 @@ export declare type PaymentFiltersInput = {
     confirmed?: InputMaybe<BooleanFilterInput>;
     createdAt?: InputMaybe<DateTimeFilterInput>;
     enrollment?: InputMaybe<EnrollmentFiltersInput>;
+    expiration?: InputMaybe<DateTimeFilterInput>;
     hash?: InputMaybe<StringFilterInput>;
     id?: InputMaybe<IdFilterInput>;
     not?: InputMaybe<PaymentFiltersInput>;
@@ -824,6 +826,7 @@ export declare type PaymentInput = {
     confirmCode?: InputMaybe<Scalars['String']>;
     confirmed?: InputMaybe<Scalars['Boolean']>;
     enrollment?: InputMaybe<Scalars['ID']>;
+    expiration?: InputMaybe<Scalars['DateTime']>;
     hash?: InputMaybe<Scalars['String']>;
     owner?: InputMaybe<Scalars['ID']>;
 };

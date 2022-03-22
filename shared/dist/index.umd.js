@@ -346,10 +346,17 @@
       PublicationState["Preview"] = "PREVIEW";
     })(PublicationState || (PublicationState = {}));
 
+    var PaymentCategories;
+
+    (function (PaymentCategories) {
+      PaymentCategories["course"] = "course";
+    })(PaymentCategories || (PaymentCategories = {}));
+
     var index$4 = {
         __proto__: null,
         get Enum_Enrollment_State () { return Enum_Enrollment_State; },
-        get PublicationState () { return PublicationState; }
+        get PublicationState () { return PublicationState; },
+        get PaymentCategories () { return PaymentCategories; }
     };
 
     function isPaymentNeeded(c) {
@@ -412,13 +419,13 @@
         __proto__: null
     };
 
-    var getPayment = {
+    var getPaymentInfo = {
         __proto__: null
     };
 
     var index$1 = {
         __proto__: null,
-        getPayment: getPayment
+        getPaymentInfo: getPaymentInfo
     };
 
     var index = {

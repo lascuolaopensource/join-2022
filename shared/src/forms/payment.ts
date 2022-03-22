@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import * as billing from "./billing";
+import { PaymentDetails } from "../types";
 
 /**
  * Payment
@@ -33,4 +34,5 @@ export interface pConfirmType {
 
 export interface pConfirmResType {
 	confirmed: boolean;
+	details: PaymentDetails;
 }

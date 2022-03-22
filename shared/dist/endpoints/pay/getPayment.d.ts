@@ -10,5 +10,5 @@ export interface Res {
     billing: {
         address: t.ComponentLocationAddress;
         data: t.Comp<t.BillingInfoDataDynamicZone>;
-    };
+    } | null;
 }
