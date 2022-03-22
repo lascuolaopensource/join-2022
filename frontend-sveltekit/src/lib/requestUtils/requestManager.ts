@@ -50,10 +50,10 @@ export const req = {
 	},
 
 	userExists: async (
-		body: f.userExists.ueType,
+		body: e.UserExistsReq,
 		fetchFn = fetch
-	): Promise<f.userExists.ueResponse> => {
-		return await request(fetchFn, b + 'api/userexists', 'POST', body);
+	): Promise<e.UserExistsRes> => {
+		return await request(fetchFn, b + 'api/user-exists', 'POST', body);
 	},
 
 	getUserInfo: async (
