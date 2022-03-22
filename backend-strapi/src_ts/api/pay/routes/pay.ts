@@ -1,11 +1,20 @@
 module.exports = {
     routes: [
         {
+            method: "GET",
+            path: "/pay/get-payment-info/:hash",
+            handler: "pay.getPaymentInfo",
+            config: {
+                policies: ["payment-exists"],
+                middlewares: [],
+            },
+        },
+        {
             method: "POST",
-            path: "/pay",
+            path: "/pay/:hash",
             handler: "pay.index",
             config: {
-                policies: ["is-already-confirmed"],
+                policies: ["payment-exists", "is-expired", "is-already-paid"],
                 middlewares: [],
             },
         },
@@ -13,15 +22,6 @@ module.exports = {
             method: "GET",
             path: "/pay/confirm/:code",
             handler: "pay.confirm",
-            config: {
-                policies: ["is-already-confirmed"],
-                middlewares: [],
-            },
-        },
-        {
-            method: "GET",
-            path: "/pay/get-payment/:hash",
-            handler: "pay.getPayment",
             config: {
                 policies: [],
                 middlewares: [],
