@@ -16,5 +16,17 @@ export const s = {
 			payment: 'Vai al pagamento',
 			enroll: 'Iscriviti!'
 		}
+	},
+	pay: {
+		info: `Alcune note prima di pagare`,
+		dataAgain: `Nella schermata successiva ti verranno nuovamente chiesti i dati.
+			Ti chiediamo di ripetere quelli che hai già inserito in questa pagina.`,
+		callout: `IMPORTANTE: Questo link è pubblico.
+			Puoi condividerlo con chi effettuerà il pagamento per te,
+			ma non condividerlo con nessun altro
+			– altrimenti i dati di fatturazione saranno pubblici.`,
+		link: `Questo link è contenuto nella mail che hai appena ricevuto.
+			Se vuoi completare il pagamento in un secondo momento sai dove trovarlo,
+			ma occhio alla data di scadenza!`
 	}
 };
