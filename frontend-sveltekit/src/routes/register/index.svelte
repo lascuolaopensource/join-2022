@@ -5,14 +5,20 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import { createUserExistsTest, passwordValidator } from '$lib/validators';
+	import { passwordValidator } from '$lib/validators';
 	import type { f } from 'shared';
 
 	//
 
 	import { OutsideTitle } from '$lib/components';
 
-	import { Form, TextField, SubmitButton, FormError, setFormError } from '$lib/components/form';
+	import {
+		Form,
+		TextField,
+		SubmitButton,
+		FormError,
+		setFormError
+	} from '$lib/components/form';
 
 	import { icons } from '$lib/icons/icons.svelte';
 
@@ -35,7 +41,10 @@
 			.test({
 				name: 'emailExists',
 				message: "L'email esiste già",
-				test: createUserExistsTest('email')
+				test: async (value, testContext) => {
+					const res = await req.userExists({ email: value });
+					return !res.exists;
+				}
 			}),
 		password: passwordValidator
 	});
@@ -44,7 +53,7 @@
 		// This function registers a user
 		try {
 			// Creating user
-			const res = await req.register(values);
+			await req.register(values);
 			// If successful, we redirect
 			await goto('/register/thanks');
 		} catch (e) {
