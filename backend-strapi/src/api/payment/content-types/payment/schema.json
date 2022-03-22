@@ -41,6 +41,10 @@
     "confirmed": {
       "type": "boolean",
       "default": false
+    },
+    "expiration": {
+      "type": "datetime",
+      "required": true
     }
   }
 }
