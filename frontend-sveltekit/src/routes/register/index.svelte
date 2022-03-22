@@ -6,7 +6,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import { passwordValidator } from '$lib/validators';
-	import type { f } from 'shared';
+	import type { e } from 'shared';
 
 	//
 
@@ -24,14 +24,14 @@
 
 	//
 
-	const initialValues: f.register.reType = {
+	const initialValues: e.RegisterUserReq = {
 		name: '',
 		surname: '',
 		email: '',
 		password: ''
 	};
 
-	const validationSchema = yup.object().shape({
+	const validationSchema = yup.object({
 		name: yup.string().required(),
 		surname: yup.string().required(),
 		email: yup
@@ -49,7 +49,7 @@
 		password: passwordValidator
 	});
 
-	async function onSubmit(values: f.register.reType) {
+	async function onSubmit(values: e.RegisterUserReq) {
 		// This function registers a user
 		try {
 			// Creating user

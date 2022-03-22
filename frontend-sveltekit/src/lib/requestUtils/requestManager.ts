@@ -43,7 +43,7 @@ export const req = {
 	},
 
 	register: async (
-		body: f.register.reType,
+		body: e.RegisterUserReq,
 		fetchFn = fetch
 	): Promise<t.LoginResponse> => {
 		return await request(fetchFn, b + 'api/register-user', 'POST', body);
