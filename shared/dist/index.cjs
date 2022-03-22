@@ -301,10 +301,6 @@ var payment = {
     pConfirmSchema: pConfirmSchema
 };
 
-var register = {
-    __proto__: null
-};
-
 var index$5 = {
     __proto__: null,
     loginEmail: loginEmail,
@@ -313,8 +309,7 @@ var index$5 = {
     billing: billing,
     contacts: contacts,
     evaluation: evaluation,
-    payment: payment,
-    register: register
+    payment: payment
 };
 
 var Enum_Enrollment_State;

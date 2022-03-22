@@ -303,10 +303,6 @@
         pConfirmSchema: pConfirmSchema
     };
 
-    var register = {
-        __proto__: null
-    };
-
     var index$5 = {
         __proto__: null,
         loginEmail: loginEmail,
@@ -315,8 +311,7 @@
         billing: billing,
         contacts: contacts,
         evaluation: evaluation,
-        payment: payment,
-        register: register
+        payment: payment
     };
 
     var Enum_Enrollment_State;
