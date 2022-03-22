@@ -142,6 +142,11 @@ module.exports = {
         let paymentUrl = "";
 
         if (h.course.isPaymentNeeded(course)) {
+            // Defining payment deadline
+            const courseDeadlineStr = course.enrollmentDeadline;
+            const expirationDate = new Date(Date.parse(courseDeadlineStr));
+            expirationDate.setDate(expirationDate.getDate() + 1);
+
             // Creating payment
             paymentData = {
                 enrollment: enrollment.id,
@@ -149,6 +154,7 @@ module.exports = {
                 owner: user.id,
                 confirmCode: generateSecureString(64),
                 confirmed: false,
+                expiration: expirationDate.toISOString(),
             };
 
             payment = await strapi.entityService.create(
@@ -158,7 +164,7 @@ module.exports = {
 
             // Adding to enrollment
             await strapi.entityService.update(
-                "api::enrollment.enrollment",
+                entities.enrollment,
                 enrollment.id,
                 {
                     data: {
@@ -176,7 +182,7 @@ module.exports = {
          * Confirmation email
          */
 
-        // Building arguments
+        // Building email arguments
 
         const args: enrollEmail.IEnrollEmailTemplateArgs = {
             COURSE_TITLE: course.title,
