@@ -1,10 +1,14 @@
 import type { t, f, e } from 'shared';
 import { request } from './request';
 import { headersAuth } from './authorizationHeader';
-import { baseUrl } from './baseUrl';
 
+// L'URL base, importato dall'.env
+export const baseUrl = <string>import.meta.env.VITE_BACKEND_URL;
+
+// Scorciatoia per url base
 const b = baseUrl + '/';
 
+// Request manager
 export const req = {
 	/**
 	 * Login
@@ -112,10 +116,17 @@ export const req = {
 	},
 
 	pay: async (
+		hash: string,
 		body: f.payment.pType,
 		fetchFn = fetch
 	): Promise<f.payment.pResType> => {
-		return await request(fetchFn, b + 'api/pay', 'POST', body, headersAuth());
+		return await request(
+			fetchFn,
+			b + `api/pay/${hash}`,
+			'POST',
+			body,
+			headersAuth()
+		);
 	},
 
 	payConfirm: async (
@@ -128,6 +139,13 @@ export const req = {
 			'GET',
 			headersAuth()
 		);
+	},
+
+	getPaymentInfo: async (
+		hash: string,
+		fetchFn = fetch
+	): Promise<e.pay.getPaymentInfo.Res> => {
+		return await request(fetchFn, b + `api/pay/get-payment-info/${hash}`);
 	},
 
 	/**

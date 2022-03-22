@@ -199,7 +199,7 @@ var bCompanyValues = {
 var bCompanySchema = yup.object({
   name: yup.string().required(),
   vat: yup.string().required(),
-  sdi: yup.string().required()
+  sdi: yup.string()
 });
 /**
  * Address
@@ -295,7 +295,7 @@ var register = {
     __proto__: null
 };
 
-var index$4 = {
+var index$5 = {
     __proto__: null,
     loginEmail: loginEmail,
     loginPassword: loginPassword,
@@ -324,10 +324,17 @@ var PublicationState;
   PublicationState["Preview"] = "PREVIEW";
 })(PublicationState || (PublicationState = {}));
 
-var index$3 = {
+var PaymentCategories;
+
+(function (PaymentCategories) {
+  PaymentCategories["course"] = "course";
+})(PaymentCategories || (PaymentCategories = {}));
+
+var index$4 = {
     __proto__: null,
     get Enum_Enrollment_State () { return Enum_Enrollment_State; },
-    get PublicationState () { return PublicationState; }
+    get PublicationState () { return PublicationState; },
+    get PaymentCategories () { return PaymentCategories; }
 };
 
 function isPaymentNeeded(c) {
@@ -347,7 +354,7 @@ var course = {
     isEnrollable: isEnrollable
 };
 
-var index$2 = {
+var index$3 = {
     __proto__: null,
     course: course
 };
@@ -381,7 +388,7 @@ var getCoursePageBySlug = gql(_templateObject || (_templateObject = _taggedTempl
 // 	}
 // `;
 
-var index$1 = {
+var index$2 = {
     __proto__: null,
     getCoursePageBySlug: getCoursePageBySlug
 };
@@ -390,10 +397,20 @@ var IsUserEnrolled = {
     __proto__: null
 };
 
-var index = {
-    __proto__: null,
-    IsUserEnrolled: IsUserEnrolled
+var getPaymentInfo = {
+    __proto__: null
 };
 
-export { index as e, index$4 as f, index$1 as gql, index$2 as h, index$3 as t };
+var index$1 = {
+    __proto__: null,
+    getPaymentInfo: getPaymentInfo
+};
+
+var index = {
+    __proto__: null,
+    IsUserEnrolled: IsUserEnrolled,
+    pay: index$1
+};
+
+export { index as e, index$5 as f, index$2 as gql, index$3 as h, index$4 as t };
 //# sourceMappingURL=index.module.js.map

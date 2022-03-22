@@ -17,7 +17,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createConfirmationTokenURL = exports.getService = exports.getUserPemissionsSettings = exports.generateSecureString = exports.getUserByEmail = exports.getCourseByID = exports.entities = exports.registerUser = void 0;
+exports.getPaymentDetails = exports.getPaymentBillingInfo = exports.getPaymentByHash = exports.getPaymentHash = exports.createConfirmationTokenURL = exports.getService = exports.getUserPemissionsSettings = exports.generateSecureString = exports.getUserByEmail = exports.getCourseByID = exports.entities = exports.registerUser = void 0;
+const shared_1 = require("shared");
 const crypto_1 = __importDefault(require("crypto"));
 const urlJoin = require("url-join");
 const { getAbsoluteServerUrl } = require("@strapi/utils");
@@ -28,6 +29,9 @@ exports.entities = {
     course: "api::course.course",
     user: "plugin::users-permissions.user",
     userInfo: "api::user-info.user-info",
+    payment: "api::payment.payment",
+    billingInfo: "api::billing-info.billing-info",
+    enrollment: "api::enrollment.enrollment",
 };
 async function getCourseByID(id, options = {}) {
     const course = await strapi.entityService.findOne(exports.entities.course, id, options);
@@ -70,3 +74,63 @@ function createConfirmationTokenURL() {
     };
 }
 exports.createConfirmationTokenURL = createConfirmationTokenURL;
+function getPaymentHash(ctx) {
+    const hash = ctx.request?.body?.hash || ctx.params?.hash || null;
+    if (!hash) {
+        throw new Error("hashNotFound");
+    }
+    return hash;
+}
+exports.getPaymentHash = getPaymentHash;
+async function getPaymentByHash(hash) {
+    return await strapi.query(exports.entities.payment).findOne({ where: { hash } });
+}
+exports.getPaymentByHash = getPaymentByHash;
+async function getPaymentBillingInfo(paymentID) {
+    const payment = await strapi.entityService.findOne(exports.entities.payment, paymentID, {
+        populate: {
+            billing: {
+                populate: ["data", "address"],
+            },
+        },
+    });
+    if (!payment) {
+        throw new Error("paymentNotFound");
+    }
+    const billingInfo = payment.billing;
+    if (billingInfo) {
+        return {
+            address: billingInfo.address,
+            data: billingInfo.data[0],
+        };
+    }
+    else {
+        return null;
+    }
+}
+exports.getPaymentBillingInfo = getPaymentBillingInfo;
+async function getPaymentDetails(paymentID) {
+    const payment = await strapi.entityService.findOne(exports.entities.payment, paymentID, {
+        populate: {
+            enrollment: {
+                populate: {
+                    course: {
+                        fields: ["title", "price"],
+                    },
+                },
+            },
+        },
+    });
+    if (!payment) {
+        throw new Error("paymentNotFound");
+    }
+    const enrollment = payment.enrollment;
+    const course = enrollment.course;
+    const details = {
+        category: shared_1.t.PaymentCategories.course,
+        title: course.title,
+        price: course.price,
+    };
+    return details;
+}
+exports.getPaymentDetails = getPaymentDetails;

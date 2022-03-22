@@ -60,15 +60,19 @@ module.exports = {
         let payment = null;
         let paymentUrl = "";
         if (shared_1.h.course.isPaymentNeeded(course)) {
+            const courseDeadlineStr = course.enrollmentDeadline;
+            const expirationDate = new Date(Date.parse(courseDeadlineStr));
+            expirationDate.setDate(expirationDate.getDate() + 1);
             paymentData = {
                 enrollment: enrollment.id,
                 hash: (0, utils_1.generateSecureString)(64),
                 owner: user.id,
                 confirmCode: (0, utils_1.generateSecureString)(64),
                 confirmed: false,
+                expiration: expirationDate.toISOString(),
             };
             payment = await strapi.entityService.create("api::payment.payment", { data: paymentData });
-            await strapi.entityService.update("api::enrollment.enrollment", enrollment.id, {
+            await strapi.entityService.update(utils_1.entities.enrollment, enrollment.id, {
                 data: {
                     payment: payment?.id,
                     state: shared_1.t.Enum_Enrollment_State.AwaitingPayment,

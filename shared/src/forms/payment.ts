@@ -1,22 +1,23 @@
 import * as yup from "yup";
 import * as billing from "./billing";
+import { PaymentDetails } from "../types";
 
 /**
  * Payment
  */
 
 export const pSchema = yup.object({
-    paymentHash: yup.string(),
-    billing: billing.bSchema.required(),
+	paymentHash: yup.string(),
+	billing: billing.bSchema.required(),
 });
 
 export interface pType {
-    paymentHash: string | number;
-    billing: billing.bType;
+	paymentHash: string;
+	billing: billing.bType;
 }
 
 export interface pResType {
-    sessionUrl: string | null;
+	sessionUrl: string | null;
 }
 
 /**
@@ -24,13 +25,14 @@ export interface pResType {
  */
 
 export const pConfirmSchema = yup.object({
-    confirmCode: yup.string().required(),
+	confirmCode: yup.string().required(),
 });
 
 export interface pConfirmType {
-    confirmCode: string;
+	confirmCode: string;
 }
 
 export interface pConfirmResType {
-    confirmed: boolean;
+	confirmed: boolean;
+	details: PaymentDetails;
 }

@@ -1,4 +1,4 @@
-import { t } from "shared";
+import { t, e } from "shared";
 import crypto from "crypto";
 
 const urlJoin = require("url-join");
@@ -15,6 +15,9 @@ export const entities = {
     course: "api::course.course",
     user: "plugin::users-permissions.user",
     userInfo: "api::user-info.user-info",
+    payment: "api::payment.payment",
+    billingInfo: "api::billing-info.billing-info",
+    enrollment: "api::enrollment.enrollment",
 };
 
 export async function getCourseByID(id: string | number, options = {}) {
@@ -78,4 +81,92 @@ export function createConfirmationTokenURL() {
         token,
         url,
     };
+}
+
+/**
+ *
+ */
+
+export function getPaymentHash(ctx: any): string {
+    const hash = ctx.request?.body?.hash || ctx.params?.hash || null;
+    if (!hash) {
+        throw new Error("hashNotFound");
+    }
+    return hash;
+}
+
+export async function getPaymentByHash(hash: string): Promise<t.ID<t.Payment>> {
+    return await strapi.query(entities.payment).findOne({ where: { hash } });
+}
+
+export async function getPaymentBillingInfo(
+    paymentID: string | number
+): Promise<t.PaymentBillingInfo | null> {
+    // Getting payment
+    const payment: t.ID<t.Payment> = await strapi.entityService.findOne(
+        entities.payment,
+        paymentID,
+        {
+            populate: {
+                billing: {
+                    populate: ["data", "address"],
+                },
+            },
+        }
+    );
+
+    if (!payment) {
+        throw new Error("paymentNotFound");
+    }
+
+    // Getting billing info
+    const billingInfo = payment.billing as any as t.ID<t.BillingInfo>;
+
+    if (billingInfo) {
+        return {
+            address: billingInfo.address,
+            data: billingInfo.data[0] as t.Comp<t.BillingInfoDataDynamicZone>,
+        };
+    } else {
+        return null;
+    }
+}
+
+export async function getPaymentDetails(
+    paymentID: string | number
+): Promise<t.PaymentDetails> {
+    const payment: t.ID<t.Payment> = await strapi.entityService.findOne(
+        entities.payment,
+        paymentID,
+        {
+            populate: {
+                enrollment: {
+                    populate: {
+                        course: {
+                            fields: ["title", "price"],
+                        },
+                    },
+                },
+            },
+        }
+    );
+
+    if (!payment) {
+        throw new Error("paymentNotFound");
+    }
+
+    /**
+     * Details – Enrollment
+     */
+    const enrollment = payment.enrollment as any as t.ID<t.Enrollment>;
+    const course = enrollment.course as any as t.ID<t.Course>;
+    const details: t.PaymentDetails = {
+        category: t.PaymentCategories.course,
+        title: course.title,
+        price: course.price as number,
+    };
+
+    //
+
+    return details;
 }

@@ -40,11 +40,11 @@ export declare const bCompanyValues: {
 export declare const bCompanySchema: import("yup/lib/object").OptionalObjectSchema<{
     name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    sdi: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
 }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
     name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    sdi: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
 }>>;
 export declare type bCompanyType = typeof bCompanyValues;
 /**
@@ -101,11 +101,11 @@ export declare const bSchema: import("yup/lib/object").OptionalObjectSchema<{
     company: import("yup/lib/object").OptionalObjectSchema<{
         name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        sdi: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
     }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
         name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        sdi: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
     }>>;
     email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
     address: import("yup/lib/object").RequiredObjectSchema<{
@@ -138,11 +138,11 @@ export declare const bSchema: import("yup/lib/object").OptionalObjectSchema<{
     company: import("yup/lib/object").OptionalObjectSchema<{
         name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        sdi: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
     }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
         name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         vat: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        sdi: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        sdi: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
     }>>;
     email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
     address: import("yup/lib/object").RequiredObjectSchema<{

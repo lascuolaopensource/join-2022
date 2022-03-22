@@ -1,10 +1,50 @@
+<script lang="ts" context="module">
+	/** @type {import('@sveltejs/kit').Load} */
+	export async function load({ params, fetch, session, stuff }) {
+		try {
+			const paymentInfo = await req.getPaymentInfo(params.hash);
+
+			// Redirecting if already confirmed
+			if (paymentInfo.payment.confirmed) {
+				return {
+					status: 302,
+					redirect: `/shared/payments/alreadyConfirmed`
+				};
+			}
+
+			// Redirecting if expired
+			if (Date.now() > Date.parse(paymentInfo.payment.expiration)) {
+				return {
+					status: 302,
+					redirect: `/shared/payments/expired`
+				};
+			}
+
+			//
+			return {
+				props: {
+					paymentInfo
+				}
+			};
+		} catch (e) {
+			console.log(e.message, 'paymentNotExisting');
+			return {
+				status: 302,
+				redirect: `/shared/payments/notExisting`
+			};
+		}
+	}
+</script>
+
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { req } from '$lib/requestUtils';
 	import { setFormError } from '$lib/components/form';
 	import { f } from 'shared';
+	import type { e } from 'shared';
 	import { lsKeys } from '$lib/localStorageUtils';
+	import { s } from '$lib/strings';
 
 	import { createForm } from 'svelte-forms-lib';
 	import {
@@ -15,7 +55,15 @@
 		FormError
 	} from '$lib/components/form';
 
+	import { Callout } from '$lib/components';
+
 	//
+
+	export let paymentInfo: e.pay.getPaymentInfo.Res;
+
+	/**
+	 * Form setup
+	 */
 
 	async function onSubmit(values: f.billing.bType) {
 		try {
@@ -29,7 +77,7 @@
 			};
 
 			// Invio richiesta
-			const res = await req.pay(body);
+			const res = await req.pay($page.params.hash, body);
 
 			// Si va al pagamento se la risposta è positiva
 			if (res.sessionUrl) {
@@ -51,6 +99,8 @@
 		{ value: billingOptions[1], label: 'Qualcun altro per me' },
 		{ value: billingOptions[2], label: 'Attività commerciale' }
 	];
+
+	// Adding
 
 	// Creating form
 	const formContext = createForm({
@@ -75,12 +125,70 @@
 		$form.person = null;
 		$form.company = f.billing.bCompanyValues;
 	}
+
+	/**
+	 * Preparing variables - Formatting strings
+	 */
+
+	// Formatter setup for price
+	const formatter = new Intl.NumberFormat('it-IT', {
+		style: 'currency',
+		currency: 'EUR'
+	});
+
+	// Label for email field
+	let emailLabel: string;
+	$: if ($form.billingOption == billingOptions[2]) {
+		emailLabel = 'PEC';
+	} else {
+		emailLabel = 'Email';
+	}
+
+	// Payment deadline
+	const deadline = new Date(Date.parse(paymentInfo.payment.expiration));
 </script>
 
 <!--  -->
 
+<h1>Pagamento</h1>
+
+<Callout>
+	{s.pay.callout}
+</Callout>
+
+<table>
+	<tr>
+		<th>Oggetto</th>
+		<td>{paymentInfo.details.category} – {paymentInfo.details.title}</td>
+	</tr>
+	<tr>
+		<th>Prezzo</th>
+		<td>
+			{formatter.format(paymentInfo.details.price)}
+		</td>
+	</tr>
+	<tr>
+		<th>Scadenza pagamento</th>
+		<td>
+			{deadline.toLocaleDateString('IT-it')}
+		</td>
+	</tr>
+</table>
+
+<div class="notes">
+	<h2>{s.pay.info}</h2>
+	<ul>
+		<li>{s.pay.dataAgain}</li>
+		<li>{s.pay.link}</li>
+	</ul>
+</div>
+
 <Form {formContext} lsKey={lsKeys.paymentForm}>
-	<h1>Dati di fatturazione</h1>
+	<hr />
+
+	<!--  -->
+
+	<h2>Dati di fatturazione</h2>
 
 	<RadioField name="billingOption" items={radioValues} labelText="Chi paga?" />
 
@@ -99,11 +207,15 @@
 			<!-- Azienda -->
 			<TextField name="company.name" labelText="Nome società" type="text" />
 			<TextField name="company.vat" labelText="Partita IVA" type="text" />
-			<TextField name="company.sdi" labelText="Codice SDI" type="text" />
+			<TextField
+				name="company.sdi"
+				labelText="Codice SDI (opzionale)"
+				type="text"
+			/>
 		{/if}
 
 		{#if $form.billingOption != billingOptions[0]}
-			<TextField name="email" labelText="Email" type="email" />
+			<TextField name="email" labelText={emailLabel} type="email" />
 		{/if}
 
 		<hr />
@@ -133,5 +245,36 @@
 
 	.field-w50 {
 		width: 50%;
+	}
+
+	td,
+	th {
+		padding: var(--s-1);
+	}
+
+	table {
+		/* width: 100%; */
+		border-collapse: collapse;
+		margin-top: var(--s-3);
+		margin-bottom: var(--s-3);
+	}
+
+	td,
+	th,
+	table {
+		border: 1px solid gray;
+	}
+
+	th {
+		width: auto;
+		text-align: left;
+	}
+
+	h1 {
+		margin-bottom: var(--s-3);
+	}
+
+	.notes {
+		margin-bottom: var(--s-3);
 	}
 </style>
