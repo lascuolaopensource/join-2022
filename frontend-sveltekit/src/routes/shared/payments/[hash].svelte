@@ -41,8 +41,7 @@
 	import { page } from '$app/stores';
 	import { req } from '$lib/requestUtils';
 	import { setFormError } from '$lib/components/form';
-	import { f } from 'shared';
-	import type { e } from 'shared';
+	import { t, e } from 'shared';
 	import { lsKeys } from '$lib/localStorageUtils';
 	import { s } from '$lib/strings';
 
@@ -59,25 +58,19 @@
 
 	//
 
-	export let paymentInfo: e.pay.getPaymentInfo.Res;
+	export let paymentInfo: e.PayGetPaymentInfoRes;
 
 	/**
 	 * Form setup
 	 */
 
-	async function onSubmit(values: f.billing.bType) {
+	async function onSubmit(values: e.PayReq) {
 		try {
 			// Si svuota il localstorage
 			localStorage.removeItem(lsKeys.paymentForm);
 
-			// Creazione body
-			const body: f.payment.pType = {
-				paymentHash: $page.params.hash,
-				billing: values
-			};
-
 			// Invio richiesta
-			const res = await req.pay($page.params.hash, body);
+			const res = await req.pay($page.params.hash, values);
 
 			// Si va al pagamento se la risposta è positiva
 			if (res.sessionUrl) {
@@ -93,7 +86,7 @@
 	}
 
 	// Setting billing options
-	const billingOptions = f.billing.bOptions;
+	const billingOptions = t.BillingOptions;
 	const radioValues = [
 		{ value: billingOptions[0], label: 'Io' },
 		{ value: billingOptions[1], label: 'Qualcun altro per me' },
@@ -104,8 +97,8 @@
 
 	// Creating form
 	const formContext = createForm({
-		initialValues: f.billing.bValues,
-		validationSchema: f.billing.bSchema,
+		initialValues: e.PayValues,
+		validationSchema: e.PaySchema,
 		onSubmit
 	});
 	const { form } = formContext;
@@ -113,17 +106,17 @@
 	// Dynamically updating form content
 	// to ease form validation
 	$: if ($form.billingOption == billingOptions[0]) {
-		$form.me = f.billing.bMeValues;
+		$form.me = e.BillingMeValues;
 		$form.person = null;
 		$form.company = null;
 	} else if ($form.billingOption == billingOptions[1]) {
 		$form.me = null;
-		$form.person = f.billing.bPersonValues;
+		$form.person = e.BillingPersonValues;
 		$form.company = null;
 	} else if ($form.billingOption == billingOptions[2]) {
 		$form.me = null;
 		$form.person = null;
-		$form.company = f.billing.bCompanyValues;
+		$form.company = e.BillingCompanyValues;
 	}
 
 	/**
