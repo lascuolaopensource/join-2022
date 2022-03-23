@@ -1,4 +1,4 @@
-import { getPaymentHash, getPaymentByHash } from "../../../utils";
+import { getPaymentByHash } from "../../../utils";
 
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;

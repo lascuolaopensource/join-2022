@@ -1,4 +1,4 @@
-import type { t, f, e } from 'shared';
+import type { t, e } from 'shared';
 import { request } from './request';
 import { headersAuth } from './authorizationHeader';
 
@@ -15,16 +15,13 @@ export const req = {
 	 */
 
 	loginEmail: async (
-		body: f.loginEmail.leType,
+		body: e.LoginEmailReq,
 		fetchFn = fetch
-	): Promise<f.loginEmail.leResponse> => {
-		return await request(fetchFn, b + 'api/loginemail', 'POST', body);
+	): Promise<e.LoginEmailRes> => {
+		return await request(fetchFn, b + 'api/login-email', 'POST', body);
 	},
 
-	login: async (
-		body: t.UsersPermissionsLoginInput,
-		fetchFn = fetch
-	): Promise<t.LoginResponse> => {
+	login: async (body: e.LoginReq, fetchFn = fetch): Promise<e.LoginRes> => {
 		return await request(fetchFn, b + 'api/auth/local', 'POST', body);
 	},
 
@@ -43,17 +40,17 @@ export const req = {
 	},
 
 	register: async (
-		body: f.register.reType,
+		body: e.RegisterUserReq,
 		fetchFn = fetch
 	): Promise<t.LoginResponse> => {
 		return await request(fetchFn, b + 'api/register-user', 'POST', body);
 	},
 
 	userExists: async (
-		body: f.userExists.ueType,
+		body: e.UserExistsReq,
 		fetchFn = fetch
-	): Promise<f.userExists.ueResponse> => {
-		return await request(fetchFn, b + 'api/userexists', 'POST', body);
+	): Promise<e.UserExistsRes> => {
+		return await request(fetchFn, b + 'api/user-exists', 'POST', body);
 	},
 
 	getUserInfo: async (
@@ -76,7 +73,7 @@ export const req = {
 	isUserEnrolled: async (
 		courseID: string,
 		fetchFn = fetch
-	): Promise<e.IsUserEnrolled.res> => {
+	): Promise<e.IsUserEnrolledRes> => {
 		return await request(
 			fetchFn,
 			b + `api/is-user-enrolled/${courseID}`,
@@ -90,7 +87,7 @@ export const req = {
 	 * Password
 	 */
 
-	forgotPassword: async (body: f.loginEmail.leType, fetchFn = fetch) => {
+	forgotPassword: async (body: e.LoginEmailReq, fetchFn = fetch) => {
 		return await request(fetchFn, b + 'api/auth/forgot-password', 'POST', body);
 	},
 
@@ -102,10 +99,7 @@ export const req = {
 	 * Enrollment
 	 */
 
-	enroll: async (
-		body: f.enroll.enRequest,
-		fetchFn = fetch
-	): Promise<f.enroll.enResponse> => {
+	enroll: async (body: e.EnrollReq, fetchFn = fetch): Promise<e.EnrollRes> => {
 		return await request(
 			fetchFn,
 			b + 'api/enroll',
@@ -115,11 +109,15 @@ export const req = {
 		);
 	},
 
+	/**
+	 * Pay
+	 */
+
 	pay: async (
 		hash: string,
-		body: f.payment.pType,
+		body: e.PayReq,
 		fetchFn = fetch
-	): Promise<f.payment.pResType> => {
+	): Promise<e.PayRes> => {
 		return await request(
 			fetchFn,
 			b + `api/pay/${hash}`,
@@ -132,7 +130,7 @@ export const req = {
 	payConfirm: async (
 		code: string,
 		fetchFn = fetch
-	): Promise<f.payment.pConfirmResType> => {
+	): Promise<e.PayConfirmRes> => {
 		return await request(
 			fetchFn,
 			b + `api/pay/confirm/${code}`,
@@ -144,7 +142,7 @@ export const req = {
 	getPaymentInfo: async (
 		hash: string,
 		fetchFn = fetch
-	): Promise<e.pay.getPaymentInfo.Res> => {
+	): Promise<e.PayGetPaymentInfoRes> => {
 		return await request(fetchFn, b + `api/pay/get-payment-info/${hash}`);
 	},
 

@@ -3,7 +3,7 @@
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
 
-import { f } from "shared";
+import { e } from "shared";
 import { getCourseByID } from "../../../utils";
 
 /**
@@ -15,11 +15,11 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
 
     try {
         // Getting body
-        const body: f.enroll.enRequest = policyContext.request.body;
+        const body: e.EnrollReq = policyContext.request.body;
 
         // Checking the structure
         // This can throw an error
-        await f.enroll.enSchema.validate(body);
+        await e.EnrollSchema.validate(body);
 
         // Getting the course
         const course = await getCourseByID(body.courseId);
@@ -36,8 +36,8 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
         } else {
             throw new Error();
         }
-    } catch (e) {
-        console.log(e);
+    } catch (err) {
+        console.log(err);
         throw new PolicyError("invalidPayload", {
             policy: "isPayloadValid",
         });

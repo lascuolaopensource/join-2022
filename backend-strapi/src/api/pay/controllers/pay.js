@@ -17,32 +17,32 @@ module.exports = {
         const payment = await (0, utils_1.getPaymentByHash)(hash);
         const billingData = {
             payment: payment.id,
-            address: body.billing.address,
+            address: body.address,
             data: [],
         };
-        if (body.billing.billingOption == shared_1.f.billing.bOptions[0]) {
+        if (body.billingOption == shared_1.t.BillingOptions[0]) {
             const dataMe = {
-                ...body.billing.me,
-                __component: shared_1.f.billing.bOptionsComp.me,
-                cf: body.billing.me.cf,
+                ...body.me,
+                __component: shared_1.t.BillingOptionsComponents.Me,
+                cf: body.me.cf,
             };
             billingData.data?.push(dataMe);
         }
-        else if (body.billing.billingOption == shared_1.f.billing.bOptions[1]) {
+        else if (body.billingOption == shared_1.t.BillingOptions[1]) {
             const dataPerson = {
-                ...body.billing.person,
-                __component: shared_1.f.billing.bOptionsComp.person,
+                ...body.person,
+                __component: shared_1.t.BillingOptionsComponents.Person,
             };
             billingData.data?.push(dataPerson);
-            billingData.email = body.billing.email;
+            billingData.email = body.email;
         }
-        else if (body.billing.billingOption == shared_1.f.billing.bOptions[2]) {
+        else if (body.billingOption == shared_1.t.BillingOptions[2]) {
             const dataCompany = {
-                ...body.billing.company,
-                __component: shared_1.f.billing.bOptionsComp.company,
+                ...body.company,
+                __component: shared_1.t.BillingOptionsComponents.Company,
             };
             billingData.data?.push(dataCompany);
-            billingData.email = body.billing.email;
+            billingData.email = body.email;
         }
         const billing = await strapi.entityService.create(utils_1.entities.billingInfo, { data: billingData });
         await strapi.entityService.update(utils_1.entities.payment, payment.id, {

@@ -4,7 +4,7 @@
  * Imports
  */
 
-import { t, f } from "shared";
+import { e } from "shared";
 import {
     getUserPemissionsSettings,
     getService,
@@ -20,9 +20,10 @@ const { sanitize } = utils;
  */
 
 function sanitizeUser(user: any, ctx: any) {
+    // Copied from
+    // /node_modules/@strapi/plugin-users-permissions/server/controllers/auth.js
     const { auth } = ctx.state;
     const userSchema = strapi.getModel("plugin::users-permissions.user");
-
     return sanitize.contentAPI.output(user, userSchema, { auth });
 }
 
@@ -39,7 +40,7 @@ module.exports = {
          */
 
         // Getting body
-        const body: f.register.reType = ctx.request.body;
+        const body: e.RegisterUserReq = ctx.request.body;
 
         // Getting user-permissions settings
         const settings = await getUserPemissionsSettings();

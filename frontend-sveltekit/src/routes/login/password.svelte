@@ -5,25 +5,28 @@
 	import { lsGet, lsRemove, lsSet, lsKeys } from '$lib/localStorageUtils';
 
 	import { createForm } from 'svelte-forms-lib';
-	import { f } from 'shared';
+	import { e } from 'shared';
 
 	//
 
 	import { OutsideTitle } from '$lib/components';
 
-	import { Form, TextField, SubmitButton, FormError, setFormError } from '$lib/components/form';
+	import {
+		Form,
+		TextField,
+		SubmitButton,
+		FormError,
+		setFormError
+	} from '$lib/components/form';
 
 	import { icons } from '$lib/icons/icons.svelte';
 
 	//
 
-	async function onSubmit(values: f.loginPassword.lpType) {
+	async function onSubmit(values: e.LoginReq) {
 		try {
 			// We send the login data
-			const res = await req.login({
-				identifier: lsGet(lsKeys.email),
-				password: values.password
-			});
+			const res = await req.login(values);
 			// Then, if successful:
 			// - we store the token in localstorage
 			lsSet('token', res.jwt);
@@ -42,9 +45,12 @@
 		}
 	}
 
+	const initialValues = e.LoginValues;
+	initialValues.identifier = lsGet(lsKeys.email);
+
 	const formContext = createForm({
-		initialValues: f.loginPassword.lpValues,
-		validationSchema: f.loginPassword.lpSchema,
+		initialValues,
+		validationSchema: e.LoginSchema,
 		onSubmit
 	});
 </script>

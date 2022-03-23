@@ -5,17 +5,23 @@
 	import { req } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
-	import { f } from 'shared';
+	import { e } from 'shared';
 
 	//
 
 	import { OutsideTitle } from '$lib/components';
-	import { Form, FormError, TextField, SubmitButton, setFormError } from '$lib/components/form';
+	import {
+		Form,
+		FormError,
+		TextField,
+		SubmitButton,
+		setFormError
+	} from '$lib/components/form';
 	import { icons } from '$lib/icons/icons.svelte';
 
 	//
 
-	async function onSubmit(values: f.loginEmail.leType) {
+	async function onSubmit(values: e.LoginEmailReq) {
 		// This function checks if email exists
 		try {
 			const res = await req.loginEmail(values);
@@ -34,8 +40,8 @@
 	}
 
 	const formContext = createForm({
-		initialValues: f.loginEmail.leValues,
-		validationSchema: f.loginEmail.leSchema,
+		initialValues: e.LoginEmailValues,
+		validationSchema: e.LoginEmailSchema,
 		onSubmit
 	});
 </script>

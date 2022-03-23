@@ -1,6 +1,6 @@
 "use strict";
 
-import { f, t, h } from "shared";
+import { e, t, h } from "shared";
 import {
     getCourseByID,
     generateSecureString,
@@ -13,16 +13,6 @@ import {
     createConfirmationTokenURL,
 } from "../../../utils";
 
-import crypto from "crypto";
-
-/**
- * Helpers
- */
-
-function getService(name: string) {
-    return strapi.plugin("users-permissions").service(name);
-}
-
 /**
  * A set of functions called "actions" for `enroll`
  */
@@ -32,7 +22,7 @@ module.exports = {
         strapi.log.info("In enroll controller.");
 
         // Getting the body of the request
-        const body: f.enroll.enRequest = ctx.request.body;
+        const body: e.EnrollReq = ctx.request.body;
 
         // Getting the course
         const course = await getCourseByID(body.courseId);

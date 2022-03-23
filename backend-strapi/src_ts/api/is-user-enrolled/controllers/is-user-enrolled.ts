@@ -8,7 +8,7 @@ import { entities } from "../../../utils";
  */
 
 module.exports = {
-    index: async (ctx: any, next: any): Promise<e.IsUserEnrolled.res> => {
+    index: async (ctx: any, next: any): Promise<e.IsUserEnrolledRes> => {
         strapi.log.info("In Is-user-enrolled controller");
 
         // Getting course id

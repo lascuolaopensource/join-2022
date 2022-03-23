@@ -2,9 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const shared_1 = require("shared");
 const utils_1 = require("../../../utils");
-function getService(name) {
-    return strapi.plugin("users-permissions").service(name);
-}
 module.exports = {
     index: async (ctx, next) => {
         strapi.log.info("In enroll controller.");

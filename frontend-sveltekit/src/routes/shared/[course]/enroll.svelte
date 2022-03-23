@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import { req } from '$lib/requestUtils';
-	import { h } from 'shared';
+	import { h, e, t } from 'shared';
 
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ params, fetch, session, stuff }) {
@@ -39,8 +39,6 @@
 		SubmitButton
 	} from '$lib/components/form';
 	import { Loading } from '$lib/components';
-	import type { t } from 'shared';
-	import { f } from 'shared';
 
 	import { goto } from '$app/navigation';
 
@@ -83,7 +81,7 @@
 	 * Form - Initial values
 	 */
 
-	const initialValues = f.enroll.enValues;
+	const initialValues = e.EnrollValues;
 
 	// Setting courseId
 	initialValues.courseId = course.id;
@@ -103,7 +101,7 @@
 	 * Form - Submit fn
 	 */
 
-	async function onSubmit(values: f.enroll.enRequest) {
+	async function onSubmit(values: e.EnrollReq) {
 		try {
 			// Getting response
 			const res = await req.enroll(values);
@@ -127,7 +125,7 @@
 
 	const formContext = createForm({
 		initialValues,
-		validationSchema: f.enroll.enSchema,
+		validationSchema: e.EnrollSchema,
 		onSubmit
 	});
 </script>

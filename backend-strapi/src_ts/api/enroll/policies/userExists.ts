@@ -3,18 +3,22 @@
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
 
-import { f } from "shared";
+import { e } from "shared";
 import { getUserByEmail } from "../../../utils";
 
 /**
  * `isPayloadValid` policy.
  */
 
-module.exports = async (policyContext: any, config: any, { strapi }: any) => {
+module.exports = async (
+    policyContext: any,
+    config: any,
+    { strapi }: any
+): Promise<boolean> => {
     strapi.log.info("In userExists policy.");
 
     // Getting body
-    const body: f.enroll.enRequest = policyContext.request.body;
+    const body: e.EnrollReq = policyContext.request.body;
 
     // If the request is not authenticated
     if (!policyContext.state.user) {

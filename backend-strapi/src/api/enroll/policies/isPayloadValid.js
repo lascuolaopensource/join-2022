@@ -8,7 +8,7 @@ module.exports = async (policyContext, config, { strapi }) => {
     strapi.log.info("In isPayloadValid policy.");
     try {
         const body = policyContext.request.body;
-        await shared_1.f.enroll.enSchema.validate(body);
+        await shared_1.e.EnrollSchema.validate(body);
         const course = await (0, utils_1.getCourseByID)(body.courseId);
         const check_cv = course.cvNeeded == body.evaluation.cvNeeded;
         const check_letter = course.motivationalLetterNeeded == body.evaluation.letterNeeded;
@@ -20,8 +20,8 @@ module.exports = async (policyContext, config, { strapi }) => {
             throw new Error();
         }
     }
-    catch (e) {
-        console.log(e);
+    catch (err) {
+        console.log(err);
         throw new PolicyError("invalidPayload", {
             policy: "isPayloadValid",
         });

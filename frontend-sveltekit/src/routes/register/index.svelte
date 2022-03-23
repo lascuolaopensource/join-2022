@@ -5,27 +5,33 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import { createUserExistsTest, passwordValidator } from '$lib/validators';
-	import type { f } from 'shared';
+	import { passwordValidator } from '$lib/validators';
+	import type { e } from 'shared';
 
 	//
 
 	import { OutsideTitle } from '$lib/components';
 
-	import { Form, TextField, SubmitButton, FormError, setFormError } from '$lib/components/form';
+	import {
+		Form,
+		TextField,
+		SubmitButton,
+		FormError,
+		setFormError
+	} from '$lib/components/form';
 
 	import { icons } from '$lib/icons/icons.svelte';
 
 	//
 
-	const initialValues: f.register.reType = {
+	const initialValues: e.RegisterUserReq = {
 		name: '',
 		surname: '',
 		email: '',
 		password: ''
 	};
 
-	const validationSchema = yup.object().shape({
+	const validationSchema = yup.object({
 		name: yup.string().required(),
 		surname: yup.string().required(),
 		email: yup
@@ -35,16 +41,19 @@
 			.test({
 				name: 'emailExists',
 				message: "L'email esiste già",
-				test: createUserExistsTest('email')
+				test: async (value, testContext) => {
+					const res = await req.userExists({ email: value });
+					return !res.exists;
+				}
 			}),
 		password: passwordValidator
 	});
 
-	async function onSubmit(values: f.register.reType) {
+	async function onSubmit(values: e.RegisterUserReq) {
 		// This function registers a user
 		try {
 			// Creating user
-			const res = await req.register(values);
+			await req.register(values);
 			// If successful, we redirect
 			await goto('/register/thanks');
 		} catch (e) {
