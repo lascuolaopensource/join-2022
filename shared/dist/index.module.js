@@ -6,9 +6,9 @@ var re$1 = {
   cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/
 };
 var urlSchema = yup.string().matches(re$1.url);
-var cfSchema = yup.string().uppercase().matches(re$1.cf);
+yup.string().uppercase().matches(re$1.cf);
 var emailSchema$1 = yup.string().email();
-function thenReq(value) {
+function thenReq$1(value) {
   return {
     is: value,
     then: function then(schema) {
@@ -27,17 +27,6 @@ function thenUrlReq(value) {
     },
     otherwise: function otherwise(schema) {
       return schema.nullable().optional();
-    }
-  };
-}
-function thenNull(value) {
-  return {
-    is: value,
-    then: function then(schema) {
-      return schema.nullable().optional();
-    },
-    otherwise: function otherwise(schema) {
-      return schema.required();
     }
   };
 }
@@ -95,7 +84,7 @@ var cSchema = yup.object({
     email: yup.string().email().required(),
     name: yup.string().required(),
     surname: yup.string().required()
-  }).when("exists", thenReq(false)),
+  }).when("exists", thenReq$1(false)),
   phone: yup.string().required()
 });
 
@@ -119,7 +108,7 @@ var evValues = {
 };
 var evSchema = yup.object({
   letterNeeded: yup["boolean"]().required(),
-  letter: yup.string().when("letterNeeded", thenReq(true)),
+  letter: yup.string().when("letterNeeded", thenReq$1(true)),
   portfolioNeeded: yup["boolean"]().required(),
   portfolio: yup.string().when("portfolioNeeded", thenUrlReq(true)),
   cvNeeded: yup["boolean"]().required(),
@@ -153,143 +142,13 @@ var enroll = {
     enSchema: enSchema
 };
 
-/**
- * Me
- */
-
-var bMeValues = {
-  cf: ""
-};
-var bMeSchema = yup.object({
-  cf: cfSchema
-});
-/**
- * Person
- */
-
-var bPersonValues = {
-  name: "",
-  surname: "",
-  cf: ""
-};
-var bPersonSchema = yup.object({
-  name: yup.string().required(),
-  surname: yup.string().required(),
-  cf: cfSchema
-});
-/**
- * Company
- */
-
-var bCompanyValues = {
-  name: "",
-  vat: "",
-  sdi: ""
-};
-var bCompanySchema = yup.object({
-  name: yup.string().required(),
-  vat: yup.string().required(),
-  sdi: yup.string()
-});
-/**
- * Address
- */
-
-var bAddressValues = {
-  cap: "",
-  town: "",
-  street: "",
-  province: ""
-};
-var bAddressSchema = yup.object({
-  cap: yup.string().required(),
-  town: yup.string().required(),
-  province: yup.string().required(),
-  street: yup.string().required()
-});
-/**
- * Billing options
- */
-
-var bOptions = ["me", "person", "company"]; // Lista dei componenti per la zona dinamica
-// Reference: strapi-backend/src/api/billing-info/content-types/billing-info/schema.json
-
-var bOptionsComp = {
-  company: "billing.company",
-  person: "billing.person",
-  me: "billing.me"
-};
-/**
- * Billing
- */
-
-var bValues = {
-  billingOption: null,
-  me: bMeValues,
-  person: bPersonValues,
-  company: bCompanyValues,
-  email: "",
-  address: bAddressValues
-};
-var bSchema = yup.object({
-  // Modalità
-  billingOption: yup.string().oneOf(bOptions).required(),
-  // Me
-  me: bMeSchema.when("billingOption", thenReq(bOptions[0])),
-  person: bPersonSchema.when("billingOption", thenReq(bOptions[1])),
-  company: bCompanySchema.when("billingOption", thenReq(bOptions[2])),
-  // Generici
-  email: yup.string().email().when("billingOption", thenNull(bOptions[0])),
-  address: bAddressSchema.required()
-});
-
-var billing = {
-    __proto__: null,
-    bMeValues: bMeValues,
-    bMeSchema: bMeSchema,
-    bPersonValues: bPersonValues,
-    bPersonSchema: bPersonSchema,
-    bCompanyValues: bCompanyValues,
-    bCompanySchema: bCompanySchema,
-    bAddressValues: bAddressValues,
-    bAddressSchema: bAddressSchema,
-    bOptions: bOptions,
-    bOptionsComp: bOptionsComp,
-    bValues: bValues,
-    bSchema: bSchema
-};
-
-/**
- * Payment
- */
-
-var pSchema = yup.object({
-  paymentHash: yup.string(),
-  billing: bSchema.required()
-});
-/**
- * Payment confirmation
- */
-
-var pConfirmSchema = yup.object({
-  confirmCode: yup.string().required()
-});
-
-var payment = {
-    __proto__: null,
-    pSchema: pSchema,
-    pConfirmSchema: pConfirmSchema
-};
-
-var index$5 = {
+var index$4 = {
     __proto__: null,
     loginEmail: loginEmail,
     loginPassword: loginPassword,
     enroll: enroll,
-    billing: billing,
     contacts: contacts,
-    evaluation: evaluation,
-    payment: payment
+    evaluation: evaluation
 };
 
 var Enum_Enrollment_State;
@@ -313,12 +172,29 @@ var PaymentCategories;
 (function (PaymentCategories) {
   PaymentCategories["course"] = "course";
 })(PaymentCategories || (PaymentCategories = {}));
+/**
+ * Billing options
+ */
 
-var index$4 = {
+
+var BillingOptions = ["me", "person", "company"]; // Lista dei componenti per la zona dinamica
+// Reference: strapi-backend/src/api/billing-info/content-types/billing-info/schema.json
+
+var BillingOptionsComponents;
+
+(function (BillingOptionsComponents) {
+  BillingOptionsComponents["Company"] = "billing.company";
+  BillingOptionsComponents["Person"] = "billing.person";
+  BillingOptionsComponents["Me"] = "billing.me";
+})(BillingOptionsComponents || (BillingOptionsComponents = {}));
+
+var index$3 = {
     __proto__: null,
     get Enum_Enrollment_State () { return Enum_Enrollment_State; },
     get PublicationState () { return PublicationState; },
-    get PaymentCategories () { return PaymentCategories; }
+    get PaymentCategories () { return PaymentCategories; },
+    BillingOptions: BillingOptions,
+    get BillingOptionsComponents () { return BillingOptionsComponents; }
 };
 
 function isPaymentNeeded(c) {
@@ -338,7 +214,7 @@ var course = {
     isEnrollable: isEnrollable
 };
 
-var index$3 = {
+var index$2 = {
     __proto__: null,
     course: course
 };
@@ -372,7 +248,7 @@ var getCoursePageBySlug = gql(_templateObject || (_templateObject = _taggedTempl
 // 	}
 // `;
 
-var index$2 = {
+var index$1 = {
     __proto__: null,
     getCoursePageBySlug: getCoursePageBySlug
 };
@@ -381,22 +257,118 @@ var IsUserEnrolled = {
     __proto__: null
 };
 
-var getPaymentInfo = {
-    __proto__: null
-};
-
-var index$1 = {
-    __proto__: null,
-    getPaymentInfo: getPaymentInfo
-};
-
 var re = {
   url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
   cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/
 };
 yup.string().matches(re.url);
-yup.string().uppercase().matches(re.cf);
+var cfSchema = yup.string().uppercase().matches(re.cf);
 var emailSchema = yup.string().email();
+function thenReq(value) {
+  return {
+    is: value,
+    then: function then(schema) {
+      return schema.required();
+    },
+    otherwise: function otherwise(schema) {
+      return schema.nullable().optional();
+    }
+  };
+}
+function thenNull(value) {
+  return {
+    is: value,
+    then: function then(schema) {
+      return schema.nullable().optional();
+    },
+    otherwise: function otherwise(schema) {
+      return schema.required();
+    }
+  };
+}
+
+/**
+ * Billing data
+ */
+// Me
+
+var BillingMeValues = {
+  cf: ""
+};
+var BillingMeSchema = yup.object({
+  cf: cfSchema
+}); // Person
+
+var BillingPersonValues = {
+  name: "",
+  surname: "",
+  cf: ""
+};
+var BillingPersonSchema = yup.object({
+  name: yup.string().required(),
+  surname: yup.string().required(),
+  cf: cfSchema
+}); // Company
+
+var BillingCompanyValues = {
+  name: "",
+  vat: "",
+  sdi: ""
+};
+var BillingCompanySchema = yup.object({
+  name: yup.string().required(),
+  vat: yup.string().required(),
+  sdi: yup.string()
+});
+/**
+ * Address
+ */
+
+var AddressValues = {
+  cap: "",
+  town: "",
+  street: "",
+  province: ""
+};
+var AddressSchema = yup.object({
+  cap: yup.string().required(),
+  town: yup.string().required(),
+  province: yup.string().required(),
+  street: yup.string().required()
+});
+var PayValues = {
+  billingOption: null,
+  me: BillingMeValues,
+  person: BillingPersonValues,
+  company: BillingCompanyValues,
+  email: "",
+  address: AddressValues
+};
+var PaySchema = yup.object({
+  // Modalità
+  billingOption: yup.string().oneOf(BillingOptions).required(),
+  //
+  me: BillingMeSchema.when("billingOption", thenReq(BillingOptions[0])),
+  person: BillingPersonSchema.when("billingOption", thenReq(BillingOptions[1])),
+  company: BillingCompanySchema.when("billingOption", thenReq(BillingOptions[2])),
+  // Generici
+  email: yup.string().email().when("billingOption", thenNull(BillingOptions[0])),
+  address: AddressSchema.required()
+});
+
+var pay = {
+    __proto__: null,
+    BillingMeValues: BillingMeValues,
+    BillingMeSchema: BillingMeSchema,
+    BillingPersonValues: BillingPersonValues,
+    BillingPersonSchema: BillingPersonSchema,
+    BillingCompanyValues: BillingCompanyValues,
+    BillingCompanySchema: BillingCompanySchema,
+    AddressValues: AddressValues,
+    AddressSchema: AddressSchema,
+    PayValues: PayValues,
+    PaySchema: PaySchema
+};
 
 var UserExistsSchema = yup.object({
   email: emailSchema.required()
@@ -405,9 +377,19 @@ var UserExistsSchema = yup.object({
 var index = {
     __proto__: null,
     IsUserEnrolled: IsUserEnrolled,
-    pay: index$1,
-    UserExistsSchema: UserExistsSchema
+    pay: pay,
+    UserExistsSchema: UserExistsSchema,
+    BillingMeValues: BillingMeValues,
+    BillingMeSchema: BillingMeSchema,
+    BillingPersonValues: BillingPersonValues,
+    BillingPersonSchema: BillingPersonSchema,
+    BillingCompanyValues: BillingCompanyValues,
+    BillingCompanySchema: BillingCompanySchema,
+    AddressValues: AddressValues,
+    AddressSchema: AddressSchema,
+    PayValues: PayValues,
+    PaySchema: PaySchema
 };
 
-export { index as e, index$5 as f, index$2 as gql, index$3 as h, index$4 as t };
+export { index as e, index$4 as f, index$1 as gql, index$2 as h, index$3 as t };
 //# sourceMappingURL=index.module.js.map

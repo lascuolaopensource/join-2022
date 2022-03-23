@@ -21,3 +21,13 @@ export interface PaymentBillingInfo {
 export declare enum PaymentCategories {
     course = "course"
 }
+/**
+ * Billing options
+ */
+export declare const BillingOptions: readonly ["me", "person", "company"];
+export declare type BillingOptions = typeof BillingOptions[number];
+export declare enum BillingOptionsComponents {
+    Company = "billing.company",
+    Person = "billing.person",
+    Me = "billing.me"
+}
