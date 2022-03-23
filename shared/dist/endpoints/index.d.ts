@@ -1,5 +1,4 @@
-export * as IsUserEnrolled from "./IsUserEnrolled";
-export * as pay from "./pay";
+export * from "./is-user-enrolled";
 export * from "./login-email";
 export * from "./pay-confirm";
 export * from "./pay-get-payment-info";

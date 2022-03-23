@@ -76,7 +76,7 @@ export const req = {
 	isUserEnrolled: async (
 		courseID: string,
 		fetchFn = fetch
-	): Promise<e.IsUserEnrolled.res> => {
+	): Promise<e.IsUserEnrolledRes> => {
 		return await request(
 			fetchFn,
 			b + `api/is-user-enrolled/${courseID}`,
