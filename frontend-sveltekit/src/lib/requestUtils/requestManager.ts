@@ -115,11 +115,15 @@ export const req = {
 		);
 	},
 
+	/**
+	 * Pay
+	 */
+
 	pay: async (
 		hash: string,
-		body: f.payment.pType,
+		body: e.PayReq,
 		fetchFn = fetch
-	): Promise<f.payment.pResType> => {
+	): Promise<e.PayRes> => {
 		return await request(
 			fetchFn,
 			b + `api/pay/${hash}`,
@@ -132,7 +136,7 @@ export const req = {
 	payConfirm: async (
 		code: string,
 		fetchFn = fetch
-	): Promise<f.payment.pConfirmResType> => {
+	): Promise<e.PayConfirmRes> => {
 		return await request(
 			fetchFn,
 			b + `api/pay/confirm/${code}`,
@@ -144,7 +148,7 @@ export const req = {
 	getPaymentInfo: async (
 		hash: string,
 		fetchFn = fetch
-	): Promise<e.pay.getPaymentInfo.Res> => {
+	): Promise<e.PayGetPaymentInfoRes> => {
 		return await request(fetchFn, b + `api/pay/get-payment-info/${hash}`);
 	},
 
