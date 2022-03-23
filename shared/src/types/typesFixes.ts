@@ -29,3 +29,19 @@ export interface PaymentBillingInfo {
 export enum PaymentCategories {
 	course = "course",
 }
+
+/**
+ * Billing options
+ */
+
+export const BillingOptions = ["me", "person", "company"] as const;
+
+export type BillingOptions = typeof BillingOptions[number];
+
+// Lista dei componenti per la zona dinamica
+// Reference: strapi-backend/src/api/billing-info/content-types/billing-info/schema.json
+export enum BillingOptionsComponents {
+	Company = "billing.company",
+	Person = "billing.person",
+	Me = "billing.me",
+}
