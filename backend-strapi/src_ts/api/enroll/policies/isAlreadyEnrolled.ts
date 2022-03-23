@@ -3,7 +3,7 @@
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
 
-import { t, f } from "shared";
+import { t, e } from "shared";
 import { getCourseByID } from "../../../utils";
 
 /**
@@ -14,7 +14,7 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
     strapi.log.info("In isAlreadyEnrolled policy.");
 
     // Getting body
-    const body: f.enroll.enRequest = policyContext.request.body;
+    const body: e.EnrollReq = policyContext.request.body;
 
     // Getting course
     const course = await getCourseByID(body.courseId, {

@@ -102,10 +102,7 @@ export const req = {
 	 * Enrollment
 	 */
 
-	enroll: async (
-		body: f.enroll.enRequest,
-		fetchFn = fetch
-	): Promise<f.enroll.enResponse> => {
+	enroll: async (body: e.EnrollReq, fetchFn = fetch): Promise<e.EnrollRes> => {
 		return await request(
 			fetchFn,
 			b + 'api/enroll',

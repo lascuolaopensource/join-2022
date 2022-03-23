@@ -1,3 +1,4 @@
+export * from "./enroll";
 export * from "./is-user-enrolled";
 export * from "./login-email";
 export * from "./pay-confirm";

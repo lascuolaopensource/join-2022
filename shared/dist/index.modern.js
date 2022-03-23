@@ -22,7 +22,7 @@ const re$1 = {
   url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
   cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/
 };
-const urlSchema = yup.string().matches(re$1.url);
+const urlSchema$1 = yup.string().matches(re$1.url);
 yup.string().uppercase().matches(re$1.cf);
 yup.string().email();
 function thenReq$1(value) {
@@ -32,10 +32,10 @@ function thenReq$1(value) {
     otherwise: schema => schema.nullable().optional()
   };
 }
-function thenUrlReq(value) {
+function thenUrlReq$1(value) {
   return {
     is: value,
-    then: schema => urlSchema.required(),
+    then: schema => urlSchema$1.required(),
     otherwise: schema => schema.nullable().optional()
   };
 }
@@ -85,9 +85,9 @@ const evSchema = yup.object({
   letterNeeded: yup.boolean().required(),
   letter: yup.string().when("letterNeeded", thenReq$1(true)),
   portfolioNeeded: yup.boolean().required(),
-  portfolio: yup.string().when("portfolioNeeded", thenUrlReq(true)),
+  portfolio: yup.string().when("portfolioNeeded", thenUrlReq$1(true)),
   cvNeeded: yup.boolean().required(),
-  cv: yup.string().when("cvNeeded", thenUrlReq(true))
+  cv: yup.string().when("cvNeeded", thenUrlReq$1(true))
 });
 
 var evaluation = {
@@ -96,31 +96,9 @@ var evaluation = {
     evSchema: evSchema
 };
 
-/**
- * Enrollment form
- */
-
-const enValues = {
-  courseId: "",
-  contacts: cValues,
-  evaluation: evValues
-};
-const enSchema = yup.object({
-  courseId: yup.string().required(),
-  contacts: cSchema,
-  evaluation: evSchema
-});
-
-var enroll = {
-    __proto__: null,
-    enValues: enValues,
-    enSchema: enSchema
-};
-
 var index$4 = {
     __proto__: null,
     loginPassword: loginPassword,
-    enroll: enroll,
     contacts: contacts,
     evaluation: evaluation
 };
@@ -242,13 +220,20 @@ const re = {
   url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
   cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/
 };
-yup.string().matches(re.url);
+const urlSchema = yup.string().matches(re.url);
 const cfSchema = yup.string().uppercase().matches(re.cf);
 const emailSchema = yup.string().email();
 function thenReq(value) {
   return {
     is: value,
     then: schema => schema.required(),
+    otherwise: schema => schema.nullable().optional()
+  };
+}
+function thenUrlReq(value) {
+  return {
+    is: value,
+    then: schema => urlSchema.required(),
     otherwise: schema => schema.nullable().optional()
   };
 }
@@ -259,6 +244,63 @@ function thenNull(value) {
     otherwise: schema => schema.required()
   };
 }
+
+/**
+ * Contacts
+ */
+
+const ContactsValues = {
+  exists: false,
+  user: {
+    email: "",
+    name: "",
+    surname: ""
+  },
+  phone: ""
+};
+const ContactsSchema = yup.object({
+  exists: yup.boolean().required(),
+  user: yup.object({
+    email: yup.string().email().required(),
+    name: yup.string().required(),
+    surname: yup.string().required()
+  }).when("exists", thenReq(false)),
+  phone: yup.string().required()
+});
+/**
+ * Evaluation
+ */
+
+const EvaluationValues = {
+  letterNeeded: true,
+  letter: "",
+  portfolioNeeded: true,
+  portfolio: "",
+  cvNeeded: true,
+  cv: ""
+};
+const EvaluationSchema = yup.object({
+  letterNeeded: yup.boolean().required(),
+  letter: yup.string().when("letterNeeded", thenReq(true)),
+  portfolioNeeded: yup.boolean().required(),
+  portfolio: yup.string().when("portfolioNeeded", thenUrlReq(true)),
+  cvNeeded: yup.boolean().required(),
+  cv: yup.string().when("cvNeeded", thenUrlReq(true))
+});
+/**
+ * Enroll
+ */
+
+const EnrollValues = {
+  courseId: "",
+  contacts: ContactsValues,
+  evaluation: EvaluationValues
+};
+const EnrollSchema = yup.object({
+  courseId: yup.string().required(),
+  contacts: ContactsSchema,
+  evaluation: EvaluationSchema
+});
 
 const LoginEmailValues = {
   email: ""
@@ -342,6 +384,12 @@ const UserExistsSchema = yup.object({
 
 var index = {
     __proto__: null,
+    ContactsValues: ContactsValues,
+    ContactsSchema: ContactsSchema,
+    EvaluationValues: EvaluationValues,
+    EvaluationSchema: EvaluationSchema,
+    EnrollValues: EnrollValues,
+    EnrollSchema: EnrollSchema,
     LoginEmailValues: LoginEmailValues,
     LoginEmailSchema: LoginEmailSchema,
     BillingMeValues: BillingMeValues,

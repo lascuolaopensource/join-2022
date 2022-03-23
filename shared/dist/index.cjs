@@ -42,7 +42,7 @@ var re$1 = {
   url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
   cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/
 };
-var urlSchema = yup__namespace.string().matches(re$1.url);
+var urlSchema$1 = yup__namespace.string().matches(re$1.url);
 yup__namespace.string().uppercase().matches(re$1.cf);
 yup__namespace.string().email();
 function thenReq$1(value) {
@@ -56,11 +56,11 @@ function thenReq$1(value) {
     }
   };
 }
-function thenUrlReq(value) {
+function thenUrlReq$1(value) {
   return {
     is: value,
     then: function then(schema) {
-      return urlSchema.required();
+      return urlSchema$1.required();
     },
     otherwise: function otherwise(schema) {
       return schema.nullable().optional();
@@ -113,9 +113,9 @@ var evSchema = yup__namespace.object({
   letterNeeded: yup__namespace["boolean"]().required(),
   letter: yup__namespace.string().when("letterNeeded", thenReq$1(true)),
   portfolioNeeded: yup__namespace["boolean"]().required(),
-  portfolio: yup__namespace.string().when("portfolioNeeded", thenUrlReq(true)),
+  portfolio: yup__namespace.string().when("portfolioNeeded", thenUrlReq$1(true)),
   cvNeeded: yup__namespace["boolean"]().required(),
-  cv: yup__namespace.string().when("cvNeeded", thenUrlReq(true))
+  cv: yup__namespace.string().when("cvNeeded", thenUrlReq$1(true))
 });
 
 var evaluation = {
@@ -124,31 +124,9 @@ var evaluation = {
     evSchema: evSchema
 };
 
-/**
- * Enrollment form
- */
-
-var enValues = {
-  courseId: "",
-  contacts: cValues,
-  evaluation: evValues
-};
-var enSchema = yup__namespace.object({
-  courseId: yup__namespace.string().required(),
-  contacts: cSchema,
-  evaluation: evSchema
-});
-
-var enroll = {
-    __proto__: null,
-    enValues: enValues,
-    enSchema: enSchema
-};
-
 var index$4 = {
     __proto__: null,
     loginPassword: loginPassword,
-    enroll: enroll,
     contacts: contacts,
     evaluation: evaluation
 };
@@ -259,7 +237,7 @@ var re = {
   url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
   cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/
 };
-yup__namespace.string().matches(re.url);
+var urlSchema = yup__namespace.string().matches(re.url);
 var cfSchema = yup__namespace.string().uppercase().matches(re.cf);
 var emailSchema = yup__namespace.string().email();
 function thenReq(value) {
@@ -267,6 +245,17 @@ function thenReq(value) {
     is: value,
     then: function then(schema) {
       return schema.required();
+    },
+    otherwise: function otherwise(schema) {
+      return schema.nullable().optional();
+    }
+  };
+}
+function thenUrlReq(value) {
+  return {
+    is: value,
+    then: function then(schema) {
+      return urlSchema.required();
     },
     otherwise: function otherwise(schema) {
       return schema.nullable().optional();
@@ -284,6 +273,63 @@ function thenNull(value) {
     }
   };
 }
+
+/**
+ * Contacts
+ */
+
+var ContactsValues = {
+  exists: false,
+  user: {
+    email: "",
+    name: "",
+    surname: ""
+  },
+  phone: ""
+};
+var ContactsSchema = yup__namespace.object({
+  exists: yup__namespace["boolean"]().required(),
+  user: yup__namespace.object({
+    email: yup__namespace.string().email().required(),
+    name: yup__namespace.string().required(),
+    surname: yup__namespace.string().required()
+  }).when("exists", thenReq(false)),
+  phone: yup__namespace.string().required()
+});
+/**
+ * Evaluation
+ */
+
+var EvaluationValues = {
+  letterNeeded: true,
+  letter: "",
+  portfolioNeeded: true,
+  portfolio: "",
+  cvNeeded: true,
+  cv: ""
+};
+var EvaluationSchema = yup__namespace.object({
+  letterNeeded: yup__namespace["boolean"]().required(),
+  letter: yup__namespace.string().when("letterNeeded", thenReq(true)),
+  portfolioNeeded: yup__namespace["boolean"]().required(),
+  portfolio: yup__namespace.string().when("portfolioNeeded", thenUrlReq(true)),
+  cvNeeded: yup__namespace["boolean"]().required(),
+  cv: yup__namespace.string().when("cvNeeded", thenUrlReq(true))
+});
+/**
+ * Enroll
+ */
+
+var EnrollValues = {
+  courseId: "",
+  contacts: ContactsValues,
+  evaluation: EvaluationValues
+};
+var EnrollSchema = yup__namespace.object({
+  courseId: yup__namespace.string().required(),
+  contacts: ContactsSchema,
+  evaluation: EvaluationSchema
+});
 
 var LoginEmailValues = {
   email: ""
@@ -367,6 +413,12 @@ var UserExistsSchema = yup__namespace.object({
 
 var index = {
     __proto__: null,
+    ContactsValues: ContactsValues,
+    ContactsSchema: ContactsSchema,
+    EvaluationValues: EvaluationValues,
+    EvaluationSchema: EvaluationSchema,
+    EnrollValues: EnrollValues,
+    EnrollSchema: EnrollSchema,
     LoginEmailValues: LoginEmailValues,
     LoginEmailSchema: LoginEmailSchema,
     BillingMeValues: BillingMeValues,
