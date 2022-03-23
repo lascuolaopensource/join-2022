@@ -1,6 +1,6 @@
 "use strict";
 
-import { f, t, e } from "shared";
+import { t, e } from "shared";
 import Stripe from "stripe";
 
 import {
@@ -23,11 +23,11 @@ module.exports = {
      * Creates the payment
      */
 
-    index: async (ctx: any, next: any): Promise<f.payment.pResType> => {
+    index: async (ctx: any, next: any): Promise<e.PayRes> => {
         strapi.log.info("In pay controller");
 
         // Getting body & hash
-        const body: f.payment.pType = ctx.request.body;
+        const body: e.PayReq = ctx.request.body;
         const hash: string = ctx.params.hash;
 
         // Getting payment
@@ -36,35 +36,35 @@ module.exports = {
         // Creating billing data
         const billingData: t.BillingInfoInput = {
             payment: payment.id,
-            address: body.billing.address,
+            address: body.address,
             data: [],
         };
         // * Me
-        if (body.billing.billingOption == f.billing.bOptions[0]) {
+        if (body.billingOption == t.BillingOptions[0]) {
             const dataMe: t.Comp<t.ComponentBillingMe> = {
-                ...body.billing.me,
-                __component: f.billing.bOptionsComp.me,
-                cf: body.billing.me.cf,
+                ...body.me,
+                __component: t.BillingOptionsComponents.Me,
+                cf: body.me.cf,
             };
             billingData.data?.push(dataMe);
         }
         // * Person
-        else if (body.billing.billingOption == f.billing.bOptions[1]) {
+        else if (body.billingOption == t.BillingOptions[1]) {
             const dataPerson: t.Comp<t.ComponentBillingPerson> = {
-                ...body.billing.person,
-                __component: f.billing.bOptionsComp.person,
+                ...body.person,
+                __component: t.BillingOptionsComponents.Person,
             };
             billingData.data?.push(dataPerson);
-            billingData.email = body.billing.email;
+            billingData.email = body.email;
         }
         // * Company
-        else if (body.billing.billingOption == f.billing.bOptions[2]) {
+        else if (body.billingOption == t.BillingOptions[2]) {
             const dataCompany: t.Comp<t.ComponentBillingCompany> = {
-                ...body.billing.company,
-                __component: f.billing.bOptionsComp.company,
+                ...body.company,
+                __component: t.BillingOptionsComponents.Company,
             };
             billingData.data?.push(dataCompany);
-            billingData.email = body.billing.email;
+            billingData.email = body.email;
         }
 
         // Creating billing
@@ -110,10 +110,7 @@ module.exports = {
      * Confirms the payment
      */
 
-    confirm: async (
-        ctx: any,
-        next: any
-    ): Promise<f.payment.pConfirmResType> => {
+    confirm: async (ctx: any, next: any): Promise<e.PayConfirmRes> => {
         strapi.log.info("In payConfirm controller");
 
         // Getting payment
@@ -167,7 +164,7 @@ module.exports = {
     getPaymentInfo: async (
         ctx: any,
         next: any
-    ): Promise<e.pay.getPaymentInfo.Res> => {
+    ): Promise<e.PayGetPaymentInfoRes> => {
         strapi.log.info("In pay/getPaymentInfo controller");
 
         const payment = await getPaymentByHash(ctx.params.hash);
