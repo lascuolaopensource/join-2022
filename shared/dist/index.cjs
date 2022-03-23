@@ -21,13 +21,30 @@ function _interopNamespace(e) {
 
 var yup__namespace = /*#__PURE__*/_interopNamespace(yup);
 
+/**
+ * LoginPassword
+ */
+
+var lpValues = {
+  password: ""
+};
+var lpSchema = yup__namespace.object({
+  password: yup__namespace.string().required()
+});
+
+var loginPassword = {
+    __proto__: null,
+    lpValues: lpValues,
+    lpSchema: lpSchema
+};
+
 var re$1 = {
   url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
   cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/
 };
 var urlSchema = yup__namespace.string().matches(re$1.url);
 yup__namespace.string().uppercase().matches(re$1.cf);
-var emailSchema$1 = yup__namespace.string().email();
+yup__namespace.string().email();
 function thenReq$1(value) {
   return {
     is: value,
@@ -50,40 +67,6 @@ function thenUrlReq(value) {
     }
   };
 }
-
-/**
- * LoginEmail
- */
-
-var leValues = {
-  email: ""
-};
-var leSchema = yup__namespace.object({
-  email: emailSchema$1.required()
-});
-
-var loginEmail = {
-    __proto__: null,
-    leValues: leValues,
-    leSchema: leSchema
-};
-
-/**
- * LoginPassword
- */
-
-var lpValues = {
-  password: ""
-};
-var lpSchema = yup__namespace.object({
-  password: yup__namespace.string().required()
-});
-
-var loginPassword = {
-    __proto__: null,
-    lpValues: lpValues,
-    lpSchema: lpSchema
-};
 
 /**
  * Contacts
@@ -164,7 +147,6 @@ var enroll = {
 
 var index$4 = {
     __proto__: null,
-    loginEmail: loginEmail,
     loginPassword: loginPassword,
     enroll: enroll,
     contacts: contacts,
@@ -390,6 +372,13 @@ var pay = {
     PaySchema: PaySchema
 };
 
+var LoginEmailValues = {
+  email: ""
+};
+var LoginEmailSchema = yup__namespace.object({
+  email: emailSchema.required()
+});
+
 var UserExistsSchema = yup__namespace.object({
   email: emailSchema.required()
 });
@@ -398,7 +387,8 @@ var index = {
     __proto__: null,
     IsUserEnrolled: IsUserEnrolled,
     pay: pay,
-    UserExistsSchema: UserExistsSchema,
+    LoginEmailValues: LoginEmailValues,
+    LoginEmailSchema: LoginEmailSchema,
     BillingMeValues: BillingMeValues,
     BillingMeSchema: BillingMeSchema,
     BillingPersonValues: BillingPersonValues,
@@ -408,7 +398,8 @@ var index = {
     AddressValues: AddressValues,
     AddressSchema: AddressSchema,
     PayValues: PayValues,
-    PaySchema: PaySchema
+    PaySchema: PaySchema,
+    UserExistsSchema: UserExistsSchema
 };
 
 exports.e = index;

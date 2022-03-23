@@ -15,10 +15,10 @@ export const req = {
 	 */
 
 	loginEmail: async (
-		body: f.loginEmail.leType,
+		body: e.LoginEmailReq,
 		fetchFn = fetch
-	): Promise<f.loginEmail.leResponse> => {
-		return await request(fetchFn, b + 'api/loginemail', 'POST', body);
+	): Promise<e.LoginEmailRes> => {
+		return await request(fetchFn, b + 'api/login-email', 'POST', body);
 	},
 
 	login: async (
@@ -90,7 +90,7 @@ export const req = {
 	 * Password
 	 */
 
-	forgotPassword: async (body: f.loginEmail.leType, fetchFn = fetch) => {
+	forgotPassword: async (body: e.LoginEmailReq, fetchFn = fetch) => {
 		return await request(fetchFn, b + 'api/auth/forgot-password', 'POST', body);
 	},
 

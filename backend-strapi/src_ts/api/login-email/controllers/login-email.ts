@@ -1,34 +1,35 @@
 "use strict";
 
-import { f, t } from "shared";
+import { e, t } from "shared";
+import { entities } from "../../../utils";
+
+const utils = require("@strapi/utils");
+const { ApplicationError } = utils.errors;
 
 module.exports = {
     /**
      * La funzione controlla se esiste un utente con quella mail
      * restituisce email e username in caso positivo
      */
-    async index(ctx: any): Promise<f.loginEmail.leResponse | void> {
+    async index(ctx: any): Promise<e.LoginEmailRes> {
         // Prendiamo il body della richiesta
-        const body: f.loginEmail.leType = ctx.request.body;
+        const body: e.LoginEmailReq = ctx.request.body;
 
         // Validiamo il body
         try {
-            await f.loginEmail.leSchema.validate(body);
-        } catch (e) {
-            ctx.badRequest(f.loginEmail.leErrors.badRequest);
+            await e.LoginEmailSchema.validate(body);
+        } catch (err) {
+            throw new ApplicationError(e.LoginEmailErrors.badRequest);
         }
 
         // Cerchiamo l'utente
         const users: Array<t.UsersPermissionsUser> =
-            await strapi.entityService.findMany(
-                "plugin::users-permissions.user",
-                {
-                    filters: body,
-                    populate: {
-                        userInfo: true,
-                    },
-                }
-            );
+            await strapi.entityService.findMany(entities.user, {
+                filters: body,
+                populate: {
+                    userInfo: true,
+                },
+            });
 
         // Se c'è un risultato ritorniamo utente con username e email
         if (users.length == 1) {
@@ -38,7 +39,7 @@ module.exports = {
         }
         // Altrimenti, 404
         else {
-            ctx.notFound(f.loginEmail.leErrors.notFound);
+            throw new ApplicationError(e.LoginEmailErrors.notFound);
         }
     },
 };
