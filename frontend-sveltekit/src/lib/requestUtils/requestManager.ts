@@ -1,4 +1,4 @@
-import type { t, f, e } from 'shared';
+import type { t, e } from 'shared';
 import { request } from './request';
 import { headersAuth } from './authorizationHeader';
 
@@ -21,10 +21,7 @@ export const req = {
 		return await request(fetchFn, b + 'api/login-email', 'POST', body);
 	},
 
-	login: async (
-		body: t.UsersPermissionsLoginInput,
-		fetchFn = fetch
-	): Promise<t.LoginResponse> => {
+	login: async (body: e.LoginReq, fetchFn = fetch): Promise<e.LoginRes> => {
 		return await request(fetchFn, b + 'api/auth/local', 'POST', body);
 	},
 
