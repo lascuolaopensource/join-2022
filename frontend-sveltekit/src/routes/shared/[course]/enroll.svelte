@@ -153,9 +153,9 @@
 
 	<Form {formContext}>
 		<!-- Info -->
-		<hr />
-
 		{#if !$user || c.motivationalLetterNeeded || paymentNeeded}
+			<hr />
+
 			<div>
 				<h2>{s.enroll.info.title}</h2>
 				<ul>
