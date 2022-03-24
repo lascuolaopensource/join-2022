@@ -49,6 +49,7 @@ export async function getUserPemissionsSettings() {
         allow_register: boolean;
         email_confirmation: boolean;
         default_role: any;
+        unique_email: boolean;
     };
 }
 

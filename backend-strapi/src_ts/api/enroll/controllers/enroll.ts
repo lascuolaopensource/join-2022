@@ -54,7 +54,6 @@ module.exports = {
             // Collecting user data for input
             const newUserData: RegisterUserInput = {
                 email: body.contacts.user.email,
-                username: body.contacts.user.email,
                 password: userPassword,
                 name: body.contacts.user.name,
                 surname: body.contacts.user.surname,

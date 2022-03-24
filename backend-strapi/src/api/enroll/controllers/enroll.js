@@ -18,7 +18,6 @@ module.exports = {
             userName = body.contacts.user.name;
             const newUserData = {
                 email: body.contacts.user.email,
-                username: body.contacts.user.email,
                 password: userPassword,
                 name: body.contacts.user.name,
                 surname: body.contacts.user.surname,
