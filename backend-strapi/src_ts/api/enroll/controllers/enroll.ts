@@ -129,12 +129,15 @@ module.exports = {
         let paymentData: t.PaymentInput | null = null;
         let payment: t.ID<t.Payment> | null = null;
         let paymentUrl = "";
+        let paymentExpiration = "";
 
         if (h.course.isPaymentNeeded(course)) {
             // Defining payment deadline
             const courseDeadlineStr = course.enrollmentDeadline;
             const expirationDate = new Date(Date.parse(courseDeadlineStr));
             expirationDate.setDate(expirationDate.getDate() + 1);
+            // Saving string date for email
+            paymentExpiration = expirationDate.toLocaleDateString("IT-it");
 
             // Creating payment
             paymentData = {
@@ -180,7 +183,10 @@ module.exports = {
 
         // Adding payment
         if (paymentData) {
-            args.PAYMENT_URL = paymentUrl;
+            args.PAYMENT = {
+                URL: paymentUrl,
+                EXPIRATION: paymentExpiration,
+            };
         }
 
         // Adding user

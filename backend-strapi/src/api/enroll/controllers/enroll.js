@@ -57,10 +57,12 @@ module.exports = {
         let paymentData = null;
         let payment = null;
         let paymentUrl = "";
+        let paymentExpiration = "";
         if (shared_1.h.course.isPaymentNeeded(course)) {
             const courseDeadlineStr = course.enrollmentDeadline;
             const expirationDate = new Date(Date.parse(courseDeadlineStr));
             expirationDate.setDate(expirationDate.getDate() + 1);
+            paymentExpiration = expirationDate.toLocaleDateString("IT-it");
             paymentData = {
                 enrollment: enrollment.id,
                 hash: (0, utils_1.generateSecureString)(64),
@@ -83,7 +85,10 @@ module.exports = {
             USER_NAME: userName,
         };
         if (paymentData) {
-            args.PAYMENT_URL = paymentUrl;
+            args.PAYMENT = {
+                URL: paymentUrl,
+                EXPIRATION: paymentExpiration,
+            };
         }
         if (!body.contacts.exists && userPassword) {
             args.USER_ACCOUNT = {

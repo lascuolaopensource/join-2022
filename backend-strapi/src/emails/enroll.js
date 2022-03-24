@@ -9,8 +9,9 @@ const intro = `<p>Ciao, <%= USER_NAME %>!</p>
 `;
 const payment = `<p><strong>Pagamento</strong><br>
     Questo è il link per il pagamento, te lo inviamo nel caso volessi completare il pagamento in un secondo momento.<br>
-    <%= PAYMENT_URL %><br>
-    Ti chiediamo di pagare in anticipo per questioni gestionali.<br>
+    <%= PAYMENT.URL %><br>
+    La data di scadenza per il pagamento è il <strong><%= PAYMENT.EXPIRATION %></strong><br></p>
+    <p>Ti chiediamo di pagare in anticipo per questioni gestionali.<br>
     Ti verranno immediatamente restituiti i soldi se il corso non dovesse partire.</p>
 `;
 const userCreation = `<p><strong>Creazione account</strong></p>
@@ -31,7 +32,7 @@ const end = `<p>Grazie per il tuo supporto!</p>
 `;
 const enrollEmailTemplate = (args) => {
     let html = intro;
-    if (args.PAYMENT_URL) {
+    if (args.PAYMENT) {
         html += utils_1.s;
         html += payment;
     }
