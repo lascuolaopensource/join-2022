@@ -15,12 +15,12 @@ module.exports = {
         let confirmationUrl = "";
         if (!body.contacts.exists) {
             userPassword = (0, utils_1.generateSecureString)(24);
-            userName = body.contacts.user.name;
+            userName = body.contacts.name;
             const newUserData = {
-                email: body.contacts.user.email,
+                email: body.contacts.email,
                 password: userPassword,
-                name: body.contacts.user.name,
-                surname: body.contacts.user.surname,
+                name: body.contacts.name,
+                surname: body.contacts.surname,
             };
             if (settings.email_confirmation) {
                 const confirmation = (0, utils_1.createConfirmationTokenURL)();

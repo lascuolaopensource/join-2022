@@ -37,7 +37,7 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
     if (policyContext.state.user) {
         userEmail = policyContext.state.user.email;
     } else {
-        userEmail = body.contacts.user.email.toLowerCase();
+        userEmail = body.contacts.email.toLowerCase();
     }
 
     // Iterating over enrollments to check for email

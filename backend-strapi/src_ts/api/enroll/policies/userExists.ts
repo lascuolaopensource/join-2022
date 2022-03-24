@@ -23,7 +23,7 @@ module.exports = async (
     // If the request is not authenticated
     if (!policyContext.state.user) {
         // We check if a user with the sent email already exists
-        const email = body.contacts.user.email;
+        const email = body.contacts.email;
         const user = await getUserByEmail(email);
 
         if (user) {

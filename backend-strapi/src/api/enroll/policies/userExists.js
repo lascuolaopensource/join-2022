@@ -7,7 +7,7 @@ module.exports = async (policyContext, config, { strapi }) => {
     strapi.log.info("In userExists policy.");
     const body = policyContext.request.body;
     if (!policyContext.state.user) {
-        const email = body.contacts.user.email;
+        const email = body.contacts.email;
         const user = await (0, utils_1.getUserByEmail)(email);
         if (user) {
             throw new PolicyError("userExists", {
