@@ -51,7 +51,7 @@ module.exports = {
             phoneNumber: phoneNumber.id,
             state: shared_1.t.Enum_Enrollment_State.Pending,
         };
-        const enrollment = await strapi.entityService.create("api::enrollment.enrollment", {
+        const enrollment = await strapi.entityService.create(utils_1.entities.enrollment, {
             data: enrollmentData,
         });
         let paymentData = null;
@@ -71,14 +71,16 @@ module.exports = {
                 confirmed: false,
                 expiration: expirationDate.toISOString(),
             };
-            payment = await strapi.entityService.create("api::payment.payment", { data: paymentData });
+            payment = await strapi.entityService.create(utils_1.entities.payment, {
+                data: paymentData,
+            });
             await strapi.entityService.update(utils_1.entities.enrollment, enrollment.id, {
                 data: {
                     payment: payment?.id,
                     state: shared_1.t.Enum_Enrollment_State.AwaitingPayment,
                 },
             });
-            paymentUrl = `${process.env.FRONTEND_URL}/shared/payments/${paymentData.hash}`;
+            paymentUrl = `${process.env.FRONTEND_URL}${utils_1.paths.enroll.payment(paymentData.hash)}`;
         }
         const args = {
             COURSE_TITLE: course.title,

@@ -10,6 +10,7 @@ import {
     getPaymentDetails,
     getPaymentOwner,
     getUserInfo,
+    paths,
 } from "../../../utils";
 import { emailSender, PayConfirmEmailTemplateArgs } from "../../../emails";
 
@@ -99,8 +100,10 @@ module.exports = {
                 },
             ],
             mode: "payment",
-            success_url: `${process.env.FRONTEND_URL}/shared/payments/confirm-${payment.confirmCode}`,
-            cancel_url: `${process.env.FRONTEND_URL}/shared/payments/${hash}`,
+            success_url: `${process.env.FRONTEND_URL}${paths.pay.success(
+                payment.confirmCode
+            )}`,
+            cancel_url: `${process.env.FRONTEND_URL}${paths.pay.cancel(hash)}`,
         });
 
         //

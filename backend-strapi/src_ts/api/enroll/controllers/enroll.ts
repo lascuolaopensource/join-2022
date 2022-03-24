@@ -9,6 +9,7 @@ import {
     registerUser,
     RegisterUserInput,
     createConfirmationTokenURL,
+    paths,
 } from "../../../utils";
 import { emailSender, EnrollEmailTemplateArgs } from "../../../emails";
 
@@ -118,7 +119,7 @@ module.exports = {
         };
 
         const enrollment: t.ID<t.Enrollment> =
-            await strapi.entityService.create("api::enrollment.enrollment", {
+            await strapi.entityService.create(entities.enrollment, {
                 data: enrollmentData,
             });
 
@@ -149,10 +150,9 @@ module.exports = {
                 expiration: expirationDate.toISOString(),
             };
 
-            payment = await strapi.entityService.create(
-                "api::payment.payment",
-                { data: paymentData }
-            );
+            payment = await strapi.entityService.create(entities.payment, {
+                data: paymentData,
+            });
 
             // Adding to enrollment
             await strapi.entityService.update(
@@ -167,7 +167,9 @@ module.exports = {
             );
 
             // Creating payment url
-            paymentUrl = `${process.env.FRONTEND_URL}/shared/payments/${paymentData.hash}`;
+            paymentUrl = `${process.env.FRONTEND_URL}${paths.enroll.payment(
+                paymentData.hash as string
+            )}`;
         }
 
         /**

@@ -66,8 +66,8 @@ module.exports = {
                 },
             ],
             mode: "payment",
-            success_url: `${process.env.FRONTEND_URL}/shared/payments/confirm-${payment.confirmCode}`,
-            cancel_url: `${process.env.FRONTEND_URL}/shared/payments/${hash}`,
+            success_url: `${process.env.FRONTEND_URL}${utils_1.paths.pay.success(payment.confirmCode)}`,
+            cancel_url: `${process.env.FRONTEND_URL}${utils_1.paths.pay.cancel(hash)}`,
         });
         return {
             sessionUrl: session.url,
