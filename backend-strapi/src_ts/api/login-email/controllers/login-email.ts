@@ -1,7 +1,7 @@
 "use strict";
 
 import { e, t } from "shared";
-import { entities } from "../../../utils";
+import { entities, getUserByEmail, getUserInfo } from "../../../utils";
 
 const utils = require("@strapi/utils");
 const { ApplicationError } = utils.errors;
@@ -23,18 +23,11 @@ module.exports = {
         }
 
         // Cerchiamo l'utente
-        const users: Array<t.UsersPermissionsUser> =
-            await strapi.entityService.findMany(entities.user, {
-                filters: body,
-                populate: {
-                    userInfo: true,
-                },
-            });
+        const user = await getUserByEmail(body.email);
 
         // Se c'è un risultato ritorniamo utente con username e email
-        if (users.length == 1) {
-            const user = users[0];
-            const userInfo = user.userInfo as t.UserInfo;
+        if (user) {
+            const userInfo = await getUserInfo(user.id);
             return { email: user.email, name: userInfo.name as string };
         }
         // Altrimenti, 404

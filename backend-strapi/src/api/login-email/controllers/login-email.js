@@ -13,15 +13,9 @@ module.exports = {
         catch (err) {
             throw new ApplicationError("leBadRequest");
         }
-        const users = await strapi.entityService.findMany(utils_1.entities.user, {
-            filters: body,
-            populate: {
-                userInfo: true,
-            },
-        });
-        if (users.length == 1) {
-            const user = users[0];
-            const userInfo = user.userInfo;
+        const user = await (0, utils_1.getUserByEmail)(body.email);
+        if (user) {
+            const userInfo = await (0, utils_1.getUserInfo)(user.id);
             return { email: user.email, name: userInfo.name };
         }
         else {
