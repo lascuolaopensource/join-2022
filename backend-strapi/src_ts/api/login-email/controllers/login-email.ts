@@ -28,6 +28,11 @@ module.exports = {
 
         // Se c'è un risultato ritorniamo utente con username e email
         if (user) {
+            // Verifichiamo se l'utente è confermato
+            if (!user.confirmed) {
+                return ctx.unauthorized("userNotConfirmed");
+            }
+
             // Prendiamo anche userinfo per restituire il nome
             const userInfo = await getUserInfo(user.id);
             return (ctx.body = {

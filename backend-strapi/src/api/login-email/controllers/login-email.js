@@ -14,6 +14,9 @@ module.exports = {
         const email = body.email.toLowerCase();
         const user = await (0, utils_1.getUserByEmail)(email);
         if (user) {
+            if (!user.confirmed) {
+                return ctx.unauthorized("userNotConfirmed");
+            }
             const userInfo = await (0, utils_1.getUserInfo)(user.id);
             return (ctx.body = {
                 email: user.email,
