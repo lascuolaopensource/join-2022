@@ -52,6 +52,7 @@ export async function request(
 				data?.message?.[0]?.messages?.[0]?.message ||
 				data?.error?.message ||
 				data?.message ||
+				res.statusText ||
 				'Unknown error';
 
 			// Then we throw the error
