@@ -4,14 +4,13 @@ import { e, t, h } from "shared";
 import {
     getCourseByID,
     generateSecureString,
-    emailManager,
-    enrollEmail,
     entities,
     getUserPemissionsSettings,
     registerUser,
     RegisterUserInput,
     createConfirmationTokenURL,
 } from "../../../utils";
+import { emailSender, EnrollEmailTemplateArgs } from "../../../emails";
 
 /**
  * A set of functions called "actions" for `enroll`
@@ -174,7 +173,7 @@ module.exports = {
 
         // Building email arguments
 
-        const args: enrollEmail.IEnrollEmailTemplateArgs = {
+        const args: EnrollEmailTemplateArgs = {
             COURSE_TITLE: course.title,
             USER_NAME: userName,
         };
@@ -198,7 +197,7 @@ module.exports = {
 
         // Sending email
         try {
-            await emailManager.enroll(user.email, args);
+            await emailSender.enroll(user.email, args);
         } catch (e) {
             throw e;
         }

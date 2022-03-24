@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const shared_1 = require("shared");
 const utils_1 = require("../../../utils");
+const emails_1 = require("../../../emails");
 module.exports = {
     index: async (ctx, next) => {
         strapi.log.info("In enroll controller.");
@@ -94,7 +95,7 @@ module.exports = {
             }
         }
         try {
-            await utils_1.emailManager.enroll(user.email, args);
+            await emails_1.emailSender.enroll(user.email, args);
         }
         catch (e) {
             throw e;
