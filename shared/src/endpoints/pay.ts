@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { thenReq, thenNull, cfSchema } from "./__utils";
+import { thenReq, thenNull, cfSchema } from "../validators";
 import { BillingOptions } from "../types";
 
 /**

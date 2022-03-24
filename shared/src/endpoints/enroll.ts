@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { thenReq, thenUrlReq } from "./__utils";
+import { thenReq, thenUrlReq } from "../validators";
 
 /**
  * Contacts
@@ -7,23 +7,17 @@ import { thenReq, thenUrlReq } from "./__utils";
 
 export const ContactsValues = {
 	exists: false,
-	user: {
-		email: "",
-		name: "",
-		surname: "",
-	},
+	email: "",
+	name: "",
+	surname: "",
 	phone: "",
 };
 
 export const ContactsSchema = yup.object({
 	exists: yup.boolean().required(),
-	user: yup
-		.object({
-			email: yup.string().email().required(),
-			name: yup.string().required(),
-			surname: yup.string().required(),
-		})
-		.when("exists", thenReq(false)),
+	email: yup.string().email().when("exists", thenReq(false)),
+	name: yup.string().required().when("exists", thenReq(false)),
+	surname: yup.string().required().when("exists", thenReq(false)),
 	phone: yup.string().required(),
 });
 

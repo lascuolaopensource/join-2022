@@ -75,6 +75,29 @@
 	    }
 	  };
 	}
+	var nullOrReq = {
+	  is: function is(v) {
+	    return v == true;
+	  },
+	  then: function then(s) {
+	    return s.nullable();
+	  },
+	  otherwise: function otherwise(s) {
+	    return s.required();
+	  }
+	};
+
+	var index$4 = {
+		__proto__: null,
+		re: re,
+		urlSchema: urlSchema,
+		cfSchema: cfSchema,
+		emailSchema: emailSchema,
+		thenReq: thenReq,
+		thenUrlReq: thenUrlReq,
+		thenNull: thenNull,
+		nullOrReq: nullOrReq
+	};
 
 	/**
 	 * Contacts
@@ -82,20 +105,16 @@
 
 	var ContactsValues = {
 	  exists: false,
-	  user: {
-	    email: "",
-	    name: "",
-	    surname: ""
-	  },
+	  email: "",
+	  name: "",
+	  surname: "",
 	  phone: ""
 	};
 	var ContactsSchema = yup__namespace.object({
 	  exists: yup__namespace["boolean"]().required(),
-	  user: yup__namespace.object({
-	    email: yup__namespace.string().email().required(),
-	    name: yup__namespace.string().required(),
-	    surname: yup__namespace.string().required()
-	  }).when("exists", thenReq(false)),
+	  email: yup__namespace.string().email().when("exists", thenReq(false)),
+	  name: yup__namespace.string().required().when("exists", thenReq(false)),
+	  surname: yup__namespace.string().required().when("exists", thenReq(false)),
 	  phone: yup__namespace.string().required()
 	});
 	/**
@@ -357,6 +376,7 @@
 	exports.gql = index$1;
 	exports.h = index;
 	exports.t = index$3;
+	exports.validators = index$4;
 
 }));
 //# sourceMappingURL=index.umd.js.map

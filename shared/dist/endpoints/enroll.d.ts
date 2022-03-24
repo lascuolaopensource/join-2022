@@ -4,36 +4,22 @@ import * as yup from "yup";
  */
 export declare const ContactsValues: {
     exists: boolean;
-    user: {
-        email: string;
-        name: string;
-        surname: string;
-    };
+    email: string;
+    name: string;
+    surname: string;
     phone: string;
 };
 export declare const ContactsSchema: import("yup/lib/object").OptionalObjectSchema<{
     exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-    user: import("yup/lib/object").OptionalObjectSchema<{
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    }>>;
+    email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
+    name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
 }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
     exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-    user: import("yup/lib/object").OptionalObjectSchema<{
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-        email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-    }>>;
+    email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
+    name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+    surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
 }>>;
 export declare type Contacts = typeof ContactsValues;
@@ -71,11 +57,9 @@ export declare const EnrollValues: {
     courseId: string;
     contacts: {
         exists: boolean;
-        user: {
-            email: string;
-            name: string;
-            surname: string;
-        };
+        email: string;
+        name: string;
+        surname: string;
         phone: string;
     };
     evaluation: {
@@ -91,27 +75,15 @@ export declare const EnrollSchema: import("yup/lib/object").OptionalObjectSchema
     courseId: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     contacts: import("yup/lib/object").OptionalObjectSchema<{
         exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-        user: import("yup/lib/object").OptionalObjectSchema<{
-            email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-            email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        }>>;
+        email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
+        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
         exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-        user: import("yup/lib/object").OptionalObjectSchema<{
-            email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-            email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        }>>;
+        email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
+        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }>>;
     evaluation: import("yup/lib/object").OptionalObjectSchema<{
@@ -133,27 +105,15 @@ export declare const EnrollSchema: import("yup/lib/object").OptionalObjectSchema
     courseId: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     contacts: import("yup/lib/object").OptionalObjectSchema<{
         exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-        user: import("yup/lib/object").OptionalObjectSchema<{
-            email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-            email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        }>>;
+        email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
+        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
         exists: import("yup/lib/boolean").RequiredBooleanSchema<boolean, import("yup/lib/types").AnyObject>;
-        user: import("yup/lib/object").OptionalObjectSchema<{
-            email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        }, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<{
-            email: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-            surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
-        }>>;
+        email: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
+        name: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
+        surname: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
         phone: import("yup/lib/string").RequiredStringSchema<string, import("yup/lib/types").AnyObject>;
     }>>;
     evaluation: import("yup/lib/object").OptionalObjectSchema<{
