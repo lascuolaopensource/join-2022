@@ -31,11 +31,9 @@
 			// And redirect the user to the password
 			await goto('/login/password');
 		} catch (e) {
-			if (e?.message == '404') {
-				setFormError("L'email non è corretta");
-			} else {
-				throw e;
-			}
+			const message =
+				e?.message == '404' ? "L'email non è corretta" : e.message;
+			setFormError(message);
 		}
 	}
 
