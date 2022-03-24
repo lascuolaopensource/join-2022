@@ -1,10 +1,7 @@
 "use strict";
 
-import { e, t } from "shared";
-import { entities, getUserByEmail, getUserInfo } from "../../../utils";
-
-const utils = require("@strapi/utils");
-const { ApplicationError } = utils.errors;
+import { e } from "shared";
+import { getUserByEmail, getUserInfo } from "../../../utils";
 
 module.exports = {
     /**
@@ -19,20 +16,28 @@ module.exports = {
         try {
             await e.LoginEmailSchema.validate(body);
         } catch (err) {
-            throw new ApplicationError(e.LoginEmailErrors.badRequest);
+            return ctx.badRequest("invalidPayload");
         }
 
+        // Portiamo l'email in lowercase,
+        // visto che alla creazione dell'utente viene messa così
+        const email = body.email.toLowerCase();
+
         // Cerchiamo l'utente
-        const user = await getUserByEmail(body.email);
+        const user = await getUserByEmail(email);
 
         // Se c'è un risultato ritorniamo utente con username e email
         if (user) {
+            // Prendiamo anche userinfo per restituire il nome
             const userInfo = await getUserInfo(user.id);
-            return { email: user.email, name: userInfo.name as string };
+            return (ctx.body = {
+                email: user.email,
+                name: userInfo.name as string,
+            });
         }
         // Altrimenti, 404
         else {
-            throw new ApplicationError(e.LoginEmailErrors.notFound);
+            return ctx.notFound("userNotFound");
         }
     },
 };
