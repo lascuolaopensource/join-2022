@@ -44,24 +44,15 @@ export async function request(
 		// ERROR
 		if (!res.ok) {
 			// We have to collect the error message
-			let errorMessage;
-
-			// It can be a generic 404 not found
-			if (res.status == 404) {
-				errorMessage = res.status;
-			}
-			// Otherwise we have to extract the message from the object:
 			// - The first way is strapi specific:
 			//   https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi
 			// - The second and third ones are more generic
-			else {
-				const data = await res.json();
-				errorMessage =
-					data?.message?.[0]?.messages?.[0]?.message ||
-					data?.error?.message ||
-					data?.message ||
-					'Unknown error';
-			}
+			const data = await res.json();
+			const errorMessage =
+				data?.message?.[0]?.messages?.[0]?.message ||
+				data?.error?.message ||
+				data?.message ||
+				'Unknown error';
 
 			// Then we throw the error
 			throw new Error(errorMessage);
