@@ -6,7 +6,7 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import { passwordValidator } from '$lib/validators';
+	import { passwordSchema } from '$lib/validators';
 
 	//
 
@@ -32,8 +32,8 @@
 
 	const validationSchema = yup.object().shape({
 		code: yup.string().required(),
-		password: passwordValidator,
-		passwordConfirmation: passwordValidator.oneOf(
+		password: passwordSchema,
+		passwordConfirmation: passwordSchema.oneOf(
 			[yup.ref('password'), null],
 			'Passwords must match'
 		)
