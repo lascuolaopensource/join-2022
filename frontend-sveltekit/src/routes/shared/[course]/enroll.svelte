@@ -28,7 +28,10 @@
 
 <script lang="ts">
 	import { user } from '$lib/stores';
-
+	import { goto } from '$app/navigation';
+	import { s } from '$lib/strings';
+	import * as yup from 'yup';
+	import { addEmailExistsTest } from '$lib/validators';
 	import { createForm } from 'svelte-forms-lib';
 	import {
 		Form,
@@ -38,13 +41,7 @@
 		setFormError,
 		SubmitButton
 	} from '$lib/components/form';
-	import { Loading } from '$lib/components';
-
-	import { goto } from '$app/navigation';
-
-	import { Callout } from '$lib/components';
-
-	import { s } from '$lib/strings';
+	import { Loading, Callout } from '$lib/components';
 
 	/**
 	 * Exports
@@ -86,16 +83,29 @@
 	// Setting courseId
 	initialValues.courseId = course.id;
 
-	// Setting user
-	if ($user) {
-		initialValues.contacts.exists = true;
-		initialValues.contacts.user = null;
-	}
-
 	// Setting evaluation
 	initialValues.evaluation.cvNeeded = c.cvNeeded;
 	initialValues.evaluation.letterNeeded = c.motivationalLetterNeeded;
 	initialValues.evaluation.portfolioNeeded = c.portfolioNeeded;
+
+	// Adding user
+	if ($user) {
+		initialValues.contacts.exists = true;
+	}
+
+	/**
+	 * Form - Extending base schema with async test
+	 */
+
+	const validationSchema = e.EnrollSchema.shape({
+		contacts: e.ContactsSchema.shape({
+			email: yup.string().when('exists', {
+				is: false,
+				then: (schema) => addEmailExistsTest(schema).required(),
+				otherwise: (schema) => schema.nullable().optional()
+			})
+		})
+	});
 
 	/**
 	 * Form - Submit fn
@@ -125,7 +135,7 @@
 
 	const formContext = createForm({
 		initialValues,
-		validationSchema: e.EnrollSchema,
+		validationSchema,
 		onSubmit
 	});
 </script>
@@ -180,9 +190,9 @@
 		<!-- Contatti -->
 
 		{#if !$user}
-			<TextField name="contacts.user.name" labelText="Nome" />
-			<TextField name="contacts.user.surname" labelText="Cognome" />
-			<TextField name="contacts.user.email" labelText="Email" type="email" />
+			<TextField name="contacts.name" labelText="Nome" />
+			<TextField name="contacts.surname" labelText="Cognome" />
+			<TextField name="contacts.email" labelText="Email" type="email" />
 		{/if}
 
 		<TextField
