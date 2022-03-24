@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.enrollTemplate = void 0;
-const sendEmail_1 = require("./sendEmail");
+exports.enrollEmailTemplate = void 0;
+const utils_1 = require("./utils");
 const subject = `Join | <%= COURSE_TITLE %> | Iscrizione ricevuta! :)`;
 const intro = `<p>Ciao, <%= USER_NAME %>!</p>
     <p>Abbiamo ricevuto la tua domanda di iscrizione al corso!<br>
@@ -29,27 +29,27 @@ const end = `<p>Grazie per il tuo supporto!</p>
     <p>A presto,<br>
     La Scuola Open Source</p>
 `;
-const enrollTemplate = (args) => {
+const enrollEmailTemplate = (args) => {
     let html = intro;
     if (args.PAYMENT_URL) {
-        html += sendEmail_1.s;
+        html += utils_1.s;
         html += payment;
     }
     if (args.USER_ACCOUNT) {
-        html += sendEmail_1.s;
+        html += utils_1.s;
         html += userCreation;
         if (args.USER_ACCOUNT.CONFIRMATION_URL) {
             html += userConfirmation;
         }
         html += userData;
     }
-    html += sendEmail_1.s;
+    html += utils_1.s;
     html += end;
-    const text = (0, sendEmail_1.HTMLTemplateToText)(html);
+    const text = (0, utils_1.HTMLTemplateToText)(html);
     return {
         subject,
         html,
         text,
     };
 };
-exports.enrollTemplate = enrollTemplate;
+exports.enrollEmailTemplate = enrollEmailTemplate;

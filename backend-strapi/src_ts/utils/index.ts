@@ -6,7 +6,6 @@ const { getAbsoluteServerUrl } = require("@strapi/utils");
 
 //
 
-export * from "./email";
 export { registerUser, RegisterUserInput } from "./registerUser";
 
 //
@@ -95,9 +94,13 @@ export function getPaymentHash(ctx: any): string {
     return hash;
 }
 
+//
+
 export async function getPaymentByHash(hash: string): Promise<t.ID<t.Payment>> {
     return await strapi.query(entities.payment).findOne({ where: { hash } });
 }
+
+//
 
 export async function getPaymentBillingInfo(
     paymentID: string | number
@@ -131,6 +134,8 @@ export async function getPaymentBillingInfo(
         return null;
     }
 }
+
+//
 
 export async function getPaymentDetails(
     paymentID: string | number
@@ -169,4 +174,50 @@ export async function getPaymentDetails(
     //
 
     return details;
+}
+
+//
+
+export async function getUserInfo(
+    userID: string | number
+): Promise<t.ID<t.UserInfo>> {
+    const user: t.ID<t.UsersPermissionsUser> =
+        await strapi.entityService.findOne(entities.user, userID, {
+            populate: {
+                userInfo: true,
+            },
+        });
+
+    if (!user) {
+        throw new Error("userNotFound");
+    }
+
+    const userInfo: t.ID<t.UserInfo> = user.userInfo as any;
+
+    return userInfo;
+}
+
+//
+
+export async function getPaymentOwner(
+    paymentID: string | number
+): Promise<t.ID<t.UsersPermissionsUser>> {
+    const payment: t.ID<t.Payment> = await strapi.entityService.findOne(
+        entities.payment,
+        paymentID,
+        {
+            populate: {
+                owner: true,
+            },
+        }
+    );
+
+    if (!payment) {
+        throw new Error("paymentNotFound");
+    }
+
+    // Getting owner
+    const owner = payment.owner as any as t.ID<t.UsersPermissionsUser>;
+
+    return owner;
 }

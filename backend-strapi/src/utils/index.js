@@ -1,28 +1,13 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPaymentDetails = exports.getPaymentBillingInfo = exports.getPaymentByHash = exports.getPaymentHash = exports.createConfirmationTokenURL = exports.getService = exports.getUserPemissionsSettings = exports.generateSecureString = exports.getUserByEmail = exports.getCourseByID = exports.entities = exports.registerUser = void 0;
+exports.getPaymentOwner = exports.getUserInfo = exports.getPaymentDetails = exports.getPaymentBillingInfo = exports.getPaymentByHash = exports.getPaymentHash = exports.createConfirmationTokenURL = exports.getService = exports.getUserPemissionsSettings = exports.generateSecureString = exports.getUserByEmail = exports.getCourseByID = exports.entities = exports.registerUser = void 0;
 const shared_1 = require("shared");
 const crypto_1 = __importDefault(require("crypto"));
 const urlJoin = require("url-join");
 const { getAbsoluteServerUrl } = require("@strapi/utils");
-__exportStar(require("./email"), exports);
 var registerUser_1 = require("./registerUser");
 Object.defineProperty(exports, "registerUser", { enumerable: true, get: function () { return registerUser_1.registerUser; } });
 exports.entities = {
@@ -134,3 +119,29 @@ async function getPaymentDetails(paymentID) {
     return details;
 }
 exports.getPaymentDetails = getPaymentDetails;
+async function getUserInfo(userID) {
+    const user = await strapi.entityService.findOne(exports.entities.user, userID, {
+        populate: {
+            userInfo: true,
+        },
+    });
+    if (!user) {
+        throw new Error("userNotFound");
+    }
+    const userInfo = user.userInfo;
+    return userInfo;
+}
+exports.getUserInfo = getUserInfo;
+async function getPaymentOwner(paymentID) {
+    const payment = await strapi.entityService.findOne(exports.entities.payment, paymentID, {
+        populate: {
+            owner: true,
+        },
+    });
+    if (!payment) {
+        throw new Error("paymentNotFound");
+    }
+    const owner = payment.owner;
+    return owner;
+}
+exports.getPaymentOwner = getPaymentOwner;

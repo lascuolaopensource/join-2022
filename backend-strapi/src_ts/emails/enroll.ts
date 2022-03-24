@@ -1,4 +1,5 @@
-import { IEmailTemplate, HTMLTemplateToText, s } from "./sendEmail";
+import { EmailTemplate } from "./types";
+import { HTMLTemplateToText, s } from "./utils";
 
 /**
  * Pieces
@@ -42,7 +43,7 @@ const end = `<p>Grazie per il tuo supporto!</p>
  * Email templates arguments interfaces
  */
 
-export interface IEnrollEmailTemplateArgs {
+export interface EnrollEmailTemplateArgs {
     COURSE_TITLE: string;
     USER_NAME: string;
     USER_ACCOUNT?: {
@@ -57,9 +58,9 @@ export interface IEnrollEmailTemplateArgs {
  * Email template
  */
 
-export const enrollTemplate = (
-    args: IEnrollEmailTemplateArgs
-): IEmailTemplate => {
+export const enrollEmailTemplate = (
+    args: EnrollEmailTemplateArgs
+): EmailTemplate => {
     // Building HTML template
 
     let html = intro;
