@@ -13,7 +13,7 @@ var re = {
  * Schemas
  */
 
-var urlSchema = yup.string().matches(re.url);
+var urlSchema = yup.string().lowercase().matches(re.url);
 var cfSchema = yup.string().uppercase().matches(re.cf);
 var emailSchema = yup.string().email();
 /**

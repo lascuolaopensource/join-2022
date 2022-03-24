@@ -33,7 +33,7 @@ var re = {
  * Schemas
  */
 
-var urlSchema = yup__namespace.string().matches(re.url);
+var urlSchema = yup__namespace.string().lowercase().matches(re.url);
 var cfSchema = yup__namespace.string().uppercase().matches(re.cf);
 var emailSchema = yup__namespace.string().email();
 /**

@@ -13,7 +13,7 @@ export const re = {
  * Schemas
  */
 
-export const urlSchema = yup.string().matches(re.url);
+export const urlSchema = yup.string().lowercase().matches(re.url);
 export const cfSchema = yup.string().uppercase().matches(re.cf);
 export const emailSchema = yup.string().email();
 
