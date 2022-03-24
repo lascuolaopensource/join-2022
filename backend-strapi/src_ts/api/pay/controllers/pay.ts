@@ -8,7 +8,10 @@ import {
     getPaymentBillingInfo,
     getPaymentByHash,
     getPaymentDetails,
+    getPaymentOwner,
+    getUserInfo,
 } from "../../../utils";
+import { emailSender, PayConfirmEmailTemplateArgs } from "../../../emails";
 
 const stripe = new Stripe(process.env.STRIPE_KEY as string, {
     apiVersion: "2020-08-27",
@@ -113,6 +116,10 @@ module.exports = {
     confirm: async (ctx: any, next: any): Promise<e.PayConfirmRes> => {
         strapi.log.info("In payConfirm controller");
 
+        /**
+         * Payment update
+         */
+
         // Getting payment
         const payment: t.ID<t.Payment> = await strapi
             .query(entities.payment)
@@ -125,8 +132,39 @@ module.exports = {
             },
         });
 
-        // Updating relation
+        // Getting payment details
         const paymentDetails = await getPaymentDetails(payment.id);
+
+        /**
+         * Sending confirmation email
+         */
+
+        // Getting payment owner
+        const owner = await getPaymentOwner(payment.id);
+        // Getting user info
+        const ownerInfo = await getUserInfo(owner.id);
+
+        // Formatting price
+        const formatter = new Intl.NumberFormat("it-IT", {
+            style: "currency",
+            currency: "EUR",
+        });
+        const formattedPrice = formatter.format(paymentDetails.price);
+
+        // Sending email
+        const args: PayConfirmEmailTemplateArgs = {
+            USER_NAME: ownerInfo.name as string,
+            PAYMENT: {
+                CATEGORY: paymentDetails.category,
+                TITLE: paymentDetails.title,
+                PRICE: formattedPrice,
+            },
+        };
+        await emailSender.payConfirm(owner.email, args);
+
+        /**
+         * Updating relation
+         */
 
         if (paymentDetails.category == t.PaymentCategories.course) {
             // Getting enrollment

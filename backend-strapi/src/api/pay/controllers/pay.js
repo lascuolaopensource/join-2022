@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const shared_1 = require("shared");
 const stripe_1 = __importDefault(require("stripe"));
 const utils_1 = require("../../../utils");
+const emails_1 = require("../../../emails");
 const stripe = new stripe_1.default(process.env.STRIPE_KEY, {
     apiVersion: "2020-08-27",
 });
@@ -83,6 +84,22 @@ module.exports = {
             },
         });
         const paymentDetails = await (0, utils_1.getPaymentDetails)(payment.id);
+        const owner = await (0, utils_1.getPaymentOwner)(payment.id);
+        const ownerInfo = await (0, utils_1.getUserInfo)(owner.id);
+        const formatter = new Intl.NumberFormat("it-IT", {
+            style: "currency",
+            currency: "EUR",
+        });
+        const formattedPrice = formatter.format(paymentDetails.price);
+        const args = {
+            USER_NAME: ownerInfo.name,
+            PAYMENT: {
+                CATEGORY: paymentDetails.category,
+                TITLE: paymentDetails.title,
+                PRICE: formattedPrice,
+            },
+        };
+        await emails_1.emailSender.payConfirm(owner.email, args);
         if (paymentDetails.category == shared_1.t.PaymentCategories.course) {
             const paymentWithEnrollment = await strapi.entityService.findOne(utils_1.entities.payment, payment.id, { populate: { enrollment: true } });
             const enrollment = paymentWithEnrollment.enrollment;
