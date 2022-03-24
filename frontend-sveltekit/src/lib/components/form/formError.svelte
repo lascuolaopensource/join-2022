@@ -13,7 +13,7 @@
 </script>
 
 <script lang="ts">
-	import { icons } from '$lib/icons/icons.svelte';
+	import { icons } from '$lib/icons';
 
 	export let closeButton: boolean = true;
 
@@ -37,7 +37,10 @@
 		<!-- Form close button -->
 		{#if closeButton}
 			<button class="form__err__btn" on:click={hideError}>
-				<svelte:component this={icons.form.close} class="form__err__btn__icon" />
+				<svelte:component
+					this={icons.form.close}
+					class="form__err__btn__icon"
+				/>
 			</button>
 		{/if}
 	</div>

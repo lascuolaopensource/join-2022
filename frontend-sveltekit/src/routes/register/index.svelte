@@ -20,7 +20,7 @@
 		setFormError
 	} from '$lib/components/form';
 
-	import { icons } from '$lib/icons/icons.svelte';
+	import { icons } from '$lib/icons';
 
 	//
 
