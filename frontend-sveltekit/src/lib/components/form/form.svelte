@@ -156,10 +156,10 @@
 <!--  -->
 
 <form class="form" on:submit={handleSubmitClearErr}>
-	<!-- Content -->
 	<slot />
-	<!-- Loading spinner -->
-	{#if $isSubmitting}
-		<div class="form__loading"><Spinner /></div>
-	{/if}
 </form>
+
+<!-- Loading spinner -->
+{#if $isSubmitting}
+	<div class="form__loading"><Spinner /></div>
+{/if}
