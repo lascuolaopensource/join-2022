@@ -108,7 +108,7 @@
 
 			// Going to payment
 			if (res.paymentId) {
-				await goto(`/shared/payments/${res.paymentId}`);
+				await goto(`/shared/payment/${res.paymentId}`);
 			}
 			//
 			else {

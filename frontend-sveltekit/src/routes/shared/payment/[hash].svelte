@@ -8,7 +8,7 @@
 			if (paymentInfo.payment.confirmed) {
 				return {
 					status: 302,
-					redirect: `/shared/payments/alreadyConfirmed`
+					redirect: `/shared/payment/alreadyConfirmed`
 				};
 			}
 
@@ -16,7 +16,7 @@
 			if (Date.now() > Date.parse(paymentInfo.payment.expiration)) {
 				return {
 					status: 302,
-					redirect: `/shared/payments/expired`
+					redirect: `/shared/payment/expired`
 				};
 			}
 
@@ -30,7 +30,7 @@
 			console.log(e.message, 'paymentNotExisting');
 			return {
 				status: 302,
-				redirect: `/shared/payments/notExisting`
+				redirect: `/shared/payment/notExisting`
 			};
 		}
 	}
