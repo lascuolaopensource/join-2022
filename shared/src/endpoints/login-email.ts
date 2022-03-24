@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { emailSchema } from "./__utils";
+import { emailSchema } from "../validators";
 
 /**
  * LoginEmail

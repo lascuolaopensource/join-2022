@@ -23,7 +23,7 @@ module.exports = async (policyContext, config, { strapi }) => {
         userEmail = policyContext.state.user.email;
     }
     else {
-        userEmail = body.contacts.user.email.toLowerCase();
+        userEmail = body.contacts.email.toLowerCase();
     }
     for (let e of enrollments) {
         const owner = e.owner;

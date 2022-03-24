@@ -5,7 +5,7 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import { passwordValidator } from '$lib/validators';
+	import { passwordSchema, addEmailExistsTest } from '$lib/validators';
 	import type { e } from 'shared';
 
 	//
@@ -34,19 +34,8 @@
 	const validationSchema = yup.object({
 		name: yup.string().required(),
 		surname: yup.string().required(),
-		email: yup
-			.string()
-			.email()
-			.required()
-			.test({
-				name: 'emailExists',
-				message: "L'email esiste già",
-				test: async (value, testContext) => {
-					const res = await req.userExists({ email: value });
-					return !res.exists;
-				}
-			}),
-		password: passwordValidator
+		email: addEmailExistsTest(yup.string()).required(),
+		password: passwordSchema
 	});
 
 	async function onSubmit(values: e.RegisterUserReq) {

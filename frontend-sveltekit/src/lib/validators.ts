@@ -1,10 +1,22 @@
 import { req } from '$lib/requestUtils';
 import * as yup from 'yup';
-export const passwordValidator = yup.string().required().min(8).max(52);
 
-export const urlValidator = yup
-	.string()
-	.matches(
-		/((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-		'Please enter valid url'
-	);
+//
+
+export function addEmailExistsTest(
+	s: yup.StringSchema,
+	message = 'emailExists'
+): yup.StringSchema {
+	return s.email().test({
+		name: 'emailExists',
+		message,
+		test: async (value, testContext) => {
+			const res = await req.userExists({ email: value });
+			return !res.exists;
+		}
+	});
+}
+
+export const emailExistsSchema = addEmailExistsTest(yup.string());
+
+export const passwordSchema = yup.string().required().min(8).max(52);

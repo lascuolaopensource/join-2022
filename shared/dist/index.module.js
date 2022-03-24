@@ -53,6 +53,29 @@ function thenNull(value) {
     }
   };
 }
+var nullOrReq = {
+  is: function is(v) {
+    return v == true;
+  },
+  then: function then(s) {
+    return s.nullable();
+  },
+  otherwise: function otherwise(s) {
+    return s.required();
+  }
+};
+
+var index$4 = {
+	__proto__: null,
+	re: re,
+	urlSchema: urlSchema,
+	cfSchema: cfSchema,
+	emailSchema: emailSchema,
+	thenReq: thenReq,
+	thenUrlReq: thenUrlReq,
+	thenNull: thenNull,
+	nullOrReq: nullOrReq
+};
 
 /**
  * Contacts
@@ -60,20 +83,16 @@ function thenNull(value) {
 
 var ContactsValues = {
   exists: false,
-  user: {
-    email: "",
-    name: "",
-    surname: ""
-  },
+  email: "",
+  name: "",
+  surname: "",
   phone: ""
 };
 var ContactsSchema = yup.object({
   exists: yup["boolean"]().required(),
-  user: yup.object({
-    email: yup.string().email().required(),
-    name: yup.string().required(),
-    surname: yup.string().required()
-  }).when("exists", thenReq(false)),
+  email: yup.string().email().when("exists", thenReq(false)),
+  name: yup.string().required().when("exists", thenReq(false)),
+  surname: yup.string().required().when("exists", thenReq(false)),
   phone: yup.string().required()
 });
 /**
@@ -331,5 +350,5 @@ var index = {
 	course: course
 };
 
-export { index$2 as e, index$1 as gql, index as h, index$3 as t };
+export { index$2 as e, index$1 as gql, index as h, index$3 as t, index$4 as validators };
 //# sourceMappingURL=index.module.js.map

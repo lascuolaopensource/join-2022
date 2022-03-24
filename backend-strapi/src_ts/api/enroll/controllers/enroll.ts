@@ -49,14 +49,14 @@ module.exports = {
              */
 
             userPassword = generateSecureString(24);
-            userName = body.contacts.user.name;
+            userName = body.contacts.name;
 
             // Collecting user data for input
             const newUserData: RegisterUserInput = {
-                email: body.contacts.user.email,
+                email: body.contacts.email,
                 password: userPassword,
-                name: body.contacts.user.name,
-                surname: body.contacts.user.surname,
+                name: body.contacts.name,
+                surname: body.contacts.surname,
             };
 
             // Adding confirmation token if needed
