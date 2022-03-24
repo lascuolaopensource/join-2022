@@ -1,6 +1,7 @@
 import type { t, e } from 'shared';
 import { request } from './request';
 import { headersAuth } from './authorizationHeader';
+import qs from 'qs';
 
 // L'URL base, importato dall'.env
 export const baseUrl = <string>import.meta.env.VITE_BACKEND_URL;
@@ -154,9 +155,16 @@ export const req = {
 		slug: string,
 		fetchFn = fetch
 	): Promise<t.CourseEntity> => {
+		const query = qs.stringify({
+			filters: {
+				slug: {
+					$eq: slug
+				}
+			}
+		});
 		const res: t.CourseEntityResponseCollection = await request(
 			fetchFn,
-			b + `api/courses?filters[slug][$eq]=${slug}`
+			`${b}api/courses?${query}`
 		);
 		if (!res.data[0]) {
 			throw new Error('Course not found');
@@ -168,12 +176,26 @@ export const req = {
 		mode: 'expired' | 'future',
 		fetchFn = fetch
 	): Promise<t.CourseEntityResponseCollection> => {
+		// Getting today's date
 		const today = new Date().toISOString();
-		const filter = mode == 'expired' ? 'lt' : 'gt';
-		return await request(
-			fetchFn,
-			b +
-				`api/courses?filters[enrollmentDeadline][$${filter}]=${today}&populate[0]=meetings&populate[1]=meetings.timeSlots`
-		);
+		// Deciding filter based on mode
+		// lt: lower than | gt: greater than
+		const filterOperator = mode == 'expired' ? '$lt' : '$gt';
+		// Building the filters object
+		const filters = { enrollmentDeadline: {} };
+		filters.enrollmentDeadline[filterOperator] = today;
+		// Building query
+		const query = qs.stringify({
+			populate: {
+				meetings: {
+					populate: {
+						timeSlots: '*'
+					}
+				}
+			},
+			filters
+		});
+		// Requesting...
+		return await request(fetchFn, `${b}api/courses?${query}`);
 	}
 };
