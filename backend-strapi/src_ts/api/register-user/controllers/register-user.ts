@@ -4,15 +4,15 @@
  * Imports
  */
 
-import { e } from "shared";
+import { e, Errors, t } from "shared";
 import {
     getUserPemissionsSettings,
     getService,
     registerUser,
+    registerUserErrorHandler,
 } from "../../../utils";
 
 const utils = require("@strapi/utils");
-const { ApplicationError } = utils.errors;
 const { sanitize } = utils;
 
 /**
@@ -50,7 +50,7 @@ module.exports = {
          */
 
         if (!settings.allow_register) {
-            throw new ApplicationError("Register action is currently disabled");
+            return ctx.forbidden(Errors.RegisterDisabled);
         }
 
         /**
@@ -58,7 +58,12 @@ module.exports = {
          */
 
         // Creating user
-        const user = await registerUser(body);
+        let user = {} as t.ID<t.UsersPermissionsUser>;
+        try {
+            user = await registerUser(body);
+        } catch (e) {
+            return registerUserErrorHandler(e, ctx);
+        }
 
         // Rimuovere informazioni sensibili dall'utente
         // (come la password) per restituirle
@@ -73,7 +78,8 @@ module.exports = {
             try {
                 await getService("user").sendConfirmationEmail(sanitizedUser);
             } catch (e) {
-                throw new ApplicationError((e as any).message);
+                console.log(e);
+                return ctx.internalServerError(Errors.EmailSendError);
             }
             return ctx.send({ user: sanitizedUser });
         }
