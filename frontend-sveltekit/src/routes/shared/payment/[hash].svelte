@@ -27,7 +27,6 @@
 				}
 			};
 		} catch (e) {
-			console.log(e.message, 'paymentNotExisting');
 			return {
 				status: 302,
 				redirect: `/shared/payment/notExisting`
@@ -93,8 +92,6 @@
 		{ value: billingOptions[2], label: 'Attività commerciale' }
 	];
 
-	// Adding
-
 	// Creating form
 	const formContext = createForm({
 		initialValues: e.PayValues,
@@ -103,20 +100,30 @@
 	});
 	const { form } = formContext;
 
-	// Dynamically updating form content
-	// to ease form validation
-	$: if ($form.billingOption == billingOptions[0]) {
-		$form.me = e.BillingMeValues;
-		$form.person = null;
-		$form.company = null;
-	} else if ($form.billingOption == billingOptions[1]) {
-		$form.me = null;
-		$form.person = e.BillingPersonValues;
-		$form.company = null;
-	} else if ($form.billingOption == billingOptions[2]) {
-		$form.me = null;
-		$form.person = null;
-		$form.company = e.BillingCompanyValues;
+	// Cleaning fields when billingOption changes
+	let oldBillingOption = $form.billingOption;
+	$: if ($form.billingOption != oldBillingOption) {
+		// Updating oldBillingOption
+		oldBillingOption = $form.billingOption;
+
+		// Emptying fields
+		$form.email = '';
+		$form.address = { ...e.AddressValues };
+
+		// Nulling the other billingOptions for validation
+		if ($form.billingOption == billingOptions[0]) {
+			$form.me = e.BillingMeValues;
+			$form.person = null;
+			$form.company = null;
+		} else if ($form.billingOption == billingOptions[1]) {
+			$form.me = null;
+			$form.person = e.BillingPersonValues;
+			$form.company = null;
+		} else if ($form.billingOption == billingOptions[2]) {
+			$form.me = null;
+			$form.person = null;
+			$form.company = e.BillingCompanyValues;
+		}
 	}
 
 	/**
@@ -128,14 +135,6 @@
 		style: 'currency',
 		currency: 'EUR'
 	});
-
-	// Label for email field
-	let emailLabel: string;
-	$: if ($form.billingOption == billingOptions[2]) {
-		emailLabel = 'PEC';
-	} else {
-		emailLabel = 'Email';
-	}
 
 	// Payment deadline
 	const deadline = new Date(Date.parse(paymentInfo.payment.expiration));
@@ -196,6 +195,7 @@
 			<TextField name="person.name" labelText="Nome" type="text" />
 			<TextField name="person.surname" labelText="Cognome" type="text" />
 			<TextField name="person.cf" labelText="Codice fiscale" type="text" />
+			<TextField name="email" labelText="Email" type="email" />
 		{:else if $form.billingOption == billingOptions[2]}
 			<!-- Azienda -->
 			<TextField name="company.name" labelText="Nome società" type="text" />
@@ -205,10 +205,7 @@
 				labelText="Codice SDI (opzionale)"
 				type="text"
 			/>
-		{/if}
-
-		{#if $form.billingOption != billingOptions[0]}
-			<TextField name="email" labelText={emailLabel} type="email" />
+			<TextField name="email" labelText="PEC" type="email" />
 		{/if}
 
 		<hr />
