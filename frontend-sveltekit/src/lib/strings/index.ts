@@ -30,3 +30,7 @@ export const s = {
 			ma occhio alla data di scadenza!`
 	}
 };
+
+export const placeholders = {
+	address: 'Nome via / piazza / etc. , n° civico'
+};
