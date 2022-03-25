@@ -280,14 +280,47 @@ var PayValues = {
   address: AddressValues
 };
 var PaySchema = yup.object({
-  // Modalità
+  //
   billingOption: yup.string().oneOf([].concat(BillingOptions)).required(),
   //
-  me: BillingMeSchema.when("billingOption", thenReq(BillingOptions[0])),
-  person: BillingPersonSchema.when("billingOption", thenReq(BillingOptions[1])),
-  company: BillingCompanySchema.when("billingOption", thenReq(BillingOptions[2])),
-  // Generici
-  email: yup.string().email().when("billingOption", thenNull(BillingOptions[0])),
+  me: yup.object().when("billingOption", {
+    is: BillingOptions[0],
+    then: function then(schema) {
+      return BillingMeSchema.required();
+    },
+    otherwise: function otherwise(schema) {
+      return schema;
+    }
+  }),
+  person: yup.object().when("billingOption", {
+    is: BillingOptions[1],
+    then: function then(schema) {
+      return BillingPersonSchema.required();
+    },
+    otherwise: function otherwise(schema) {
+      return schema;
+    }
+  }),
+  company: yup.object().when("billingOption", {
+    is: BillingOptions[2],
+    then: function then(schema) {
+      return BillingCompanySchema.required();
+    },
+    otherwise: function otherwise(schema) {
+      return schema;
+    }
+  }),
+  //
+  email: yup.string().when("billingOption", {
+    is: BillingOptions[0],
+    then: function then(schema) {
+      return schema.nullable().optional();
+    },
+    otherwise: function otherwise(schema) {
+      return schema.email().required();
+    }
+  }),
+  //
   address: AddressSchema.required()
 });
 

@@ -262,14 +262,31 @@ const PayValues = {
   address: AddressValues
 };
 const PaySchema = yup.object({
-  // Modalità
+  //
   billingOption: yup.string().oneOf([...BillingOptions]).required(),
   //
-  me: BillingMeSchema.when("billingOption", thenReq(BillingOptions[0])),
-  person: BillingPersonSchema.when("billingOption", thenReq(BillingOptions[1])),
-  company: BillingCompanySchema.when("billingOption", thenReq(BillingOptions[2])),
-  // Generici
-  email: yup.string().email().when("billingOption", thenNull(BillingOptions[0])),
+  me: yup.object().when("billingOption", {
+    is: BillingOptions[0],
+    then: schema => BillingMeSchema.required(),
+    otherwise: schema => schema
+  }),
+  person: yup.object().when("billingOption", {
+    is: BillingOptions[1],
+    then: schema => BillingPersonSchema.required(),
+    otherwise: schema => schema
+  }),
+  company: yup.object().when("billingOption", {
+    is: BillingOptions[2],
+    then: schema => BillingCompanySchema.required(),
+    otherwise: schema => schema
+  }),
+  //
+  email: yup.string().when("billingOption", {
+    is: BillingOptions[0],
+    then: schema => schema.nullable().optional(),
+    otherwise: schema => schema.email().required()
+  }),
+  //
   address: AddressSchema.required()
 });
 
