@@ -2,12 +2,27 @@ import * as yup from 'yup';
 import { gql } from 'graphql-tag';
 
 /**
+ * Setting yup default messages
+ */
+
+function setYupDefaultMessages() {
+  yup.setLocale({
+    string: {
+      matches: "Il campo non \xE8 valido"
+    }
+  });
+}
+setYupDefaultMessages();
+/**
  * Regex checks
  */
 
 var re = {
   url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
-  cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/
+  cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/,
+  phone: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+  provincia: /^[A-Z]{2}$/,
+  cap: /^[0-9]{5}$/
 };
 /**
  * Schemas
@@ -15,6 +30,9 @@ var re = {
 
 var urlSchema = yup.string().lowercase().matches(re.url);
 var cfSchema = yup.string().uppercase().matches(re.cf);
+var phoneSchema = yup.string().matches(re.phone);
+var provinciaSchema = yup.string().uppercase().matches(re.provincia);
+var capSchema = yup.string().matches(re.cap);
 var emailSchema = yup.string().email();
 /**
  * Yup dynamic checks
@@ -67,9 +85,13 @@ var nullOrReq = {
 
 var index$4 = {
 	__proto__: null,
+	setYupDefaultMessages: setYupDefaultMessages,
 	re: re,
 	urlSchema: urlSchema,
 	cfSchema: cfSchema,
+	phoneSchema: phoneSchema,
+	provinciaSchema: provinciaSchema,
+	capSchema: capSchema,
 	emailSchema: emailSchema,
 	thenReq: thenReq,
 	thenUrlReq: thenUrlReq,
@@ -77,6 +99,7 @@ var index$4 = {
 	nullOrReq: nullOrReq
 };
 
+setYupDefaultMessages();
 /**
  * Contacts
  */
@@ -93,7 +116,7 @@ var ContactsSchema = yup.object({
   email: yup.string().email().when("exists", thenReq(false)),
   name: yup.string().required().when("exists", thenReq(false)),
   surname: yup.string().required().when("exists", thenReq(false)),
-  phone: yup.string().required()
+  phone: phoneSchema.required()
 });
 /**
  * Evaluation
@@ -130,6 +153,7 @@ var EnrollSchema = yup.object({
   evaluation: EvaluationSchema
 });
 
+setYupDefaultMessages();
 var LoginEmailValues = {
   email: ""
 };
@@ -137,6 +161,7 @@ var LoginEmailSchema = yup.object({
   email: emailSchema.required()
 });
 
+setYupDefaultMessages();
 /**
  * Login
  */
@@ -196,6 +221,7 @@ var index$3 = {
 	get BillingOptionsComponents () { return BillingOptionsComponents; }
 };
 
+setYupDefaultMessages();
 /**
  * Billing data
  */
@@ -240,9 +266,9 @@ var AddressValues = {
   province: ""
 };
 var AddressSchema = yup.object({
-  cap: yup.string().required(),
+  cap: capSchema.required(),
   town: yup.string().required(),
-  province: yup.string().required(),
+  province: provinciaSchema.required(),
   street: yup.string().required()
 });
 var PayValues = {
@@ -265,6 +291,7 @@ var PaySchema = yup.object({
   address: AddressSchema.required()
 });
 
+setYupDefaultMessages();
 var UserExistsSchema = yup.object({
   email: emailSchema.required()
 });

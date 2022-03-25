@@ -31,6 +31,7 @@
 	import { goto } from '$app/navigation';
 	import { s } from '$lib/strings';
 	import * as yup from 'yup';
+	import { validators } from 'shared';
 	import { addEmailExistsTest } from '$lib/validators';
 	import { createForm } from 'svelte-forms-lib';
 	import {
@@ -96,6 +97,8 @@
 	/**
 	 * Form - Extending base schema with async test
 	 */
+
+	validators.setYupDefaultMessages();
 
 	const validationSchema = e.EnrollSchema.shape({
 		contacts: e.ContactsSchema.shape({

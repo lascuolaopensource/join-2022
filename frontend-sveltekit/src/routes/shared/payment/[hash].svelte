@@ -43,7 +43,7 @@
 	import { setFormError } from '$lib/components/form';
 	import { t, e } from 'shared';
 	import { lsKeys } from '$lib/localStorageUtils';
-	import { s } from '$lib/strings';
+	import { s, placeholders as p } from '$lib/strings';
 
 	import { createForm } from 'svelte-forms-lib';
 	import {
@@ -213,7 +213,12 @@
 
 		<hr />
 
-		<TextField name="address.street" labelText="Indirizzo" type="text" />
+		<TextField
+			name="address.street"
+			labelText="Indirizzo"
+			type="text"
+			placeholder={p.address}
+		/>
 		<TextField name="address.town" labelText="Città" type="text" />
 		<div class="field-w30">
 			<TextField name="address.province" labelText="Provincia" type="text" />
