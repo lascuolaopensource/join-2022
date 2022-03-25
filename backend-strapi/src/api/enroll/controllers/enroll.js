@@ -27,7 +27,12 @@ module.exports = {
                 newUserData.confirmationToken = confirmation.token;
                 confirmationUrl = confirmation.url;
             }
-            user = await (0, utils_1.registerUser)(newUserData);
+            try {
+                user = await (0, utils_1.registerUser)(newUserData);
+            }
+            catch (e) {
+                return (0, utils_1.registerUserErrorHandler)(e, ctx);
+            }
         }
         else {
             user = ctx.state.user;
