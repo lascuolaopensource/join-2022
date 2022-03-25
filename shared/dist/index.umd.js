@@ -303,7 +303,7 @@
 	};
 	var PaySchema = yup__namespace.object({
 	  // Modalità
-	  billingOption: yup__namespace.string().oneOf(BillingOptions).required(),
+	  billingOption: yup__namespace.string().oneOf([].concat(BillingOptions)).required(),
 	  //
 	  me: BillingMeSchema.when("billingOption", thenReq(BillingOptions[0])),
 	  person: BillingPersonSchema.when("billingOption", thenReq(BillingOptions[1])),

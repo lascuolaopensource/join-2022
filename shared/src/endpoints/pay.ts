@@ -109,7 +109,7 @@ export const PaySchema = yup.object({
 	// Modalità
 	billingOption: yup
 		.string()
-		.oneOf(BillingOptions as any)
+		.oneOf([...BillingOptions])
 		.required(),
 	//
 	me: BillingMeSchema.when("billingOption", thenReq(BillingOptions[0])),

@@ -263,7 +263,7 @@ const PayValues = {
 };
 const PaySchema = yup.object({
   // Modalità
-  billingOption: yup.string().oneOf(BillingOptions).required(),
+  billingOption: yup.string().oneOf([...BillingOptions]).required(),
   //
   me: BillingMeSchema.when("billingOption", thenReq(BillingOptions[0])),
   person: BillingPersonSchema.when("billingOption", thenReq(BillingOptions[1])),
