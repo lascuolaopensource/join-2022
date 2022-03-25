@@ -3,7 +3,7 @@
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
 
-import { t, e } from "shared";
+import { t, e, Errors } from "shared";
 import { getCourseByID } from "../../../utils";
 
 /**
@@ -44,7 +44,7 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
     for (let e of enrollments) {
         const owner = e.owner as any as t.ID<t.UsersPermissionsMe>;
         if (owner.email == userEmail) {
-            throw new PolicyError("alreadyEnrolled", {
+            throw new PolicyError(Errors.AlreadyEnrolled, {
                 policy: "isAlreadyEnrolled",
             });
         }

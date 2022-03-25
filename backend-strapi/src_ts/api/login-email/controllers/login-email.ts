@@ -1,6 +1,6 @@
 "use strict";
 
-import { e } from "shared";
+import { e, Errors } from "shared";
 import { getUserByEmail, getUserInfo } from "../../../utils";
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
         try {
             await e.LoginEmailSchema.validate(body);
         } catch (err) {
-            return ctx.badRequest("invalidPayload");
+            return ctx.badRequest(Errors.ValidationError);
         }
 
         // Portiamo l'email in lowercase,
@@ -30,7 +30,7 @@ module.exports = {
         if (user) {
             // Verifichiamo se l'utente è confermato
             if (!user.confirmed) {
-                return ctx.unauthorized("userNotConfirmed");
+                return ctx.unauthorized(Errors.UserNotConfirmed);
             }
 
             // Prendiamo anche userinfo per restituire il nome
@@ -42,7 +42,7 @@ module.exports = {
         }
         // Altrimenti, 404
         else {
-            return ctx.notFound("userNotFound");
+            return ctx.notFound(Errors.NotFound, { entity: "user" });
         }
     },
 };

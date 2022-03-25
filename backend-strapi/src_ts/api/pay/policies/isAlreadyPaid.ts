@@ -1,3 +1,4 @@
+import { Errors } from "shared";
 import { getPaymentByHash } from "../../../utils";
 
 const utils = require("@strapi/utils");
@@ -10,7 +11,7 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
     const payment = await getPaymentByHash(policyContext.params.hash);
 
     if (payment.confirmed) {
-        throw new PolicyError("paymentAlreadyPaid", {
+        throw new PolicyError(Errors.PaymentAlreadyPaid, {
             policy: "isAlreadyPaid",
         });
     }

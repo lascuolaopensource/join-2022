@@ -1,3 +1,4 @@
+import { Errors } from "shared";
 import { getPaymentByHash } from "../../../utils";
 
 const utils = require("@strapi/utils");
@@ -10,7 +11,7 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
     const payment = await getPaymentByHash(policyContext.params.hash);
 
     if (Date.now() > Date.parse(payment.expiration)) {
-        throw new PolicyError("paymentExpired", { policy: "isExpired" });
+        throw new PolicyError(Errors.PaymentExpired, { policy: "isExpired" });
     }
 
     return true;

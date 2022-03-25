@@ -3,7 +3,7 @@
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
 
-import { e } from "shared";
+import { e, Errors } from "shared";
 import { getUserByEmail } from "../../../utils";
 
 /**
@@ -27,7 +27,7 @@ module.exports = async (
         const user = await getUserByEmail(email);
 
         if (user) {
-            throw new PolicyError("userExists", {
+            throw new PolicyError(Errors.UserExists, {
                 policy: "userExists",
             });
         }

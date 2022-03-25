@@ -9,13 +9,13 @@ module.exports = {
             await shared_1.e.LoginEmailSchema.validate(body);
         }
         catch (err) {
-            return ctx.badRequest("invalidPayload");
+            return ctx.badRequest(shared_1.Errors.ValidationError);
         }
         const email = body.email.toLowerCase();
         const user = await (0, utils_1.getUserByEmail)(email);
         if (user) {
             if (!user.confirmed) {
-                return ctx.unauthorized("userNotConfirmed");
+                return ctx.unauthorized(shared_1.Errors.UserNotConfirmed);
             }
             const userInfo = await (0, utils_1.getUserInfo)(user.id);
             return (ctx.body = {
@@ -24,7 +24,7 @@ module.exports = {
             });
         }
         else {
-            return ctx.notFound("userNotFound");
+            return ctx.notFound(shared_1.Errors.NotFound, { entity: "user" });
         }
     },
 };

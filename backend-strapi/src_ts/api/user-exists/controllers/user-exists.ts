@@ -1,10 +1,7 @@
 "use strict";
 
-import { e } from "shared";
+import { e, Errors } from "shared";
 import { entities } from "../../../utils";
-
-const utils = require("@strapi/utils");
-const { ApplicationError } = utils.errors;
 
 /**
  * A set of functions called "actions" for `userExists`
@@ -23,7 +20,7 @@ module.exports = {
         try {
             await e.UserExistsSchema.validate(body);
         } catch (err) {
-            throw new ApplicationError("UserExistsValidationFailed");
+            return ctx.badRequest(Errors.ValidationError);
         }
 
         // Ricerca utente

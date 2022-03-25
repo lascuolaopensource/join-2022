@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
+const shared_1 = require("shared");
 const utils_1 = require("../../../utils");
 module.exports = async (policyContext, config, { strapi }) => {
     strapi.log.info("In userExists policy.");
@@ -10,7 +11,7 @@ module.exports = async (policyContext, config, { strapi }) => {
         const email = body.contacts.email;
         const user = await (0, utils_1.getUserByEmail)(email);
         if (user) {
-            throw new PolicyError("userExists", {
+            throw new PolicyError(shared_1.Errors.UserExists, {
                 policy: "userExists",
             });
         }

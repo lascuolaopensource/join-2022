@@ -60,7 +60,7 @@ exports.createConfirmationTokenURL = createConfirmationTokenURL;
 function getPaymentHash(ctx) {
     const hash = ctx.request?.body?.hash || ctx.params?.hash || null;
     if (!hash) {
-        throw new Error("hashNotFound");
+        throw new Error(shared_1.Errors.NotFound);
     }
     return hash;
 }
@@ -78,7 +78,7 @@ async function getPaymentBillingInfo(paymentID) {
         },
     });
     if (!payment) {
-        throw new Error("paymentNotFound");
+        throw new Error(shared_1.Errors.NotFound);
     }
     const billingInfo = payment.billing;
     if (billingInfo) {
@@ -105,7 +105,7 @@ async function getPaymentDetails(paymentID) {
         },
     });
     if (!payment) {
-        throw new Error("paymentNotFound");
+        throw new Error(shared_1.Errors.NotFound);
     }
     const enrollment = payment.enrollment;
     const course = enrollment.course;
@@ -124,7 +124,7 @@ async function getUserInfo(userID) {
         },
     });
     if (!user) {
-        throw new Error("userNotFound");
+        throw new Error(shared_1.Errors.NotFound);
     }
     const userInfo = user.userInfo;
     return userInfo;
@@ -137,7 +137,7 @@ async function getPaymentOwner(paymentID) {
         },
     });
     if (!payment) {
-        throw new Error("paymentNotFound");
+        throw new Error(shared_1.Errors.NotFound);
     }
     const owner = payment.owner;
     return owner;
