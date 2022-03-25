@@ -44,13 +44,14 @@ export async function request(
 		// ERROR
 		if (!res.ok) {
 			// We have to collect the error message
-			// - The first way is strapi specific:
+			// - The first and second ways are strapi-specific
 			//   https://strapi.io/blog/how-to-create-a-blog-with-svelte-kit-strapi
-			// - The second and third ones are more generic
+			//   https://docs.strapi.io/developer-docs/latest/developer-resources/error-handling.html#rest-errors
+			// - The others are more generic
 			const data = await res.json();
 			const errorMessage =
-				data?.message?.[0]?.messages?.[0]?.message ||
 				data?.error?.message ||
+				data?.message?.[0]?.messages?.[0]?.message ||
 				data?.message ||
 				res.statusText ||
 				'Unknown error';
