@@ -1,4 +1,4 @@
-import { t } from "shared";
+import { Errors, t } from "shared";
 import crypto from "crypto";
 
 const urlJoin = require("url-join");
@@ -86,7 +86,7 @@ export function createConfirmationTokenURL() {
 export function getPaymentHash(ctx: any): string {
     const hash = ctx.request?.body?.hash || ctx.params?.hash || null;
     if (!hash) {
-        throw new Error("hashNotFound");
+        throw new Error(Errors.NotFound);
     }
     return hash;
 }
@@ -116,7 +116,7 @@ export async function getPaymentBillingInfo(
     );
 
     if (!payment) {
-        throw new Error("paymentNotFound");
+        throw new Error(Errors.NotFound);
     }
 
     // Getting billing info
@@ -154,7 +154,7 @@ export async function getPaymentDetails(
     );
 
     if (!payment) {
-        throw new Error("paymentNotFound");
+        throw new Error(Errors.NotFound);
     }
 
     /**
@@ -186,7 +186,7 @@ export async function getUserInfo(
         });
 
     if (!user) {
-        throw new Error("userNotFound");
+        throw new Error(Errors.NotFound);
     }
 
     const userInfo: t.ID<t.UserInfo> = user.userInfo as any;
@@ -210,7 +210,7 @@ export async function getPaymentOwner(
     );
 
     if (!payment) {
-        throw new Error("paymentNotFound");
+        throw new Error(Errors.NotFound);
     }
 
     // Getting owner

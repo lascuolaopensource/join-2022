@@ -343,5 +343,25 @@ var index = {
 	course: course
 };
 
-export { index$2 as e, index$1 as gql, index as h, index$3 as t, index$4 as validators };
+var Errors;
+
+(function (Errors) {
+  Errors["DefaultRoleNotFound"] = "DefaultRoleNotFound";
+  Errors["EmailSendError"] = "EmailSendError";
+  Errors["EmailTaken"] = "EmailTaken";
+  Errors["NotFound"] = "NotFound";
+  Errors["PasswordThreeDollars"] = "PasswordThreeDollars";
+  Errors["PaymentAlreadyPaid"] = "PaymentAlreadyPaid";
+  Errors["PaymentExpired"] = "PaymentExpired";
+  Errors["PaymentNotFound"] = "PaymentNotFound";
+  Errors["RegisterDisabled"] = "RegisterDisabled";
+  Errors["UnknownError"] = "UnknownError";
+  Errors["UserNotConfirmed"] = "UserNotConfirmed";
+  Errors["ValidationError"] = "ValidationError";
+  Errors["UserExists"] = "UserExists";
+  Errors["EnrollmentExpired"] = "EnrollmentExpired";
+  Errors["AlreadyEnrolled"] = "AlreadyEnrolled";
+})(Errors || (Errors = {}));
+
+export { Errors, index$2 as e, index$1 as gql, index as h, index$3 as t, index$4 as validators };
 //# sourceMappingURL=index.modern.js.map

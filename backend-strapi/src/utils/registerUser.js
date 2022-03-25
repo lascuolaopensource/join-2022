@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerUser = void 0;
+exports.registerUserErrorHandler = exports.registerUser = void 0;
 const index_1 = require("./index");
+const shared_1 = require("shared");
 const mixed_1 = require("./mixed");
 const utils = require("@strapi/utils");
 const { yup } = utils;
-const { ApplicationError } = utils.errors;
 const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const registerUserSchema = yup.object({
     email: yup.string().email().matches(emailRegExp).required(),
@@ -21,10 +21,10 @@ async function registerUser(data) {
         await registerUserSchema.validate(data);
     }
     catch (e) {
-        throw new ApplicationError("validationFailed");
+        throw new Error(shared_1.Errors.ValidationError);
     }
     if ((0, index_1.getService)("user").isHashed(data.password)) {
-        throw new ApplicationError("passwordThreeDollars");
+        throw new Error(shared_1.Errors.PasswordThreeDollars);
     }
     if (!data.provider) {
         data.provider = "local";
@@ -40,7 +40,7 @@ async function registerUser(data) {
         .query("plugin::users-permissions.role")
         .findOne({ where: { type: settings.default_role } });
     if (!role) {
-        throw new ApplicationError("Impossible to find the default role");
+        throw new Error(shared_1.Errors.DefaultRoleNotFound);
     }
     data.role = role.id;
     const existingUser = await strapi
@@ -49,12 +49,12 @@ async function registerUser(data) {
         where: { email: data.email },
     });
     if (existingUser && existingUser.provider === data.provider) {
-        throw new ApplicationError("emailTaken");
+        throw new Error(shared_1.Errors.EmailTaken);
     }
     if (existingUser &&
         existingUser.provider !== data.provider &&
         settings.unique_email) {
-        throw new ApplicationError("emailTaken");
+        throw new Error(shared_1.Errors.EmailTaken);
     }
     const user = await (0, index_1.getService)("user").add(data);
     const newUserInfoData = {
@@ -62,7 +62,26 @@ async function registerUser(data) {
         surname: data.surname,
         owner: user.id,
     };
-    const newUserInfo = await strapi.entityService.create("api::user-info.user-info", { data: newUserInfoData });
+    const newUserInfo = await strapi.entityService.create(mixed_1.entities.userInfo, { data: newUserInfoData });
     return user;
 }
 exports.registerUser = registerUser;
+function registerUserErrorHandler(e, ctx) {
+    if (e instanceof Error) {
+        const msg = e.message;
+        switch (msg) {
+            case shared_1.Errors.ValidationError:
+            case shared_1.Errors.PasswordThreeDollars:
+                return ctx.badRequest(msg);
+            case shared_1.Errors.DefaultRoleNotFound:
+                return ctx.internalServerError(msg);
+            case shared_1.Errors.EmailTaken:
+                return ctx.conflict(msg);
+        }
+    }
+    else {
+        console.log(e);
+        return ctx.internalServerError(shared_1.Errors.UnknownError);
+    }
+}
+exports.registerUserErrorHandler = registerUserErrorHandler;

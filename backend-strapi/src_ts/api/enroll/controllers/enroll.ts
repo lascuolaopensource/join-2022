@@ -7,6 +7,7 @@ import {
     entities,
     getUserPemissionsSettings,
     registerUser,
+    registerUserErrorHandler,
     RegisterUserInput,
     createConfirmationTokenURL,
     paths,
@@ -70,7 +71,11 @@ module.exports = {
             }
 
             // Creating user
-            user = await registerUser(newUserData);
+            try {
+                user = await registerUser(newUserData);
+            } catch (e) {
+                return registerUserErrorHandler(e, ctx);
+            }
         }
         // Otherwise, we pick the user in context
         else {

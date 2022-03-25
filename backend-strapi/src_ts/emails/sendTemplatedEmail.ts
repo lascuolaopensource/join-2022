@@ -1,4 +1,5 @@
 import { EmailTemplate } from "./types";
+import { Errors } from "shared";
 
 export async function sendTemplatedEmail(
     to: string,
@@ -13,6 +14,6 @@ export async function sendTemplatedEmail(
         );
     } catch (e) {
         console.log(e);
-        throw new Error("emailSendError");
+        throw new Error(Errors.EmailSendError);
     }
 }

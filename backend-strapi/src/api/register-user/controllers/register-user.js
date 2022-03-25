@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const shared_1 = require("shared");
 const utils_1 = require("../../../utils");
 const utils = require("@strapi/utils");
-const { ApplicationError } = utils.errors;
 const { sanitize } = utils;
 function sanitizeUser(user, ctx) {
     const { auth } = ctx.state;
@@ -15,16 +15,23 @@ module.exports = {
         const body = ctx.request.body;
         const settings = await (0, utils_1.getUserPemissionsSettings)();
         if (!settings.allow_register) {
-            throw new ApplicationError("Register action is currently disabled");
+            return ctx.forbidden(shared_1.Errors.RegisterDisabled);
         }
-        const user = await (0, utils_1.registerUser)(body);
+        let user = {};
+        try {
+            user = await (0, utils_1.registerUser)(body);
+        }
+        catch (e) {
+            return (0, utils_1.registerUserErrorHandler)(e, ctx);
+        }
         const sanitizedUser = await sanitizeUser(user, ctx);
         if (settings.email_confirmation) {
             try {
                 await (0, utils_1.getService)("user").sendConfirmationEmail(sanitizedUser);
             }
             catch (e) {
-                throw new ApplicationError(e.message);
+                console.log(e);
+                return ctx.internalServerError(shared_1.Errors.EmailSendError);
             }
             return ctx.send({ user: sanitizedUser });
         }

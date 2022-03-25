@@ -3,7 +3,7 @@
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
 
-import { e } from "shared";
+import { e, Errors } from "shared";
 import { getCourseByID } from "../../../utils";
 
 /**
@@ -38,7 +38,7 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
         }
     } catch (err) {
         console.log(err);
-        throw new PolicyError("invalidPayload", {
+        throw new PolicyError(Errors.ValidationError, {
             policy: "isPayloadValid",
         });
     }

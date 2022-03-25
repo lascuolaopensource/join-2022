@@ -1,3 +1,4 @@
+import { Errors } from "shared";
 import { getPaymentByHash } from "../../../utils";
 
 const utils = require("@strapi/utils");
@@ -9,7 +10,7 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
     try {
         await getPaymentByHash(policyContext.params.hash);
     } catch (e) {
-        throw new PolicyError("paymentNotExisting", {
+        throw new PolicyError(Errors.PaymentNotFound, {
             policy: "paymentExists",
         });
     }

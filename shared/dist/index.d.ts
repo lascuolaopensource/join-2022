@@ -3,3 +3,4 @@ export * as gql from "./gql";
 export * as h from "./helpers";
 export * as t from "./types";
 export * as validators from "./validators";
+export { Errors } from "./errors";

@@ -22,7 +22,7 @@ module.exports = async (policyContext, config, { strapi }) => {
     }
     catch (err) {
         console.log(err);
-        throw new PolicyError("invalidPayload", {
+        throw new PolicyError(shared_1.Errors.ValidationError, {
             policy: "isPayloadValid",
         });
     }

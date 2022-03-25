@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
+const shared_1 = require("shared");
 const utils_1 = require("../../../utils");
 module.exports = async (policyContext, config, { strapi }) => {
     strapi.log.info("In isAlreadyEnrolled policy.");
@@ -28,7 +29,7 @@ module.exports = async (policyContext, config, { strapi }) => {
     for (let e of enrollments) {
         const owner = e.owner;
         if (owner.email == userEmail) {
-            throw new PolicyError("alreadyEnrolled", {
+            throw new PolicyError(shared_1.Errors.AlreadyEnrolled, {
                 policy: "isAlreadyEnrolled",
             });
         }

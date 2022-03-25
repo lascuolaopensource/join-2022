@@ -3,7 +3,7 @@
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
 
-import { e, h } from "shared";
+import { e, h, Errors } from "shared";
 import { getCourseByID } from "../../../utils";
 
 /**
@@ -25,6 +25,8 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
     if (isEnrollable) {
         return true;
     } else {
-        throw new PolicyError("enrollmentExpired", { policy: "isEnrollable" });
+        throw new PolicyError(Errors.EnrollmentExpired, {
+            policy: "isEnrollable",
+        });
     }
 };

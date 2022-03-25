@@ -13,6 +13,8 @@ module.exports = async (policyContext, config, { strapi }) => {
         return true;
     }
     else {
-        throw new PolicyError("enrollmentExpired", { policy: "isEnrollable" });
+        throw new PolicyError(shared_1.Errors.EnrollmentExpired, {
+            policy: "isEnrollable",
+        });
     }
 };

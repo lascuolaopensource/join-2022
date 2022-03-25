@@ -1,10 +1,9 @@
 import { getUserPemissionsSettings, getService } from "./index";
-import type { t } from "shared";
+import { Errors, t } from "shared";
 import { entities } from "./mixed";
 
 const utils = require("@strapi/utils");
 const { yup } = utils;
-const { ApplicationError } = utils.errors;
 
 /**
  * Utils
@@ -41,13 +40,13 @@ export async function registerUser(
     try {
         await registerUserSchema.validate(data);
     } catch (e) {
-        throw new ApplicationError("validationFailed");
+        throw new Error(Errors.ValidationError);
     }
 
     // Throw an error if the password selected by the user
     // contains more than three times the symbol '$'.
     if (getService("user").isHashed(data.password)) {
-        throw new ApplicationError("passwordThreeDollars");
+        throw new Error(Errors.PasswordThreeDollars);
     }
 
     /**
@@ -78,7 +77,7 @@ export async function registerUser(
         .findOne({ where: { type: settings.default_role } });
 
     if (!role) {
-        throw new ApplicationError("Impossible to find the default role");
+        throw new Error(Errors.DefaultRoleNotFound);
     }
 
     data.role = role.id;
@@ -94,7 +93,7 @@ export async function registerUser(
         });
 
     if (existingUser && existingUser.provider === data.provider) {
-        throw new ApplicationError("emailTaken");
+        throw new Error(Errors.EmailTaken);
     }
 
     if (
@@ -102,7 +101,7 @@ export async function registerUser(
         existingUser.provider !== data.provider &&
         settings.unique_email
     ) {
-        throw new ApplicationError("emailTaken");
+        throw new Error(Errors.EmailTaken);
     }
 
     /**
@@ -122,7 +121,7 @@ export async function registerUser(
     };
 
     const newUserInfo: t.UserInfo = await strapi.entityService.create(
-        "api::user-info.user-info",
+        entities.userInfo,
         { data: newUserInfoData }
     );
 
@@ -131,4 +130,22 @@ export async function registerUser(
      */
 
     return user;
+}
+
+export function registerUserErrorHandler(e: any, ctx: any) {
+    if (e instanceof Error) {
+        const msg = (e as Error).message;
+        switch (msg) {
+            case Errors.ValidationError:
+            case Errors.PasswordThreeDollars:
+                return ctx.badRequest(msg);
+            case Errors.DefaultRoleNotFound:
+                return ctx.internalServerError(msg);
+            case Errors.EmailTaken:
+                return ctx.conflict(msg);
+        }
+    } else {
+        console.log(e);
+        return ctx.internalServerError(Errors.UnknownError);
+    }
 }

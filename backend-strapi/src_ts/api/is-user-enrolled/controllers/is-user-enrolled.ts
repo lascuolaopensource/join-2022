@@ -12,7 +12,7 @@ module.exports = {
         strapi.log.info("In Is-user-enrolled controller");
 
         // Getting course id
-        const courseID: string = ctx.params["courseID"];
+        const courseID: string = ctx.params.courseID;
 
         // Getting user enrollments
         const user: t.ID<t.UsersPermissionsUser> = ctx.state.user;
