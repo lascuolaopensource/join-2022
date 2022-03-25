@@ -372,6 +372,26 @@
 		course: course
 	};
 
+	exports.Errors = void 0;
+
+	(function (Errors) {
+	  Errors["DefaultRoleNotFound"] = "DefaultRoleNotFound";
+	  Errors["EmailSendError"] = "EmailSendError";
+	  Errors["EmailTaken"] = "EmailTaken";
+	  Errors["NotFound"] = "NotFound";
+	  Errors["PasswordThreeDollars"] = "PasswordThreeDollars";
+	  Errors["PaymentAlreadyPaid"] = "PaymentAlreadyPaid";
+	  Errors["PaymentExpired"] = "PaymentExpired";
+	  Errors["PaymentNotFound"] = "PaymentNotFound";
+	  Errors["RegisterDisabled"] = "RegisterDisabled";
+	  Errors["UnknownError"] = "UnknownError";
+	  Errors["UserNotConfirmed"] = "UserNotConfirmed";
+	  Errors["ValidationError"] = "ValidationError";
+	  Errors["UserExists"] = "UserExists";
+	  Errors["EnrollmentExpired"] = "EnrollmentExpired";
+	  Errors["AlreadyEnrolled"] = "AlreadyEnrolled";
+	})(exports.Errors || (exports.Errors = {}));
+
 	exports.e = index$2;
 	exports.gql = index$1;
 	exports.h = index;
