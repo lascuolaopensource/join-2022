@@ -1,16 +1,26 @@
 import * as yup from "yup";
 /**
+ * Setting yup default messages
+ */
+export declare function setYupDefaultMessages(): void;
+/**
  * Regex checks
  */
 export declare const re: {
     url: RegExp;
     cf: RegExp;
+    phone: RegExp;
+    provincia: RegExp;
+    cap: RegExp;
 };
 /**
  * Schemas
  */
 export declare const urlSchema: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
 export declare const cfSchema: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
+export declare const phoneSchema: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
+export declare const provinciaSchema: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
+export declare const capSchema: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
 export declare const emailSchema: yup.StringSchema<string, import("yup/lib/types").AnyObject, string>;
 /**
  * Yup dynamic checks

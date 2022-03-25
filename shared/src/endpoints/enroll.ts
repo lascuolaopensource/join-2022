@@ -1,5 +1,12 @@
 import * as yup from "yup";
-import { thenReq, thenUrlReq } from "../validators";
+import {
+	thenReq,
+	thenUrlReq,
+	phoneSchema,
+	setYupDefaultMessages,
+} from "../validators";
+
+setYupDefaultMessages();
 
 /**
  * Contacts
@@ -18,7 +25,7 @@ export const ContactsSchema = yup.object({
 	email: yup.string().email().when("exists", thenReq(false)),
 	name: yup.string().required().when("exists", thenReq(false)),
 	surname: yup.string().required().when("exists", thenReq(false)),
-	phone: yup.string().required(),
+	phone: phoneSchema.required(),
 });
 
 export type Contacts = typeof ContactsValues;

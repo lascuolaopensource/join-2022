@@ -1,6 +1,15 @@
 import * as yup from "yup";
-import { thenReq, thenNull, cfSchema } from "../validators";
+import {
+	thenReq,
+	thenNull,
+	cfSchema,
+	provinciaSchema,
+	capSchema,
+	setYupDefaultMessages,
+} from "../validators";
 import { BillingOptions } from "../types";
+
+setYupDefaultMessages();
 
 /**
  * Billing data
@@ -62,9 +71,9 @@ export const AddressValues = {
 };
 
 export const AddressSchema = yup.object({
-	cap: yup.string().required(),
+	cap: capSchema.required(),
 	town: yup.string().required(),
-	province: yup.string().required(),
+	province: provinciaSchema.required(),
 	street: yup.string().required(),
 });
 

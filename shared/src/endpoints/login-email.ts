@@ -1,5 +1,7 @@
 import * as yup from "yup";
-import { emailSchema } from "../validators";
+import { emailSchema, setYupDefaultMessages } from "../validators";
+
+setYupDefaultMessages();
 
 /**
  * LoginEmail
