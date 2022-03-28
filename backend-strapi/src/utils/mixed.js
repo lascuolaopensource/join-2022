@@ -118,12 +118,14 @@ async function getPaymentDetails(paymentID) {
     }
     const enrollment = payment.enrollment;
     const course = enrollment.course;
-    const details = {
+    return {
         category: shared_1.t.PaymentCategories.course,
         title: course.title,
         price: course.price,
+        paid: payment.confirmed,
+        expiration: payment.expiration,
+        expired: shared_1.h.payment.isPaymentExpired(payment),
     };
-    return details;
 }
 exports.getPaymentDetails = getPaymentDetails;
 async function getUserInfo(userID) {

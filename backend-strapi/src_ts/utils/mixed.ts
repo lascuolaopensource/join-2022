@@ -1,4 +1,4 @@
-import { Errors, t } from "shared";
+import { Errors, t, h } from "shared";
 import crypto from "crypto";
 
 const urlJoin = require("url-join");
@@ -173,20 +173,18 @@ export async function getPaymentDetails(
         throw new Error(Errors.NotFound);
     }
 
-    /**
-     * Details – Enrollment
-     */
+    // Extracting relations
     const enrollment = payment.enrollment as any as t.ID<t.Enrollment>;
     const course = enrollment.course as any as t.ID<t.Course>;
-    const details: t.PaymentDetails = {
+
+    return {
         category: t.PaymentCategories.course,
         title: course.title,
         price: course.price as number,
+        paid: payment.confirmed as boolean,
+        expiration: payment.expiration,
+        expired: h.payment.isPaymentExpired(payment),
     };
-
-    //
-
-    return details;
 }
 
 //
