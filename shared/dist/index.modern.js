@@ -205,39 +205,6 @@ var index$3 = {
 
 setYupDefaultMessages();
 /**
- * Billing data
- */
-// Me
-
-const BillingMeValues = {
-  cf: ""
-};
-const BillingMeSchema = yup.object({
-  cf: cfSchema
-}); // Person
-
-const BillingPersonValues = {
-  name: "",
-  surname: "",
-  cf: ""
-};
-const BillingPersonSchema = yup.object({
-  name: yup.string().required(),
-  surname: yup.string().required(),
-  cf: cfSchema
-}); // Company
-
-const BillingCompanyValues = {
-  name: "",
-  vat: "",
-  sdi: ""
-};
-const BillingCompanySchema = yup.object({
-  name: yup.string().required(),
-  vat: yup.string().required(),
-  sdi: yup.string()
-});
-/**
  * Address
  */
 
@@ -253,13 +220,54 @@ const AddressSchema = yup.object({
   province: provinciaSchema.required(),
   street: yup.string().required()
 });
+/**
+ * Billing data
+ */
+// Me
+
+const BillingMeValues = {
+  cf: "",
+  address: AddressValues
+};
+const BillingMeSchema = yup.object({
+  cf: cfSchema.required(),
+  address: AddressSchema.required()
+}); // Person
+
+const BillingPersonValues = {
+  name: "",
+  surname: "",
+  cf: "",
+  email: "",
+  address: AddressValues
+};
+const BillingPersonSchema = yup.object({
+  name: yup.string().required(),
+  surname: yup.string().required(),
+  cf: cfSchema.required(),
+  email: emailSchema.required(),
+  address: AddressSchema.required()
+}); // Company
+
+const BillingCompanyValues = {
+  name: "",
+  vat: "",
+  sdi: "",
+  pec: "",
+  address: AddressValues
+};
+const BillingCompanySchema = yup.object({
+  name: yup.string().required(),
+  vat: yup.string().required(),
+  sdi: yup.string(),
+  pec: emailSchema.required(),
+  address: AddressSchema
+});
 const PayValues = {
   billingOption: null,
   me: BillingMeValues,
   person: BillingPersonValues,
-  company: BillingCompanyValues,
-  email: "",
-  address: AddressValues
+  company: BillingCompanyValues
 };
 const PaySchema = yup.object({
   //
@@ -279,15 +287,7 @@ const PaySchema = yup.object({
     is: BillingOptions[2],
     then: schema => BillingCompanySchema.required(),
     otherwise: schema => schema
-  }),
-  //
-  email: yup.string().when("billingOption", {
-    is: BillingOptions[0],
-    then: schema => schema.nullable().optional(),
-    otherwise: schema => schema.email().required()
-  }),
-  //
-  address: AddressSchema.required()
+  })
 });
 
 setYupDefaultMessages();
@@ -307,14 +307,14 @@ var index$2 = {
 	LoginEmailSchema: LoginEmailSchema,
 	LoginValues: LoginValues,
 	LoginSchema: LoginSchema,
+	AddressValues: AddressValues,
+	AddressSchema: AddressSchema,
 	BillingMeValues: BillingMeValues,
 	BillingMeSchema: BillingMeSchema,
 	BillingPersonValues: BillingPersonValues,
 	BillingPersonSchema: BillingPersonSchema,
 	BillingCompanyValues: BillingCompanyValues,
 	BillingCompanySchema: BillingCompanySchema,
-	AddressValues: AddressValues,
-	AddressSchema: AddressSchema,
 	PayValues: PayValues,
 	PaySchema: PaySchema,
 	UserExistsSchema: UserExistsSchema

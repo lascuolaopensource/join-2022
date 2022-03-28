@@ -243,39 +243,6 @@ var index$3 = {
 
 setYupDefaultMessages();
 /**
- * Billing data
- */
-// Me
-
-var BillingMeValues = {
-  cf: ""
-};
-var BillingMeSchema = yup__namespace.object({
-  cf: cfSchema
-}); // Person
-
-var BillingPersonValues = {
-  name: "",
-  surname: "",
-  cf: ""
-};
-var BillingPersonSchema = yup__namespace.object({
-  name: yup__namespace.string().required(),
-  surname: yup__namespace.string().required(),
-  cf: cfSchema
-}); // Company
-
-var BillingCompanyValues = {
-  name: "",
-  vat: "",
-  sdi: ""
-};
-var BillingCompanySchema = yup__namespace.object({
-  name: yup__namespace.string().required(),
-  vat: yup__namespace.string().required(),
-  sdi: yup__namespace.string()
-});
-/**
  * Address
  */
 
@@ -291,13 +258,54 @@ var AddressSchema = yup__namespace.object({
   province: provinciaSchema.required(),
   street: yup__namespace.string().required()
 });
+/**
+ * Billing data
+ */
+// Me
+
+var BillingMeValues = {
+  cf: "",
+  address: AddressValues
+};
+var BillingMeSchema = yup__namespace.object({
+  cf: cfSchema.required(),
+  address: AddressSchema.required()
+}); // Person
+
+var BillingPersonValues = {
+  name: "",
+  surname: "",
+  cf: "",
+  email: "",
+  address: AddressValues
+};
+var BillingPersonSchema = yup__namespace.object({
+  name: yup__namespace.string().required(),
+  surname: yup__namespace.string().required(),
+  cf: cfSchema.required(),
+  email: emailSchema.required(),
+  address: AddressSchema.required()
+}); // Company
+
+var BillingCompanyValues = {
+  name: "",
+  vat: "",
+  sdi: "",
+  pec: "",
+  address: AddressValues
+};
+var BillingCompanySchema = yup__namespace.object({
+  name: yup__namespace.string().required(),
+  vat: yup__namespace.string().required(),
+  sdi: yup__namespace.string(),
+  pec: emailSchema.required(),
+  address: AddressSchema
+});
 var PayValues = {
   billingOption: null,
   me: BillingMeValues,
   person: BillingPersonValues,
-  company: BillingCompanyValues,
-  email: "",
-  address: AddressValues
+  company: BillingCompanyValues
 };
 var PaySchema = yup__namespace.object({
   //
@@ -329,19 +337,7 @@ var PaySchema = yup__namespace.object({
     otherwise: function otherwise(schema) {
       return schema;
     }
-  }),
-  //
-  email: yup__namespace.string().when("billingOption", {
-    is: BillingOptions[0],
-    then: function then(schema) {
-      return schema.nullable().optional();
-    },
-    otherwise: function otherwise(schema) {
-      return schema.email().required();
-    }
-  }),
-  //
-  address: AddressSchema.required()
+  })
 });
 
 setYupDefaultMessages();
@@ -361,14 +357,14 @@ var index$2 = {
 	LoginEmailSchema: LoginEmailSchema,
 	LoginValues: LoginValues,
 	LoginSchema: LoginSchema,
+	AddressValues: AddressValues,
+	AddressSchema: AddressSchema,
 	BillingMeValues: BillingMeValues,
 	BillingMeSchema: BillingMeSchema,
 	BillingPersonValues: BillingPersonValues,
 	BillingPersonSchema: BillingPersonSchema,
 	BillingCompanyValues: BillingCompanyValues,
 	BillingCompanySchema: BillingCompanySchema,
-	AddressValues: AddressValues,
-	AddressSchema: AddressSchema,
 	PayValues: PayValues,
 	PaySchema: PaySchema,
 	UserExistsSchema: UserExistsSchema

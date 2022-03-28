@@ -4,58 +4,11 @@ import {
 	provinciaSchema,
 	capSchema,
 	setYupDefaultMessages,
+	emailSchema,
 } from "../validators";
 import { BillingOptions } from "../types";
 
 setYupDefaultMessages();
-
-/**
- * Billing data
- */
-
-// Me
-
-export const BillingMeValues = {
-	cf: "",
-};
-
-export const BillingMeSchema = yup.object({
-	cf: cfSchema,
-});
-
-export type BillingMe = typeof BillingMeValues;
-
-// Person
-
-export const BillingPersonValues = {
-	name: "",
-	surname: "",
-	cf: "",
-};
-
-export const BillingPersonSchema = yup.object({
-	name: yup.string().required(),
-	surname: yup.string().required(),
-	cf: cfSchema,
-});
-
-export type BillingPerson = typeof BillingPersonValues;
-
-// Company
-
-export const BillingCompanyValues = {
-	name: "",
-	vat: "",
-	sdi: "",
-};
-
-export const BillingCompanySchema = yup.object({
-	name: yup.string().required(),
-	vat: yup.string().required(),
-	sdi: yup.string(),
-});
-
-export type BillingCompany = typeof BillingCompanyValues;
 
 /**
  * Address
@@ -78,6 +31,64 @@ export const AddressSchema = yup.object({
 export type Address = typeof AddressValues;
 
 /**
+ * Billing data
+ */
+
+// Me
+
+export const BillingMeValues = {
+	cf: "",
+	address: AddressValues,
+};
+
+export const BillingMeSchema = yup.object({
+	cf: cfSchema.required(),
+	address: AddressSchema.required(),
+});
+
+export type BillingMe = typeof BillingMeValues;
+
+// Person
+
+export const BillingPersonValues = {
+	name: "",
+	surname: "",
+	cf: "",
+	email: "",
+	address: AddressValues,
+};
+
+export const BillingPersonSchema = yup.object({
+	name: yup.string().required(),
+	surname: yup.string().required(),
+	cf: cfSchema.required(),
+	email: emailSchema.required(),
+	address: AddressSchema.required(),
+});
+
+export type BillingPerson = typeof BillingPersonValues;
+
+// Company
+
+export const BillingCompanyValues = {
+	name: "",
+	vat: "",
+	sdi: "",
+	pec: "",
+	address: AddressValues,
+};
+
+export const BillingCompanySchema = yup.object({
+	name: yup.string().required(),
+	vat: yup.string().required(),
+	sdi: yup.string(),
+	pec: emailSchema.required(),
+	address: AddressSchema,
+});
+
+export type BillingCompany = typeof BillingCompanyValues;
+
+/**
  * Payment endpoint
  */
 
@@ -86,8 +97,6 @@ export type PayReq = {
 	me: BillingMe;
 	person: BillingPerson;
 	company: BillingCompany;
-	email: string;
-	address: Address;
 };
 
 export type PayRes = {
@@ -99,8 +108,6 @@ export const PayValues: PayReq = {
 	me: BillingMeValues,
 	person: BillingPersonValues,
 	company: BillingCompanyValues,
-	email: "",
-	address: AddressValues,
 };
 
 export const PaySchema = yup.object({
@@ -125,12 +132,4 @@ export const PaySchema = yup.object({
 		then: (schema) => BillingCompanySchema.required(),
 		otherwise: (schema) => schema,
 	}),
-	//
-	email: yup.string().when("billingOption", {
-		is: BillingOptions[0],
-		then: (schema) => schema.nullable().optional(),
-		otherwise: (schema) => schema.email().required(),
-	}),
-	//
-	address: AddressSchema.required(),
 });
