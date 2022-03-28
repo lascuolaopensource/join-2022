@@ -50,7 +50,7 @@
 			{:else}
 				<a
 					class="btn btn-primary btn-big btn-shadow"
-					href="/shared/{slug}/enroll">Iscriviti →</a
+					href="/shared/enroll/{slug}">Iscriviti →</a
 				>
 			{/if}
 		{/await}

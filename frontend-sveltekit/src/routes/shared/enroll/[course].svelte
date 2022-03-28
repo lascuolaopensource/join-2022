@@ -20,7 +20,7 @@
 		else {
 			return {
 				status: 302,
-				redirect: `/shared/${slug}/enrollClosed`
+				redirect: `/shared/enroll/closed`
 			};
 		}
 	}
@@ -125,7 +125,7 @@
 			}
 			//
 			else {
-				await goto(`/shared/${slug}/enrollConfirm`);
+				await goto(`/shared/enroll/confirm`);
 			}
 		} catch (e) {
 			setFormError(e);

@@ -10,9 +10,7 @@
 			if (res.details.category == t.PaymentCategories.course) {
 				return {
 					status: 302,
-					redirect: `/shared/${encodeURIComponent(
-						res.details.title
-					)}/enrollConfirm`
+					redirect: `/shared/enroll/confirm`
 				};
 			}
 		} else {
