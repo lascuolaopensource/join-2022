@@ -140,11 +140,11 @@ export const req = {
 		);
 	},
 
-	getPaymentInfo: async (
+	getPaymentDetails: async (
 		hash: string,
 		fetchFn = fetch
-	): Promise<e.PayGetPaymentInfoRes> => {
-		return await request(fetchFn, b + `api/pay/get-payment-info/${hash}`);
+	): Promise<e.PayGetPaymentDetailsRes> => {
+		return await request(fetchFn, b + `api/pay/get-payment-details/${hash}`);
 	},
 
 	/**

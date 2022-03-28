@@ -2,10 +2,10 @@
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ params, fetch, session, stuff }) {
 		try {
-			const paymentInfo = await req.getPaymentInfo(params.hash);
+			const paymentDetails = await req.getPaymentDetails(params.hash);
 
 			// Redirecting if already confirmed
-			if (paymentInfo.payment.confirmed) {
+			if (paymentDetails.paid) {
 				return {
 					status: 302,
 					redirect: `/shared/payment/alreadyConfirmed`
@@ -13,7 +13,7 @@
 			}
 
 			// Redirecting if expired
-			if (Date.now() > Date.parse(paymentInfo.payment.expiration)) {
+			if (paymentDetails.expired) {
 				return {
 					status: 302,
 					redirect: `/shared/payment/expired`
@@ -23,7 +23,7 @@
 			//
 			return {
 				props: {
-					paymentInfo
+					paymentDetails
 				}
 			};
 		} catch (e) {
@@ -57,7 +57,7 @@
 
 	//
 
-	export let paymentInfo: e.PayGetPaymentInfoRes;
+	export let paymentDetails: e.PayGetPaymentDetailsRes;
 
 	/**
 	 * Form setup
@@ -111,7 +111,7 @@
 	});
 
 	// Payment deadline
-	const deadline = new Date(Date.parse(paymentInfo.payment.expiration));
+	const deadline = new Date(Date.parse(paymentDetails.expiration));
 </script>
 
 <!--  -->
@@ -125,12 +125,12 @@
 <table>
 	<tr>
 		<th>Oggetto</th>
-		<td>{paymentInfo.details.category} – {paymentInfo.details.title}</td>
+		<td>{paymentDetails.category} – {paymentDetails.title}</td>
 	</tr>
 	<tr>
 		<th>Prezzo</th>
 		<td>
-			{formatter.format(paymentInfo.details.price)}
+			{formatter.format(paymentDetails.price)}
 		</td>
 	</tr>
 	<tr>
