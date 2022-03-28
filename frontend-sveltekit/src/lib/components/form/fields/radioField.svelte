@@ -20,6 +20,14 @@
 	//
 
 	const { form, handleChange } = getContext(formKey);
+
+	// Maybe fix:
+	// Radio button needs this kind of reactive binding
+	// Otherwise it doesn't update after form localstorage refresh
+	let group;
+	$: {
+		group = get($form, name);
+	}
 </script>
 
 <!--  -->
@@ -34,7 +42,7 @@
 					type="radio"
 					class="field__radio__circle"
 					value={item.value}
-					group={get($form, name)}
+					bind:group
 					on:change={handleChange}
 					on:blur={handleChange}
 				/>

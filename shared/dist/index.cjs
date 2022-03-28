@@ -42,7 +42,8 @@ var re = {
   cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/,
   phone: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
   provincia: /^[A-Z]{2}$/,
-  cap: /^[0-9]{5}$/
+  cap: /^[0-9]{5}$/,
+  piva: /^[0-9]{11}$/
 };
 /**
  * Schemas
@@ -243,39 +244,6 @@ var index$3 = {
 
 setYupDefaultMessages();
 /**
- * Billing data
- */
-// Me
-
-var BillingMeValues = {
-  cf: ""
-};
-var BillingMeSchema = yup__namespace.object({
-  cf: cfSchema
-}); // Person
-
-var BillingPersonValues = {
-  name: "",
-  surname: "",
-  cf: ""
-};
-var BillingPersonSchema = yup__namespace.object({
-  name: yup__namespace.string().required(),
-  surname: yup__namespace.string().required(),
-  cf: cfSchema
-}); // Company
-
-var BillingCompanyValues = {
-  name: "",
-  vat: "",
-  sdi: ""
-};
-var BillingCompanySchema = yup__namespace.object({
-  name: yup__namespace.string().required(),
-  vat: yup__namespace.string().required(),
-  sdi: yup__namespace.string()
-});
-/**
  * Address
  */
 
@@ -291,24 +259,86 @@ var AddressSchema = yup__namespace.object({
   province: provinciaSchema.required(),
   street: yup__namespace.string().required()
 });
+/**
+ * Billing data
+ */
+// Me
+
+var BillingMeValues = {
+  cf: "",
+  address: AddressValues
+};
+var BillingMeSchema = yup__namespace.object({
+  cf: cfSchema.required(),
+  address: AddressSchema.required()
+}); // Person
+
+var BillingPersonValues = {
+  name: "",
+  surname: "",
+  cf: "",
+  email: "",
+  address: AddressValues
+};
+var BillingPersonSchema = yup__namespace.object({
+  name: yup__namespace.string().required(),
+  surname: yup__namespace.string().required(),
+  cf: cfSchema.required(),
+  email: emailSchema.required(),
+  address: AddressSchema.required()
+}); // Company
+
+var BillingCompanyValues = {
+  name: "",
+  vat: "",
+  sdi: "",
+  pec: "",
+  address: AddressValues
+};
+var BillingCompanySchema = yup__namespace.object({
+  name: yup__namespace.string().required(),
+  vat: yup__namespace.string().required(),
+  sdi: yup__namespace.string(),
+  pec: emailSchema.required(),
+  address: AddressSchema
+});
 var PayValues = {
   billingOption: null,
   me: BillingMeValues,
   person: BillingPersonValues,
-  company: BillingCompanyValues,
-  email: "",
-  address: AddressValues
+  company: BillingCompanyValues
 };
 var PaySchema = yup__namespace.object({
-  // Modalità
-  billingOption: yup__namespace.string().oneOf(BillingOptions).required(),
   //
-  me: BillingMeSchema.when("billingOption", thenReq(BillingOptions[0])),
-  person: BillingPersonSchema.when("billingOption", thenReq(BillingOptions[1])),
-  company: BillingCompanySchema.when("billingOption", thenReq(BillingOptions[2])),
-  // Generici
-  email: yup__namespace.string().email().when("billingOption", thenNull(BillingOptions[0])),
-  address: AddressSchema.required()
+  billingOption: yup__namespace.string().oneOf([].concat(BillingOptions)).required(),
+  //
+  me: yup__namespace.object().when("billingOption", {
+    is: BillingOptions[0],
+    then: function then(schema) {
+      return BillingMeSchema.required();
+    },
+    otherwise: function otherwise(schema) {
+      return schema;
+    }
+  }),
+  person: yup__namespace.object().when("billingOption", {
+    is: BillingOptions[1],
+    then: function then(schema) {
+      return BillingPersonSchema.required();
+    },
+    otherwise: function otherwise(schema) {
+      return schema;
+    }
+  }),
+  company: yup__namespace.object().when("billingOption", {
+    is: BillingOptions[2],
+    then: function then(schema) {
+      return BillingCompanySchema.required();
+    },
+    otherwise: function otherwise(schema) {
+      return schema;
+    }
+  })
 });
 
 setYupDefaultMessages();
@@ -328,14 +358,14 @@ var index$2 = {
 	LoginEmailSchema: LoginEmailSchema,
 	LoginValues: LoginValues,
 	LoginSchema: LoginSchema,
+	AddressValues: AddressValues,
+	AddressSchema: AddressSchema,
 	BillingMeValues: BillingMeValues,
 	BillingMeSchema: BillingMeSchema,
 	BillingPersonValues: BillingPersonValues,
 	BillingPersonSchema: BillingPersonSchema,
 	BillingCompanyValues: BillingCompanyValues,
 	BillingCompanySchema: BillingCompanySchema,
-	AddressValues: AddressValues,
-	AddressSchema: AddressSchema,
 	PayValues: PayValues,
 	PaySchema: PaySchema,
 	UserExistsSchema: UserExistsSchema
@@ -392,9 +422,19 @@ var course = {
 	isEnrollable: isEnrollable
 };
 
+function isPaymentExpired(p) {
+  return Date.now() > Date.parse(p.expiration);
+}
+
+var payment = {
+	__proto__: null,
+	isPaymentExpired: isPaymentExpired
+};
+
 var index = {
 	__proto__: null,
-	course: course
+	course: course,
+	payment: payment
 };
 
 exports.Errors = void 0;

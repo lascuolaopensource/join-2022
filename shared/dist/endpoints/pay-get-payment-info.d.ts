@@ -1,6 +1,7 @@
-import { Payment, PaymentDetails, PaymentBillingInfo } from "../types";
-export declare type PayGetPaymentInfoRes = {
-    payment: Payment;
-    details: PaymentDetails;
-    billing: PaymentBillingInfo | null;
+export declare type PayGetPaymentDetailsRes = {
+    category: string;
+    title: string;
+    price: number;
+    paid: boolean;
+    expiration: string;
 };

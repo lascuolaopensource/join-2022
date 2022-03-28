@@ -95,7 +95,6 @@ export type BillingInfo = {
   address: ComponentLocationAddress;
   createdAt?: Maybe<Scalars['DateTime']>;
   data: Array<Maybe<BillingInfoDataDynamicZone>>;
-  email?: Maybe<Scalars['String']>;
   payment?: Maybe<PaymentEntityResponse>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -122,7 +121,6 @@ export type BillingInfoEntityResponseCollection = {
 export type BillingInfoFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<BillingInfoFiltersInput>>>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
-  email?: InputMaybe<StringFilterInput>;
   id?: InputMaybe<IdFilterInput>;
   not?: InputMaybe<BillingInfoFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<BillingInfoFiltersInput>>>;
@@ -133,7 +131,6 @@ export type BillingInfoFiltersInput = {
 export type BillingInfoInput = {
   address?: InputMaybe<ComponentLocationAddressInput>;
   data?: InputMaybe<Array<Scalars['BillingInfoDataDynamicZoneInput']>>;
-  email?: InputMaybe<Scalars['String']>;
   payment?: InputMaybe<Scalars['ID']>;
 };
 
@@ -164,6 +161,7 @@ export type ComponentBillingCompany = {
   __typename?: 'ComponentBillingCompany';
   id: Scalars['ID'];
   name: Scalars['String'];
+  pec: Scalars['String'];
   sdi: Scalars['String'];
   vat: Scalars['String'];
 };
@@ -177,6 +175,7 @@ export type ComponentBillingMe = {
 export type ComponentBillingPerson = {
   __typename?: 'ComponentBillingPerson';
   cf: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
   surname: Scalars['String'];

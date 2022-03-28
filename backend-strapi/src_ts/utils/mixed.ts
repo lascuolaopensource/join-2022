@@ -1,4 +1,4 @@
-import { Errors, t } from "shared";
+import { Errors, t, h } from "shared";
 import crypto from "crypto";
 
 const urlJoin = require("url-join");
@@ -99,6 +99,22 @@ export async function getPaymentByHash(hash: string): Promise<t.ID<t.Payment>> {
 
 //
 
+export async function getPaymentBilling(
+    paymentID: string | number
+): Promise<t.ID<t.BillingInfo>> {
+    // Getting payment
+    const payment: t.ID<t.Payment> = await strapi.entityService.findOne(
+        entities.payment,
+        paymentID,
+        {
+            populate: {
+                billing: true,
+            },
+        }
+    );
+    return payment.billing as t.ID<t.BillingInfo>;
+}
+
 export async function getPaymentBillingInfo(
     paymentID: string | number
 ): Promise<t.PaymentBillingInfo | null> {
@@ -157,20 +173,18 @@ export async function getPaymentDetails(
         throw new Error(Errors.NotFound);
     }
 
-    /**
-     * Details – Enrollment
-     */
+    // Extracting relations
     const enrollment = payment.enrollment as any as t.ID<t.Enrollment>;
     const course = enrollment.course as any as t.ID<t.Course>;
-    const details: t.PaymentDetails = {
+
+    return {
         category: t.PaymentCategories.course,
         title: course.title,
         price: course.price as number,
+        paid: payment.confirmed as boolean,
+        expiration: payment.expiration,
+        expired: h.payment.isPaymentExpired(payment),
     };
-
-    //
-
-    return details;
 }
 
 //

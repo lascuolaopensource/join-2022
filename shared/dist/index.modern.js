@@ -22,7 +22,8 @@ const re = {
   cf: /^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/,
   phone: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
   provincia: /^[A-Z]{2}$/,
-  cap: /^[0-9]{5}$/
+  cap: /^[0-9]{5}$/,
+  piva: /^[0-9]{11}$/
 };
 /**
  * Schemas
@@ -205,39 +206,6 @@ var index$3 = {
 
 setYupDefaultMessages();
 /**
- * Billing data
- */
-// Me
-
-const BillingMeValues = {
-  cf: ""
-};
-const BillingMeSchema = yup.object({
-  cf: cfSchema
-}); // Person
-
-const BillingPersonValues = {
-  name: "",
-  surname: "",
-  cf: ""
-};
-const BillingPersonSchema = yup.object({
-  name: yup.string().required(),
-  surname: yup.string().required(),
-  cf: cfSchema
-}); // Company
-
-const BillingCompanyValues = {
-  name: "",
-  vat: "",
-  sdi: ""
-};
-const BillingCompanySchema = yup.object({
-  name: yup.string().required(),
-  vat: yup.string().required(),
-  sdi: yup.string()
-});
-/**
  * Address
  */
 
@@ -253,24 +221,74 @@ const AddressSchema = yup.object({
   province: provinciaSchema.required(),
   street: yup.string().required()
 });
+/**
+ * Billing data
+ */
+// Me
+
+const BillingMeValues = {
+  cf: "",
+  address: AddressValues
+};
+const BillingMeSchema = yup.object({
+  cf: cfSchema.required(),
+  address: AddressSchema.required()
+}); // Person
+
+const BillingPersonValues = {
+  name: "",
+  surname: "",
+  cf: "",
+  email: "",
+  address: AddressValues
+};
+const BillingPersonSchema = yup.object({
+  name: yup.string().required(),
+  surname: yup.string().required(),
+  cf: cfSchema.required(),
+  email: emailSchema.required(),
+  address: AddressSchema.required()
+}); // Company
+
+const BillingCompanyValues = {
+  name: "",
+  vat: "",
+  sdi: "",
+  pec: "",
+  address: AddressValues
+};
+const BillingCompanySchema = yup.object({
+  name: yup.string().required(),
+  vat: yup.string().required(),
+  sdi: yup.string(),
+  pec: emailSchema.required(),
+  address: AddressSchema
+});
 const PayValues = {
   billingOption: null,
   me: BillingMeValues,
   person: BillingPersonValues,
-  company: BillingCompanyValues,
-  email: "",
-  address: AddressValues
+  company: BillingCompanyValues
 };
 const PaySchema = yup.object({
-  // Modalità
-  billingOption: yup.string().oneOf(BillingOptions).required(),
   //
-  me: BillingMeSchema.when("billingOption", thenReq(BillingOptions[0])),
-  person: BillingPersonSchema.when("billingOption", thenReq(BillingOptions[1])),
-  company: BillingCompanySchema.when("billingOption", thenReq(BillingOptions[2])),
-  // Generici
-  email: yup.string().email().when("billingOption", thenNull(BillingOptions[0])),
-  address: AddressSchema.required()
+  billingOption: yup.string().oneOf([...BillingOptions]).required(),
+  //
+  me: yup.object().when("billingOption", {
+    is: BillingOptions[0],
+    then: schema => BillingMeSchema.required(),
+    otherwise: schema => schema
+  }),
+  person: yup.object().when("billingOption", {
+    is: BillingOptions[1],
+    then: schema => BillingPersonSchema.required(),
+    otherwise: schema => schema
+  }),
+  company: yup.object().when("billingOption", {
+    is: BillingOptions[2],
+    then: schema => BillingCompanySchema.required(),
+    otherwise: schema => schema
+  })
 });
 
 setYupDefaultMessages();
@@ -290,14 +308,14 @@ var index$2 = {
 	LoginEmailSchema: LoginEmailSchema,
 	LoginValues: LoginValues,
 	LoginSchema: LoginSchema,
+	AddressValues: AddressValues,
+	AddressSchema: AddressSchema,
 	BillingMeValues: BillingMeValues,
 	BillingMeSchema: BillingMeSchema,
 	BillingPersonValues: BillingPersonValues,
 	BillingPersonSchema: BillingPersonSchema,
 	BillingCompanyValues: BillingCompanyValues,
 	BillingCompanySchema: BillingCompanySchema,
-	AddressValues: AddressValues,
-	AddressSchema: AddressSchema,
 	PayValues: PayValues,
 	PaySchema: PaySchema,
 	UserExistsSchema: UserExistsSchema
@@ -365,9 +383,19 @@ var course = {
 	isEnrollable: isEnrollable
 };
 
+function isPaymentExpired(p) {
+  return Date.now() > Date.parse(p.expiration);
+}
+
+var payment = {
+	__proto__: null,
+	isPaymentExpired: isPaymentExpired
+};
+
 var index = {
 	__proto__: null,
-	course: course
+	course: course,
+	payment: payment
 };
 
 var Errors;

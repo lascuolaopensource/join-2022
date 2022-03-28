@@ -36,7 +36,8 @@
     },
     "confirmCode": {
       "type": "uid",
-      "required": true
+      "required": true,
+      "private": true
     },
     "confirmed": {
       "type": "boolean",

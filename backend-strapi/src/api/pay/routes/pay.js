@@ -3,8 +3,8 @@ module.exports = {
     routes: [
         {
             method: "GET",
-            path: "/pay/get-payment-info/:hash",
-            handler: "pay.getPaymentInfo",
+            path: "/pay/get-payment-details/:hash",
+            handler: "pay.getPaymentDetails",
             config: {
                 policies: ["payment-exists"],
                 middlewares: [],

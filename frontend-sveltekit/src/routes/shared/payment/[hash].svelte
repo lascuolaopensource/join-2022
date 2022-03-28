@@ -2,10 +2,10 @@
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ params, fetch, session, stuff }) {
 		try {
-			const paymentInfo = await req.getPaymentInfo(params.hash);
+			const paymentDetails = await req.getPaymentDetails(params.hash);
 
 			// Redirecting if already confirmed
-			if (paymentInfo.payment.confirmed) {
+			if (paymentDetails.paid) {
 				return {
 					status: 302,
 					redirect: `/shared/payment/alreadyConfirmed`
@@ -13,7 +13,7 @@
 			}
 
 			// Redirecting if expired
-			if (Date.now() > Date.parse(paymentInfo.payment.expiration)) {
+			if (paymentDetails.expired) {
 				return {
 					status: 302,
 					redirect: `/shared/payment/expired`
@@ -23,11 +23,10 @@
 			//
 			return {
 				props: {
-					paymentInfo
+					paymentDetails
 				}
 			};
 		} catch (e) {
-			console.log(e.message, 'paymentNotExisting');
 			return {
 				status: 302,
 				redirect: `/shared/payment/notExisting`
@@ -58,7 +57,7 @@
 
 	//
 
-	export let paymentInfo: e.PayGetPaymentInfoRes;
+	export let paymentDetails: e.PayGetPaymentDetailsRes;
 
 	/**
 	 * Form setup
@@ -93,31 +92,13 @@
 		{ value: billingOptions[2], label: 'Attività commerciale' }
 	];
 
-	// Adding
-
 	// Creating form
 	const formContext = createForm({
 		initialValues: e.PayValues,
 		validationSchema: e.PaySchema,
 		onSubmit
 	});
-	const { form } = formContext;
-
-	// Dynamically updating form content
-	// to ease form validation
-	$: if ($form.billingOption == billingOptions[0]) {
-		$form.me = e.BillingMeValues;
-		$form.person = null;
-		$form.company = null;
-	} else if ($form.billingOption == billingOptions[1]) {
-		$form.me = null;
-		$form.person = e.BillingPersonValues;
-		$form.company = null;
-	} else if ($form.billingOption == billingOptions[2]) {
-		$form.me = null;
-		$form.person = null;
-		$form.company = e.BillingCompanyValues;
-	}
+	const { form, state } = formContext;
 
 	/**
 	 * Preparing variables - Formatting strings
@@ -129,16 +110,8 @@
 		currency: 'EUR'
 	});
 
-	// Label for email field
-	let emailLabel: string;
-	$: if ($form.billingOption == billingOptions[2]) {
-		emailLabel = 'PEC';
-	} else {
-		emailLabel = 'Email';
-	}
-
 	// Payment deadline
-	const deadline = new Date(Date.parse(paymentInfo.payment.expiration));
+	const deadline = new Date(Date.parse(paymentDetails.expiration));
 </script>
 
 <!--  -->
@@ -152,12 +125,12 @@
 <table>
 	<tr>
 		<th>Oggetto</th>
-		<td>{paymentInfo.details.category} – {paymentInfo.details.title}</td>
+		<td>{paymentDetails.category} – {paymentDetails.title}</td>
 	</tr>
 	<tr>
 		<th>Prezzo</th>
 		<td>
-			{formatter.format(paymentInfo.details.price)}
+			{formatter.format(paymentDetails.price)}
 		</td>
 	</tr>
 	<tr>
@@ -196,6 +169,7 @@
 			<TextField name="person.name" labelText="Nome" type="text" />
 			<TextField name="person.surname" labelText="Cognome" type="text" />
 			<TextField name="person.cf" labelText="Codice fiscale" type="text" />
+			<TextField name="person.email" labelText="Email" type="email" />
 		{:else if $form.billingOption == billingOptions[2]}
 			<!-- Azienda -->
 			<TextField name="company.name" labelText="Nome società" type="text" />
@@ -205,26 +179,35 @@
 				labelText="Codice SDI (opzionale)"
 				type="text"
 			/>
-		{/if}
-
-		{#if $form.billingOption != billingOptions[0]}
-			<TextField name="email" labelText={emailLabel} type="email" />
+			<TextField name="company.pec" labelText="PEC" type="email" />
 		{/if}
 
 		<hr />
 
 		<TextField
-			name="address.street"
+			name="{$form.billingOption}.address.street"
 			labelText="Indirizzo"
 			type="text"
 			placeholder={p.address}
 		/>
-		<TextField name="address.town" labelText="Città" type="text" />
+		<TextField
+			name="{$form.billingOption}.address.town"
+			labelText="Città"
+			type="text"
+		/>
 		<div class="field-w30">
-			<TextField name="address.province" labelText="Provincia" type="text" />
+			<TextField
+				name="{$form.billingOption}.address.province"
+				labelText="Provincia"
+				type="text"
+			/>
 		</div>
 		<div class="field-w50">
-			<TextField name="address.cap" labelText="CAP" type="text" />
+			<TextField
+				name="{$form.billingOption}.address.cap"
+				labelText="CAP"
+				type="text"
+			/>
 		</div>
 
 		<FormError />

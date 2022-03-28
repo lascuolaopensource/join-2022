@@ -4,7 +4,7 @@
   "info": {
     "singularName": "billing-info",
     "pluralName": "billing-infos",
-    "displayName": "Billing Data",
+    "displayName": "Billing Info",
     "description": ""
   },
   "options": {
@@ -17,9 +17,6 @@
       "repeatable": false,
       "component": "location.address",
       "required": true
-    },
-    "email": {
-      "type": "email"
     },
     "data": {
       "type": "dynamiczone",

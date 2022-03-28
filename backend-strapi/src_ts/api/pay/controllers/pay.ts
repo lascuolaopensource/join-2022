@@ -2,13 +2,15 @@
 
 import { t, e } from "shared";
 import Stripe from "stripe";
+import _ from "lodash";
 
 import {
     entities,
     getPaymentBillingInfo,
     getPaymentByHash,
-    getPaymentDetails,
     getPaymentOwner,
+    getPaymentBilling,
+    getPaymentDetails,
     getUserInfo,
     paths,
 } from "../../../utils";
@@ -37,39 +39,27 @@ module.exports = {
         // Getting payment
         const payment = await getPaymentByHash(hash);
 
+        // Se ci sono già info di fatturazione, vengono eliminate
+        // Verranno poi sostituite dalle nuove
+        const existingBilling = await getPaymentBilling(payment.id);
+        if (existingBilling) {
+            await strapi.entityService.delete(
+                entities.billingInfo,
+                existingBilling.id
+            );
+        }
+
         // Creating billing data
         const billingData: t.BillingInfoInput = {
             payment: payment.id,
-            address: body.address,
-            data: [],
+            address: body[body.billingOption].address,
+            data: [
+                {
+                    ..._.omit(body[body.billingOption], "address"),
+                    __component: `billing.${body.billingOption}`,
+                },
+            ],
         };
-        // * Me
-        if (body.billingOption == t.BillingOptions[0]) {
-            const dataMe: t.Comp<t.ComponentBillingMe> = {
-                ...body.me,
-                __component: t.BillingOptionsComponents.Me,
-                cf: body.me.cf,
-            };
-            billingData.data?.push(dataMe);
-        }
-        // * Person
-        else if (body.billingOption == t.BillingOptions[1]) {
-            const dataPerson: t.Comp<t.ComponentBillingPerson> = {
-                ...body.person,
-                __component: t.BillingOptionsComponents.Person,
-            };
-            billingData.data?.push(dataPerson);
-            billingData.email = body.email;
-        }
-        // * Company
-        else if (body.billingOption == t.BillingOptions[2]) {
-            const dataCompany: t.Comp<t.ComponentBillingCompany> = {
-                ...body.company,
-                __component: t.BillingOptionsComponents.Company,
-            };
-            billingData.data?.push(dataCompany);
-            billingData.email = body.email;
-        }
 
         // Creating billing
         const billing: t.ID<t.BillingInfo> = await strapi.entityService.create(
@@ -202,20 +192,16 @@ module.exports = {
      * useful for payment page on frontend
      */
 
-    getPaymentInfo: async (
+    getPaymentDetails: async (
         ctx: any,
         next: any
-    ): Promise<e.PayGetPaymentInfoRes> => {
+    ): Promise<e.PayGetPaymentDetailsRes> => {
         strapi.log.info("In pay/getPaymentInfo controller");
 
         const payment = await getPaymentByHash(ctx.params.hash);
         const details = await getPaymentDetails(payment.id);
-        const billing = await getPaymentBillingInfo(payment.id);
+        // const billing = await getPaymentBillingInfo(payment.id);
 
-        return {
-            payment,
-            details,
-            billing,
-        };
+        return details;
     },
 };
