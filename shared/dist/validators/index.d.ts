@@ -12,6 +12,7 @@ export declare const re: {
     phone: RegExp;
     provincia: RegExp;
     cap: RegExp;
+    piva: RegExp;
 };
 /**
  * Schemas
