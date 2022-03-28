@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPaymentOwner = exports.getUserInfo = exports.getPaymentDetails = exports.getPaymentBillingInfo = exports.getPaymentByHash = exports.getPaymentHash = exports.createConfirmationTokenURL = exports.getService = exports.getUserPemissionsSettings = exports.generateSecureString = exports.getUserByEmail = exports.getCourseByID = exports.entities = void 0;
+exports.getPaymentOwner = exports.getUserInfo = exports.getPaymentDetails = exports.getPaymentBillingInfo = exports.getPaymentBilling = exports.getPaymentByHash = exports.getPaymentHash = exports.createConfirmationTokenURL = exports.getService = exports.getUserPemissionsSettings = exports.generateSecureString = exports.getUserByEmail = exports.getCourseByID = exports.entities = void 0;
 const shared_1 = require("shared");
 const crypto_1 = __importDefault(require("crypto"));
 const urlJoin = require("url-join");
@@ -69,6 +69,15 @@ async function getPaymentByHash(hash) {
     return await strapi.query(exports.entities.payment).findOne({ where: { hash } });
 }
 exports.getPaymentByHash = getPaymentByHash;
+async function getPaymentBilling(paymentID) {
+    const payment = await strapi.entityService.findOne(exports.entities.payment, paymentID, {
+        populate: {
+            billing: true,
+        },
+    });
+    return payment.billing;
+}
+exports.getPaymentBilling = getPaymentBilling;
 async function getPaymentBillingInfo(paymentID) {
     const payment = await strapi.entityService.findOne(exports.entities.payment, paymentID, {
         populate: {

@@ -99,6 +99,22 @@ export async function getPaymentByHash(hash: string): Promise<t.ID<t.Payment>> {
 
 //
 
+export async function getPaymentBilling(
+    paymentID: string | number
+): Promise<t.ID<t.BillingInfo>> {
+    // Getting payment
+    const payment: t.ID<t.Payment> = await strapi.entityService.findOne(
+        entities.payment,
+        paymentID,
+        {
+            populate: {
+                billing: true,
+            },
+        }
+    );
+    return payment.billing as t.ID<t.BillingInfo>;
+}
+
 export async function getPaymentBillingInfo(
     paymentID: string | number
 ): Promise<t.PaymentBillingInfo | null> {
