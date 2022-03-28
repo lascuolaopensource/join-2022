@@ -100,15 +100,10 @@ module.exports = {
             details: paymentDetails,
         };
     },
-    getPaymentInfo: async (ctx, next) => {
+    getPaymentDetails: async (ctx, next) => {
         strapi.log.info("In pay/getPaymentInfo controller");
         const payment = await (0, utils_1.getPaymentByHash)(ctx.params.hash);
         const details = await (0, utils_1.getPaymentDetails)(payment.id);
-        const billing = await (0, utils_1.getPaymentBillingInfo)(payment.id);
-        return {
-            payment,
-            details,
-            billing,
-        };
+        return details;
     },
 };

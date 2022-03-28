@@ -8,9 +8,9 @@ import {
     entities,
     getPaymentBillingInfo,
     getPaymentByHash,
-    getPaymentDetails,
     getPaymentOwner,
     getPaymentBilling,
+    getPaymentDetails,
     getUserInfo,
     paths,
 } from "../../../utils";
@@ -192,20 +192,16 @@ module.exports = {
      * useful for payment page on frontend
      */
 
-    getPaymentInfo: async (
+    getPaymentDetails: async (
         ctx: any,
         next: any
-    ): Promise<e.PayGetPaymentInfoRes> => {
+    ): Promise<e.PayGetPaymentDetailsRes> => {
         strapi.log.info("In pay/getPaymentInfo controller");
 
         const payment = await getPaymentByHash(ctx.params.hash);
         const details = await getPaymentDetails(payment.id);
-        const billing = await getPaymentBillingInfo(payment.id);
+        // const billing = await getPaymentBillingInfo(payment.id);
 
-        return {
-            payment,
-            details,
-            billing,
-        };
+        return details;
     },
 };
