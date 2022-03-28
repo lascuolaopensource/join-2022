@@ -100,16 +100,6 @@
 	});
 	const { form, state } = formContext;
 
-	// // Cleaning fields when billingOption changes
-	// let oldBillingOption;
-	// $: if ($state.touched.billingOption) {
-	// 	if (oldBillingOption != $form.billingOption) {
-	// 		oldBillingOption = $form.billingOption;
-	// 		$form.email = '';
-	// 		$form.address = { ...e.AddressValues };
-	// 	}
-	// }
-
 	/**
 	 * Preparing variables - Formatting strings
 	 */
