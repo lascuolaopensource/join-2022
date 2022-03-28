@@ -179,7 +179,7 @@
 			<TextField name="person.name" labelText="Nome" type="text" />
 			<TextField name="person.surname" labelText="Cognome" type="text" />
 			<TextField name="person.cf" labelText="Codice fiscale" type="text" />
-			<TextField name="email" labelText="Email" type="email" />
+			<TextField name="person.email" labelText="Email" type="email" />
 		{:else if $form.billingOption == billingOptions[2]}
 			<!-- Azienda -->
 			<TextField name="company.name" labelText="Nome società" type="text" />
@@ -189,23 +189,35 @@
 				labelText="Codice SDI (opzionale)"
 				type="text"
 			/>
-			<TextField name="email" labelText="PEC" type="email" />
+			<TextField name="company.pec" labelText="PEC" type="email" />
 		{/if}
 
 		<hr />
 
 		<TextField
-			name="address.street"
+			name="{$form.billingOption}.address.street"
 			labelText="Indirizzo"
 			type="text"
 			placeholder={p.address}
 		/>
-		<TextField name="address.town" labelText="Città" type="text" />
+		<TextField
+			name="{$form.billingOption}.address.town"
+			labelText="Città"
+			type="text"
+		/>
 		<div class="field-w30">
-			<TextField name="address.province" labelText="Provincia" type="text" />
+			<TextField
+				name="{$form.billingOption}.address.province"
+				labelText="Provincia"
+				type="text"
+			/>
 		</div>
 		<div class="field-w50">
-			<TextField name="address.cap" labelText="CAP" type="text" />
+			<TextField
+				name="{$form.billingOption}.address.cap"
+				labelText="CAP"
+				type="text"
+			/>
 		</div>
 
 		<FormError />
