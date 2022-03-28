@@ -424,9 +424,19 @@
 		isEnrollable: isEnrollable
 	};
 
+	function isPaymentExpired(p) {
+	  return Date.now() > Date.parse(p.expiration);
+	}
+
+	var payment = {
+		__proto__: null,
+		isPaymentExpired: isPaymentExpired
+	};
+
 	var index = {
 		__proto__: null,
-		course: course
+		course: course,
+		payment: payment
 	};
 
 	exports.Errors = void 0;
