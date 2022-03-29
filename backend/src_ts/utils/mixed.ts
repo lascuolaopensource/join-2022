@@ -183,7 +183,7 @@ export async function getPaymentDetails(
         price: course.price as number,
         paid: payment.confirmed as boolean,
         expiration: payment.expiration,
-        expired: h.payment.isPaymentExpired(payment),
+        expired: h.payment.isExpired(payment),
     };
 }
 
