@@ -5,3 +5,4 @@ src_ts
 .editorconfig
 .env.example
 .eslintrc
+.env

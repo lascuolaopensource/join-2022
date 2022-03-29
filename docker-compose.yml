@@ -14,7 +14,10 @@ services:
       - backend
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      args:
+        backendurl: https://admin.lascuolaopensource.xyz
     environment:
       FRONTEND_URL: http://frontend:3000
       DATABASE_ENV: production
