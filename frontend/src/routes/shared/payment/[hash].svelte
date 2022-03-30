@@ -124,6 +124,10 @@
 
 <table>
 	<tr>
+		<th>Destinatario</th>
+		<td>{paymentDetails.owner}</td>
+	</tr>
+	<tr>
 		<th>Oggetto</th>
 		<td>{paymentDetails.category} – {paymentDetails.title}</td>
 	</tr>
