@@ -4,7 +4,7 @@
  * Imports
  */
 
-import { e, Errors, t } from "shared";
+import { endpoints as e, Errors, types as t } from "shared";
 import {
     getUserPemissionsSettings,
     getService,

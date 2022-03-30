@@ -53,7 +53,7 @@ module.exports = {
             motivationalLetter: body.evaluation.letter,
             course: body.courseId.toString(),
             phoneNumber: phoneNumber.id,
-            state: shared_1.t.Enum_Enrollment_State.Pending,
+            state: shared_1.types.Enum_Enrollment_State.Pending,
         };
         const enrollment = await strapi.entityService.create(utils_1.entities.enrollment, {
             data: enrollmentData,
@@ -62,7 +62,7 @@ module.exports = {
         let payment = null;
         let paymentUrl = "";
         let paymentExpiration = "";
-        if (shared_1.h.course.isPaymentNeeded(course)) {
+        if (shared_1.helpers.course.isPaymentNeeded(course)) {
             const courseDeadlineStr = course.enrollmentDeadline;
             const expirationDate = new Date(Date.parse(courseDeadlineStr));
             expirationDate.setDate(expirationDate.getDate() + 1);
@@ -81,7 +81,7 @@ module.exports = {
             await strapi.entityService.update(utils_1.entities.enrollment, enrollment.id, {
                 data: {
                     payment: payment?.id,
-                    state: shared_1.t.Enum_Enrollment_State.AwaitingPayment,
+                    state: shared_1.types.Enum_Enrollment_State.AwaitingPayment,
                 },
             });
             paymentUrl = `${process.env.FRONTEND_URL}${utils_1.paths.enroll.payment(paymentData.hash)}`;

@@ -1,6 +1,6 @@
 "use strict";
 
-import { e, Errors } from "shared";
+import { endpoints as e, Errors } from "shared";
 import { entities } from "../../../utils";
 
 /**

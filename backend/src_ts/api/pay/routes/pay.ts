@@ -1,4 +1,4 @@
-import { e } from "shared";
+import { endpoints as e } from "shared";
 
 module.exports = {
     routes: [

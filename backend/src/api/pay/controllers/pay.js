@@ -86,12 +86,12 @@ module.exports = {
             },
         };
         await emails_1.emailSender.payConfirm(owner.email, args);
-        if (paymentDetails.category == shared_1.t.PaymentCategories.course) {
+        if (paymentDetails.category == shared_1.types.PaymentCategories.course) {
             const paymentWithEnrollment = await strapi.entityService.findOne(utils_1.entities.payment, payment.id, { populate: { enrollment: true } });
             const enrollment = paymentWithEnrollment.enrollment;
             strapi.entityService.update(utils_1.entities.enrollment, enrollment.id, {
                 data: {
-                    state: shared_1.t.Enum_Enrollment_State.Pending,
+                    state: shared_1.types.Enum_Enrollment_State.Pending,
                 },
             });
         }

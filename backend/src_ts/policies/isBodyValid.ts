@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { Errors as E, e } from "shared";
+import { Errors as E, endpoints as e } from "shared";
 
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;

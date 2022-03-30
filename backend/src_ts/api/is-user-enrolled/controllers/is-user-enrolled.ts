@@ -1,6 +1,6 @@
 "use strict";
 
-import { t, e } from "shared";
+import { types as t, endpoints as e } from "shared";
 import { entities } from "../../../utils";
 
 /**
