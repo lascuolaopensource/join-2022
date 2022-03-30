@@ -93,7 +93,9 @@ export function getPaymentHash(ctx: any): string {
 
 //
 
-export async function getPaymentByHash(hash: string): Promise<t.ID<t.Payment>> {
+export async function getPaymentByHash(
+    hash: string
+): Promise<t.ID<t.PaymentC>> {
     return await strapi.query(entities.payment).findOne({ where: { hash } });
 }
 
@@ -103,7 +105,7 @@ export async function getPaymentBilling(
     paymentID: string | number
 ): Promise<t.ID<t.BillingInfo>> {
     // Getting payment
-    const payment: t.ID<t.Payment> = await strapi.entityService.findOne(
+    const payment: t.ID<t.PaymentC> = await strapi.entityService.findOne(
         entities.payment,
         paymentID,
         {
@@ -119,7 +121,7 @@ export async function getPaymentBillingInfo(
     paymentID: string | number
 ): Promise<t.PaymentBillingInfo | null> {
     // Getting payment
-    const payment: t.ID<t.Payment> = await strapi.entityService.findOne(
+    const payment: t.ID<t.PaymentC> = await strapi.entityService.findOne(
         entities.payment,
         paymentID,
         {
@@ -153,7 +155,7 @@ export async function getPaymentBillingInfo(
 export async function getPaymentDetails(
     paymentID: string | number
 ): Promise<t.PaymentDetails> {
-    const payment: t.ID<t.Payment> = await strapi.entityService.findOne(
+    const payment: t.ID<t.PaymentC> = await strapi.entityService.findOne(
         entities.payment,
         paymentID,
         {
@@ -188,7 +190,7 @@ export async function getPaymentDetails(
         category: t.PaymentCategories.course,
         title: course.title,
         price: course.price as number,
-        paid: payment.confirmed as boolean,
+        paid: payment.paid,
         expiration: payment.expiration,
         expired: h.payment.isExpired(payment),
         owner: `${ownerInfo.name} ${ownerInfo.surname}`,
@@ -221,7 +223,7 @@ export async function getUserInfo(
 export async function getPaymentOwner(
     paymentID: string | number
 ): Promise<t.ID<t.UsersPermissionsUser>> {
-    const payment: t.ID<t.Payment> = await strapi.entityService.findOne(
+    const payment: t.ID<t.PaymentC> = await strapi.entityService.findOne(
         entities.payment,
         paymentID,
         {

@@ -7,7 +7,7 @@ const { PolicyError } = utils.errors;
 module.exports = async (policyContext, config, { strapi }) => {
     strapi.log.info("In isAlreadyPaid policy");
     const payment = await (0, utils_1.getPaymentByHash)(policyContext.params.hash);
-    if (payment.confirmed) {
+    if (payment.paid) {
         throw new PolicyError(shared_1.Errors.PaymentAlreadyPaid, {
             policy: "isAlreadyPaid",
         });

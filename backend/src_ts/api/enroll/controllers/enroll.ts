@@ -132,7 +132,7 @@ module.exports = {
          */
 
         let paymentData: t.PaymentInput | null = null;
-        let payment: t.ID<t.Payment> | null = null;
+        let payment: t.ID<t.PaymentC> | null = null;
         let paymentUrl = "";
         let paymentExpiration = "";
 
@@ -150,7 +150,7 @@ module.exports = {
                 hash: generateSecureString(64),
                 owner: user.id,
                 confirmCode: generateSecureString(64),
-                confirmed: false,
+                paid: false,
                 expiration: expirationDate.toISOString(),
             };
 

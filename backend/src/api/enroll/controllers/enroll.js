@@ -72,7 +72,7 @@ module.exports = {
                 hash: (0, utils_1.generateSecureString)(64),
                 owner: user.id,
                 confirmCode: (0, utils_1.generateSecureString)(64),
-                confirmed: false,
+                paid: false,
                 expiration: expirationDate.toISOString(),
             };
             payment = await strapi.entityService.create(utils_1.entities.payment, {

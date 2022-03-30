@@ -66,7 +66,7 @@ module.exports = {
             .findOne({ where: { confirmCode: ctx.params.code } });
         await strapi.entityService.update(utils_1.entities.payment, payment.id, {
             data: {
-                confirmed: true,
+                paid: true,
             },
         });
         const paymentDetails = await (0, utils_1.getPaymentDetails)(payment.id);

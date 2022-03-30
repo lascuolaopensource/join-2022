@@ -129,7 +129,7 @@ async function getPaymentDetails(paymentID) {
         category: shared_1.t.PaymentCategories.course,
         title: course.title,
         price: course.price,
-        paid: payment.confirmed,
+        paid: payment.paid,
         expiration: payment.expiration,
         expired: shared_1.h.payment.isExpired(payment),
         owner: `${ownerInfo.name} ${ownerInfo.surname}`,

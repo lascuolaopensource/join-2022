@@ -110,18 +110,18 @@ module.exports = {
         strapi.log.info("In payConfirm controller");
 
         /**
-         * Payment update
+         * PaymentC update
          */
 
         // Getting payment
-        const payment: t.ID<t.Payment> = await strapi
+        const payment: t.ID<t.PaymentC> = await strapi
             .query(entities.payment)
             .findOne({ where: { confirmCode: ctx.params.code } });
 
         // Updating payment
         await strapi.entityService.update(entities.payment, payment.id, {
             data: {
-                confirmed: true,
+                paid: true,
             },
         });
 
@@ -161,7 +161,7 @@ module.exports = {
 
         if (paymentDetails.category == t.PaymentCategories.course) {
             // Getting enrollment
-            const paymentWithEnrollment: t.ID<t.Payment> =
+            const paymentWithEnrollment: t.ID<t.PaymentC> =
                 await strapi.entityService.findOne(
                     entities.payment,
                     payment.id,

@@ -10,7 +10,7 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
     // Getting payments
     const payment = await getPaymentByHash(policyContext.params.hash);
 
-    if (payment.confirmed) {
+    if (payment.paid) {
         throw new PolicyError(Errors.PaymentAlreadyPaid, {
             policy: "isAlreadyPaid",
         });
