@@ -111,6 +111,11 @@ async function getPaymentDetails(paymentID) {
                     },
                 },
             },
+            owner: {
+                populate: {
+                    userInfo: true,
+                },
+            },
         },
     });
     if (!payment) {
@@ -118,6 +123,8 @@ async function getPaymentDetails(paymentID) {
     }
     const enrollment = payment.enrollment;
     const course = enrollment.course;
+    const owner = payment.owner;
+    const ownerInfo = owner.userInfo;
     return {
         category: shared_1.t.PaymentCategories.course,
         title: course.title,
@@ -125,6 +132,7 @@ async function getPaymentDetails(paymentID) {
         paid: payment.confirmed,
         expiration: payment.expiration,
         expired: shared_1.h.payment.isExpired(payment),
+        owner: `${ownerInfo.name} ${ownerInfo.surname}`,
     };
 }
 exports.getPaymentDetails = getPaymentDetails;

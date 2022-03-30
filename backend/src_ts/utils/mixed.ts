@@ -165,6 +165,11 @@ export async function getPaymentDetails(
                         },
                     },
                 },
+                owner: {
+                    populate: {
+                        userInfo: true,
+                    },
+                },
             },
         }
     );
@@ -176,6 +181,8 @@ export async function getPaymentDetails(
     // Extracting relations
     const enrollment = payment.enrollment as any as t.ID<t.Enrollment>;
     const course = enrollment.course as any as t.ID<t.Course>;
+    const owner = payment.owner as any as t.ID<t.UsersPermissionsUser>;
+    const ownerInfo = owner.userInfo as any as t.ID<t.UserInfo>;
 
     return {
         category: t.PaymentCategories.course,
@@ -184,6 +191,7 @@ export async function getPaymentDetails(
         paid: payment.confirmed as boolean,
         expiration: payment.expiration,
         expired: h.payment.isExpired(payment),
+        owner: `${ownerInfo.name} ${ownerInfo.surname}`,
     };
 }
 
