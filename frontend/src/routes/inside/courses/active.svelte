@@ -15,7 +15,7 @@
 
 <script lang="ts">
 	import type { t } from 'shared';
-	import CardCorso from '$lib/components/cardCorso.svelte';
+	import CardCourse from '$lib/components/cardCourse.svelte';
 
 	export let courses: t.CourseEntityResponseCollection;
 </script>
@@ -26,11 +26,11 @@
 	<h1 class="title">Corsi attivi</h1>
 	{#if courses.data.length}
 		<div class="space-between">
-			{#each courses.data as corso}
-				<CardCorso
-					title={corso.attributes.title}
-					deadline={corso.attributes.enrollmentDeadline}
-					href="/inside/course/{corso.attributes.slug}"
+			{#each courses.data as course}
+				<CardCourse
+					title={course.attributes.title}
+					deadline={course.attributes.enrollmentDeadline}
+					href="/inside/course/{course.attributes.slug}"
 				/>
 			{/each}
 		</div>

@@ -6,19 +6,19 @@
 	const client = createApolloClient(localStorage.getItem('token'));
 	setClient(client);
 
-	const iscrizioni = query(GET_ISCRIZIONI);
+	const enrollments = query(GET_enrollments);
 </script>
 
-le tue iscrizioni ai corsi:
+le tue enrollments ai corsi:
 
-{#if $iscrizioni.loading}
+{#if $enrollments.loading}
 	loading...
-{:else if $iscrizioni.error}
+{:else if $enrollments.error}
 	Error!
-{:else if $iscrizioni.data}
+{:else if $enrollments.data}
 	<ul>
-		{#each $iscrizioni.data.me.iscrizioni as iscrizione}
-			<li>{iscrizione.corso.titolo} {iscrizione.lettera_motivazionale}</li>
+		{#each $enrollments.data.me.enrollments as iscrizione}
+			<li>{iscrizione.course.titolo} {iscrizione.lettera_motivazionale}</li>
 		{/each}
 	</ul>
 {/if} -->

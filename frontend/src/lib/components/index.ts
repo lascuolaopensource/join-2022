@@ -1,6 +1,6 @@
 import Button from './button.svelte';
 import Callout from './callout.svelte';
-import CardCorso from './cardCorso.svelte';
+import CardCourse from './cardCourse.svelte';
 import IconButton from './iconButton.svelte';
 import Loading from './loading.svelte';
 import LogoutButton from './logoutButton.svelte';
@@ -15,7 +15,7 @@ import Spinner from './spinner.svelte';
 export {
 	Button,
 	Callout,
-	CardCorso,
+	CardCourse,
 	IconButton,
 	Loading,
 	LogoutButton,
