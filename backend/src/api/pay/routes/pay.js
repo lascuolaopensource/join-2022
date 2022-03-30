@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const shared_1 = require("shared");
 module.exports = {
     routes: [
         {
@@ -15,7 +17,17 @@ module.exports = {
             path: "/pay/:hash",
             handler: "pay.index",
             config: {
-                policies: ["payment-exists", "is-expired", "is-already-paid"],
+                policies: [
+                    "payment-exists",
+                    "is-expired",
+                    "is-already-paid",
+                    {
+                        name: "global::isBodyValid",
+                        config: {
+                            schema: shared_1.e.PaySchema,
+                        },
+                    },
+                ],
                 middlewares: [],
             },
         },

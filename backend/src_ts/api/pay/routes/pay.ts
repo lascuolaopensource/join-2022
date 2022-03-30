@@ -1,3 +1,5 @@
+import { e } from "shared";
+
 module.exports = {
     routes: [
         {
@@ -14,7 +16,17 @@ module.exports = {
             path: "/pay/:hash",
             handler: "pay.index",
             config: {
-                policies: ["payment-exists", "is-expired", "is-already-paid"],
+                policies: [
+                    "payment-exists",
+                    "is-expired",
+                    "is-already-paid",
+                    {
+                        name: "global::isBodyValid",
+                        config: {
+                            schema: e.PaySchema,
+                        },
+                    },
+                ],
                 middlewares: [],
             },
         },
