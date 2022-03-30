@@ -65,9 +65,6 @@
 
 	async function onSubmit(values: e.PayReq) {
 		try {
-			// Si svuota il localstorage
-			localStorage.removeItem(lsKeys.paymentForm);
-
 			// Invio richiesta
 			const res = await req.pay($page.params.hash, values);
 
