@@ -39,9 +39,10 @@
       "required": true,
       "private": true
     },
-    "confirmed": {
+    "paid": {
       "type": "boolean",
-      "default": false
+      "default": false,
+      "required": true
     },
     "expiration": {
       "type": "datetime",
