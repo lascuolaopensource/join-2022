@@ -32,6 +32,11 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
     // Getting enrollments
     const enrollments = course.enrollments as any as Array<t.ID<t.Enrollment>>;
 
+    // If there are no enrollments, return
+    if (!enrollments.length) {
+        return true;
+    }
+
     // Getting user email
     let userEmail;
     if (policyContext.state.user) {

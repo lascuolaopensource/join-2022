@@ -19,6 +19,9 @@ module.exports = async (policyContext, config, { strapi }) => {
         },
     });
     const enrollments = course.enrollments;
+    if (!enrollments.length) {
+        return true;
+    }
     let userEmail;
     if (policyContext.state.user) {
         userEmail = policyContext.state.user.email;
