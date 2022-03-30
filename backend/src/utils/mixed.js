@@ -124,7 +124,7 @@ async function getPaymentDetails(paymentID) {
         price: course.price,
         paid: payment.confirmed,
         expiration: payment.expiration,
-        expired: shared_1.h.payment.isPaymentExpired(payment),
+        expired: shared_1.h.payment.isExpired(payment),
     };
 }
 exports.getPaymentDetails = getPaymentDetails;
