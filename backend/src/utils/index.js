@@ -14,10 +14,13 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.paths = exports.registerUserErrorHandler = exports.registerUser = void 0;
+exports.registerUserErrorHandler = exports.registerUser = exports.entities = exports.paths = void 0;
+__exportStar(require("./generators"), exports);
+__exportStar(require("./getters"), exports);
+var paths_1 = require("./paths");
+Object.defineProperty(exports, "paths", { enumerable: true, get: function () { return paths_1.paths; } });
+var entities_1 = require("./entities");
+Object.defineProperty(exports, "entities", { enumerable: true, get: function () { return entities_1.entities; } });
 var registerUser_1 = require("./registerUser");
 Object.defineProperty(exports, "registerUser", { enumerable: true, get: function () { return registerUser_1.registerUser; } });
 Object.defineProperty(exports, "registerUserErrorHandler", { enumerable: true, get: function () { return registerUser_1.registerUserErrorHandler; } });
-__exportStar(require("./mixed"), exports);
-var paths_1 = require("./paths");
-Object.defineProperty(exports, "paths", { enumerable: true, get: function () { return paths_1.paths; } });

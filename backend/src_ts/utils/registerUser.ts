@@ -1,6 +1,6 @@
-import { getUserPemissionsSettings, getService } from "./index";
 import { Errors, t } from "shared";
-import { entities } from "./mixed";
+import { getUserPemissionsSettings, getService } from "./getters";
+import { entities } from "./entities";
 
 const utils = require("@strapi/utils");
 const { yup } = utils;

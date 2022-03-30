@@ -9,7 +9,7 @@ import {
     registerUser,
     registerUserErrorHandler,
     RegisterUserInput,
-    createConfirmationTokenURL,
+    generateConfirmationTokenURL,
     paths,
 } from "../../../utils";
 import { emailSender, EnrollEmailTemplateArgs } from "../../../emails";
@@ -63,7 +63,7 @@ module.exports = {
             // Adding confirmation token if needed
             if (settings.email_confirmation) {
                 // Creating confirmation data
-                const confirmation = createConfirmationTokenURL();
+                const confirmation = generateConfirmationTokenURL();
                 // Adding code to user data
                 newUserData.confirmationToken = confirmation.token;
                 // Saving confirmation link

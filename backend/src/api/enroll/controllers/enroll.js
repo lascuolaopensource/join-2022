@@ -23,7 +23,7 @@ module.exports = {
                 surname: body.contacts.surname,
             };
             if (settings.email_confirmation) {
-                const confirmation = (0, utils_1.createConfirmationTokenURL)();
+                const confirmation = (0, utils_1.generateConfirmationTokenURL)();
                 newUserData.confirmationToken = confirmation.token;
                 confirmationUrl = confirmation.url;
             }

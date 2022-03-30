@@ -12,7 +12,7 @@ function generateSecureString(length) {
 }
 exports.generateSecureString = generateSecureString;
 function generateConfirmationTokenURL() {
-    const token = crypto_1.default.randomBytes(20).toString("hex");
+    const token = generateSecureString(20);
     const apiPrefix = strapi.config.get("api.rest.prefix");
     const url = urlJoin(getAbsoluteServerUrl(strapi.config), apiPrefix, `/auth/email-confirmation?confirmation=${token}`);
     return {

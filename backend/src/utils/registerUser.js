@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerUserErrorHandler = exports.registerUser = void 0;
-const index_1 = require("./index");
 const shared_1 = require("shared");
-const mixed_1 = require("./mixed");
+const getters_1 = require("./getters");
+const entities_1 = require("./entities");
 const utils = require("@strapi/utils");
 const { yup } = utils;
 const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -16,14 +16,14 @@ const registerUserSchema = yup.object({
 });
 async function registerUser(data) {
     strapi.log.info("In registerUser function");
-    const settings = await (0, index_1.getUserPemissionsSettings)();
+    const settings = await (0, getters_1.getUserPemissionsSettings)();
     try {
         await registerUserSchema.validate(data);
     }
     catch (e) {
         throw new Error(shared_1.Errors.ValidationError);
     }
-    if ((0, index_1.getService)("user").isHashed(data.password)) {
+    if ((0, getters_1.getService)("user").isHashed(data.password)) {
         throw new Error(shared_1.Errors.PasswordThreeDollars);
     }
     if (!data.provider) {
@@ -44,7 +44,7 @@ async function registerUser(data) {
     }
     data.role = role.id;
     const existingUser = await strapi
-        .query(mixed_1.entities.user)
+        .query(entities_1.entities.user)
         .findOne({
         where: { email: data.email },
     });
@@ -56,13 +56,13 @@ async function registerUser(data) {
         settings.unique_email) {
         throw new Error(shared_1.Errors.EmailTaken);
     }
-    const user = await (0, index_1.getService)("user").add(data);
+    const user = await (0, getters_1.getService)("user").add(data);
     const newUserInfoData = {
         name: data.name,
         surname: data.surname,
         owner: user.id,
     };
-    const newUserInfo = await strapi.entityService.create(mixed_1.entities.userInfo, { data: newUserInfoData });
+    const newUserInfo = await strapi.entityService.create(entities_1.entities.userInfo, { data: newUserInfoData });
     return user;
 }
 exports.registerUser = registerUser;
