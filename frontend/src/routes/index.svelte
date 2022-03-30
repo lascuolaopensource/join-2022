@@ -5,7 +5,7 @@
 	import { req } from '$lib/requestUtils';
 
 	import { createForm } from 'svelte-forms-lib';
-	import { e } from 'shared';
+	import { endpoints as e } from 'shared';
 
 	//
 

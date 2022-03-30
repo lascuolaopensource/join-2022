@@ -40,7 +40,7 @@
 	import { page } from '$app/stores';
 	import { req } from '$lib/requestUtils';
 	import { setFormError } from '$lib/components/form';
-	import { t, e } from 'shared';
+	import { types as t, endpoints as e } from 'shared';
 	import { lsKeys } from '$lib/localStorageUtils';
 	import { s, placeholders as p } from '$lib/strings';
 

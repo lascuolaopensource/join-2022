@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import { req } from '$lib/requestUtils';
-	import { h, e, t } from 'shared';
+	import { helpers as h, endpoints as e, types as t } from 'shared';
 
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ params, fetch, session, stuff }) {
@@ -31,7 +31,7 @@
 	import { goto } from '$app/navigation';
 	import { s } from '$lib/strings';
 	import * as yup from 'yup';
-	import { validators } from 'shared';
+	import { validation as v } from 'shared';
 	import { addEmailExistsTest } from '$lib/validators';
 	import { createForm } from 'svelte-forms-lib';
 	import {
@@ -98,7 +98,7 @@
 	 * Form - Extending base schema with async test
 	 */
 
-	validators.setYupDefaultMessages();
+	v.setYupDefaultMessages();
 
 	const validationSchema = e.EnrollSchema.shape({
 		contacts: e.ContactsSchema.shape({
