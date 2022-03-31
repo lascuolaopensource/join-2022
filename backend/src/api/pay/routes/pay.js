@@ -24,7 +24,7 @@ module.exports = {
                     {
                         name: "global::isBodyValid",
                         config: {
-                            schema: shared_1.e.PaySchema,
+                            schema: shared_1.endpoints.PaySchema,
                         },
                     },
                 ],

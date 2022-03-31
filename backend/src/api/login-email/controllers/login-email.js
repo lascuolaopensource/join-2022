@@ -6,7 +6,7 @@ module.exports = {
     async index(ctx) {
         const body = ctx.request.body;
         try {
-            await shared_1.e.LoginEmailSchema.validate(body);
+            await shared_1.endpoints.LoginEmailSchema.validate(body);
         }
         catch (err) {
             return ctx.badRequest(shared_1.Errors.ValidationError);

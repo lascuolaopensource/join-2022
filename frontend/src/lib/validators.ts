@@ -1,8 +1,8 @@
 import { req } from '$lib/requestUtils';
-import { validators } from 'shared';
+import { validation } from 'shared';
 import * as yup from 'yup';
 
-validators.setYupDefaultMessages();
+validation.setYupDefaultMessages();
 
 //
 

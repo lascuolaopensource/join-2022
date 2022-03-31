@@ -1,4 +1,4 @@
-import type { t, e } from 'shared';
+import type { types as t, endpoints as e } from 'shared';
 import { request } from './request';
 import { headersAuth } from './authorizationHeader';
 import qs from 'qs';

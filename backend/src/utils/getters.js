@@ -72,12 +72,12 @@ async function getPaymentDetails(paymentID) {
     const owner = payment.owner;
     const ownerInfo = owner.userInfo;
     return {
-        category: shared_1.t.PaymentCategories.course,
+        category: shared_1.types.PaymentCategories.course,
         title: course.title,
         price: course.price,
         paid: payment.paid,
         expiration: payment.expiration,
-        expired: shared_1.h.payment.isExpired(payment),
+        expired: shared_1.helpers.payment.isExpired(payment),
         owner: `${ownerInfo.name} ${ownerInfo.surname}`,
     };
 }

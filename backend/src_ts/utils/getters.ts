@@ -1,4 +1,4 @@
-import { Errors, t, h } from "shared";
+import { Errors, types as t, helpers as h } from "shared";
 import { entities } from "./entities";
 
 /**

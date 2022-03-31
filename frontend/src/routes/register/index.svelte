@@ -6,7 +6,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import { passwordSchema, addEmailExistsTest } from '$lib/validators';
-	import { e, validators } from 'shared';
+	import { endpoints as e, validation as v } from 'shared';
 
 	//
 
@@ -24,7 +24,7 @@
 
 	//
 
-	validators.setYupDefaultMessages();
+	v.setYupDefaultMessages();
 
 	const initialValues: e.RegisterUserReq = {
 		name: '',

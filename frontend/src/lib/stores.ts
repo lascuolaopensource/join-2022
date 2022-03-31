@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { t } from 'shared';
+import type { types as t } from 'shared';
 
 //
 

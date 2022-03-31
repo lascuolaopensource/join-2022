@@ -14,7 +14,7 @@
 </script>
 
 <script lang="ts">
-	import type { t } from 'shared';
+	import type { types as t } from 'shared';
 	import CardCourse from '$lib/components/cardCourse.svelte';
 
 	export let courses: t.CourseEntityResponseCollection;

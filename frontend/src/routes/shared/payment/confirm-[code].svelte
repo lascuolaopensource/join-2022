@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	import { req } from '$lib/requestUtils';
-	import { t } from 'shared';
+	import { types as t } from 'shared';
 
 	/** @type {import('@sveltejs/kit').Load} */
 	export async function load({ params, fetch, session, stuff }) {

@@ -6,7 +6,7 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import { validators } from 'shared';
+	import { validation as v } from 'shared';
 	import { passwordSchema } from '$lib/validators';
 
 	//
@@ -25,7 +25,7 @@
 
 	//
 
-	validators.setYupDefaultMessages();
+	v.setYupDefaultMessages();
 
 	const initialValues = {
 		code: $page.url.searchParams.get('code'),

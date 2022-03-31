@@ -16,8 +16,7 @@
 </script>
 
 <script lang="ts">
-	import { h } from 'shared';
-	import type { t } from 'shared';
+	import { helpers as h, types as t } from 'shared';
 	import SvelteMarkdown from 'svelte-markdown';
 
 	export let course: t.CourseEntity;

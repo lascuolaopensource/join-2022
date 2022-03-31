@@ -1,6 +1,6 @@
 "use strict";
 
-import { e, t, h } from "shared";
+import { endpoints as e, types as t, helpers as h } from "shared";
 import {
     getCourseByID,
     generateSecureString,

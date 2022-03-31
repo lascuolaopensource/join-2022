@@ -5,7 +5,7 @@
 	import { lsGet, lsRemove, lsSet, lsKeys } from '$lib/localStorageUtils';
 
 	import { createForm } from 'svelte-forms-lib';
-	import { e } from 'shared';
+	import { endpoints as e } from 'shared';
 
 	//
 

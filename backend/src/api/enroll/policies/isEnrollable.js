@@ -8,7 +8,7 @@ module.exports = async (policyContext, config, { strapi }) => {
     strapi.log.info("In isEnrollable policy.");
     const body = policyContext.request.body;
     const course = await (0, utils_1.getCourseByID)(body.courseId);
-    const isEnrollable = shared_1.h.course.isEnrollable(course);
+    const isEnrollable = shared_1.helpers.course.isEnrollable(course);
     if (isEnrollable) {
         return true;
     }

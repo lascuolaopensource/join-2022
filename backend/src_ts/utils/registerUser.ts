@@ -1,4 +1,4 @@
-import { Errors, t } from "shared";
+import { Errors, types as t } from "shared";
 import { getUserPemissionsSettings, getService } from "./getters";
 import { entities } from "./entities";
 
