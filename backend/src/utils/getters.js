@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getService = exports.getUserPemissionsSettings = exports.getCourseByID = exports.getUserInfo = exports.getUserByEmail = exports.getPaymentOwner = exports.getPaymentDetails = exports.getPaymentBillingInfo = exports.getPaymentBilling = exports.getPaymentHash = exports.getPaymentByHash = void 0;
+exports.getService = exports.getUserPemissionsSettings = exports.getCourseByID = exports.getUserEnrollments = exports.getUserInfo = exports.getUserByEmail = exports.getPaymentOwner = exports.getPaymentDetails = exports.getPaymentBillingInfo = exports.getPaymentBilling = exports.getPaymentHash = exports.getPaymentByHash = void 0;
 const shared_1 = require("shared");
 const entities_1 = require("./entities");
 async function getPaymentByHash(hash) {
@@ -115,6 +115,20 @@ async function getUserInfo(userID) {
     return userInfo;
 }
 exports.getUserInfo = getUserInfo;
+async function getUserEnrollments(userID) {
+    const user = await strapi.entityService.findOne(entities_1.entities.user, userID, {
+        populate: {
+            enrollments: {
+                populate: {
+                    course: true,
+                },
+            },
+        },
+    });
+    const enrollments = user.enrollments;
+    return enrollments;
+}
+exports.getUserEnrollments = getUserEnrollments;
 async function getCourseByID(id, options = {}) {
     const course = await strapi.entityService.findOne(entities_1.entities.course, id, options);
     return course;

@@ -178,6 +178,27 @@ export async function getUserInfo(
     return userInfo;
 }
 
+//
+
+export async function getUserEnrollments(
+    userID: string | number
+): Promise<Array<t.ID<t.Enrollment>>> {
+    const user: t.ID<t.UsersPermissionsUser> =
+        await strapi.entityService.findOne(entities.user, userID, {
+            populate: {
+                enrollments: {
+                    populate: {
+                        course: true,
+                    },
+                },
+            },
+        });
+
+    const enrollments = user.enrollments as any as Array<t.ID<t.Enrollment>>;
+
+    return enrollments;
+}
+
 /**
  * Course stuff
  */
