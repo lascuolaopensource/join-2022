@@ -5,8 +5,8 @@
 <!--  -->
 
 <NavbarSecondary>
-	<NavbarItem href="/inside/profile/enrollments">Iscrizioni</NavbarItem>
 	<NavbarItem href="/inside/profile/account">Profilo</NavbarItem>
+	<NavbarItem href="/inside/profile/enrollments">Iscrizioni</NavbarItem>
 </NavbarSecondary>
 
 <div class="container">
