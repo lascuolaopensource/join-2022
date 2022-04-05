@@ -188,7 +188,11 @@ export async function getUserEnrollments(
             populate: {
                 enrollments: {
                     populate: {
-                        course: true,
+                        course: {
+                            populate: {
+                                meetings: true,
+                            },
+                        },
                     },
                 },
             },

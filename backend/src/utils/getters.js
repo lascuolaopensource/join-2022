@@ -120,7 +120,11 @@ async function getUserEnrollments(userID) {
         populate: {
             enrollments: {
                 populate: {
-                    course: true,
+                    course: {
+                        populate: {
+                            meetings: true,
+                        },
+                    },
                 },
             },
         },
