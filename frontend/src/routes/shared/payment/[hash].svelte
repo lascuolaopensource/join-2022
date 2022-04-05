@@ -40,7 +40,7 @@
 	import { page } from '$app/stores';
 	import { req } from '$lib/requestUtils';
 	import { setFormError } from '$lib/components/form';
-	import { types as t, endpoints as e } from 'shared';
+	import { types as t, endpoints as e, formatters as f } from 'shared';
 	import { lsKeys } from '$lib/localStorageUtils';
 	import { s, placeholders as p } from '$lib/strings';
 
@@ -95,20 +95,7 @@
 		validationSchema: e.PaySchema,
 		onSubmit
 	});
-	const { form, state } = formContext;
-
-	/**
-	 * Preparing variables - Formatting strings
-	 */
-
-	// Formatter setup for price
-	const formatter = new Intl.NumberFormat('it-IT', {
-		style: 'currency',
-		currency: 'EUR'
-	});
-
-	// Payment deadline
-	const deadline = new Date(Date.parse(paymentDetails.expiration));
+	const { form } = formContext;
 </script>
 
 <!--  -->
@@ -131,13 +118,13 @@
 	<tr>
 		<th>Prezzo</th>
 		<td>
-			{formatter.format(paymentDetails.price)}
+			{f.formatPriceNumber(paymentDetails.price)}
 		</td>
 	</tr>
 	<tr>
 		<th>Scadenza pagamento</th>
 		<td>
-			{deadline.toLocaleDateString('IT-it')}
+			{f.formatDateString(paymentDetails.expiration)}
 		</td>
 	</tr>
 </table>
