@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { req } from '$lib/requestUtils';
-	import { Loading } from '$lib/components';
+	import { Loading, Callout } from '$lib/components';
 	import { types as t, formatters as f, helpers as h } from 'shared';
 	import { enrollmentStates } from '$lib/strings';
 
@@ -54,36 +54,47 @@
 	{#if res.enrollments_current.length}
 		<h1>Iscrizioni attive</h1>
 
-		{#each res.enrollments_current as en}
-			{@const course = en.course}
-			<div class="enrollment">
-				<p><strong>{course.title}</strong></p>
-				<p>Iscritto il: {f.formatDateString(en.createdAt)}</p>
-				<p>
-					Stato: <span style:color={statesColors[en.state]}
-						>{enrollmentStates[en.state]}</span
-					>
-				</p>
-			</div>
-		{/each}
+		<Callout>
+			<strong>Nota:</strong> Per annullare un'iscrizione
+			<a href="mailto:didattica@lascuolaopensource.xyz"
+				>contatta il team didattica</a
+			>
+		</Callout>
+
+		<div class="enrollment__container">
+			{#each res.enrollments_current as en}
+				{@const course = en.course}
+				<div class="enrollment">
+					<p><strong>{course.title}</strong></p>
+					<p>Iscritto il: {f.formatDateString(en.createdAt)}</p>
+					<p>
+						Stato: <span style:color={statesColors[en.state]}
+							>{enrollmentStates[en.state]}</span
+						>
+					</p>
+				</div>
+			{/each}
+		</div>
 	{/if}
 
 	<!-- Iscrizioni passate -->
 	{#if res.enrollments_past.length}
 		<h1>Iscrizioni passate</h1>
 
-		{#each res.enrollments_past as en}
-			{@const course = en.course}
-			<div class="enrollment">
-				<p><strong>{course.title}</strong></p>
-				<p>Iscritto il: {f.formatDateString(en.createdAt)}</p>
-				<p>
-					Stato: <span style:color={statesColors[en.state]}
-						>{enrollmentStates[en.state]}</span
-					>
-				</p>
-			</div>
-		{/each}
+		<div class="enrollment__container">
+			{#each res.enrollments_past as en}
+				{@const course = en.course}
+				<div class="enrollment">
+					<p><strong>{course.title}</strong></p>
+					<p>Iscritto il: {f.formatDateString(en.createdAt)}</p>
+					<p>
+						Stato: <span style:color={statesColors[en.state]}
+							>{enrollmentStates[en.state]}</span
+						>
+					</p>
+				</div>
+			{/each}
+		</div>
 	{/if}
 {/await}
 
@@ -91,6 +102,11 @@
 <style>
 	h1 {
 		margin-bottom: var(--s-3);
+	}
+
+	.enrollment__container {
+		margin-bottom: var(--s-3);
+		margin-top: var(--s-3);
 	}
 
 	.enrollment {
