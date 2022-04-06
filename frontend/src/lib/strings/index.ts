@@ -1,3 +1,5 @@
+import type { types as t } from 'shared';
+
 export const s = {
 	enroll: {
 		info: {
@@ -33,4 +35,11 @@ export const s = {
 
 export const placeholders = {
 	address: 'Nome via / piazza / etc. , n° civico'
+};
+
+export const enrollmentStates: Record<t.Enum_Enrollment_State, string> = {
+	pending: 'In attesa di approvazione',
+	approved: 'Approvata',
+	awaitingPayment: 'In attesa di pagamento',
+	rejected: 'Rifiutata'
 };

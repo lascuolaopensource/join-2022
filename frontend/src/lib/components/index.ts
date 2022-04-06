@@ -10,6 +10,7 @@ import NavbarOutside from './navbarOutside.svelte';
 import OutsideBacklink from './outsideBacklink.svelte';
 import OutsideTitle from './outsideTitle.svelte';
 import ProfileNavbar from './profileNavbar.svelte';
+import NavbarSecondary from './navbarSecondary.svelte';
 import Spinner from './spinner.svelte';
 
 export {
@@ -21,6 +22,7 @@ export {
 	LogoutButton,
 	NavbarItem,
 	NavbarMain,
+	NavbarSecondary,
 	NavbarOutside,
 	OutsideBacklink,
 	OutsideTitle,

@@ -197,5 +197,17 @@ export const req = {
 		});
 		// Requesting...
 		return await request(fetchFn, `${b}api/courses?${query}`);
+	},
+
+	getUserEnrollments: async (
+		fetchFn = fetch
+	): Promise<e.GetUserRelationsEnrollmentsRes> => {
+		return await request(
+			fetchFn,
+			`${b}api/get-user-relations/enrollments`,
+			'GET',
+			null,
+			headersAuth()
+		);
 	}
 };

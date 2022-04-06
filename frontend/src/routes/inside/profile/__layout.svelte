@@ -1,8 +1,14 @@
-<!-- <script lang="ts">
-	import ProfileNavbar from '$lib/components/profileNavbar.svelte';
+<script lang="ts">
+	import { NavbarItem, NavbarSecondary } from '$lib/components';
 </script>
 
-<ProfileNavbar /> -->
+<!--  -->
+
+<NavbarSecondary>
+	<NavbarItem href="/inside/profile/account">Profilo</NavbarItem>
+	<NavbarItem href="/inside/profile/enrollments">Iscrizioni</NavbarItem>
+</NavbarSecondary>
+
 <div class="container">
 	<slot />
 </div>
