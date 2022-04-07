@@ -9588,7 +9588,7 @@ shallowequal@^1.1.0:
 
 "shared@https://github.com/lascuolaopensource/join-shared":
   version "0.0.1"
-  resolved "https://github.com/lascuolaopensource/join-shared#5c29f684a0a9f202ffb78f07f14baa95bf201de5"
+  resolved "https://github.com/lascuolaopensource/join-shared#1240c30fdc6416e30e4d835fdcd156e047324298"
   dependencies:
     graphql-tag "^2.12.6"
     yup "^0.32.11"
