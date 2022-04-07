@@ -51,9 +51,9 @@
 		</div>
 		<div class="nav__btn__arrow">
 			{#if open}
-				<svelte:component this={icons.arrows.up} />
+				<svelte:component this={icons.close} />
 			{:else}
-				<svelte:component this={icons.arrows.down} />
+				<svelte:component this={icons.menu} />
 			{/if}
 		</div>
 	</button>

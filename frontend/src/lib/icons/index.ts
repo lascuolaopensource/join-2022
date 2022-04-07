@@ -7,6 +7,7 @@ import WarningAltFilled16 from './WarningAltFilled16.svelte';
 import WarningAltFilled24 from './WarningAltFilled24.svelte';
 import ArrowDown24 from './ArrowDown24.svelte';
 import ArrowUp24 from './ArrowUp24.svelte';
+import Menu24 from './Menu24.svelte';
 
 export const icons = {
 	fields: {
@@ -25,5 +26,6 @@ export const icons = {
 	arrows: {
 		up: ArrowUp24,
 		down: ArrowDown24
-	}
+	},
+	menu: Menu24
 };
