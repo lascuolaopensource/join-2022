@@ -1,4 +1,3 @@
-<!-- Here we check if the user is logged otherwise we send it away -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -7,7 +6,12 @@
 	import { userRole } from '$lib/stores';
 	import { types as t } from 'shared';
 
-	import { Loading } from '$lib/components';
+	import {
+		Loading,
+		NavbarSecondary,
+		NavbarItem,
+		Container
+	} from '$lib/components';
 
 	//
 
@@ -35,8 +39,16 @@
 	});
 </script>
 
+<!--  -->
+
 {#if loading}
 	<Loading />
 {:else}
-	<slot />
+	<NavbarSecondary>
+		<NavbarItem href="/inside/admin/enrollments">Iscrizioni</NavbarItem>
+	</NavbarSecondary>
+
+	<Container>
+		<slot />
+	</Container>
 {/if}
