@@ -8,6 +8,10 @@ import { getUserEnrollments } from "../../../utils";
  */
 
 module.exports = {
+    /**
+     * Enrollments
+     */
+
     enrollments: async (
         ctx: any,
         next: any
@@ -25,5 +29,24 @@ module.exports = {
         const enrollments: any = await getUserEnrollments(user.id);
 
         return { enrollments };
+    },
+
+    /**
+     * Role
+     */
+
+    role: async (ctx: any, next: any): Promise<e.GetUserRelationsRoleRes> => {
+        strapi.log.info("In getUserRelations/role controller.");
+
+        // Getting user
+        const user: t.ID<t.UsersPermissionsUser> = ctx.state.user;
+
+        if (!user.role) {
+            return ctx.notFound(Errors.NotFound);
+        }
+
+        const role = user.role as t.ID<t.UsersPermissionsRole>;
+
+        return { role: role.type as t.UserPermissionRoles };
     },
 };

@@ -12,4 +12,13 @@ module.exports = {
         const enrollments = await (0, utils_1.getUserEnrollments)(user.id);
         return { enrollments };
     },
+    role: async (ctx, next) => {
+        strapi.log.info("In getUserRelations/role controller.");
+        const user = ctx.state.user;
+        if (!user.role) {
+            return ctx.notFound(shared_1.Errors.NotFound);
+        }
+        const role = user.role;
+        return { role: role.type };
+    },
 };

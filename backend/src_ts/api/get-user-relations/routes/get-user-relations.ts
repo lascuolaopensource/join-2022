@@ -9,5 +9,14 @@ module.exports = {
                 middlewares: [],
             },
         },
+        {
+            method: "GET",
+            path: "/get-user-relations/role",
+            handler: "get-user-relations.role",
+            config: {
+                policies: [],
+                middlewares: [],
+            },
+        },
     ],
 };
