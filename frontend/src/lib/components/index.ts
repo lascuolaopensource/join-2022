@@ -1,6 +1,9 @@
 import Button from './button.svelte';
+import Container from './container.svelte';
 import Callout from './callout.svelte';
 import CardCourse from './cardCourse.svelte';
+import CardCourseEnrolls from './cardCourseEnrolls.svelte';
+import CardEnrollment from './cardEnrollment.svelte';
 import IconButton from './iconButton.svelte';
 import Loading from './loading.svelte';
 import LogoutButton from './logoutButton.svelte';
@@ -18,6 +21,9 @@ export {
 	Button,
 	Callout,
 	CardCourse,
+	CardCourseEnrolls,
+	CardEnrollment,
+	Container,
 	IconButton,
 	Loading,
 	LogoutButton,
