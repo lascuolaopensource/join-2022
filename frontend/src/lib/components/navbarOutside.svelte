@@ -12,7 +12,7 @@
 
 	nav {
 		background-color: var(--nav-main-bg);
-		padding: var(--container-padding);
+		padding: var(--s-1) var(--s-3);
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: space-between;

@@ -4,6 +4,7 @@ import CardCourse from './cardCourse.svelte';
 import IconButton from './iconButton.svelte';
 import Loading from './loading.svelte';
 import LogoutButton from './logoutButton.svelte';
+import MenuItem from './menuItem.svelte';
 import NavbarItem from './navbarItem.svelte';
 import NavbarMain from './navbarMain.svelte';
 import NavbarOutside from './navbarOutside.svelte';
@@ -20,6 +21,7 @@ export {
 	IconButton,
 	Loading,
 	LogoutButton,
+	MenuItem,
 	NavbarItem,
 	NavbarMain,
 	NavbarSecondary,
