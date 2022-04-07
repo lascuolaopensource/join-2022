@@ -84,6 +84,16 @@ export const req = {
 		);
 	},
 
+	getRole: async (fetchFn = fetch): Promise<e.GetUserRelationsRoleRes> => {
+		return await request(
+			fetchFn,
+			b + `api/get-user-relations/role`,
+			'GET',
+			null,
+			headersAuth()
+		);
+	},
+
 	/**
 	 * Password
 	 */
