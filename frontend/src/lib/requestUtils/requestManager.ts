@@ -22,6 +22,8 @@ export const req = {
 		return await request(fetchFn, b + 'api/login-email', 'POST', body);
 	},
 
+	//
+
 	login: async (body: e.LoginReq, fetchFn = fetch): Promise<e.LoginRes> => {
 		return await request(fetchFn, b + 'api/auth/local', 'POST', body);
 	},
@@ -40,6 +42,8 @@ export const req = {
 		);
 	},
 
+	//
+
 	register: async (
 		body: e.RegisterUserReq,
 		fetchFn = fetch
@@ -47,12 +51,16 @@ export const req = {
 		return await request(fetchFn, b + 'api/register-user', 'POST', body);
 	},
 
+	//
+
 	userExists: async (
 		body: e.UserExistsReq,
 		fetchFn = fetch
 	): Promise<e.UserExistsRes> => {
 		return await request(fetchFn, b + 'api/user-exists', 'POST', body);
 	},
+
+	//
 
 	getUserInfo: async (
 		userId: string | number,
@@ -71,6 +79,8 @@ export const req = {
 		return res.data[0];
 	},
 
+	//
+
 	isUserEnrolled: async (
 		courseID: string,
 		fetchFn = fetch
@@ -83,6 +93,8 @@ export const req = {
 			headersAuth()
 		);
 	},
+
+	//
 
 	getRole: async (fetchFn = fetch): Promise<e.GetUserRelationsRoleRes> => {
 		return await request(
@@ -101,6 +113,8 @@ export const req = {
 	forgotPassword: async (body: e.LoginEmailReq, fetchFn = fetch) => {
 		return await request(fetchFn, b + 'api/auth/forgot-password', 'POST', body);
 	},
+
+	//
 
 	resetPassword: async (body: t.MutationResetPasswordArgs, fetchFn = fetch) => {
 		return await request(fetchFn, b + 'api/auth/reset-password', 'POST', body);
@@ -138,6 +152,8 @@ export const req = {
 		);
 	},
 
+	//
+
 	payConfirm: async (
 		code: string,
 		fetchFn = fetch
@@ -150,6 +166,8 @@ export const req = {
 		);
 	},
 
+	//
+
 	getPaymentDetails: async (
 		hash: string,
 		fetchFn = fetch
@@ -160,6 +178,15 @@ export const req = {
 	/**
 	 * Getters
 	 */
+
+	getCourseByID: async (
+		ID: string,
+		fetchFn = fetch
+	): Promise<t.CourseEntityResponse> => {
+		return await request(fetchFn, `${b}api/courses/${ID}`);
+	},
+
+	//
 
 	getCourseBySlug: async (
 		slug: string,
@@ -181,6 +208,8 @@ export const req = {
 		}
 		return res.data[0];
 	},
+
+	//
 
 	getCoursesByDeadline: async (
 		mode: 'expired' | 'future',
@@ -209,12 +238,63 @@ export const req = {
 		return await request(fetchFn, `${b}api/courses?${query}`);
 	},
 
+	//
+
 	getUserEnrollments: async (
 		fetchFn = fetch
 	): Promise<e.GetUserRelationsEnrollmentsRes> => {
 		return await request(
 			fetchFn,
 			`${b}api/get-user-relations/enrollments`,
+			'GET',
+			null,
+			headersAuth()
+		);
+	},
+
+	/**
+	 * Admin stuff
+	 */
+
+	adminGetActiveCourses: async (
+		fetchFn = fetch
+	): Promise<e.AdminEnrollmentsGetActiveCoursesRes> => {
+		return await request(
+			fetchFn,
+			`${b}api/admin-enrollments/get-active-courses`,
+			'GET',
+			null,
+			headersAuth()
+		);
+	},
+
+	adminGetCourseEnrollments: async (
+		courseID: number | string,
+		fetchFn = fetch
+	): Promise<t.EnrollmentEntityResponseCollection> => {
+		const query = qs.stringify(
+			{
+				filters: {
+					course: {
+						id: {
+							$eq: courseID
+						}
+					}
+				},
+				populate: {
+					owner: {
+						populate: ['userInfo']
+					}
+				}
+			},
+			{
+				encodeValuesOnly: true
+			}
+		);
+
+		return await request(
+			fetchFn,
+			`${b}api/enrollments?${query}`,
 			'GET',
 			null,
 			headersAuth()
