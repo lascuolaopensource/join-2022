@@ -4,7 +4,7 @@
 	import { goto } from '$app/navigation';
 
 	import { req } from '$lib/requestUtils';
-	import { user, userInfo } from '$lib/stores';
+	import { user, userInfo, userRole } from '$lib/stores';
 
 	//
 
@@ -20,11 +20,14 @@
 	onMount(async () => {
 		try {
 			// Fetch the user from strapi
-			const UserRes = await req.me();
-			$user = UserRes;
+			const userRes = await req.me();
+			$user = userRes;
 			// Fetch the user's info
-			const UserInfoRes = await req.getUserInfo(UserRes.id);
-			$userInfo = UserInfoRes.attributes;
+			const userInfoRes = await req.getUserInfo(userRes.id);
+			$userInfo = userInfoRes.attributes;
+			// Fetch the user's role
+			const userRoleRes = await req.getRole();
+			$userRole = userRoleRes.role;
 			// Loading ends in that case
 			loading = false;
 		} catch (e) {
