@@ -17,7 +17,7 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
     }
 
     // Getting body
-    const body: e.PayReq = policyContext.request.body;
+    const body = policyContext.request.body;
 
     // Validating body
     try {
