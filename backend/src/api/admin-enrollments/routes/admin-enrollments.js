@@ -10,5 +10,14 @@ module.exports = {
                 middlewares: [],
             },
         },
+        {
+            method: "POST",
+            path: "/admin-enrollments/update",
+            handler: "admin-enrollments.update",
+            config: {
+                policies: [],
+                middlewares: [],
+            },
+        },
     ],
 };
