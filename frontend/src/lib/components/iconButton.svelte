@@ -3,7 +3,7 @@
 	export let mode: 'light' | 'dark' = 'light';
 </script>
 
-<div class="buttonContainer">
+<div>
 	<button on:click class:light={mode == 'light'} class:dark={mode == 'dark'}>
 		<svelte:component
 			this={icon}
