@@ -1,5 +1,6 @@
 export * from "./generators";
 export * from "./getters";
+export * from "./shorthands";
 
 export { paths } from "./paths";
 export { entities } from "./entities";

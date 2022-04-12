@@ -17,6 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerUserErrorHandler = exports.registerUser = exports.entities = exports.paths = void 0;
 __exportStar(require("./generators"), exports);
 __exportStar(require("./getters"), exports);
+__exportStar(require("./shorthands"), exports);
 var paths_1 = require("./paths");
 Object.defineProperty(exports, "paths", { enumerable: true, get: function () { return paths_1.paths; } });
 var entities_1 = require("./entities");
