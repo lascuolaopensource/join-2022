@@ -22,7 +22,6 @@ module.exports = {
     update: async (ctx, next) => {
         strapi.log.info("In admin-enrollments/update controller");
         const body = ctx.request.body;
-        console.log(body);
         try {
             for (let id of Object.keys(body)) {
                 const enrollment = await strapi.entityService.findOne(utils_1.entities.enrollment, id, {

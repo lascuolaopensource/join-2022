@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../../../utils");
 const shared_1 = require("shared");
 module.exports = {
     routes: [
@@ -21,12 +22,7 @@ module.exports = {
                     "payment-exists",
                     "is-expired",
                     "is-already-paid",
-                    {
-                        name: "global::isBodyValid",
-                        config: {
-                            schema: shared_1.endpoints.PaySchema,
-                        },
-                    },
+                    utils_1.policies.isBodyValid({ schema: shared_1.endpoints.PaySchema }),
                 ],
                 middlewares: [],
             },

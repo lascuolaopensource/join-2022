@@ -1,12 +1,11 @@
 "use strict";
 
-import { types as t, endpoints as e } from "shared";
+import { types as t, endpoints as e, Errors, formatters as f } from "shared";
 import Stripe from "stripe";
 import _ from "lodash";
 
 import {
     entities,
-    getPaymentBillingInfo,
     getPaymentByHash,
     getPaymentOwner,
     getPaymentBilling,
@@ -32,74 +31,80 @@ module.exports = {
     index: async (ctx: any, next: any): Promise<e.PayRes> => {
         strapi.log.info("In pay controller");
 
-        // Getting body & hash
-        const body: e.PayReq = ctx.request.body;
-        const hash: string = ctx.params.hash;
+        try {
+            // Getting body & hash
+            const body: e.PayReq = ctx.request.body;
+            const hash: string = ctx.params.hash;
 
-        // Getting payment
-        const payment = await getPaymentByHash(hash);
+            // Getting payment
+            const payment = await getPaymentByHash(hash);
 
-        // Se ci sono già info di fatturazione, vengono eliminate
-        // Verranno poi sostituite dalle nuove
-        const existingBilling = await getPaymentBilling(payment.id);
-        if (existingBilling) {
-            await strapi.entityService.delete(
-                entities.billingInfo,
-                existingBilling.id
-            );
-        }
+            // Se ci sono già info di fatturazione, vengono eliminate
+            // Verranno poi sostituite dalle nuove
+            const existingBilling = await getPaymentBilling(payment.id);
+            if (existingBilling) {
+                await strapi.entityService.delete(
+                    entities.billingInfo,
+                    existingBilling.id
+                );
+            }
 
-        // Creating billing data
-        const billingData: t.BillingInfoInput = {
-            payment: payment.id,
-            address: body[body.billingOption].address,
-            data: [
-                {
-                    ..._.omit(body[body.billingOption], "address"),
-                    __component: `billing.${body.billingOption}`,
-                },
-            ],
-        };
-
-        // Creating billing
-        const billing: t.ID<t.BillingInfo> = await strapi.entityService.create(
-            entities.billingInfo,
-            { data: billingData }
-        );
-
-        // Updating payment with billing
-        await strapi.entityService.update(entities.payment, payment.id, {
-            data: {
-                billing: billing.id,
-            },
-        });
-
-        // Creating payment
-        const paymentDetails = await getPaymentDetails(payment.id);
-        const session = await stripe.checkout.sessions.create({
-            line_items: [
-                {
-                    price_data: {
-                        currency: "eur",
-                        product_data: {
-                            name: `${paymentDetails.category} – ${paymentDetails.title}`,
-                        },
-                        unit_amount: paymentDetails.price * 100,
+            // Creating billing data
+            const billingData: t.BillingInfoInput = {
+                payment: payment.id,
+                address: body[body.billingOption].address,
+                data: [
+                    {
+                        ..._.omit(body[body.billingOption], "address"),
+                        __component: `billing.${body.billingOption}`,
                     },
-                    quantity: 1,
-                },
-            ],
-            mode: "payment",
-            success_url: `${process.env.FRONTEND_URL}${paths.pay.success(
-                payment.confirmCode
-            )}`,
-            cancel_url: `${process.env.FRONTEND_URL}${paths.pay.cancel(hash)}`,
-        });
+                ],
+            };
 
-        //
-        return {
-            sessionUrl: session.url,
-        };
+            // Creating billing
+            const billing: t.ID<t.BillingInfo> =
+                await strapi.entityService.create(entities.billingInfo, {
+                    data: billingData,
+                });
+
+            // Updating payment with billing
+            await strapi.entityService.update(entities.payment, payment.id, {
+                data: {
+                    billing: billing.id,
+                },
+            });
+
+            // Creating payment link
+            const paymentDetails = await getPaymentDetails(payment.id);
+            const session = await stripe.checkout.sessions.create({
+                line_items: [
+                    {
+                        price_data: {
+                            currency: "eur",
+                            product_data: {
+                                name: `${paymentDetails.category} – ${paymentDetails.title}`,
+                            },
+                            unit_amount: paymentDetails.price * 100,
+                        },
+                        quantity: 1,
+                    },
+                ],
+                mode: "payment",
+                success_url: `${process.env.FRONTEND_URL}${paths.pay.success(
+                    payment.confirmCode
+                )}`,
+                cancel_url: `${process.env.FRONTEND_URL}${paths.pay.cancel(
+                    hash
+                )}`,
+            });
+
+            //
+            return {
+                sessionUrl: session.url,
+            };
+        } catch (e) {
+            return ctx.internalServerError(e);
+        }
     },
 
     /**
@@ -107,16 +112,24 @@ module.exports = {
      */
 
     confirm: async (ctx: any, next: any): Promise<e.PayConfirmRes> => {
-        strapi.log.info("In payConfirm controller");
+        strapi.log.info("In pay/confirm controller");
 
         /**
-         * PaymentC update
+         * Payment update
          */
 
         // Getting payment
         const payment: t.ID<t.PaymentC> = await strapi
             .query(entities.payment)
             .findOne({ where: { confirmCode: ctx.params.code } });
+
+        if (!payment) {
+            return ctx.notFound(Errors.NotFound, { object: "payment" });
+        }
+
+        if (payment.paid) {
+            return ctx.badRequest(Errors.PaymentAlreadyConfirmed);
+        }
 
         // Updating payment
         await strapi.entityService.update(entities.payment, payment.id, {
@@ -125,7 +138,11 @@ module.exports = {
             },
         });
 
-        // Getting payment details
+        /**
+         * Getting payment details
+         * (for email and updating)
+         */
+
         const paymentDetails = await getPaymentDetails(payment.id);
 
         /**
@@ -138,11 +155,7 @@ module.exports = {
         const ownerInfo = await getUserInfo(owner.id);
 
         // Formatting price
-        const formatter = new Intl.NumberFormat("it-IT", {
-            style: "currency",
-            currency: "EUR",
-        });
-        const formattedPrice = formatter.format(paymentDetails.price);
+        const formattedPrice = f.formatPriceNumber(paymentDetails.price);
 
         // Sending email
         const args: PayConfirmEmailTemplateArgs = {
@@ -181,6 +194,7 @@ module.exports = {
         }
 
         //
+
         return {
             confirmed: true,
             details: paymentDetails,

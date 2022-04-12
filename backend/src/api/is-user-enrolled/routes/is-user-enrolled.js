@@ -6,7 +6,7 @@ module.exports = {
             path: "/is-user-enrolled/:courseID",
             handler: "is-user-enrolled.index",
             config: {
-                policies: [],
+                policies: ["global::user-exists"],
                 middlewares: [],
             },
         },

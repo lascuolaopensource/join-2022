@@ -6,7 +6,7 @@ module.exports = {
             path: "/get-user-relations/enrollments",
             handler: "get-user-relations.enrollments",
             config: {
-                policies: [],
+                policies: ["global::user-exists"],
                 middlewares: [],
             },
         },
@@ -15,7 +15,7 @@ module.exports = {
             path: "/get-user-relations/role",
             handler: "get-user-relations.role",
             config: {
-                policies: [],
+                policies: ["global::user-exists"],
                 middlewares: [],
             },
         },

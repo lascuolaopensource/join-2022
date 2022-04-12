@@ -1,6 +1,6 @@
 "use strict";
 
-import { types as t, endpoints as e } from "shared";
+import { types as t, endpoints as e, Errors } from "shared";
 import { entities } from "../../../utils";
 
 /**
@@ -13,6 +13,10 @@ module.exports = {
 
         // Getting course id
         const courseID: string = ctx.params.courseID;
+
+        if (!courseID) {
+            return ctx.badRequest(Errors.MissingCourseID);
+        }
 
         // Getting user enrollments
         const user: t.ID<t.UsersPermissionsUser> = ctx.state.user;
@@ -35,11 +39,13 @@ module.exports = {
         >;
 
         // Checking all user enrollments
-        for (let e of enrollments) {
-            const course = e.course as any as t.ID<t.Course>;
+        if (enrollments.length) {
+            for (let e of enrollments) {
+                const course = e.course as any as t.ID<t.Course>;
 
-            if (course.id == courseID) {
-                return { enrolled: true };
+                if (course.id == courseID) {
+                    return { enrolled: true };
+                }
             }
         }
 

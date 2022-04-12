@@ -12,13 +12,6 @@ module.exports = {
         // Prendiamo il body della richiesta
         const body: e.LoginEmailReq = ctx.request.body;
 
-        // Validiamo il body
-        try {
-            await e.LoginEmailSchema.validate(body);
-        } catch (err) {
-            return ctx.badRequest(Errors.ValidationError);
-        }
-
         // Portiamo l'email in lowercase,
         // visto che alla creazione dell'utente viene messa così
         const email = body.email.toLowerCase();
@@ -35,10 +28,17 @@ module.exports = {
 
             // Prendiamo anche userinfo per restituire il nome
             const userInfo = await getUserInfo(user.id);
-            return (ctx.body = {
+
+            // Si lancia un errore se userinfo non è stato trovaot
+            if (!userInfo) {
+                return ctx.internalServerError(Errors.MissingUserInfo);
+            }
+
+            // Altrimenti si restituisce
+            return {
                 email: user.email,
                 name: userInfo.name as string,
-            });
+            };
         }
         // Altrimenti, 404
         else {

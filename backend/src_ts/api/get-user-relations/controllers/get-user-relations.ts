@@ -21,10 +21,6 @@ module.exports = {
         // Getting user
         const user: t.ID<t.UsersPermissionsUser> = ctx.state.user;
 
-        if (!user) {
-            return ctx.badRequest(Errors.UserNotFound);
-        }
-
         // Getting user enrollments
         const enrollments: any = await getUserEnrollments(user.id);
 
