@@ -1,12 +1,8 @@
-import { EmailTemplate } from "./types";
-import { HTMLTemplateToText } from "./utils";
-
-/**
- * Pieces
- */
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.payConfirmEmailTemplate = void 0;
+const utils_1 = require("../utils");
 const subject = `Join | Conferma di pagamento`;
-
 const html = `<p>Ciao, <%= USER_NAME %>!</p>
 
     <p>Ti confermiamo che abbiamo ricevuto il tuo pagamento!</p>
@@ -19,26 +15,8 @@ const html = `<p>Ciao, <%= USER_NAME %>!</p>
     <p>Grazie e a presto,<br>
     La Scuola Open Source</p>
 `;
-
-/**
- * Email templates arguments interfaces
- */
-
-export interface PayConfirmEmailTemplateArgs {
-    USER_NAME: string;
-    PAYMENT: {
-        CATEGORY: string;
-        TITLE: string;
-        PRICE: string;
-    };
-}
-
-/**
- * Email template
- */
-
-export const payConfirmEmailTemplate: EmailTemplate = {
+exports.payConfirmEmailTemplate = {
     subject,
     html,
-    text: HTMLTemplateToText(html),
+    text: (0, utils_1.HTMLTemplateToText)(html),
 };
