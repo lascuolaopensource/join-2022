@@ -2,11 +2,7 @@
 
 import { types as t, endpoints as e, Errors } from "shared";
 import { entities, getUserInfo } from "../../../utils";
-import {
-    emailSender,
-    AdminEnrollmentsApprovedEmailTemplateArgs,
-    AdminEnrollmentsRejectedEmailTemplateArgs,
-} from "../../../emails";
+import { emailSender } from "../../../emails";
 
 /**
  * A set of functions called "actions" for `admin-enrollments`
@@ -48,7 +44,6 @@ module.exports = {
         strapi.log.info("In admin-enrollments/update controller");
 
         const body: e.AdminEnrollmentsUpdateReq = ctx.request.body;
-        console.log(body);
 
         try {
             for (let id of Object.keys(body)) {
@@ -64,7 +59,7 @@ module.exports = {
 
                 // Getting states
                 const oldState = enrollment.state;
-                const newState = (body[id] as any).state;
+                const newState = body[id].state;
 
                 // Getting relations
                 const user =

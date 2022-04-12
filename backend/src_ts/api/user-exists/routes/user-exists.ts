@@ -1,4 +1,4 @@
-import { policyIsBodyValid } from "../../../utils";
+import { policies as p } from "../../../utils";
 import { endpoints as e } from "shared";
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
             path: "/user-exists",
             handler: "user-exists.index",
             config: {
-                policies: [policyIsBodyValid(e.UserExistsSchema)],
+                policies: [p.isBodyValid({ schema: e.UserExistsSchema })],
             },
         },
     ],

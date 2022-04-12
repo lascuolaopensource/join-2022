@@ -9,7 +9,7 @@ module.exports = {
             path: "/login-email",
             handler: "login-email.index",
             config: {
-                policies: [(0, utils_1.policyIsBodyValid)(shared_1.endpoints.LoginEmailSchema)],
+                policies: [utils_1.policies.isBodyValid({ schema: shared_1.endpoints.LoginEmailSchema })],
             },
         },
     ],

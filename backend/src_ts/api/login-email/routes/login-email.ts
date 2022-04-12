@@ -1,4 +1,4 @@
-import { policyIsBodyValid } from "../../../utils";
+import { policies as p } from "../../../utils";
 import { endpoints as e } from "shared";
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
             path: "/login-email",
             handler: "login-email.index",
             config: {
-                policies: [policyIsBodyValid(e.LoginEmailSchema)],
+                policies: [p.isBodyValid({ schema: e.LoginEmailSchema })],
             },
         },
     ],

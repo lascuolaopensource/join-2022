@@ -1,15 +1,20 @@
 import * as yup from "yup";
 import { Errors as E, endpoints as e } from "shared";
+import { policies as p } from "../utils";
 
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
 
-module.exports = async (policyContext: any, config: any, { strapi }: any) => {
-    const policy = "isBodyValid";
+module.exports = async (
+    policyContext: any,
+    config: p.IsBodyValidConfig,
+    { strapi }: any
+) => {
+    const policy = "is-body-valid";
     strapi.log.info(`In ${policy} policy`);
 
     // Getting validator
-    const schema: yup.AnySchema = config.schema;
+    const schema = config.schema;
 
     // Throwing error if no schema
     if (!schema) {

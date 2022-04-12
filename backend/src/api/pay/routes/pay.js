@@ -22,7 +22,7 @@ module.exports = {
                     "payment-exists",
                     "is-expired",
                     "is-already-paid",
-                    (0, utils_1.policyIsBodyValid)(shared_1.endpoints.PaySchema),
+                    utils_1.policies.isBodyValid({ schema: shared_1.endpoints.PaySchema }),
                 ],
                 middlewares: [],
             },

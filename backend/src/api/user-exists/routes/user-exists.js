@@ -9,7 +9,7 @@ module.exports = {
             path: "/user-exists",
             handler: "user-exists.index",
             config: {
-                policies: [(0, utils_1.policyIsBodyValid)(shared_1.endpoints.UserExistsSchema)],
+                policies: [utils_1.policies.isBodyValid({ schema: shared_1.endpoints.UserExistsSchema })],
             },
         },
     ],

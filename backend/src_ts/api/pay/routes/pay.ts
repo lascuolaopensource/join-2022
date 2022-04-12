@@ -1,4 +1,4 @@
-import { policyIsBodyValid } from "../../../utils";
+import { policies as p } from "../../../utils";
 import { endpoints as e } from "shared";
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
                     "payment-exists",
                     "is-expired",
                     "is-already-paid",
-                    policyIsBodyValid(e.PaySchema),
+                    p.isBodyValid({ schema: e.PaySchema }),
                 ],
                 middlewares: [],
             },

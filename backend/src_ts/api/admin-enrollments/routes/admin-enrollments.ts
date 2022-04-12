@@ -1,3 +1,6 @@
+import { policies as p } from "../../../utils";
+import { endpoints as e, types as t } from "shared";
+
 module.exports = {
     routes: [
         {
@@ -5,7 +8,10 @@ module.exports = {
             path: "/admin-enrollments/get-active-courses",
             handler: "admin-enrollments.getActiveCourses",
             config: {
-                policies: [],
+                policies: [
+                    "global::user-exists",
+                    p.isRole({ role: t.UserPermissionRoles.AdminEnrollments }),
+                ],
                 middlewares: [],
             },
         },
@@ -14,7 +20,11 @@ module.exports = {
             path: "/admin-enrollments/update",
             handler: "admin-enrollments.update",
             config: {
-                policies: [],
+                policies: [
+                    "global::user-exists",
+                    p.isRole({ role: t.UserPermissionRoles.AdminEnrollments }),
+                    p.isBodyValid({ schema: e.AdminEnrollmentsUpdateSchema }),
+                ],
                 middlewares: [],
             },
         },

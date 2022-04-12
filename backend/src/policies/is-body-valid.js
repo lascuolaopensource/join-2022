@@ -4,7 +4,7 @@ const shared_1 = require("shared");
 const utils = require("@strapi/utils");
 const { PolicyError } = utils.errors;
 module.exports = async (policyContext, config, { strapi }) => {
-    const policy = "isBodyValid";
+    const policy = "is-body-valid";
     strapi.log.info(`In ${policy} policy`);
     const schema = config.schema;
     if (!schema) {
