@@ -1,5 +1,9 @@
 <script context="module" lang="ts">
+	import { writable } from 'svelte/store';
+
 	export const key = 'navKey';
+
+	export const navHgt = writable<number>(0);
 </script>
 
 <script lang="ts">
@@ -25,7 +29,6 @@
 	};
 
 	let currentSection = data.home;
-	let navHgt: number;
 	let open: boolean = false;
 
 	//
@@ -38,7 +41,7 @@
 	});
 </script>
 
-<nav bind:clientHeight={navHgt}>
+<nav bind:clientHeight={$navHgt}>
 	<div class="nav__title">Join / SOS</div>
 	<button
 		class="nav__btn"
@@ -60,7 +63,7 @@
 </nav>
 
 {#if open}
-	<div class="menu space-between" style:--h="{navHgt}px">
+	<div class="menu space-between" style:--h="{$navHgt}px">
 		<MenuItem data={data.home} />
 		<MenuItem data={data.courses} />
 		{#if $userRole == t.UserPermissionRoles.AdminEnrollments}
@@ -126,5 +129,6 @@
 		border-top: 1px solid white;
 		display: flex;
 		flex-flow: column nowrap;
+		z-index: 98;
 	}
 </style>
