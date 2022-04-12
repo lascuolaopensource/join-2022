@@ -268,6 +268,8 @@ export const req = {
 		);
 	},
 
+	//
+
 	adminGetCourseEnrollments: async (
 		courseID: number | string,
 		fetchFn = fetch
@@ -297,6 +299,18 @@ export const req = {
 			`${b}api/enrollments?${query}`,
 			'GET',
 			null,
+			headersAuth()
+		);
+	},
+
+	//
+
+	adminUpdateEnrollments: async (data, fetchFn = fetch) => {
+		return await request(
+			fetchFn,
+			`${b}api/admin-enrollments/update`,
+			'POST',
+			data,
 			headersAuth()
 		);
 	}
