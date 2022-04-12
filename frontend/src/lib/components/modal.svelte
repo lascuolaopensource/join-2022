@@ -47,6 +47,7 @@
 		width: 100vw;
 		height: 100vh;
 		z-index: 9999;
+		margin: 0; /* Counters eventual space-between*/
 
 		background-color: white;
 	}

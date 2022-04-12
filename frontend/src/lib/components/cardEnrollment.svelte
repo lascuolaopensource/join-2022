@@ -2,12 +2,18 @@
 	import { types as t } from 'shared';
 	import prependHttp from 'prepend-http';
 
+	import Modal from './modal.svelte';
+
 	export let enrollment: t.Enrollment;
 	export let editable = false;
 	export let state = enrollment.state;
 
 	const owner: t.UsersPermissionsUser = enrollment.owner?.data.attributes;
 	const ownerInfo: t.UserInfo = owner?.userInfo?.data.attributes;
+
+	//
+
+	let showLetter = false;
 </script>
 
 <!--  -->
@@ -47,8 +53,11 @@
 
 		<!-- Lettera motivazionale -->
 		{#if enrollment.motivationalLetter}
-			<button class="ev-btn" on:click|preventDefault
-				>Lettera motivazionale</button
+			<button
+				class="ev-btn"
+				on:click={() => {
+					showLetter = true;
+				}}>Lettera motivazionale</button
 			>
 		{/if}
 	</div>
@@ -67,6 +76,14 @@
 	</div>
 </div>
 
+<Modal
+	title="Lettera – {ownerInfo.name} {ownerInfo.surname}"
+	bind:open={showLetter}
+>
+	{enrollment.motivationalLetter}
+</Modal>
+
+<!--  -->
 <style>
 	.en-card {
 		padding: var(--s-2);
