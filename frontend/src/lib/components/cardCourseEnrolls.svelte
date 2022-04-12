@@ -14,6 +14,8 @@
 	}
 </script>
 
+<!--  -->
+
 <a href="/inside/admin/enrollments/{course.id}">
 	<h3>
 		{course.title}
@@ -29,6 +31,7 @@
 	<h3 class="arrow">→</h3>
 </a>
 
+<!--  -->
 <style>
 	a {
 		display: block;
