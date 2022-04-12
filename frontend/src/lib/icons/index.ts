@@ -5,6 +5,9 @@ import User24 from './User24.svelte';
 import WarningAlt24 from './WarningAlt24.svelte';
 import WarningAltFilled16 from './WarningAltFilled16.svelte';
 import WarningAltFilled24 from './WarningAltFilled24.svelte';
+import ArrowDown24 from './ArrowDown24.svelte';
+import ArrowUp24 from './ArrowUp24.svelte';
+import Menu24 from './Menu24.svelte';
 
 export const icons = {
 	fields: {
@@ -19,5 +22,10 @@ export const icons = {
 		error: WarningAltFilled16,
 		close: Close24,
 		formError: WarningAlt24
-	}
+	},
+	arrows: {
+		up: ArrowUp24,
+		down: ArrowDown24
+	},
+	menu: Menu24
 };

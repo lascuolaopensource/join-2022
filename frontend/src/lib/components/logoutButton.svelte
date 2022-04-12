@@ -26,6 +26,7 @@
 		background-color: var(--nav-main-item-bg);
 		color: var(--nav-main-item-text);
 		line-height: var(--text-normal);
+		width: fit-content;
 	}
 
 	button:hover {
