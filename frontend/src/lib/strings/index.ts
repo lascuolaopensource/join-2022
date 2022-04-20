@@ -30,6 +30,16 @@ export const s = {
 		link: `Questo link è contenuto nella mail che hai appena ricevuto.
 			Se vuoi completare il pagamento in un secondo momento sai dove trovarlo,
 			ma occhio alla data di scadenza!`
+	},
+	admin: {
+		enrollments: {
+			selectionNeeded:
+				'È richiesta selezione dei partecipanti: è stato superato il numero massimo di iscrizioni',
+			preconditions:
+				"Sono richiesti dei prerequisiti per l'iscrizione al corso, verifica quali sono sulla pagina del corso prima di selezionare i partecipanti.",
+			selectionNotNeeded:
+				'NON è richiesta selezione dei partecipanti: è stato superato solo il numero minimo di iscrizioni.'
+		}
 	}
 };
 
@@ -42,4 +52,11 @@ export const enrollmentStates: Record<t.Enum_Enrollment_State, string> = {
 	approved: 'Approvata',
 	awaitingPayment: 'In attesa di pagamento',
 	rejected: 'Rifiutata'
+};
+
+export const enrollmentStatesAdmin: Record<t.Enum_Enrollment_State, string> = {
+	pending: 'In attesa di approvazione',
+	approved: 'Approvate',
+	awaitingPayment: 'Pagamento non avvenuto',
+	rejected: 'Rifiutate'
 };
