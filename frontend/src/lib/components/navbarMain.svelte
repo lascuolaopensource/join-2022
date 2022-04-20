@@ -24,7 +24,7 @@
 	const data: Record<string, MenuSection> = {
 		home: { href: '/inside', label: 'Home' },
 		courses: { href: '/inside/courses', label: 'Corsi' },
-		admin: { href: '/inside/admin', label: 'Admin' },
+		admin: { href: '/inside/admin/enrollments', label: 'Admin iscrizioni' },
 		profile: { href: '/inside/profile', label: $userInfo.name }
 	};
 
@@ -66,8 +66,10 @@
 	<div class="menu space-between" style:--h="{$navHgt}px">
 		<MenuItem data={data.home} />
 		<MenuItem data={data.courses} />
+		<hr />
 		{#if $userRole == t.UserPermissionRoles.AdminEnrollments}
 			<MenuItem data={data.admin} />
+			<hr />
 		{/if}
 		<MenuItem data={data.profile} />
 		<LogoutButton>↖ Logout</LogoutButton>
