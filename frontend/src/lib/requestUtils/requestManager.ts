@@ -181,9 +181,12 @@ export const req = {
 
 	getCourseByID: async (
 		ID: string,
+		query = '',
 		fetchFn = fetch
 	): Promise<t.CourseEntityResponse> => {
-		return await request(fetchFn, `${b}api/courses/${ID}`);
+		let url = `${b}api/courses/${ID}`;
+		if (query) url += `?${query}`;
+		return await request(fetchFn, url);
 	},
 
 	//
@@ -256,12 +259,12 @@ export const req = {
 	 * Admin stuff
 	 */
 
-	adminGetActiveCourses: async (
+	adminGetUpcomingCourses: async (
 		fetchFn = fetch
-	): Promise<e.AdminEnrollmentsGetActiveCoursesRes> => {
+	): Promise<e.AdminEnrollmentsGetUpcomingCoursesRes> => {
 		return await request(
 			fetchFn,
-			`${b}api/admin-enrollments/get-active-courses`,
+			`${b}api/admin-enrollments/get-upcoming-courses`,
 			'GET',
 			null,
 			headersAuth()
@@ -286,7 +289,8 @@ export const req = {
 				populate: {
 					owner: {
 						populate: ['userInfo']
-					}
+					},
+					phoneNumber: '*'
 				}
 			},
 			{
@@ -311,6 +315,21 @@ export const req = {
 			`${b}api/admin-enrollments/update`,
 			'POST',
 			data,
+			headersAuth()
+		);
+	},
+
+	//
+
+	adminEnrollmentsNotify: async (
+		courseID: string | number,
+		fetchFn = fetch
+	) => {
+		return await request(
+			fetchFn,
+			`${b}api/admin-enrollments/notify/${courseID}`,
+			'GET',
+			null,
 			headersAuth()
 		);
 	}
