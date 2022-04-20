@@ -3,10 +3,15 @@
 	border-radius: var(--border-radius);
 	border: none;
 	text-decoration: none;
+	line-height: 1;
 }
 
 .btn-big {
 	padding: 20px;
+}
+
+.btn-small {
+	padding: var(--s-0) var(--s-1);
 }
 
 .btn:hover {
@@ -31,11 +36,13 @@
 }
 
 .btn-tertiary {
-	background-color: transparent;
+	color: black;
+	background-color: lightgrey;
 }
 
 .btn-tertiary:hover {
-	background-color: var(--tertiary-hover-light);
+	color: black;
+	background-color: gray;
 }
 
 .btn[disabled] {
