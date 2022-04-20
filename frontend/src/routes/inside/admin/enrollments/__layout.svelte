@@ -44,10 +44,6 @@
 {#if loading}
 	<Loading />
 {:else}
-	<NavbarSecondary>
-		<NavbarItem href="/inside/admin/enrollments">Iscrizioni</NavbarItem>
-	</NavbarSecondary>
-
 	<Container>
 		<slot />
 	</Container>
