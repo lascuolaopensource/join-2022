@@ -14,7 +14,6 @@
 	} from '$lib/components';
 	import type { TooltipContent } from '$lib/components/tooltip.svelte';
 	import { s, enrollmentStatesAdmin } from '$lib/strings';
-	import { navHgt } from '$lib/components/navbarMain.svelte';
 
 	//
 
@@ -259,7 +258,15 @@
 				{@const enNum = enList.length}
 
 				<tr>
-					<th colspan="100">{enrollmentStatesAdmin[s]} ({enNum})</th>
+					<th colspan="100"
+						>{enrollmentStatesAdmin[s]}
+
+						{#if s == t.Enum_Enrollment_State.Approved}
+							({enNum}/{res.course.enrollmentMin})
+						{:else}
+							({enNum})
+						{/if}
+					</th>
 				</tr>
 				{#if enNum > 0}
 					{#each enList as id}
