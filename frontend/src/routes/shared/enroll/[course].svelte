@@ -8,7 +8,7 @@
 		const course = await req.getCourseBySlug(slug, fetch);
 
 		// Ci si può ancora iscrivere al corso si ritornano i dati
-		if (h.course.isEnrollable(course.attributes)) {
+		if (h.course.isErollmentTime(course.attributes)) {
 			return {
 				props: {
 					slug,

@@ -41,7 +41,7 @@
 {/if}
 
 <!-- Iscriviti -->
-{#if h.course.isEnrollable(c)}
+{#if h.course.isErollmentTime(c)}
 	<div class="iscriviti-container">
 		{#await promise then isUserEnrolled}
 			{#if isUserEnrolled.enrolled}
