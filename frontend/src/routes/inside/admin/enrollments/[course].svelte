@@ -2,7 +2,7 @@
 	import { req } from '$lib/requestUtils';
 	import { helpers as h, types as t, formatters as f } from 'shared';
 	import { page } from '$app/stores';
-	import _, { map } from 'lodash';
+	import _ from 'lodash';
 	import qs from 'qs';
 
 	import {
@@ -14,6 +14,7 @@
 	} from '$lib/components';
 	import type { TooltipContent } from '$lib/components/tooltip.svelte';
 	import { s, enrollmentStatesAdmin } from '$lib/strings';
+	import { navHgt } from '$lib/components/navbarMain.svelte';
 
 	//
 
@@ -193,36 +194,35 @@
 
 	<!-- Tabella con info -->
 
-	<div>
-		<h1>{res.course.title}</h1>
-		<table>
-			<tr>
-				<td> Stato </td>
-				<td>
-					{res.course.canStart ? '' : '⚠️'}
-					Il corso {res.course.canStart ? '' : 'non'} può partire
-				</td>
-			</tr>
-			<tr>
-				<td> Selezione </td>
-				<td>{res.course.enrollsMessage}</td>
-			</tr>
-			<tr>
-				<td> Iscrizioni totali </td>
-				<td
-					>{res.course.enrollsNum} / min {res.course.enrollmentMin} / max {res
-						.course.enrollmentMax}</td
-				>
-			</tr>
-			<tr>
-				<td>Iscrizioni approvate</td>
-				<td
-					>{enrollsApprovedNum} / min {res.course.enrollmentMin} / max
-					{res.course.enrollmentMax}</td
-				>
-			</tr>
-		</table>
-	</div>
+	<h1>{res.course.title}</h1>
+
+	<table>
+		<tr>
+			<td> Stato </td>
+			<td>
+				{res.course.canStart ? '' : '⚠️'}
+				Il corso {res.course.canStart ? '' : 'non'} può partire
+			</td>
+		</tr>
+		<tr>
+			<td> Selezione </td>
+			<td>{res.course.enrollsMessage}</td>
+		</tr>
+		<tr>
+			<td> Iscrizioni totali </td>
+			<td
+				>{res.course.enrollsNum} / min {res.course.enrollmentMin} / max {res
+					.course.enrollmentMax}</td
+			>
+		</tr>
+		<tr>
+			<td>Iscrizioni approvate</td>
+			<td
+				>{enrollsApprovedNum} / min {res.course.enrollmentMin} / max
+				{res.course.enrollmentMax}</td
+			>
+		</tr>
+	</table>
 
 	<!-- Notifica dell'iscrizione -->
 
@@ -252,27 +252,31 @@
 
 	<!-- Liste con iscrizioni -->
 
-	<div class="" class:mb-5={changed}>
-		{#each states as s}
-			{@const enList = filterEnrollmentsByState(enrollments, s)}
-			{@const enNum = enList.length}
+	<div class="table-container">
+		<table>
+			{#each states as s}
+				{@const enList = filterEnrollmentsByState(enrollments, s)}
+				{@const enNum = enList.length}
 
-			<h2>{enrollmentStatesAdmin[s]} ({enNum})</h2>
-			<div class="enrolls">
+				<tr>
+					<th colspan="100">{enrollmentStatesAdmin[s]} ({enNum})</th>
+				</tr>
 				{#if enNum > 0}
-					<table>
-						{#each enList as id}
-							<CardEnrollment
-								enrollment={enrollments[id]}
-								bind:state={enrollments[id].state}
-							/>
-						{/each}
-					</table>
+					{#each enList as id}
+						<CardEnrollment
+							enrollment={enrollments[id]}
+							bind:state={enrollments[id].state}
+						/>
+					{/each}
 				{:else}
-					<p style:color="gray">Non ci sono iscrizioni in questa sezione</p>
+					<tr>
+						<td colspan="100" style:color="gray"
+							>Non ci sono iscrizioni in questa sezione</td
+						>
+					</tr>
 				{/if}
-			</div>
-		{/each}
+			{/each}
+		</table>
 	</div>
 
 	<!--  -->
@@ -296,11 +300,6 @@
 
 <!--  -->
 <style>
-	h2 {
-		font-size: 26px;
-		margin-top: var(--s-5);
-	}
-
 	.submit {
 		position: fixed;
 		width: 100%;
@@ -314,22 +313,28 @@
 		align-items: center;
 	}
 
-	.mb-5 {
-		margin-bottom: var(--s-5);
-	}
-
-	.mb-2 {
-		margin-bottom: var(--s-2);
-	}
-
-	.enrolls {
-		display: flex;
-		flex-flow: column nowrap;
-		gap: var(--s-1);
-		margin-top: var(--s-1);
-	}
-
 	.btn-notify {
-		margin: var(--s-1) 0;
+		margin: var(--s-2) 0;
+	}
+
+	/*  */
+
+	.table-container {
+		overflow-x: auto;
+	}
+
+	table {
+		border: none !important;
+	}
+
+	h1 {
+		margin-bottom: var(--s-1);
+	}
+
+	th {
+		border: none !important;
+		padding-top: var(--s-3);
+		font-size: 20px;
+		padding-left: 0;
 	}
 </style>
