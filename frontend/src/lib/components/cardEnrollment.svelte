@@ -118,7 +118,7 @@
 			<button
 				class="btn btn-small btn-tertiary"
 				on:click={() => {
-					changeState(t.Enum_Enrollment_State.AwaitingPayment);
+					changeState(t.Enum_Enrollment_State.Pending);
 				}}
 			>
 				Sposta in "Da approvare"
