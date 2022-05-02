@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "events",
+  "info": {
+    "singularName": "event",
+    "pluralName": "events",
+    "displayName": "Event"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "meetings": {
+      "type": "component",
+      "repeatable": true,
+      "component": "time.meeting"
+    },
+    "tool": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tool.tool",
+      "inversedBy": "bookings"
+    }
+  }
+}
