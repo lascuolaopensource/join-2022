@@ -35,6 +35,7 @@
     "get-value": "^3.0.1",
     "graphql-request": "^4.2.0",
     "lodash": "^4.17.21",
+    "nanoid": "^3.3.3",
     "prepend-http": "^4.0.0",
     "qs": "^6.10.3",
     "shared": "github:lascuolaopensource/join-shared",
