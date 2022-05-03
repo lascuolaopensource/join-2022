@@ -258,7 +258,7 @@ export const req = {
 
 	adminGetActiveCourses: async (
 		fetchFn = fetch
-	): Promise<e.AdminEnrollmentsGetActiveCoursesRes> => {
+	): Promise<e.AdminEnrollmentsGetUpcomingCoursesRes> => {
 		return await request(
 			fetchFn,
 			`${b}api/admin-enrollments/get-active-courses`,
@@ -309,6 +309,27 @@ export const req = {
 		return await request(
 			fetchFn,
 			`${b}api/admin-enrollments/update`,
+			'POST',
+			data,
+			headersAuth()
+		);
+	},
+
+	//
+
+	getTools: async (
+		fetchFn = fetch
+	): Promise<t.ToolEntityResponseCollection> => {
+		return await request(fetchFn, `${b}api/tools`, 'GET', null, headersAuth());
+	},
+
+	getToolsSlots: async (
+		data: e.BookToolsCheckAvailabilityReq,
+		fetchFn = fetch
+	) => {
+		return await request(
+			fetchFn,
+			`${b}api/book-tools/check-availability`,
 			'POST',
 			data,
 			headersAuth()
