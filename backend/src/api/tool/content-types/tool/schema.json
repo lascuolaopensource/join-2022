@@ -24,10 +24,10 @@
       "type": "string",
       "required": true
     },
-    "bookings": {
+    "slots": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::event.event",
+      "target": "api::tool-slot.tool-slot",
       "mappedBy": "tool"
     }
   }

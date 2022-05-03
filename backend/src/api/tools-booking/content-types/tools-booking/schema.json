@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tools_bookings",
+  "info": {
+    "singularName": "tools-booking",
+    "pluralName": "tools-bookings",
+    "displayName": "Tools Booking"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "tools_bookings"
+    },
+    "slots": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tool-slot.tool-slot",
+      "mappedBy": "booking"
+    }
+  }
+}

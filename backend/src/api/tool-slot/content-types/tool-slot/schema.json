@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tool_slots",
+  "info": {
+    "singularName": "tool-slot",
+    "pluralName": "tool-slots",
+    "displayName": "Tool slot",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "time_start": {
+      "type": "time",
+      "required": true
+    },
+    "time_end": {
+      "type": "time",
+      "required": true
+    },
+    "booking": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tools-booking.tools-booking",
+      "inversedBy": "slots"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "booking",
+        "block"
+      ],
+      "required": true
+    },
+    "tool": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tool.tool",
+      "inversedBy": "slots"
+    }
+  }
+}
