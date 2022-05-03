@@ -8,3 +8,4 @@ export const userInfo = writable<t.UserInfo | null>(null);
 export const userRole = writable<t.UserPermissionRoles | null>(null);
 
 export const course = writable<t.CourseEntity | null>(null);
+export const tools = writable<Array<t.ToolEntity>>([]);
