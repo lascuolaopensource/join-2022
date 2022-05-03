@@ -20,7 +20,7 @@ module.exports = async (policyContext: any, config: any, { strapi }: any) => {
     const course = await getCourseByID(body.courseId);
 
     // Is expired or enrollable?
-    const isEnrollable = h.course.isEnrollable(course);
+    const isEnrollable = h.course.isErollmentTime(course);
 
     if (isEnrollable) {
         return true;
