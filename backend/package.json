@@ -21,7 +21,7 @@
     "@strapi/provider-email-nodemailer": "^4.1.3",
     "@strapi/strapi": "4.1.3",
     "mysql": "^2.18.1",
-    "shared": "https://github.com/lascuolaopensource/join-shared",
+    "shared": "https://github.com/lascuolaopensource/join-shared.git",
     "sqlite3": "5.0.2",
     "stripe": "^8.207.0"
   },
