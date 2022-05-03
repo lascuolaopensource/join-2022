@@ -2,15 +2,12 @@
 	import { TextField, Form, SubmitButton } from '$lib/components/form';
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import { key } from './modal.svelte';
-	import { getContext } from 'svelte';
+	import { close } from './modal.svelte';
 
 	export let match: string;
 	export let onSubmit: () => Promise<any> = async () => {
 		console.log('submitting');
 	};
-
-	const { close } = getContext(key);
 
 	const formContext = createForm({
 		initialValues: {
