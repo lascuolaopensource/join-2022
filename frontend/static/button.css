@@ -5,6 +5,10 @@
 	text-decoration: none;
 }
 
+.btn-w-fill {
+	width: 100%;
+}
+
 .btn-big {
 	padding: 20px;
 }
