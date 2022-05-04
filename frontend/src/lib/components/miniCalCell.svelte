@@ -24,7 +24,9 @@
 
 	function edit() {
 		if (editable) {
+			state = state == 'free' ? 'blocked' : 'free';
 			edited = edited ? false : true;
+
 			dispatch('edit', {
 				dateTime,
 				state,
@@ -42,7 +44,9 @@
 	class:blocked={state == 'blocked'}
 	class:edited
 	on:click={edit}
-/>
+>
+	<slot />
+</div>
 
 <!--  -->
 <style>
