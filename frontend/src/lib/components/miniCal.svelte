@@ -5,27 +5,30 @@
 
 	//
 
-	// Setting the start date time to zero
-	start.setHours(0, 0, 0, 0);
+	let daysList: Array<Date> = [];
+	let hoursList: Array<number> = [];
 
-	// Listing the days
-	const daysList: Array<Date> = [];
-	for (let i = 0; i < days; i++) {
-		// Create new date instance
-		const newDate = new Date(start.getTime());
-		// Add a day
-		newDate.setDate(start.getDate() + i);
-		//
-		daysList.push(newDate);
+	$: {
+		// Setting the start date time to zero
+		start.setHours(0, 0, 0, 0);
+
+		// Listing the days
+		daysList = [];
+		for (let i = 0; i < days; i++) {
+			// Create new date instance
+			const newDate = new Date(start.getTime());
+			// Add a day
+			newDate.setDate(start.getDate() + i);
+			//
+			daysList.push(newDate);
+		}
+
+		// Listing the hours
+		hoursList = [];
+		for (let i = 0; i < hours; i++) {
+			hoursList.push(i);
+		}
 	}
-
-	// Listing the hours
-	const hoursList: Array<number> = [];
-	for (let i = 0; i < hours; i++) {
-		hoursList.push(i);
-	}
-
-	//
 
 	// Hour formatter
 	function formatHour(h: number) {
