@@ -90,14 +90,16 @@
 
 <!--  -->
 
-<main>
-	<div class="sidebar">
+<div class="flex flex-row flex-nowrap">
+	<div class="basis-1/3">
 		<button
+			class="bg-slate-200 hover:bg-slate-300"
 			on:click={() => {
 				changeWeek(-1);
 			}}>-</button
 		>
 		<button
+			class="bg-slate-200 hover:bg-slate-300"
 			on:click={() => {
 				changeWeek(1);
 			}}>+</button
@@ -105,9 +107,9 @@
 		{weekStart}
 	</div>
 
-	<div class="cals__container">
+	<div class="flex flex-row flex-wrap gap-4">
 		{#each $tools as t}
-			<div class="cal__container">
+			<div class="basis-1/3">
 				<p><strong>{t.attributes.name}</strong></p>
 				<MiniCal start={weekStart} {hours} let:dateTime>
 					<MiniCalCell
@@ -122,31 +124,12 @@
 			<pre>{JSON.stringify(edits[t.id], null, 2)}</pre>
 		{/each}
 	</div>
-</main>
+</div>
 
 <!--  -->
 <style>
 	button {
 		width: 40px;
 		height: 40px;
-	}
-
-	main {
-		display: flex;
-		flex-flow: row nowrap;
-	}
-
-	.sidebar {
-		flex-basis: 40%;
-	}
-
-	.cals__container {
-		display: flex;
-		flex-flow: row wrap;
-		gap: var(--s-2);
-	}
-
-	.cal__container {
-		flex-basis: 30%;
 	}
 </style>
