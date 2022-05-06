@@ -324,6 +324,35 @@ export const req = {
 	},
 
 	getToolsSlots: async (
+		startDate: string,
+		endDate: string,
+		fetchFn = fetch
+	): Promise<t.ToolSlotEntityResponseCollection> => {
+		const query = qs.stringify(
+			{
+				filters: {
+					$and: [{ date: { $gte: startDate } }, { date: { $lt: endDate } }]
+				},
+				populate: {
+					tool: {
+						fields: ['id']
+					}
+				}
+			},
+			{
+				encodeValuesOnly: true
+			}
+		);
+		return await request(
+			fetchFn,
+			`${b}api/tool-slots?${query}`,
+			'GET',
+			null,
+			headersAuth()
+		);
+	},
+
+	checkSlots: async (
 		data: e.BookToolsCheckAvailabilityReq,
 		fetchFn = fetch
 	) => {
