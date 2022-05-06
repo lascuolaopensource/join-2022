@@ -13,7 +13,7 @@
 	<h1>Da approvare</h1>
 	<div class="space-between">
 		{#each res.courses as c}
-			{#if !h.course.isEnrollable(c) && c.enrollments.length >= c.enrollmentMin}
+			{#if !h.course.isErollmentTime(c) && c.enrollments.length >= c.enrollmentMin}
 				<CardCourseEnrolls course={c} />
 			{/if}
 		{/each}
@@ -22,7 +22,7 @@
 	<h1>Non partiti</h1>
 	<div class="space-between">
 		{#each res.courses as c}
-			{#if !h.course.isEnrollable(c) && c.enrollments.length < c.enrollmentMin}
+			{#if !h.course.isErollmentTime(c) && c.enrollments.length < c.enrollmentMin}
 				<CardCourseEnrolls course={c} />
 			{/if}
 		{/each}
@@ -31,7 +31,7 @@
 	<h1>In iscrizione</h1>
 	<div class="space-between">
 		{#each res.courses as c}
-			{#if h.course.isEnrollable(c)}
+			{#if h.course.isErollmentTime(c)}
 				<CardCourseEnrolls course={c} />
 			{/if}
 		{/each}

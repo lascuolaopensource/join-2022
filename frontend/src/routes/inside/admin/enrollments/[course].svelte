@@ -11,6 +11,7 @@
 		ModalConfirm,
 		Tooltip
 	} from '$lib/components';
+	import { open } from '$lib/components/modal.svelte';
 	import { setFormError } from '$lib/components/form';
 	import { navHgt } from '$lib/components/navbarMain.svelte';
 
@@ -76,12 +77,6 @@
 		console.log(enrollments);
 		enrollments = enrollments;
 		changed = !_.isEqual(enrollments, enrollmentsInit);
-	}
-
-	let openModal = false;
-
-	function open() {
-		openModal = true;
 	}
 
 	function undo() {
@@ -158,7 +153,7 @@
 
 	<!--  -->
 
-	<Modal title="Attenzione!" bind:open={openModal}>
+	<Modal title="Attenzione!">
 		<p class="mb-2">
 			Sei sicur* di approvare i cambiamenti? <br />
 			Verranno inviate mail di conferma ai partecipanti a cui è stata aggiornata
@@ -197,13 +192,5 @@
 		flex-flow: row nowrap;
 		justify-content: space-between;
 		align-items: center;
-	}
-
-	.mb-5 {
-		margin-bottom: var(--s-5);
-	}
-
-	.mb-2 {
-		margin-bottom: var(--s-2);
 	}
 </style>
