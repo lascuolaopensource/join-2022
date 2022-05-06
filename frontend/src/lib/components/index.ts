@@ -1,4 +1,5 @@
 import Button from './button.svelte';
+import BottomBar from './bottomBar.svelte';
 import Callout from './callout.svelte';
 import CardCourse from './cardCourse.svelte';
 import CardCourseEnrolls from './cardCourseEnrolls.svelte';
@@ -28,6 +29,7 @@ import Steps from './steps.svelte';
 
 export {
 	Button,
+	BottomBar,
 	Callout,
 	CardCourse,
 	CardCourseEnrolls,
