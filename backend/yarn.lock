@@ -9674,9 +9674,9 @@ shallowequal@^1.1.0:
   resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
   integrity sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==
 
-"shared@https://github.com/lascuolaopensource/join-shared.git":
+"shared@github:lascuolaopensource/join-shared":
   version "0.0.1"
-  resolved "https://github.com/lascuolaopensource/join-shared.git#a926a94c04c2dc605e9255b7ed9d17504defa8bd"
+  resolved "https://codeload.github.com/lascuolaopensource/join-shared/tar.gz/bc5bc434488fa6cd7ac87cb122c9870c42d97dc1"
   dependencies:
     graphql-tag "^2.12.6"
     yup "^0.32.11"
