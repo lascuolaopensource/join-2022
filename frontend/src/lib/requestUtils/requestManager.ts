@@ -363,5 +363,15 @@ export const req = {
 			data,
 			headersAuth()
 		);
+	},
+
+	updateSlots: async (data: e.AdminToolsUpdateSlotsReq, fetchFn = fetch) => {
+		return await request(
+			fetchFn,
+			`${b}api/admin-tools/update-slots`,
+			'POST',
+			data,
+			headersAuth()
+		);
 	}
 };

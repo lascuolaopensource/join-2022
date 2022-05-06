@@ -2,7 +2,7 @@
 	import { tools } from '$lib/stores';
 	import _ from 'lodash';
 	import { req } from '$lib/requestUtils';
-	import { helpers as h, types as t } from 'shared';
+	import { helpers as h, endpoints as e } from 'shared';
 
 	import { MiniCal, MiniCalCell, BottomBar, Button } from '$lib/components';
 	import type { CellContent } from '$lib/components/miniCalCell.svelte';
@@ -99,11 +99,16 @@
 	// Saving changes
 
 	function getChanges() {
-		const changes = [];
+		const changes: Array<e.SlotUpdate> = [];
 		for (let toolID in calendars) {
 			for (let dateID in calendars[toolID]) {
 				const slot = calendars[toolID][dateID];
-				if (slot.edited) changes.push({ toolID, dateID, state: slot.state });
+				if (slot.edited)
+					changes.push({
+						toolID,
+						dateTime: dateID,
+						state: slot.state
+					});
 			}
 		}
 		return changes;
@@ -112,6 +117,7 @@
 	async function saveChanges() {
 		const changes = getChanges();
 		console.log(changes);
+		await req.updateSlots({ changes });
 	}
 </script>
 
