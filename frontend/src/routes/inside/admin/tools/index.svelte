@@ -1,78 +1,80 @@
 <script lang="ts">
 	import { tools } from '$lib/stores';
 	import { MiniCal, MiniCalCell } from '$lib/components';
-	import { miniCalCellStates } from '$lib/components/miniCalCell.svelte';
-	import type {
-		MiniCalCellState,
-		EventDetail
-	} from '$lib/components/miniCalCell.svelte';
+	import type { CellContent } from '$lib/components/miniCalCell.svelte';
+	import { req } from '$lib/requestUtils';
 	import _ from 'lodash';
 
-	//
+	import { helpers as h, types as t } from 'shared';
+
+	// Base variables
 
 	const days = 7;
 	const hours = 24;
 
-	let weekStart = getMonday();
+	// Calculating date range
 
-	function getMonday() {
-		const d = new Date();
-		d.setHours(0, 0, 0, 0);
+	let dateStart: Date = h.date.getPreviousMonday(new Date());
+	let dateEnd: Date;
 
-		const day = d.getDay();
-		const diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
-		return new Date(d.setDate(diff));
+	$: {
+		dateEnd = h.date.addDays(dateStart, days);
 	}
 
-	const cals = {};
+	// Fetching slots for the week
 
-	$tools.forEach((t) => {
-		cals[t.id] = {};
+	let promise: Promise<void>;
+	let calendars: Record<string, Record<string, CellContent>>;
 
-		// Iterating over days
+	$: {
+		dateStart; // when dateStart changes
+		setEmptyCalendars();
+		promise = fetchSlots();
+	}
+
+	function createEmptyCalendar() {
+		const cal: Record<string, CellContent> = {};
 		for (let d = 0; d < days; d++) {
-			// Creating the date
-			const date = new Date(weekStart.getTime());
-			date.setDate(weekStart.getDate() + d);
-
-			// Randomly generating states
-			for (let i = 0; i < hours; i++) {
-				date.setHours(i, 0, 0, 0);
-				cals[t.id][date.toISOString()] = _.sample(miniCalCellStates);
+			const date = h.date.addDays(dateStart, d);
+			for (let h = 0; h < hours; h++) {
+				date.setHours(h, 0, 0, 0);
+				cal[date.toISOString()] = { state: null, edited: false };
 			}
 		}
-	});
+		return cal;
+	}
 
-	//
-
-	let edits: Record<string, Record<string, MiniCalCellState>> = {};
-	createEmptyEdits();
-
-	function createEmptyEdits() {
-		edits = {};
+	function setEmptyCalendars(): void {
+		calendars = {};
 		$tools.forEach((t) => {
-			edits[t.id] = {};
+			calendars[t.id] = createEmptyCalendar();
 		});
 	}
 
-	function updateEdits(e: CustomEvent<EventDetail>, toolID: string) {
-		//
-		const { dateTime, edited, state } = e.detail;
-		const id = dateTime.toISOString();
-		//
-		if (!(id in edits[toolID]) && edited) {
-			edits[toolID][id] = state == 'blocked' ? 'free' : 'blocked';
+	async function fetchSlots(): Promise<void> {
+		// Fetching all the slots
+		const res = await req.getToolsSlots(
+			h.date.formatQueryDate(dateStart),
+			h.date.formatQueryDate(dateEnd)
+		);
+
+		// Grouping slots by tool ID
+		const groups = _.groupBy(res.data, (s) => s.attributes.tool.data.id);
+
+		// Storing results in calendar
+		for (let toolID of Object.keys(groups)) {
+			for (let s of groups[toolID]) {
+				const dateID = h.date
+					.joinDateHour(s.attributes.date, s.attributes.time_start)
+					.toISOString();
+				calendars[toolID][dateID] = { state: s.attributes.type, edited: false };
+			}
 		}
-		if (id in edits[toolID] && !edited) {
-			delete edits[toolID][id];
-		}
-		// Reassigning object to trigger change
-		edits[toolID] = { ...edits[toolID] };
 	}
 
 	function editsExist() {
-		for (const toolEdits of Object.values(edits)) {
-			if (Object.values(toolEdits).length > 0) {
+		for (const cal of Object.values(calendars)) {
+			if (Object.values(cal).some((slot) => slot.edited)) {
 				return true;
 			}
 		}
@@ -80,51 +82,51 @@
 	}
 
 	function changeWeek(sign: -1 | 1) {
-		createEmptyEdits();
-		// if (!editsExist()) {
-		weekStart.setDate(weekStart.getDate() + 7 * sign);
-		weekStart = weekStart;
-		// }
+		if (!editsExist()) {
+			dateStart.setDate(dateStart.getDate() + 7 * sign);
+			dateStart = dateStart;
+		}
 	}
 </script>
 
 <!--  -->
 
-<div class="flex flex-row flex-nowrap">
-	<div class="basis-1/3">
-		<button
-			class="bg-slate-200 hover:bg-slate-300"
-			on:click={() => {
-				changeWeek(-1);
-			}}>-</button
-		>
-		<button
-			class="bg-slate-200 hover:bg-slate-300"
-			on:click={() => {
-				changeWeek(1);
-			}}>+</button
-		>
-		{weekStart}
-	</div>
-
-	<div class="flex flex-row flex-wrap gap-4">
-		{#each $tools as t}
-			<div class="basis-1/3">
-				<p><strong>{t.attributes.name}</strong></p>
-				<MiniCal start={weekStart} {hours} let:dateTime>
-					<MiniCalCell
-						{dateTime}
-						bind:state={cals[t.id][dateTime.toISOString()]}
-						on:edit={(e) => {
-							updateEdits(e, t.id);
-						}}
-					/>
-				</MiniCal>
+{#await promise}
+	loading
+{:then res}
+	<div class="flex flex-row flex-nowrap gap-6">
+		<div class="grow basis-56 shrink-0">
+			<div class="sticky top-16">
+				<button
+					class="bg-slate-200 hover:bg-slate-300"
+					on:click={() => {
+						changeWeek(-1);
+					}}>-</button
+				>
+				<button
+					class="bg-slate-200 hover:bg-slate-300"
+					on:click={() => {
+						changeWeek(1);
+					}}>+</button
+				>
+				{dateStart}
 			</div>
-			<pre>{JSON.stringify(edits[t.id], null, 2)}</pre>
-		{/each}
+		</div>
+
+		<div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+			{#each $tools as t}
+				<div>
+					<p><strong>{t.attributes.name}</strong></p>
+					<MiniCal start={dateStart} {hours} let:dateTime>
+						<MiniCalCell
+							bind:content={calendars[t.id][dateTime.toISOString()]}
+						/>
+					</MiniCal>
+				</div>
+			{/each}
+		</div>
 	</div>
-</div>
+{/await}
 
 <!--  -->
 <style>

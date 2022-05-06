@@ -1,37 +1,26 @@
 <script lang="ts" context="module">
-	export const miniCalCellStates = ['free', 'booked', 'blocked'] as const;
-	export type MiniCalCellState = typeof miniCalCellStates[number];
+	import { types as t } from 'shared';
 
-	export type EventDetail = {
-		dateTime: Date;
-		state: MiniCalCellState;
+	export type CellContent = {
+		state: t.Enum_Toolslot_Type | null;
 		edited: boolean;
 	};
 </script>
 
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	export let content: CellContent = { state: null, edited: false };
 
-	export let dateTime: Date;
-	export let state: MiniCalCellState = 'free';
-
-	let edited = false;
-	let editable = state == 'booked' ? false : true;
+	let editable = content.state == t.Enum_Toolslot_Type.Booking ? false : true;
 
 	//
 
-	const dispatch = createEventDispatcher<{ edit: EventDetail }>();
-
 	function edit() {
 		if (editable) {
-			state = state == 'free' ? 'blocked' : 'free';
-			edited = edited ? false : true;
-
-			dispatch('edit', {
-				dateTime,
-				state,
-				edited
-			});
+			content.state =
+				content.state == t.Enum_Toolslot_Type.Block
+					? null
+					: t.Enum_Toolslot_Type.Block;
+			content.edited = content.edited ? false : true;
 		}
 	}
 </script>
@@ -39,10 +28,10 @@
 <!--  -->
 
 <div
-	class:free={state == 'free'}
-	class:booked={state == 'booked'}
-	class:blocked={state == 'blocked'}
-	class:edited
+	class:free={content.state === null}
+	class:booked={content.state == t.Enum_Toolslot_Type.Booking}
+	class:blocked={content.state == t.Enum_Toolslot_Type.Block}
+	class:edited={content.edited}
 	on:click={edit}
 >
 	<slot />
@@ -63,7 +52,7 @@
 		background-color: white;
 	}
 
-	.free.edited {
+	.blocked.edited {
 		background-color: blue;
 		box-shadow: inset 0px 0px 0px 5px white;
 	}
@@ -72,7 +61,7 @@
 		background-color: gray;
 	}
 
-	.blocked.edited {
+	.free.edited {
 		background-color: white;
 		box-shadow: inset 0px 0px 0px 5px blue;
 	}
