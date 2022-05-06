@@ -3,8 +3,6 @@
 	import { req } from '$lib/requestUtils';
 
 	const query = JSON.parse(decodeURIComponent($page.params.query));
-
-	const promise = req.getToolsSlots(query);
 </script>
 
 <pre>{JSON.stringify(query, null, 2)}</pre>

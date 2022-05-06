@@ -54,7 +54,7 @@
 
 	<!-- Hours column -->
 	{#each hoursList as h}
-		<div class="miniCal__hour">{formatHour(h)}</div>
+		<div class="miniCal__hour">{formatHour(h)}:00</div>
 	{/each}
 
 	<!-- Days columns -->

@@ -203,10 +203,6 @@ small {
 
 /*  */
 
-.container {
-	padding: var(--s-3);
-}
-
 .space-between > * + * {
 	margin-top: var(--s-2);
 }
