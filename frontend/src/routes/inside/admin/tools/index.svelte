@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { tools } from '$lib/stores';
-	import { MiniCal, MiniCalCell } from '$lib/components';
-	import type { CellContent } from '$lib/components/miniCalCell.svelte';
-	import { req } from '$lib/requestUtils';
 	import _ from 'lodash';
-
+	import { req } from '$lib/requestUtils';
 	import { helpers as h, types as t } from 'shared';
+
+	import { MiniCal, MiniCalCell, BottomBar, Button } from '$lib/components';
+	import type { CellContent } from '$lib/components/miniCalCell.svelte';
 
 	// Base variables
 
@@ -25,6 +25,7 @@
 
 	let promise: Promise<void>;
 	let calendars: Record<string, Record<string, CellContent>>;
+	// Record<toolID, Record<date.toISOString(), CellContent>>
 
 	$: {
 		dateStart; // when dateStart changes
@@ -72,20 +73,45 @@
 		}
 	}
 
-	function editsExist() {
-		for (const cal of Object.values(calendars)) {
+	// Edits detection
+
+	let editsExist = false;
+
+	$: {
+		for (let cal of Object.values(calendars)) {
 			if (Object.values(cal).some((slot) => slot.edited)) {
-				return true;
+				editsExist = true;
+				break;
 			}
+			editsExist = false;
 		}
-		return false;
 	}
 
+	// Week change
+
 	function changeWeek(sign: -1 | 1) {
-		if (!editsExist()) {
+		if (!editsExist) {
 			dateStart.setDate(dateStart.getDate() + 7 * sign);
 			dateStart = dateStart;
 		}
+	}
+
+	// Saving changes
+
+	function getChanges() {
+		const changes = [];
+		for (let toolID in calendars) {
+			for (let dateID in calendars[toolID]) {
+				const slot = calendars[toolID][dateID];
+				if (slot.edited) changes.push({ toolID, dateID, state: slot.state });
+			}
+		}
+		return changes;
+	}
+
+	async function saveChanges() {
+		const changes = getChanges();
+		console.log(changes);
 	}
 </script>
 
@@ -126,6 +152,13 @@
 			{/each}
 		</div>
 	</div>
+
+	{#if editsExist}
+		<BottomBar spaceBetween={true}>
+			<p class="text-base">Ci sono modifiche</p>
+			<Button on:click={saveChanges}>Salva</Button>
+		</BottomBar>
+	{/if}
 {/await}
 
 <!--  -->
