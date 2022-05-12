@@ -7,6 +7,7 @@ module.exports = {
 
         // Getting body
         const { changes } = ctx.request.body as e.AdminToolsUpdateSlotsReq;
+        console.log(changes);
 
         changes.forEach(async (c) => {
             // const date = h.date.formatQueryDate(
