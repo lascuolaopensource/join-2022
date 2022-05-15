@@ -25,7 +25,7 @@
 	<Loading />
 {:then res}
 	<NavbarSecondary>
-		<NavbarItem href="/inside/admin/tools">Strumenti</NavbarItem>
+		<NavbarItem href="/inside/admin/tools/block">Blocco strumenti</NavbarItem>
 	</NavbarSecondary>
 
 	<Container>
