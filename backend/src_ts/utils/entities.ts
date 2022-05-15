@@ -6,5 +6,5 @@ export const entities = {
     billingInfo: "api::billing-info.billing-info",
     enrollment: "api::enrollment.enrollment",
     toolsBooking: "api::tools-booking.tools-booking",
-    toolSlot: "api::tool-booking.tool-slot",
+    toolSlot: "api::tool-slot.tool-slot",
 };
