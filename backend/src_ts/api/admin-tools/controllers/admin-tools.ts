@@ -41,14 +41,10 @@ module.exports = {
                     type: t.Enum_Toolslot_Type.Block,
                     tool: c.toolID,
                 };
-                try {
-                    const slot: t.ID<t.ToolSlot> =
-                        await strapi.entityService.create(entities.toolSlot, {
-                            data,
-                        });
-                } catch (e) {
-                    console.log(e);
-                }
+                const slot: t.ID<t.ToolSlot> =
+                    await strapi.entityService.create(entities.toolSlot, {
+                        data,
+                    });
             }
         });
 

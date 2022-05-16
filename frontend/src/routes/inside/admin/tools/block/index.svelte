@@ -4,7 +4,14 @@
 	import { req } from '$lib/requestUtils';
 	import { helpers as h, endpoints as e, types as t } from 'shared';
 
-	import { MiniCal, MiniCalCell, BottomBar, Button } from '$lib/components';
+	import {
+		MiniCal,
+		MiniCalCell,
+		BottomBar,
+		Button,
+		Modal
+	} from '$lib/components';
+	import { close, open } from '$lib/components/modal.svelte';
 	import type { CellContent } from '$lib/components/miniCalCell.svelte';
 	import BlockMultiple, {
 		type EventDetail
@@ -142,6 +149,19 @@
 		}
 	}
 
+	function undoChanges() {
+		for (let toolID in calendars) {
+			for (let dateID in calendars[toolID]) {
+				const slot = calendars[toolID][dateID];
+				if (slot.edited) {
+					slot.edited = false;
+					slot.state = slot.state === null ? t.Enum_Toolslot_Type.Block : null;
+				}
+			}
+		}
+		calendars = calendars;
+	}
+
 	/**
 	 * Multiple block
 	 */
@@ -170,18 +190,6 @@
 {#await promise}
 	loading
 {:then res}
-	<BlockMultiple
-		days={daysList}
-		{hours}
-		on:updateSlots={(e) => {
-			multipleChange(e.detail);
-		}}
-	/>
-
-	<hr class="my-10" />
-
-	<!--  -->
-
 	<div class="flex flex-row flex-nowrap gap-6">
 		<!-- Sidebar -->
 		<div class="grow basis-60 shrink-0">
@@ -203,9 +211,10 @@
 				{dateStart}
 
 				<!--  -->
-				<!-- <a class="text-blue-700" href="/inside/admin/tools/block/multiple"
-					>Blocco multiplo</a
-				> -->
+
+				<button class="btn btn-secondary" on:click={open}
+					>Blocco multiplo</button
+				>
 			</div>
 		</div>
 
@@ -227,9 +236,23 @@
 	{#if editsExist}
 		<BottomBar spaceBetween={true}>
 			<p class="text-base">Ci sono modifiche</p>
-			<Button on:click={saveChanges}>Salva</Button>
+			<div>
+				<Button hierarchy="Secondary" on:click={undoChanges}>Annulla</Button>
+				<Button on:click={saveChanges}>Salva</Button>
+			</div>
 		</BottomBar>
 	{/if}
+
+	<Modal title="Blocco multiplo">
+		<BlockMultiple
+			days={daysList}
+			{hours}
+			on:updateSlots={(e) => {
+				multipleChange(e.detail);
+				close();
+			}}
+		/>
+	</Modal>
 {/await}
 
 <!--  -->

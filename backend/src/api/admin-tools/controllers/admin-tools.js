@@ -32,14 +32,9 @@ module.exports = {
                     type: shared_1.types.Enum_Toolslot_Type.Block,
                     tool: c.toolID,
                 };
-                try {
-                    const slot = await strapi.entityService.create(utils_1.entities.toolSlot, {
-                        data,
-                    });
-                }
-                catch (e) {
-                    console.log(e);
-                }
+                const slot = await strapi.entityService.create(utils_1.entities.toolSlot, {
+                    data,
+                });
             }
         });
         return {};
