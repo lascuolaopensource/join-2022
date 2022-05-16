@@ -12,18 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "date": {
-      "type": "date",
-      "required": true
-    },
-    "time_start": {
-      "type": "time",
-      "required": true
-    },
-    "time_end": {
-      "type": "time",
-      "required": true
-    },
     "booking": {
       "type": "relation",
       "relation": "manyToOne",
@@ -43,6 +31,14 @@
       "relation": "manyToOne",
       "target": "api::tool.tool",
       "inversedBy": "slots"
+    },
+    "start": {
+      "type": "datetime",
+      "required": true
+    },
+    "end": {
+      "type": "datetime",
+      "required": true
     }
   }
 }
