@@ -315,7 +315,9 @@ export const req = {
 		);
 	},
 
-	//
+	/**
+	 * Tools admin
+	 */
 
 	getTools: async (
 		fetchFn = fetch
@@ -323,15 +325,23 @@ export const req = {
 		return await request(fetchFn, `${b}api/tools`, 'GET', null, headersAuth());
 	},
 
+	//
+
 	getToolsSlots: async (
 		startDate: string,
 		endDate: string,
+		pageNumber: number,
+		pageSize: number,
 		fetchFn = fetch
 	): Promise<t.ToolSlotEntityResponseCollection> => {
 		const query = qs.stringify(
 			{
+				pagination: {
+					page: pageNumber,
+					pageSize: pageSize
+				},
 				filters: {
-					$and: [{ date: { $gte: startDate } }, { date: { $lt: endDate } }]
+					$and: [{ start: { $gte: startDate } }, { end: { $lte: endDate } }]
 				},
 				populate: {
 					tool: {
@@ -352,6 +362,22 @@ export const req = {
 		);
 	},
 
+	//
+
+	updateSlots: async (data: e.AdminToolsUpdateSlotsReq, fetchFn = fetch) => {
+		return await request(
+			fetchFn,
+			`${b}api/admin-tools/update-slots`,
+			'POST',
+			data,
+			headersAuth()
+		);
+	},
+
+	/**
+	 * Tools client
+	 */
+
 	checkSlots: async (
 		data: e.BookToolsCheckAvailabilityReq,
 		fetchFn = fetch
@@ -359,16 +385,6 @@ export const req = {
 		return await request(
 			fetchFn,
 			`${b}api/book-tools/check-availability`,
-			'POST',
-			data,
-			headersAuth()
-		);
-	},
-
-	updateSlots: async (data: e.AdminToolsUpdateSlotsReq, fetchFn = fetch) => {
-		return await request(
-			fetchFn,
-			`${b}api/admin-tools/update-slots`,
 			'POST',
 			data,
 			headersAuth()
