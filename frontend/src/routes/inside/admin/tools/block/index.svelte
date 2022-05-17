@@ -1,58 +1,51 @@
 <script lang="ts">
 	import { tools } from '$lib/stores';
-	import _ from 'lodash';
-	import { req } from '$lib/requestUtils';
 	import { helpers as h, endpoints as e, types as t } from 'shared';
+	import { req } from '$lib/requestUtils';
+	import _ from 'lodash';
 
-	import {
-		MiniCal,
-		MiniCalCell,
-		BottomBar,
-		Button,
-		Modal
-	} from '$lib/components';
+	import { WeekCal } from '$lib/ui';
+
+	import BlockMultiple from '$lib/partials/admin/tools/block/multiple.svelte';
+	import type { EventDetail } from '$lib/partials/admin/tools/block/multiple.svelte';
+	import CalendarCell from '$lib/partials/admin/tools/block/calendarCell.svelte';
+	import type { CellContent } from '$lib/partials/admin/tools/block/calendarCell.svelte';
+
+	import { BottomBar, Button, Modal } from '$lib/components';
 	import { close, open } from '$lib/components/modal.svelte';
-	import type { CellContent } from '$lib/components/miniCalCell.svelte';
-	import BlockMultiple, {
-		type EventDetail
-	} from '$lib/partials/admin/tools/block/multiple.svelte';
 
-	// Base variables
+	/**
+	 * Basic variables
+	 */
 
 	const days = 7;
 	const hours = 24;
 
-	// Calculating date range
+	let promise: Promise<void>;
+	// Global promise used to display loading
+
+	/**
+	 * Date range calculation
+	 */
 
 	let dateStart: Date = h.date.getPreviousMonday(new Date());
-	let dateEnd: Date;
+	dateStart.setHours(0, 0, 0, 0); // Setting date to zero hour
 
-	$: {
-		dateEnd = h.date.addDays(dateStart, days);
-	}
+	let dateEnd: Date = h.date.addDays(dateStart, days);
 
-	// Fetching slots for the week
+	/**
+	 * Creating calendars
+	 */
 
-	let promise: Promise<void>;
-	let calendars: Record<string, Record<string, CellContent>>;
-	// Record<toolID, Record<date.toISOString(), CellContent>>
+	type Calendar = Record<string, CellContent>;
+	// Record<date.toISOString(), CellContent>
+	type Calendars = Record<string, Calendar>;
+	// Record<toolID, Calendar>
 
-	$: {
-		dateStart; // when dateStart changes
-		setEmptyCalendars();
-		promise = fetchSlots();
-	}
+	let calendars: Calendars = createEmptyCalendars();
 
-	function calcAllDates(): Array<Date> {
-		const dates: Array<Date> = [];
-		for (let d = 0; d < days; d++) {
-			dates.push(h.date.addDays(dateStart, d));
-		}
-		return dates;
-	}
-
-	function createEmptyCalendar() {
-		const cal: Record<string, CellContent> = {};
+	function createEmptyCalendar(): Calendar {
+		const cal: Calendar = {};
 		for (let d = 0; d < days; d++) {
 			const date = h.date.addDays(dateStart, d);
 			for (let h = 0; h < hours; h++) {
@@ -63,35 +56,59 @@
 		return cal;
 	}
 
-	function setEmptyCalendars(): void {
-		calendars = {};
+	function createEmptyCalendars(): Calendars {
+		const calendars: Calendars = {};
 		$tools.forEach((t) => {
 			calendars[t.id] = createEmptyCalendar();
 		});
+		return calendars;
 	}
 
+	/**
+	 * Fetching data to fill calendars
+	 */
+
+	promise = fetchSlots();
+
 	async function fetchSlots(): Promise<void> {
-		// Fetching all the slots
+		const slots: Array<t.ToolSlotEntity> = [];
+
+		// Fetching the first batch of the slots
 		const res = await req.getToolsSlots(
-			h.date.formatQueryDate(dateStart),
-			h.date.formatQueryDate(dateEnd)
+			dateStart.toISOString(),
+			dateEnd.toISOString(),
+			1,
+			100
 		);
+		// Saving
+		slots.push(...res.data);
+
+		// Fetching the other pages
+		for (let i = 0; i < res.meta.pagination.pageCount - 1; i++) {
+			const res = await req.getToolsSlots(
+				dateStart.toISOString(),
+				dateEnd.toISOString(),
+				2 + i,
+				100
+			);
+			slots.push(...res.data);
+		}
 
 		// Grouping slots by tool ID
-		const groups = _.groupBy(res.data, (s) => s.attributes.tool.data.id);
+		const groups = _.groupBy(slots, (s) => s.attributes.tool.data.id);
 
 		// Storing results in calendar
 		for (let toolID of Object.keys(groups)) {
 			for (let s of groups[toolID]) {
-				const dateID = h.date
-					.joinDateHour(s.attributes.date, s.attributes.time_start)
-					.toISOString();
+				const dateID = s.attributes.start;
 				calendars[toolID][dateID] = { state: s.attributes.type, edited: false };
 			}
 		}
 	}
 
-	// Edits detection
+	/**
+	 * Edits detection
+	 */
 
 	let editsExist = false;
 
@@ -105,16 +122,9 @@
 		}
 	}
 
-	// Week change
-
-	function changeWeek(sign: -1 | 1) {
-		if (!editsExist) {
-			dateStart.setDate(dateStart.getDate() + 7 * sign);
-			dateStart = dateStart;
-		}
-	}
-
-	// Saving changes
+	/**
+	 * Edits management
+	 */
 
 	function getChanges() {
 		const changes: Array<e.SlotUpdate> = [];
@@ -134,32 +144,36 @@
 
 	function saveChanges() {
 		const changes = getChanges();
-		console.log(changes);
 		promise = req.updateSlots({ changes }).then((v) => {
-			applyChanges();
+			// Resetting data
+			calendars = createEmptyCalendars();
+			promise = fetchSlots();
 		});
 	}
 
-	function applyChanges() {
-		for (let toolID in calendars) {
-			for (let dateID in calendars[toolID]) {
-				const slot = calendars[toolID][dateID];
-				if (slot.edited) slot.edited = false;
-			}
-		}
-	}
-
 	function undoChanges() {
-		for (let toolID in calendars) {
-			for (let dateID in calendars[toolID]) {
-				const slot = calendars[toolID][dateID];
-				if (slot.edited) {
-					slot.edited = false;
-					slot.state = slot.state === null ? t.Enum_Toolslot_Type.Block : null;
-				}
-			}
+		const changes = getChanges();
+		for (let c of changes) {
+			const slot = calendars[c.toolID][c.dateTime];
+			slot.edited = false;
+			slot.state = slot.state === null ? t.Enum_Toolslot_Type.Block : null;
 		}
 		calendars = calendars;
+	}
+
+	/**
+	 * Week change
+	 */
+
+	function changeWeek(sign: -1 | 1) {
+		if (!editsExist) {
+			// Changing dates
+			dateStart = h.date.addDays(dateStart, days * sign);
+			dateEnd = h.date.addDays(dateStart, days);
+			// Updating data
+			calendars = createEmptyCalendars();
+			promise = fetchSlots();
+		}
 	}
 
 	/**
@@ -167,6 +181,14 @@
 	 */
 
 	const daysList = calcAllDates();
+
+	function calcAllDates(): Array<Date> {
+		const dates: Array<Date> = [];
+		for (let d = 0; d < days; d++) {
+			dates.push(h.date.addDays(dateStart, d));
+		}
+		return dates;
+	}
 
 	function multipleChange(detail: EventDetail) {
 		console.log(detail);
@@ -190,27 +212,26 @@
 {#await promise}
 	loading
 {:then res}
+	<!-- Main container -->
 	<div class="flex flex-row flex-nowrap gap-6">
 		<!-- Sidebar -->
 		<div class="grow basis-60 shrink-0">
 			<div class="sticky top-16 flex flex-col flex-nowrap gap-4">
 				<div>
 					<button
-						class="bg-slate-200 hover:bg-slate-300"
+						class="bg-slate-200 hover:bg-slate-300 w-10 h-10"
 						on:click={() => {
 							changeWeek(-1);
 						}}>-</button
 					>
 					<button
-						class="bg-slate-200 hover:bg-slate-300"
+						class="bg-slate-200 hover:bg-slate-300 w-10 h-10"
 						on:click={() => {
 							changeWeek(1);
 						}}>+</button
 					>
 				</div>
 				{dateStart}
-
-				<!--  -->
 
 				<button class="btn btn-secondary" on:click={open}
 					>Blocco multiplo</button
@@ -223,16 +244,17 @@
 			{#each $tools as t}
 				<div>
 					<p><strong>{t.attributes.name}</strong></p>
-					<MiniCal start={dateStart} {hours} let:dateTime>
-						<MiniCalCell
+					<WeekCal start={dateStart} {hours} let:dateTime>
+						<CalendarCell
 							bind:content={calendars[t.id][dateTime.toISOString()]}
 						/>
-					</MiniCal>
+					</WeekCal>
 				</div>
 			{/each}
 		</div>
 	</div>
 
+	<!-- Bottom bar -->
 	{#if editsExist}
 		<BottomBar spaceBetween={true}>
 			<p class="text-base">Ci sono modifiche</p>
@@ -243,6 +265,7 @@
 		</BottomBar>
 	{/if}
 
+	<!-- Multiple block modal -->
 	<Modal title="Blocco multiplo">
 		<BlockMultiple
 			days={daysList}
@@ -254,11 +277,3 @@
 		/>
 	</Modal>
 {/await}
-
-<!--  -->
-<style>
-	button {
-		width: 40px;
-		height: 40px;
-	}
-</style>
