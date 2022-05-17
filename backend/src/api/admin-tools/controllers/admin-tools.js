@@ -6,29 +6,27 @@ module.exports = {
     updateSlots: async (ctx, next) => {
         strapi.log.info("In admin-tools/updateSlots controller");
         const { changes } = ctx.request.body;
-        changes.forEach(async (c) => {
-            const date = new Date(Date.parse(c.dateTime));
-            const dateStr = shared_1.helpers.date.formatQueryDate(date);
-            const time_start = shared_1.helpers.date.getTimeString(date);
-            date.setHours(date.getHours() + 1);
-            const time_end = shared_1.helpers.date.getTimeString(date);
+        for (let c of changes) {
+            const start = c.dateTime;
+            const startDate = new Date(Date.parse(start));
+            const endDate = shared_1.helpers.date.addHours(startDate, 1);
+            const end = endDate.toISOString();
+            console.log(start, end);
             if (c.state === null) {
                 const slots = await strapi.entityService.findMany(utils_1.entities.toolSlot, {
                     filters: {
-                        date: dateStr,
-                        time_start,
-                        time_end,
+                        start,
+                        end,
                     },
                 });
-                slots.forEach(async (s) => {
+                for (let s of slots) {
                     await strapi.entityService.delete(utils_1.entities.toolSlot, s.id);
-                });
+                }
             }
             else if ((c.state = shared_1.types.Enum_Toolslot_Type.Block)) {
                 const data = {
-                    date: dateStr,
-                    time_start,
-                    time_end,
+                    start,
+                    end,
                     type: shared_1.types.Enum_Toolslot_Type.Block,
                     tool: c.toolID,
                 };
@@ -36,7 +34,7 @@ module.exports = {
                     data,
                 });
             }
-        });
+        }
         return {};
     },
 };
