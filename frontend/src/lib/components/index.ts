@@ -12,8 +12,6 @@ import IconButton from './iconButton.svelte';
 import Loading from './loading.svelte';
 import LogoutButton from './logoutButton.svelte';
 import MenuItem from './menuItem.svelte';
-import MiniCal from './miniCal.svelte';
-import MiniCalCell from './miniCalCell.svelte';
 import Modal from './modal.svelte';
 import ModalConfirm from './modalConfirm.svelte';
 import NavbarItem from './navbarItem.svelte';
@@ -42,8 +40,6 @@ export {
 	Loading,
 	LogoutButton,
 	MenuItem,
-	MiniCal,
-	MiniCalCell,
 	Modal,
 	ModalConfirm,
 	NavbarItem,

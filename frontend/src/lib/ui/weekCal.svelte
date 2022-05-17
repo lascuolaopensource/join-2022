@@ -3,32 +3,33 @@
 	export let hours = 24;
 	export let days = 7;
 
-	//
+	/**
+	 * Calendar setup
+	 */
 
+	// Setting the start date time to zero
+	start.setHours(0, 0, 0, 0);
+
+	// Listing the days
 	let daysList: Array<Date> = [];
-	let hoursList: Array<number> = [];
-
-	$: {
-		// Setting the start date time to zero
-		start.setHours(0, 0, 0, 0);
-
-		// Listing the days
-		daysList = [];
-		for (let i = 0; i < days; i++) {
-			// Create new date instance
-			const newDate = new Date(start.getTime());
-			// Add a day
-			newDate.setDate(start.getDate() + i);
-			//
-			daysList.push(newDate);
-		}
-
-		// Listing the hours
-		hoursList = [];
-		for (let i = 0; i < hours; i++) {
-			hoursList.push(i);
-		}
+	for (let i = 0; i < days; i++) {
+		// Create new date instance
+		const newDate = new Date(start.getTime());
+		// Add a day
+		newDate.setDate(start.getDate() + i);
+		//
+		daysList.push(newDate);
 	}
+
+	// Listing the hours
+	let hoursList: Array<number> = [];
+	for (let i = 0; i < hours; i++) {
+		hoursList.push(i);
+	}
+
+	/**
+	 * Helper functions
+	 */
 
 	// Hour formatter
 	function formatHour(h: number) {
