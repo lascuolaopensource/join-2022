@@ -25,7 +25,9 @@
 	<Loading />
 {:then res}
 	<NavbarSecondary>
-		<NavbarItem href="/inside/admin/tools/block">Blocco strumenti</NavbarItem>
+		<NavbarItem href="/inside/admin/tools/manageAvailability"
+			>Gestione disponibilità</NavbarItem
+		>
 	</NavbarSecondary>
 
 	<Container>

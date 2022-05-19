@@ -100,8 +100,18 @@
 		// Storing results in calendar
 		for (let toolID of Object.keys(groups)) {
 			for (let s of groups[toolID]) {
-				const dateID = s.attributes.start;
-				calendars[toolID][dateID] = { state: s.attributes.type, edited: false };
+				// Calculating slot length
+				const lengthMS =
+					Date.parse(s.attributes.end) - Date.parse(s.attributes.start);
+				const lengthH = lengthMS / 1000 / 60 / 60;
+				for (let i = 0; i < lengthH; i++) {
+					const date = h.date.addHours(new Date(s.attributes.start), i);
+					const dateID = date.toISOString();
+					calendars[toolID][dateID] = {
+						state: s.attributes.type,
+						edited: false
+					};
+				}
 			}
 		}
 	}
@@ -146,8 +156,8 @@
 		const changes = getChanges();
 		promise = req.updateSlots({ changes }).then((v) => {
 			// Resetting data
-			calendars = createEmptyCalendars();
-			promise = fetchSlots();
+			// calendars = createEmptyCalendars();
+			// promise = fetchSlots();
 		});
 	}
 
@@ -156,7 +166,8 @@
 		for (let c of changes) {
 			const slot = calendars[c.toolID][c.dateTime];
 			slot.edited = false;
-			slot.state = slot.state === null ? t.Enum_Toolslot_Type.Block : null;
+			slot.state =
+				slot.state === null ? t.Enum_Toolslot_Type.Availability : null;
 		}
 		calendars = calendars;
 	}
@@ -198,7 +209,7 @@
 					const datetime = new Date(Date.parse(d));
 					datetime.setHours(parseInt(h), 0, 0, 0);
 					calendars[toolID][datetime.toISOString()] = {
-						state: t.Enum_Toolslot_Type.Block,
+						state: t.Enum_Toolslot_Type.Availability,
 						edited: true
 					};
 				});
