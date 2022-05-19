@@ -1,38 +1,38 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const shared_1 = require("shared");
-const utils_1 = require("../../../utils");
+const lodash_1 = __importDefault(require("lodash"));
 module.exports = {
     updateSlots: async (ctx, next) => {
-        strapi.log.info("In admin-tools/updateSlots controller");
         const { changes } = ctx.request.body;
-        for (let c of changes) {
-            const start = c.dateTime;
-            const startDate = new Date(Date.parse(start));
-            const endDate = shared_1.helpers.date.addHours(startDate, 1);
-            const end = endDate.toISOString();
-            console.log(start, end);
-            if (c.state === null) {
-                const slots = await strapi.entityService.findMany(utils_1.entities.toolSlot, {
-                    filters: {
-                        start,
-                        end,
-                    },
-                });
-                for (let s of slots) {
-                    await strapi.entityService.delete(utils_1.entities.toolSlot, s.id);
+        const groups = lodash_1.default.groupBy(changes, (c) => c.toolID);
+        for (let [toolID, updates] of Object.entries(groups)) {
+            updates.sort((a, b) => {
+                return Date.parse(a.dateTime) - Date.parse(b.dateTime);
+            });
+            const groups = lodash_1.default.groupBy(updates, (u) => u.state);
+            for (let [state, updates] of Object.entries(groups)) {
+                const adjacentUpdates = [];
+                let tempGroup = [];
+                for (let i = 0; i < updates.length; i++) {
+                    tempGroup.push(updates[i]);
+                    if (i + 1 >= updates.length) {
+                        adjacentUpdates.push(tempGroup);
+                        tempGroup = [];
+                    }
+                    else {
+                        const prevDate = Date.parse(updates[i].dateTime);
+                        const nextDate = Date.parse(updates[i + 1].dateTime);
+                        const hour = 1000 * 60 * 60;
+                        if ((nextDate - prevDate) / hour != 1) {
+                            adjacentUpdates.push(tempGroup);
+                            tempGroup = [];
+                        }
+                    }
                 }
-            }
-            else if ((c.state = shared_1.types.Enum_Toolslot_Type.Block)) {
-                const data = {
-                    start,
-                    end,
-                    type: shared_1.types.Enum_Toolslot_Type.Block,
-                    tool: c.toolID,
-                };
-                const slot = await strapi.entityService.create(utils_1.entities.toolSlot, {
-                    data,
-                });
+                console.log(adjacentUpdates);
             }
         }
         return {};
