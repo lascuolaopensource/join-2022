@@ -17,9 +17,7 @@
 	function edit() {
 		if (editable) {
 			content.state =
-				content.state == t.Enum_Toolslot_Type.Block
-					? null
-					: t.Enum_Toolslot_Type.Block;
+				content.state == null ? t.Enum_Toolslot_Type.Availability : null;
 			content.edited = content.edited ? false : true;
 		}
 	}
@@ -28,9 +26,9 @@
 <!--  -->
 
 <div
-	class:free={content.state === null}
+	class:blocked={content.state === null}
 	class:booked={content.state == t.Enum_Toolslot_Type.Booking}
-	class:blocked={content.state == t.Enum_Toolslot_Type.Block}
+	class:free={content.state == t.Enum_Toolslot_Type.Availability}
 	class:edited={content.edited}
 	on:click={edit}
 >
