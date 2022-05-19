@@ -33,18 +33,47 @@ module.exports = {
                         },
                     },
                     {
-                        date: {
+                        start: {
                             $gt: shared_1.helpers.date.formatQueryDate(date_start),
                         },
                     },
                     {
-                        date: {
+                        end: {
                             $lt: shared_1.helpers.date.formatQueryDate(date_end),
                         },
                     },
                 ],
             },
         });
+        const groups = lodash_1.default.groupBy(slots, (s) => s.tool.id);
+        console.log(groups);
+        const availabilities = {};
+        for (let toolID of Object.keys(groups)) {
+            const slots = groups[toolID];
+            slots.sort((a, b) => {
+                return Date.parse(a.start) - Date.parse(b.start);
+            });
+            const freeSlots = [];
+            for (let [i, s] of slots.entries()) {
+                if (i < slots.length - 1) {
+                    const prevEnd = slots[i].end;
+                    const nextStart = slots[i + 1].start;
+                    if (prevEnd != nextStart) {
+                        freeSlots.push({
+                            start: prevEnd,
+                            end: nextStart,
+                            length: 1,
+                        });
+                    }
+                }
+            }
+            for (let s of freeSlots) {
+                let length = Date.parse(s.end) - Date.parse(s.start);
+                length = length / 1000 / 60 / 60;
+                s.length = length;
+            }
+            availabilities[toolID] = freeSlots;
+        }
         try {
             ctx.body = { tool_ids, slots };
         }

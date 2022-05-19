@@ -95,18 +95,77 @@ module.exports = {
                             },
                         },
                         {
-                            date: {
+                            start: {
                                 $gt: h.date.formatQueryDate(date_start),
                             },
                         },
                         {
-                            date: {
+                            end: {
                                 $lt: h.date.formatQueryDate(date_end),
                             },
                         },
                     ],
                 },
             });
+
+        // Grouping slots by tool id
+        const groups = _.groupBy(slots, (s) => (s.tool as t.ID<t.ToolSlot>).id);
+        console.log(groups);
+
+        /**
+         * Calculating free slot groups
+         */
+
+        type FreeSlot = {
+            start: string;
+            end: string;
+            length: number;
+        };
+
+        const availabilities: Record<string, Array<FreeSlot>> = {};
+
+        // Storing results in availabilities calendar
+        for (let toolID of Object.keys(groups)) {
+            // Sorting slots
+            const slots = groups[toolID];
+            slots.sort((a, b) => {
+                return Date.parse(a.start) - Date.parse(b.start);
+            });
+
+            // Getting free slots
+            const freeSlots: Array<FreeSlot> = [];
+            for (let [i, s] of slots.entries()) {
+                if (i < slots.length - 1) {
+                    const prevEnd = slots[i].end;
+                    const nextStart = slots[i + 1].start;
+                    if (prevEnd != nextStart) {
+                        freeSlots.push({
+                            start: prevEnd,
+                            end: nextStart,
+                            length: 1,
+                        });
+                    }
+                }
+            }
+
+            // Calculating slot length
+            for (let s of freeSlots) {
+                // Difference in milliseconds
+                let length = Date.parse(s.end) - Date.parse(s.start);
+                // Converting to hours
+                length = length / 1000 / 60 / 60;
+                // Updating data
+                s.length = length;
+            }
+
+            availabilities[toolID] = freeSlots;
+        }
+
+        /**
+         * Dividing in days the calendar
+         */
+
+        //
 
         try {
             ctx.body = { tool_ids, slots };
