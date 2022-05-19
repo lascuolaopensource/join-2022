@@ -22,7 +22,7 @@
       "type": "enumeration",
       "enum": [
         "booking",
-        "block"
+        "availability"
       ],
       "required": true
     },
