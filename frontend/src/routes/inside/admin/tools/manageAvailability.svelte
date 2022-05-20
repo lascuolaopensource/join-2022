@@ -153,12 +153,11 @@
 
 	function saveChanges() {
 		const changes = getChanges();
-		console.log(changes);
-		// promise = req.updateSlots({ changes }).then((v) => {
-		// 	// Resetting data
-		// 	// calendars = createEmptyCalendars();
-		// 	// promise = fetchSlots();
-		// });
+		promise = req.updateSlots(changes).then((v) => {
+			// Resetting data
+			calendars = createEmptyCalendars();
+			promise = fetchSlots();
+		});
 	}
 
 	function undoChanges() {
@@ -246,7 +245,7 @@
 				{dateStart}
 
 				<button class="btn btn-secondary" on:click={open}
-					>Blocco multiplo</button
+					>Modifica multipla</button
 				>
 			</div>
 		</div>
@@ -278,7 +277,7 @@
 	{/if}
 
 	<!-- Multiple block modal -->
-	<Modal title="Blocco multiplo">
+	<Modal title="Modifica multipla">
 		<BlockMultiple
 			days={daysList}
 			{hours}
