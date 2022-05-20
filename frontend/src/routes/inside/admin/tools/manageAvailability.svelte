@@ -44,22 +44,34 @@
 
 	let calendars: Calendars = createEmptyCalendars();
 
-	function createEmptyCalendar(): Calendar {
+	function createEmptyCalendar(toolID: string): Calendar {
 		const cal: Calendar = {};
+
 		for (let d = 0; d < days; d++) {
 			const date = h.date.addDays(dateStart, d);
-			for (let h = 0; h < hours; h++) {
-				date.setHours(h, 0, 0, 0);
-				cal[date.toISOString()] = { state: null, edited: false };
+			date.setHours(0, 0, 0, 0);
+
+			for (let hour = 0; hour < hours; hour++) {
+				const start = h.date.addHours(date, hour);
+				const end = h.date.addHours(date, hour + 1);
+
+				cal[start.toISOString()] = {
+					start,
+					end,
+					tool: toolID,
+					type: null,
+					edited: false
+				};
 			}
 		}
+
 		return cal;
 	}
 
 	function createEmptyCalendars(): Calendars {
 		const calendars: Calendars = {};
 		$tools.forEach((t) => {
-			calendars[t.id] = createEmptyCalendar();
+			calendars[t.id] = createEmptyCalendar(t.id);
 		});
 		return calendars;
 	}
@@ -71,28 +83,11 @@
 	promise = fetchSlots();
 
 	async function fetchSlots(): Promise<void> {
-		const slots: Array<t.ToolSlotEntity> = [];
-
-		// Fetching the first batch of the slots
-		const res = await req.getToolsSlots(
-			dateStart.toISOString(),
-			dateEnd.toISOString(),
-			1,
-			100
+		// Fetching slots
+		const slots: Array<t.ToolSlotEntity> = await req.getToolSlotsLoop(
+			dateStart,
+			dateEnd
 		);
-		// Saving
-		slots.push(...res.data);
-
-		// Fetching the other pages
-		for (let i = 0; i < res.meta.pagination.pageCount - 1; i++) {
-			const res = await req.getToolsSlots(
-				dateStart.toISOString(),
-				dateEnd.toISOString(),
-				2 + i,
-				100
-			);
-			slots.push(...res.data);
-		}
 
 		// Grouping slots by tool ID
 		const groups = _.groupBy(slots, (s) => s.attributes.tool.data.id);
@@ -100,17 +95,19 @@
 		// Storing results in calendar
 		for (let toolID of Object.keys(groups)) {
 			for (let s of groups[toolID]) {
+				// Transforming slots longer than 1 hour
+
 				// Calculating slot length
 				const lengthMS =
 					Date.parse(s.attributes.end) - Date.parse(s.attributes.start);
 				const lengthH = lengthMS / 1000 / 60 / 60;
+
+				// Updating calendar slots
 				for (let i = 0; i < lengthH; i++) {
 					const date = h.date.addHours(new Date(s.attributes.start), i);
 					const dateID = date.toISOString();
-					calendars[toolID][dateID] = {
-						state: s.attributes.type,
-						edited: false
-					};
+					calendars[toolID][dateID].type = s.attributes.type;
+					calendars[toolID][dateID].edited = false;
 				}
 			}
 		}
@@ -137,16 +134,18 @@
 	 */
 
 	function getChanges() {
-		const changes: Array<e.SlotUpdate> = [];
+		const changes: Record<string, Array<CellContent>> = {};
+
 		for (let toolID in calendars) {
+			changes[toolID] = [];
+
 			for (let dateID in calendars[toolID]) {
 				const slot = calendars[toolID][dateID];
-				if (slot.edited)
-					changes.push({
-						toolID,
-						dateTime: dateID,
-						state: slot.state
-					});
+				if (slot.edited) changes[toolID].push(slot);
+			}
+
+			if (changes[toolID].length === 0) {
+				delete changes[toolID];
 			}
 		}
 		return changes;
@@ -154,20 +153,23 @@
 
 	function saveChanges() {
 		const changes = getChanges();
-		promise = req.updateSlots({ changes }).then((v) => {
-			// Resetting data
-			// calendars = createEmptyCalendars();
-			// promise = fetchSlots();
-		});
+		console.log(changes);
+		// promise = req.updateSlots({ changes }).then((v) => {
+		// 	// Resetting data
+		// 	// calendars = createEmptyCalendars();
+		// 	// promise = fetchSlots();
+		// });
 	}
 
 	function undoChanges() {
 		const changes = getChanges();
-		for (let c of changes) {
-			const slot = calendars[c.toolID][c.dateTime];
-			slot.edited = false;
-			slot.state =
-				slot.state === null ? t.Enum_Toolslot_Type.Availability : null;
+		for (let [toolID, toolChanges] of Object.entries(changes)) {
+			for (let c of toolChanges) {
+				const slot = calendars[toolID][c.start.toISOString()];
+				slot.edited = false;
+				slot.type =
+					slot.type === null ? t.Enum_Toolslot_Type.Availability : null;
+			}
 		}
 		calendars = calendars;
 	}
@@ -208,10 +210,9 @@
 				detail.hours.forEach((h) => {
 					const datetime = new Date(Date.parse(d));
 					datetime.setHours(parseInt(h), 0, 0, 0);
-					calendars[toolID][datetime.toISOString()] = {
-						state: t.Enum_Toolslot_Type.Availability,
-						edited: true
-					};
+					const dateID = datetime.toISOString();
+					calendars[toolID][dateID].type = t.Enum_Toolslot_Type.Availability;
+					calendars[toolID][dateID].edited = true;
 				});
 			});
 		});
@@ -255,9 +256,9 @@
 			{#each $tools as t}
 				<div>
 					<p><strong>{t.attributes.name}</strong></p>
-					<WeekCal start={dateStart} {hours} let:dateTime>
+					<WeekCal start={dateStart} {hours} let:startDate let:endDate>
 						<CalendarCell
-							bind:content={calendars[t.id][dateTime.toISOString()]}
+							bind:content={calendars[t.id][startDate.toISOString()]}
 						/>
 					</WeekCal>
 				</div>

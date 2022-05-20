@@ -1,23 +1,24 @@
 <script lang="ts" context="module">
 	import { types as t } from 'shared';
 
-	export type CellContent = {
-		state: t.Enum_Toolslot_Type | null;
+	export interface CellContent extends t.ToolSlotInput {
 		edited: boolean;
-	};
+		start: Date;
+		end: Date;
+	}
 </script>
 
 <script lang="ts">
-	export let content: CellContent = { state: null, edited: false };
+	export let content: CellContent;
 
-	let editable = content.state == t.Enum_Toolslot_Type.Booking ? false : true;
+	let editable = content.type == t.Enum_Toolslot_Type.Booking ? false : true;
 
 	//
 
 	function edit() {
 		if (editable) {
-			content.state =
-				content.state == null ? t.Enum_Toolslot_Type.Availability : null;
+			content.type =
+				content.type == null ? t.Enum_Toolslot_Type.Availability : null;
 			content.edited = content.edited ? false : true;
 		}
 	}
@@ -26,9 +27,9 @@
 <!--  -->
 
 <div
-	class:blocked={content.state === null}
-	class:booked={content.state == t.Enum_Toolslot_Type.Booking}
-	class:free={content.state == t.Enum_Toolslot_Type.Availability}
+	class:blocked={content.type === null}
+	class:booked={content.type == t.Enum_Toolslot_Type.Booking}
+	class:free={content.type == t.Enum_Toolslot_Type.Availability}
 	class:edited={content.edited}
 	on:click={edit}
 >

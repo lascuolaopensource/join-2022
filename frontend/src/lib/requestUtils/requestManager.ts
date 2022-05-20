@@ -362,6 +362,33 @@ export const req = {
 		);
 	},
 
+	getToolSlotsLoop: async (dateStart: Date, dateEnd: Date) => {
+		const slots: Array<t.ToolSlotEntity> = [];
+
+		// Fetching the first batch of the slots
+		const res = await req.getToolsSlots(
+			dateStart.toISOString(),
+			dateEnd.toISOString(),
+			1,
+			100
+		);
+		// Saving
+		slots.push(...res.data);
+
+		// Fetching the other pages
+		for (let i = 0; i < res.meta.pagination.pageCount - 1; i++) {
+			const res = await req.getToolsSlots(
+				dateStart.toISOString(),
+				dateEnd.toISOString(),
+				2 + i,
+				100
+			);
+			slots.push(...res.data);
+		}
+
+		return slots;
+	},
+
 	//
 
 	updateSlots: async (data: e.AdminToolsUpdateSlotsReq, fetchFn = fetch) => {

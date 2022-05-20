@@ -66,9 +66,10 @@
 		</div>
 		<!-- Hours per day -->
 		{#each hoursList as h}
-			{@const dateTime = buildDateTime(d, h)}
+			{@const startDate = buildDateTime(d, h)}
+			{@const endDate = buildDateTime(d, h + 1)}
 			<div class="miniCal__cell">
-				<slot {dateTime} />
+				<slot {startDate} {endDate} />
 			</div>
 		{/each}
 	{/each}
