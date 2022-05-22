@@ -93,21 +93,23 @@
 		const groups = _.groupBy(slots, (s) => s.attributes.tool.data.id);
 
 		// Storing results in calendar
-		for (let toolID of Object.keys(groups)) {
-			for (let s of groups[toolID]) {
-				// Transforming slots longer than 1 hour
+		if (Object.keys(groups).length) {
+			for (let toolID of Object.keys(groups)) {
+				for (let s of groups[toolID]) {
+					// Transforming slots longer than 1 hour
 
-				// Calculating slot length
-				const lengthMS =
-					Date.parse(s.attributes.end) - Date.parse(s.attributes.start);
-				const lengthH = lengthMS / 1000 / 60 / 60;
+					// Calculating slot length
+					const lengthMS =
+						Date.parse(s.attributes.end) - Date.parse(s.attributes.start);
+					const lengthH = lengthMS / 1000 / 60 / 60;
 
-				// Updating calendar slots
-				for (let i = 0; i < lengthH; i++) {
-					const date = h.date.addHours(new Date(s.attributes.start), i);
-					const dateID = date.toISOString();
-					calendars[toolID][dateID].type = s.attributes.type;
-					calendars[toolID][dateID].edited = false;
+					// Updating calendar slots
+					for (let i = 0; i < lengthH; i++) {
+						const date = h.date.addHours(new Date(s.attributes.start), i);
+						const dateID = date.toISOString();
+						calendars[toolID][dateID].type = s.attributes.type;
+						calendars[toolID][dateID].edited = false;
+					}
 				}
 			}
 		}
@@ -185,6 +187,9 @@
 			// Updating data
 			calendars = createEmptyCalendars();
 			promise = fetchSlots();
+			daysList = calcAllDates();
+		} else {
+			// Display tooltip "unable to change, save or discard changes first"
 		}
 	}
 
@@ -192,7 +197,7 @@
 	 * Multiple block
 	 */
 
-	const daysList = calcAllDates();
+	let daysList = calcAllDates();
 
 	function calcAllDates(): Array<Date> {
 		const dates: Array<Date> = [];
@@ -203,15 +208,18 @@
 	}
 
 	function multipleChange(detail: EventDetail) {
-		console.log(detail);
 		detail.tools.forEach((toolID) => {
 			detail.days.forEach((d) => {
 				detail.hours.forEach((h) => {
 					const datetime = new Date(Date.parse(d));
 					datetime.setHours(parseInt(h), 0, 0, 0);
 					const dateID = datetime.toISOString();
-					calendars[toolID][dateID].type = t.Enum_Toolslot_Type.Availability;
-					calendars[toolID][dateID].edited = true;
+					if (
+						calendars[toolID][dateID].type != t.Enum_Toolslot_Type.Availability
+					) {
+						calendars[toolID][dateID].type = t.Enum_Toolslot_Type.Availability;
+						calendars[toolID][dateID].edited = true;
+					}
 				});
 			});
 		});

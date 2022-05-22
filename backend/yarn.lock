@@ -9588,7 +9588,7 @@ shallowequal@^1.1.0:
 
 "shared@github:lascuolaopensource/join-shared#hackerspace-inverted":
   version "0.0.1"
-  resolved "https://codeload.github.com/lascuolaopensource/join-shared/tar.gz/2a29996c805ed7faf080d7018f74e36b2e1d4980"
+  resolved "https://codeload.github.com/lascuolaopensource/join-shared/tar.gz/b8a87448af4ad2d2162d47eba26ab18c2ad37893"
   dependencies:
     graphql-tag "^2.12.6"
     yup "^0.32.11"

@@ -66,111 +66,90 @@ module.exports = {
 
         const body: e.BookToolsCheckAvailabilityReq = ctx.request.body;
 
-        /**
-         * Getting all the required tools
-         */
+        // Getting date range
+        let date_start = new Date();
+        let date_end = h.date.setHours(
+            h.date.addDays(date_start, 1),
+            0,
+            0,
+            0,
+            0
+        );
 
-        let tool_ids = body.days.reduce((prev, curr) => {
-            return [...prev, ...curr.tool_ids];
-        }, [] as Array<string>);
-        tool_ids = _.uniq(tool_ids);
+        // Fix number 7
+        for (let i = 0; i < 7; i++) {
+            // Getting tool ids
+            const tool_ids = body.days[0].tool_ids;
 
-        /**
-         * Getting free slots for each tool
-         */
+            // Getting slots
+            let slots = await getSlots(
+                tool_ids,
+                date_start.toISOString(),
+                date_end.toISOString()
+            );
 
-        const date_start = new Date();
-        const date_end = h.date.addDays(date_start, 7);
-
-        const slots: Array<t.ID<t.ToolSlot>> =
-            await strapi.entityService.findMany(entities.toolSlot, {
-                populate: ["tool"],
-                filters: {
-                    $and: [
-                        {
-                            tool: {
-                                id: {
-                                    $in: tool_ids,
-                                },
-                            },
-                        },
-                        {
-                            start: {
-                                $gt: h.date.formatQueryDate(date_start),
-                            },
-                        },
-                        {
-                            end: {
-                                $lt: h.date.formatQueryDate(date_end),
-                            },
-                        },
-                    ],
-                },
+            // Filtering slots based on length
+            slots = slots.filter((s) => {
+                const hour = 1000 * 60 * 60;
+                const length = (Date.parse(s.end) - Date.parse(s.start)) / hour;
+                return length >= body.days[0].hours;
             });
 
-        // Grouping slots by tool id
-        const groups = _.groupBy(slots, (s) => (s.tool as t.ID<t.ToolSlot>).id);
-        console.log(groups);
-
-        /**
-         * Calculating free slot groups
-         */
-
-        type FreeSlot = {
-            start: string;
-            end: string;
-            length: number;
-        };
-
-        const availabilities: Record<string, Array<FreeSlot>> = {};
-
-        // Storing results in availabilities calendar
-        for (let toolID of Object.keys(groups)) {
-            // Sorting slots
-            const slots = groups[toolID];
             slots.sort((a, b) => {
-                return Date.parse(a.start) - Date.parse(b.start);
+                return Date.parse(a.start) - Date.parse(b.end);
             });
 
-            // Getting free slots
-            const freeSlots: Array<FreeSlot> = [];
-            for (let [i, s] of slots.entries()) {
-                if (i < slots.length - 1) {
-                    const prevEnd = slots[i].end;
-                    const nextStart = slots[i + 1].start;
-                    if (prevEnd != nextStart) {
-                        freeSlots.push({
-                            start: prevEnd,
-                            end: nextStart,
-                            length: 1,
-                        });
-                    }
-                }
-            }
-
-            // Calculating slot length
-            for (let s of freeSlots) {
-                // Difference in milliseconds
-                let length = Date.parse(s.end) - Date.parse(s.start);
-                // Converting to hours
-                length = length / 1000 / 60 / 60;
-                // Updating data
-                s.length = length;
-            }
-
-            availabilities[toolID] = freeSlots;
+            // Updating dateStart, dateEnd
         }
 
-        /**
-         * Dividing in days the calendar
-         */
-
-        //
-
         try {
-            ctx.body = { tool_ids, slots };
+            ctx.body = {};
         } catch (err) {
             ctx.body = { err };
         }
     },
 };
+
+/**
+ *
+ */
+
+async function getSlots(
+    tool_ids: Array<string>,
+    dateStart: string,
+    dateEnd: string
+): Promise<Array<t.ID<t.ToolSlot>>> {
+    const slots: Array<t.ID<t.ToolSlot>> = await strapi.entityService.findMany(
+        entities.toolSlot,
+        {
+            populate: ["tool"],
+            filters: {
+                $and: [
+                    {
+                        tool: {
+                            id: {
+                                $in: tool_ids,
+                            },
+                        },
+                    },
+                    {
+                        start: {
+                            $gt: dateStart,
+                        },
+                    },
+                    {
+                        end: {
+                            $lt: dateEnd,
+                        },
+                    },
+                    {
+                        type: {
+                            $eq: t.Enum_Toolslot_Type.Availability,
+                        },
+                    },
+                ],
+            },
+        }
+    );
+    return slots;
+}
