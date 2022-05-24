@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { req } from '$lib/requestUtils';
 	import type { endpoints as e, types as t } from 'shared';
+	import { tools } from '$lib/stores';
 
 	import { nanoid } from 'nanoid';
 
@@ -9,13 +9,7 @@
 
 	//
 
-	let tools: Array<t.ToolEntity> = [];
 	let days: Array<t.ID<e.BookToolsCheckAvailabilityDay>> = [];
-
-	const promise = (async () => {
-		const res = await req.getTools();
-		tools = [...res.data];
-	})();
 
 	function getDayIndexByID(id: string) {
 		for (let d of days) {
@@ -53,24 +47,19 @@
 
 <!--  -->
 
-{#await promise}
-	loading
-{:then res}
-	<div class="space-between">
-		{#each days as day, i (day.id)}
-			<CardToolDay
-				{tools}
-				{day}
-				index={i + 1}
-				on:click={() => {
-					deleteDay(day.id);
-				}}
-			/>
-		{/each}
+<div class="space-between">
+	{#each days as day, i (day.id)}
+		<CardToolDay
+			tools={$tools}
+			{day}
+			index={i + 1}
+			on:click={() => {
+				deleteDay(day.id);
+			}}
+		/>
+	{/each}
 
-		<button class="btn btn-w-fill" on:click={addDay}>Aggiungi uno giorno</button
-		>
+	<button class="btn btn-w-fill" on:click={addDay}>Aggiungi uno giorno</button>
 
-		<Button hierarchy="Primary" on:click={next}>Avanti</Button>
-	</div>
-{/await}
+	<Button hierarchy="Primary" on:click={next}>Avanti</Button>
+</div>
