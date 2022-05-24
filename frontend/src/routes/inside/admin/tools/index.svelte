@@ -3,7 +3,7 @@
 	export async function load({ params, fetch, session, stuff }) {
 		return {
 			status: 302,
-			redirect: `/inside/admin/tools/block`
+			redirect: `/inside/admin/tools/manageAvailability`
 		};
 	}
 </script>
