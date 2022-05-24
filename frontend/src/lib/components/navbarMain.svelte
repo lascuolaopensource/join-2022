@@ -24,7 +24,12 @@
 	const data: Record<string, MenuSection> = {
 		home: { href: '/inside', label: 'Home' },
 		courses: { href: '/inside/courses', label: 'Corsi' },
-		admin: { href: '/inside/admin/enrollments', label: 'Admin iscrizioni' },
+		adminEnrollments: {
+			href: '/inside/admin/enrollments',
+			label: 'Admin iscrizioni'
+		},
+		adminTools: { href: '/inside/admin/tools', label: 'Admin strumenti' },
+		tools: { href: '/inside/tools', label: 'Strumenti' },
 		profile: { href: '/inside/profile', label: $userInfo.name }
 	};
 
@@ -66,9 +71,13 @@
 	<div class="menu space-between" style:--h="{$navHgt}px">
 		<MenuItem data={data.home} />
 		<MenuItem data={data.courses} />
-		<hr />
+		<MenuItem data={data.tools} />
 		{#if $userRole == t.UserPermissionRoles.AdminEnrollments}
-			<MenuItem data={data.admin} />
+			<MenuItem data={data.adminEnrollments} />
+			<hr />
+		{/if}
+		{#if $userRole == t.UserPermissionRoles.AdminTools}
+			<MenuItem data={data.adminTools} />
 			<hr />
 		{/if}
 		<MenuItem data={data.profile} />

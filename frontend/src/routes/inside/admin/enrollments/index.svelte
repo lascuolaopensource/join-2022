@@ -8,7 +8,7 @@
 
 	const promise = (async () => {
 		const res = await req.adminGetUpcomingCourses();
-		const courses = res.courses as Array<t.ID<t.Course>>;
+		const courses = res.courses as any as Array<t.ID<t.Course>>;
 
 		const active = courses.filter((c) => {
 			const enrollments = c.enrollments as any as Array<t.Enrollment>;

@@ -80,6 +80,12 @@
       "relation": "oneToMany",
       "target": "api::payment.payment",
       "mappedBy": "owner"
+    },
+    "tools_bookings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tools-booking.tools-booking",
+      "mappedBy": "owner"
     }
   }
 }

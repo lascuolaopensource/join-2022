@@ -1,26 +1,26 @@
 <script context="module">
-	export const key = {};
+	import { writable } from 'svelte/store';
+
+	export const visible = writable(false);
+
+	export function close() {
+		visible.set(false);
+	}
+
+	export function open() {
+		visible.set(true);
+	}
 </script>
 
 <script lang="ts">
 	import { icons } from '$lib/icons';
-	import { setContext } from 'svelte';
 
 	export let title = '';
-	export let open = false;
-
-	function close() {
-		open = false;
-	}
-
-	setContext(key, {
-		close
-	});
 </script>
 
 <!-- -->
 
-{#if open}
+{#if $visible}
 	<div class="modal">
 		<div class="modal__top">
 			<p class="modal__title">
@@ -46,6 +46,7 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
+		overflow: auto;
 		z-index: 9999;
 		margin: 0; /* Counters eventual space-between*/
 
@@ -60,6 +61,10 @@
 
 		padding: var(--s-1) var(--s-3);
 		border-bottom: 1px solid black;
+		background-color: white;
+
+		position: sticky;
+		top: 0;
 	}
 
 	button {

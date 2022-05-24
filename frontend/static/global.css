@@ -130,6 +130,12 @@ h1 {
 	font-weight: 600;
 }
 
+h2 {
+	font-size: 22px;
+	line-height: 24px;
+	font-weight: 600;
+}
+
 input {
 	border: var(--input-border);
 	border-radius: var(--border-radius);
@@ -196,10 +202,6 @@ small {
 }
 
 /*  */
-
-.container {
-	padding: var(--s-3);
-}
 
 .space-between > * + * {
 	margin-top: var(--s-2);

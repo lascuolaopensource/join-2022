@@ -12,6 +12,10 @@
 		ModalConfirm,
 		Tooltip
 	} from '$lib/components';
+
+	import { open } from '$lib/components/modal.svelte';
+	import { setFormError } from '$lib/components/form';
+	import { navHgt } from '$lib/components/navbarMain.svelte';
 	import type { TooltipContent } from '$lib/components/tooltip.svelte';
 	import { s, enrollmentStatesAdmin } from '$lib/strings';
 
@@ -129,7 +133,9 @@
 		changed = !_.isEqual(enrollments, enrollmentsInit);
 	}
 
-	let openModal = false;
+	function undo() {
+		enrollments = _.cloneDeep(enrollmentsInit);
+	}
 
 	//
 
@@ -158,10 +164,6 @@
 				message: JSON.stringify(e)
 			};
 		}
-	}
-
-	function undo() {
-		enrollments = _.cloneDeep(enrollmentsInit);
 	}
 
 	//
@@ -225,18 +227,13 @@
 
 	<!-- Notifica dell'iscrizione -->
 
-	<button
-		class="btn btn-tertiary btn-notify"
-		on:click={() => {
-			openModal = true;
-		}}
-	>
+	<button class="btn btn-tertiary btn-notify" on:click={open}>
 		Notifica gli utenti dell'iscrizione
 	</button>
 
 	<hr />
 
-	<Modal title="Attenzione!" bind:open={openModal}>
+	<Modal title="Attenzione!">
 		<p class="mb-2">
 			Sei sicur* di notificare? <br />
 			Verranno inviate mail di conferma ai partecipanti a cui è stata aggiornata
@@ -318,30 +315,5 @@
 		flex-flow: row nowrap;
 		justify-content: space-between;
 		align-items: center;
-	}
-
-	.btn-notify {
-		margin: var(--s-2) 0;
-	}
-
-	/*  */
-
-	.table-container {
-		overflow-x: auto;
-	}
-
-	table {
-		border: none !important;
-	}
-
-	h1 {
-		margin-bottom: var(--s-1);
-	}
-
-	th {
-		border: none !important;
-		padding-top: var(--s-3);
-		font-size: 20px;
-		padding-left: 0;
 	}
 </style>

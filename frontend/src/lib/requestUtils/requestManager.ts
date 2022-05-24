@@ -319,6 +319,52 @@ export const req = {
 		);
 	},
 
+	/**
+	 * Tools admin
+	 */
+
+	getTools: async (
+		fetchFn = fetch
+	): Promise<t.ToolEntityResponseCollection> => {
+		return await request(fetchFn, `${b}api/tools`, 'GET', null, headersAuth());
+	},
+
+	//
+
+	getToolsSlots: async (
+		startDate: string,
+		endDate: string,
+		pageNumber: number,
+		pageSize: number,
+		fetchFn = fetch
+	): Promise<t.ToolSlotEntityResponseCollection> => {
+		const query = qs.stringify(
+			{
+				pagination: {
+					page: pageNumber,
+					pageSize: pageSize
+				},
+				filters: {
+					$and: [{ start: { $gte: startDate } }, { end: { $lte: endDate } }]
+				},
+				populate: {
+					tool: {
+						fields: ['id']
+					}
+				}
+			},
+			{
+				encodeValuesOnly: true
+			}
+		);
+		return await request(
+			fetchFn,
+			`${b}api/tool-slots?${query}`,
+			'GET',
+			null,
+			headersAuth()
+		);
+	},
 	//
 
 	adminEnrollmentsNotify: async (
@@ -330,6 +376,72 @@ export const req = {
 			`${b}api/admin-enrollments/notify/${courseID}`,
 			'GET',
 			null,
+			headersAuth()
+		);
+	},
+
+	getToolSlotsLoop: async (dateStart: Date, dateEnd: Date) => {
+		const slots: Array<t.ToolSlotEntity> = [];
+
+		// Fetching the first batch of the slots
+		const res = await req.getToolsSlots(
+			dateStart.toISOString(),
+			dateEnd.toISOString(),
+			1,
+			100
+		);
+		// Saving
+		slots.push(...res.data);
+
+		// Fetching the other pages
+		for (let i = 0; i < res.meta.pagination.pageCount - 1; i++) {
+			const res = await req.getToolsSlots(
+				dateStart.toISOString(),
+				dateEnd.toISOString(),
+				2 + i,
+				100
+			);
+			slots.push(...res.data);
+		}
+
+		return slots;
+	},
+
+	//
+
+	updateSlots: async (data: e.AdminToolsUpdateSlotsReq, fetchFn = fetch) => {
+		return await request(
+			fetchFn,
+			`${b}api/admin-tools/update-slots`,
+			'POST',
+			data,
+			headersAuth()
+		);
+	},
+
+	/**
+	 * Tools client
+	 */
+
+	checkSlots: async (
+		data: e.BookToolsCheckAvailabilityReq,
+		fetchFn = fetch
+	): Promise<e.BookToolsCheckAvailabilityRes> => {
+		return await request(
+			fetchFn,
+			`${b}api/book-tools/check-availability`,
+			'POST',
+			data,
+			headersAuth()
+		);
+	},
+
+	bookTools: async (data: e.BookToolsReq, fetchFn = fetch) => {
+		return await request(
+			fetchFn,
+			`${b}api/book-tools/book`,
+			'POST',
+			data,
 			headersAuth()
 		);
 	}

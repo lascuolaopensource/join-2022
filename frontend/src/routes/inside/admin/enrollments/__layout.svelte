@@ -25,8 +25,12 @@
 			const userRoleRes = await req.getRole();
 			$userRole = userRoleRes.role;
 
-			// Redirect if not admin
-			if (userRoleRes.role != t.UserPermissionRoles.AdminEnrollments) {
+			// Redirect based on role
+			if (userRoleRes.role == t.UserPermissionRoles.AdminEnrollments) {
+				await goto('/inside/admin/enrollments');
+			} else if (userRoleRes.role == t.UserPermissionRoles.AdminTools) {
+				await goto('/inside/admin/tools');
+			} else {
 				await goto('/');
 			}
 
@@ -44,7 +48,5 @@
 {#if loading}
 	<Loading />
 {:else}
-	<Container>
-		<slot />
-	</Container>
+	<slot />
 {/if}
