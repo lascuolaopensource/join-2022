@@ -4,8 +4,8 @@ const shared_1 = require("shared");
 const utils_1 = require("../../../utils");
 const emails_1 = require("../../../emails");
 module.exports = {
-    getActiveCourses: async (ctx, next) => {
-        strapi.log.info("In admin-enrollments/getActiveCourses controller");
+    getUpcomingCourses: async (ctx, next) => {
+        strapi.log.info("In admin-enrollments/getUpcomingCourses controller");
         const today = new Date().toISOString();
         const courses = await strapi.entityService.findMany(utils_1.entities.course, {
             populate: ["enrollments", "meetings"],
@@ -29,9 +29,6 @@ module.exports = {
                 });
                 const oldState = enrollment.state;
                 const newState = body[id].state;
-                const user = enrollment.owner;
-                const userInfo = await (0, utils_1.getUserInfo)(user.id);
-                const course = enrollment.course;
                 if (oldState != newState) {
                     await strapi.entityService.update(utils_1.entities.enrollment, id, {
                         data: {
@@ -39,18 +36,6 @@ module.exports = {
                         },
                     });
                     strapi.log.info(`Updated enrollment ${id}: ${oldState} -> ${newState}`);
-                    if (newState == shared_1.types.Enum_Enrollment_State.Approved) {
-                        emails_1.emailSender.enrollmentApproved(user.email, {
-                            COURSE_TITLE: course.title,
-                            USER_NAME: userInfo.name,
-                        });
-                    }
-                    else if (newState == shared_1.types.Enum_Enrollment_State.Rejected) {
-                        emails_1.emailSender.enrollmentRejected(user.email, {
-                            COURSE_TITLE: course.title,
-                            USER_NAME: userInfo.name,
-                        });
-                    }
                 }
             }
         }
@@ -59,5 +44,37 @@ module.exports = {
             return ctx.internalServerError(shared_1.Errors.UnknownError);
         }
         return {};
+    },
+    notify: async (ctx, next) => {
+        strapi.log.info("In admin-enrollments/notify controller");
+        const course = await (0, utils_1.getCourseByID)(ctx.params.courseID, {
+            populate: {
+                enrollments: {
+                    populate: {
+                        owner: {
+                            populate: ["userInfo"],
+                        },
+                    },
+                },
+            },
+        });
+        const enrollments = course.enrollments;
+        for (let e of enrollments) {
+            const owner = e.owner;
+            const ownerInfo = owner.userInfo;
+            if (e.state == shared_1.types.Enum_Enrollment_State.Approved) {
+                emails_1.emailSender.enrollmentApproved(owner.email, {
+                    COURSE_TITLE: course.title,
+                    USER_NAME: ownerInfo.name,
+                });
+            }
+            else if (e.state == shared_1.types.Enum_Enrollment_State.Rejected) {
+                emails_1.emailSender.enrollmentRejected(owner.email, {
+                    COURSE_TITLE: course.title,
+                    USER_NAME: ownerInfo.name,
+                });
+            }
+        }
+        return { ok: true };
     },
 };
