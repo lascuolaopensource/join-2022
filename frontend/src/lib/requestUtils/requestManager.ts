@@ -408,10 +408,20 @@ export const req = {
 	checkSlots: async (
 		data: e.BookToolsCheckAvailabilityReq,
 		fetchFn = fetch
-	) => {
+	): Promise<e.BookToolsCheckAvailabilityRes> => {
 		return await request(
 			fetchFn,
 			`${b}api/book-tools/check-availability`,
+			'POST',
+			data,
+			headersAuth()
+		);
+	},
+
+	bookTools: async (data: e.BookToolsReq, fetchFn = fetch) => {
+		return await request(
+			fetchFn,
+			`${b}api/book-tools/book`,
 			'POST',
 			data,
 			headersAuth()
