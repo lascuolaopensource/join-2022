@@ -74,9 +74,11 @@
 		<MenuItem data={data.tools} />
 		{#if $userRole == t.UserPermissionRoles.AdminEnrollments}
 			<MenuItem data={data.adminEnrollments} />
+			<hr />
 		{/if}
 		{#if $userRole == t.UserPermissionRoles.AdminTools}
 			<MenuItem data={data.adminTools} />
+			<hr />
 		{/if}
 		<MenuItem data={data.profile} />
 		<LogoutButton>↖ Logout</LogoutButton>

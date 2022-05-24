@@ -216,27 +216,9 @@
 		width: 50%;
 	}
 
-	td,
-	th {
-		padding: var(--s-1);
-	}
-
 	table {
-		/* width: 100%; */
-		border-collapse: collapse;
 		margin-top: var(--s-3);
 		margin-bottom: var(--s-3);
-	}
-
-	td,
-	th,
-	table {
-		border: 1px solid gray;
-	}
-
-	th {
-		width: auto;
-		text-align: left;
 	}
 
 	h1 {

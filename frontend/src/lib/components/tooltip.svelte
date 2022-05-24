@@ -1,11 +1,21 @@
+<script lang="ts" context="module">
+	export type TooltipState = 'positive' | 'negative' | 'neutral';
+	export type TooltipContent = {
+		state: TooltipState;
+		message: string;
+	} | null;
+</script>
+
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 
-	export let state: 'positive' | 'negative' | 'neutral' = 'positive';
+	export let content: TooltipContent = null;
 	export let duration = 3000;
-	export let visible = false;
 
-	$: if (visible) {
+	let visible = false;
+
+	$: if (content) {
+		visible = true;
 		setTimeout(() => {
 			visible = false;
 		}, duration);
@@ -18,11 +28,11 @@
 	<div
 		out:fade
 		class="shadow"
-		class:negative={state == 'negative'}
-		class:neutral={state == 'neutral'}
-		class:positive={state == 'positive'}
+		class:negative={content.state == 'negative'}
+		class:neutral={content.state == 'neutral'}
+		class:positive={content.state == 'positive'}
 	>
-		<slot />
+		{content.message}
 	</div>
 {/if}
 
@@ -30,6 +40,7 @@
 <style>
 	div {
 		position: fixed;
+		color: black;
 		bottom: var(--s-3);
 		left: var(--s-3);
 		width: calc(100% - var(--s-3) * 2);

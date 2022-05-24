@@ -5,8 +5,8 @@ module.exports = {
     routes: [
         {
             method: "GET",
-            path: "/admin-enrollments/get-active-courses",
-            handler: "admin-enrollments.getActiveCourses",
+            path: "/admin-enrollments/get-upcoming-courses",
+            handler: "admin-enrollments.getUpcomingCourses",
             config: {
                 policies: [
                     "global::user-exists",
@@ -24,6 +24,18 @@ module.exports = {
                     "global::user-exists",
                     p.isRole({ role: t.UserPermissionRoles.AdminEnrollments }),
                     p.isBodyValid({ schema: e.AdminEnrollmentsUpdateSchema }),
+                ],
+                middlewares: [],
+            },
+        },
+        {
+            method: "GET",
+            path: "/admin-enrollments/notify/:courseID",
+            handler: "admin-enrollments.notify",
+            config: {
+                policies: [
+                    "global::user-exists",
+                    p.isRole({ role: t.UserPermissionRoles.AdminEnrollments }),
                 ],
                 middlewares: [],
             },
