@@ -1,5 +1,5 @@
-import { endpoints as e, types as t, helpers as h, types } from "shared";
-import { entities } from "../../../utils";
+import { endpoints as e, types as t, helpers as h } from "shared";
+import { entities, date, slots } from "../../../utils";
 import _ from "lodash";
 
 //
@@ -27,7 +27,7 @@ module.exports = {
             for (let [state, stateUpdates] of Object.entries(groups)) {
                 // Sorting updates by date
                 stateUpdates.sort((a, b) => {
-                    return dateDiff(a.start, b.start);
+                    return date.dateDiff(a.start, b.start);
                 });
 
                 // Grouping updates by proximity
@@ -55,7 +55,7 @@ module.exports = {
                     }
                     // If is null, we break an existing slot
                     else {
-                        await breakAvailabilitySlot(update);
+                        await slots.breakAvailabilitySlot(update);
                     }
                 }
             }
@@ -67,7 +67,7 @@ module.exports = {
             // Getting one day before edits
             const startDates = toolUpdates
                 .map((u) => u.start)
-                .sort((a, b) => dateDiff(a, b));
+                .sort((a, b) => date.dateDiff(a, b));
             const startDate = new Date(startDates[0]);
             startDate.setHours(0, 0, 0, 0);
             const beforeDate = h.date.addDays(startDate, -1);
@@ -75,7 +75,7 @@ module.exports = {
             // Getting one day after edits
             const endDates = toolUpdates
                 .map((u) => u.end)
-                .sort((a, b) => dateDiff(a, b));
+                .sort((a, b) => date.dateDiff(a, b));
             const endDate = new Date(endDates[endDates.length - 1]);
             endDate.setHours(0, 0, 0, 0);
             const afterDate = h.date.addDays(endDate, 1);
@@ -90,7 +90,7 @@ module.exports = {
 
             // Grouping slots
             const groupedSlots = groupSlotUpdates(
-                availSlots.map((s) => slotToInput(s))
+                availSlots.map((s) => slots.slotToInput(s))
             );
             const mergedSlots = groupedSlots.map((g) => mergeUpdatesGroup(g));
 
@@ -190,101 +190,6 @@ function checkGroupConsistency(group: Array<t.ToolSlotInput>): void {
 
 /**
  *
- * @param slot
- * @returns
- */
-
-async function getBoundingSlot(
-    slot: t.ToolSlotInput
-): Promise<t.ID<t.ToolSlot>> {
-    // Getting the availability slot that contains the blockSlot
-    const availSlot: Array<t.ID<t.ToolSlot>> =
-        await strapi.entityService.findMany(entities.toolSlot, {
-            // populate: ["tool"],
-            filters: {
-                $and: [
-                    {
-                        start: {
-                            $lte: slot.start,
-                        },
-                    },
-                    {
-                        end: {
-                            $gte: slot.end,
-                        },
-                    },
-                    {
-                        tool: {
-                            id: {
-                                $eq: slot.tool,
-                            },
-                        },
-                    },
-                ],
-            },
-        });
-
-    if (availSlot.length == 1) {
-        return availSlot[0];
-    } else {
-        throw new Error("slotNotFound");
-    }
-}
-
-/**
- *
- * @param slot
- */
-
-async function breakAvailabilitySlot(slot: t.ToolSlotInput): Promise<void> {
-    // Getting bounding slot
-    let slotToBreak: t.ID<t.ToolSlot>;
-    try {
-        slotToBreak = await getBoundingSlot(slot);
-    } catch (e) {
-        throw e;
-    }
-
-    // Creating the before slot
-    if (slotToBreak.start != slot.start) {
-        const beforeSlot: t.ToolSlotInput = {
-            start: slotToBreak.start,
-            end: slot.start,
-            type: t.Enum_Toolslot_Type.Availability,
-            tool: slot.tool,
-        };
-        await strapi.entityService.create(entities.toolSlot, {
-            data: beforeSlot,
-        });
-    }
-
-    // Creating the before slot
-    if (slotToBreak.end != slot.end) {
-        const afterSlot: t.ToolSlotInput = {
-            start: slot.end,
-            end: slotToBreak.end,
-            type: t.Enum_Toolslot_Type.Availability,
-            tool: slot.tool,
-        };
-        await strapi.entityService.create(entities.toolSlot, {
-            data: afterSlot,
-        });
-    }
-
-    // Deleting the initial slot
-    await strapi.entityService.delete(entities.toolSlot, slotToBreak.id);
-}
-
-/**
- *
- */
-
-function dateDiff(a: string, b: string): number {
-    return Date.parse(a) - Date.parse(b);
-}
-
-/**
- *
  */
 
 async function findSlotsBetween(
@@ -333,19 +238,6 @@ async function findSlotsBetween(
  *
  */
 
-function slotToInput(s: t.ID<t.ToolSlot>): t.ToolSlotInput {
-    return {
-        start: s.start,
-        end: s.end,
-        tool: (s.tool as t.ID<t.Tool>).id,
-        type: s.type,
-    };
-}
-
-/**
- *
- */
-
 function sortToolSlotArray(a: Array<t.ToolSlotInput>) {
-    return a.sort((a, b) => dateDiff(a.start, b.start));
+    return a.sort((a, b) => date.dateDiff(a.start, b.start));
 }
