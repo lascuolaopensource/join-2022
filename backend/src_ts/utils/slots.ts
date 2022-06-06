@@ -112,3 +112,54 @@ export function slotToInput(s: t.ID<t.ToolSlot>): t.ToolSlotInput {
         type: s.type,
     };
 }
+
+/**
+ *
+ * @param start
+ * @param end
+ * @param tool
+ * @param type
+ * @returns
+ */
+
+export async function findSlotsBetween(
+    start: string,
+    end: string,
+    tool: string,
+    type: t.Enum_Toolslot_Type
+): Promise<Array<t.ID<t.ToolSlot>>> {
+    const slots: Array<t.ID<t.ToolSlot>> = await strapi.entityService.findMany(
+        entities.toolSlot,
+        {
+            populate: ["tool"],
+            filters: {
+                $and: [
+                    {
+                        start: {
+                            $gte: start,
+                        },
+                    },
+                    {
+                        end: {
+                            $lte: end,
+                        },
+                    },
+                    {
+                        tool: {
+                            id: {
+                                $eq: tool,
+                            },
+                        },
+                    },
+                    {
+                        type: {
+                            $eq: type,
+                        },
+                    },
+                ],
+            },
+        }
+    );
+
+    return slots;
+}

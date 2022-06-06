@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.slotToInput = exports.breakAvailabilitySlot = exports.getBoundingSlot = void 0;
+exports.findSlotsBetween = exports.slotToInput = exports.breakAvailabilitySlot = exports.getBoundingSlot = void 0;
 const shared_1 = require("shared");
 const entities_1 = require("./entities");
 async function getBoundingSlot(slot, type = shared_1.types.Enum_Toolslot_Type.Availability) {
@@ -83,3 +83,36 @@ function slotToInput(s) {
     };
 }
 exports.slotToInput = slotToInput;
+async function findSlotsBetween(start, end, tool, type) {
+    const slots = await strapi.entityService.findMany(entities_1.entities.toolSlot, {
+        populate: ["tool"],
+        filters: {
+            $and: [
+                {
+                    start: {
+                        $gte: start,
+                    },
+                },
+                {
+                    end: {
+                        $lte: end,
+                    },
+                },
+                {
+                    tool: {
+                        id: {
+                            $eq: tool,
+                        },
+                    },
+                },
+                {
+                    type: {
+                        $eq: type,
+                    },
+                },
+            ],
+        },
+    });
+    return slots;
+}
+exports.findSlotsBetween = findSlotsBetween;

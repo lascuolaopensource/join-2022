@@ -81,7 +81,7 @@ module.exports = {
             const afterDate = h.date.addDays(endDate, 1);
 
             // Getting all the slots between the dates
-            const availSlots = await findSlotsBetween(
+            const availSlots = await slots.findSlotsBetween(
                 beforeDate.toISOString(),
                 afterDate.toISOString(),
                 toolID,
@@ -186,52 +186,6 @@ function checkGroupConsistency(group: Array<t.ToolSlotInput>): void {
     if (!sameTool || !sameType) {
         throw new Error("unequalUpdates");
     }
-}
-
-/**
- *
- */
-
-async function findSlotsBetween(
-    start: string,
-    end: string,
-    tool: string,
-    type: t.Enum_Toolslot_Type
-): Promise<Array<t.ID<t.ToolSlot>>> {
-    const slots: Array<t.ID<t.ToolSlot>> = await strapi.entityService.findMany(
-        entities.toolSlot,
-        {
-            populate: ["tool"],
-            filters: {
-                $and: [
-                    {
-                        start: {
-                            $gte: start,
-                        },
-                    },
-                    {
-                        end: {
-                            $lte: end,
-                        },
-                    },
-                    {
-                        tool: {
-                            id: {
-                                $eq: tool,
-                            },
-                        },
-                    },
-                    {
-                        type: {
-                            $eq: type,
-                        },
-                    },
-                ],
-            },
-        }
-    );
-
-    return slots;
 }
 
 /**

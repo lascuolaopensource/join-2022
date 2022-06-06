@@ -44,7 +44,7 @@ module.exports = {
             const endDate = new Date(endDates[endDates.length - 1]);
             endDate.setHours(0, 0, 0, 0);
             const afterDate = shared_1.helpers.date.addDays(endDate, 1);
-            const availSlots = await findSlotsBetween(beforeDate.toISOString(), afterDate.toISOString(), toolID, shared_1.types.Enum_Toolslot_Type.Availability);
+            const availSlots = await utils_1.slots.findSlotsBetween(beforeDate.toISOString(), afterDate.toISOString(), toolID, shared_1.types.Enum_Toolslot_Type.Availability);
             const groupedSlots = groupSlotUpdates(availSlots.map((s) => utils_1.slots.slotToInput(s)));
             const mergedSlots = groupedSlots.map((g) => mergeUpdatesGroup(g));
             for (let a of availSlots) {
@@ -95,38 +95,6 @@ function checkGroupConsistency(group) {
     if (!sameTool || !sameType) {
         throw new Error("unequalUpdates");
     }
-}
-async function findSlotsBetween(start, end, tool, type) {
-    const slots = await strapi.entityService.findMany(utils_1.entities.toolSlot, {
-        populate: ["tool"],
-        filters: {
-            $and: [
-                {
-                    start: {
-                        $gte: start,
-                    },
-                },
-                {
-                    end: {
-                        $lte: end,
-                    },
-                },
-                {
-                    tool: {
-                        id: {
-                            $eq: tool,
-                        },
-                    },
-                },
-                {
-                    type: {
-                        $eq: type,
-                    },
-                },
-            ],
-        },
-    });
-    return slots;
 }
 function sortToolSlotArray(a) {
     return a.sort((a, b) => utils_1.date.dateDiff(a.start, b.start));
