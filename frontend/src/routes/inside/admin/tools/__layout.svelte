@@ -13,8 +13,17 @@
 
 	const promise = (async () => {
 		if (!$tools.length) {
+			// Getting tools
 			const res = await req.getTools();
-			$tools = [...res.data];
+			// Converting ids to string
+			// Query gives back integer ids
+			// While generated types have string
+			const data = res.data.map((s) => {
+				s.id = s.id?.toString();
+				return s;
+			});
+			// Updating store
+			$tools = [...data];
 		}
 	})();
 </script>
