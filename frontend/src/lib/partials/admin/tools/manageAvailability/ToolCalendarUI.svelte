@@ -1,19 +1,16 @@
 <script lang="ts">
 	import type { ToolCalendar } from './ToolCalendar';
 	import ToolCalendarCellUI from './ToolCalendarCellUI.svelte';
+	import WeekCal from '$lib/ui/weekCal.svelte';
 
 	export let cal: ToolCalendar;
 
-	$: console.log(cal.editsExist());
+	const start = cal.getStartDate();
+	const step = cal.timeStep;
 </script>
 
 <!--  -->
 
-<!-- <WeekCal start={dateStart} {hours} let:startDate let:endDate>
-    <CalendarCell
-        bind:content={calendars[t.id][startDate.toISOString()]}
-    />
-</WeekCal> -->
-{#each cal.cells as cell}
-	<ToolCalendarCellUI bind:cell />
-{/each}
+<WeekCal {start} {step} let:startDate>
+	<ToolCalendarCellUI bind:cell={cal.cells[startDate.toISOString()]} />
+</WeekCal>

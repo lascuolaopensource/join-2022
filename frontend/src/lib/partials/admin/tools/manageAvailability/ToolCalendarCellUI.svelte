@@ -24,16 +24,14 @@
 	class:free={cell.type == t.Enum_Toolslot_Type.Availability}
 	class:edited={cell.edited}
 	on:click={edit}
->
-	{JSON.stringify(cell)}
-</div>
+/>
 
 <!--  -->
 <style>
-	/* div {
-		width: 30px;
-		height: 30px;
-	} */
+	div {
+		width: 100%;
+		height: 100%;
+	}
 
 	.booked {
 		background-color: red;

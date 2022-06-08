@@ -1,14 +1,10 @@
 import { types as t } from 'shared';
 
 export class ToolCalendarCell {
-	start: Date;
-	end: Date;
 	type: t.Enum_Toolslot_Type | null;
 	edited: boolean;
 
-	constructor(start: Date, end: Date) {
-		this.start = start;
-		this.end = end;
+	constructor(start: Date) {
 		this.type = null;
 		this.edited = false;
 	}

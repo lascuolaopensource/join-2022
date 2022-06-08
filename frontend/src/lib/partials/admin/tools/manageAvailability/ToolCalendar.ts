@@ -3,46 +3,77 @@ import { helpers as h, types as t } from 'shared';
 
 //
 
-const dayLengthMS = 24 * 60 * 60 * 1000;
-
-//
-
 export class ToolCalendar {
 	toolID: string;
-	cells: Array<ToolCalendarCell>;
+	cells: Record<string, ToolCalendarCell>;
+	dates: Array<Date>;
+	slots: Array<t.ToolSlotEntity>;
+	timeStep: number;
 
 	constructor(toolID: string, dates: Array<Date>, timeStep: number) {
 		this.toolID = toolID;
-		this.cells = [];
+		this.dates = dates;
+		this.timeStep = timeStep;
 
-		this.setupCells(dates, timeStep);
+		this.cells = {};
+		this.setupCells();
+
+		this.slots = [];
 	}
 
 	// Setup
 
-	setupCells(dates: Array<Date>, timeStep: number): void {
-		const iterations = dayLengthMS / timeStep;
-		for (let d of dates) {
-			for (let i = 0; i < iterations; i++) {
-				const start = h.date.addTime(d, timeStep * i);
-				const end = h.date.addTime(start, timeStep);
-				this.cells.push(new ToolCalendarCell(start, end));
+	setupCells(): void {
+		for (let d of this.dates) {
+			for (let t of h.date.splitDayInSlots(this.timeStep)) {
+				const start = h.date.addTime(d, t);
+				this.cells[start.toISOString()] = new ToolCalendarCell(start);
 			}
 		}
 	}
 
+	// Getters
+
+	getCells(): Array<ToolCalendarCell> {
+		return Object.values(this.cells);
+	}
+
+	getDates(): Array<Date> {
+		// Getting
+		const datesStr = Object.keys(this.cells);
+		// Converting in dates
+		const dates = datesStr.map((d) => new Date(d));
+		// Sorting
+		dates.sort((a, b) => {
+			return a.getTime() - b.getTime();
+		});
+
+		return dates;
+	}
+
+	getStartDate(): Date {
+		return this.getDates()[0];
+	}
+
 	// Edits management
 
-	getEdits(): Array<ToolCalendarCell> {
-		const edits: Array<ToolCalendarCell> = [];
-		for (let c of this.cells) {
-			if (c.edited) edits.push(c);
+	getEdits(): Array<t.ToolSlotInput> {
+		const edits: Array<t.ToolSlotInput> = [];
+		for (let [dateStr, cell] of Object.entries(this.cells)) {
+			if (cell.edited) {
+				edits.push({
+					tool: this.toolID,
+					start: dateStr,
+					end: h.date.addTime(new Date(dateStr), this.timeStep).toISOString(),
+					type: cell.type
+				});
+			}
 		}
 		return edits;
 	}
 
 	resetEdits() {
-		for (let c of this.cells) {
+		for (let c of this.getCells()) {
 			c.reset();
 		}
 	}
@@ -51,16 +82,46 @@ export class ToolCalendar {
 		return this.getEdits().length >= 1;
 	}
 
-	// Getters
+	//
 
-	getCellByStartDate(d: Date): ToolCalendarCell {
-		const candidates = this.cells.filter(
-			(c) => c.start.getTime() == d.getTime()
-		);
-		if (candidates.length == 1) {
-			return candidates[0];
-		} else {
-			throw new Error('multipleCellsSameDate');
+	renderSlot(s: t.ToolSlotEntity): void {
+		if (s.attributes?.tool?.data?.id != this.toolID) {
+			throw new Error('InvalidToolSlot');
 		}
+
+		// Calculating slot length
+		const slotLengthMS =
+			Date.parse(s.attributes.end) - Date.parse(s.attributes.start);
+		const slotLength = Math.round(slotLengthMS / this.timeStep);
+
+		// Updating cells
+		for (let i = 0; i < slotLength; i++) {
+			// Calculating date & dateID
+			const date = h.date.addTime(
+				new Date(s.attributes.start),
+				this.timeStep * i
+			);
+			const dateID = date.toISOString();
+
+			// Getting cell & updating
+			const cell = this.cells[dateID];
+			if (cell) {
+				cell.type = s.attributes.type;
+				cell.edited = false;
+			} else {
+				console.log('MissingCell', dateID);
+			}
+		}
+	}
+
+	addSlot(s: t.ToolSlotEntity): void {
+		this.slots.push(s);
+		this.renderSlot(s);
+	}
+
+	addSlots(a: Array<t.ToolSlotEntity>): void {
+		a.forEach((s) => {
+			this.addSlot(s);
+		});
 	}
 }
