@@ -38,4 +38,4 @@ Object.defineProperty(exports, "entities", { enumerable: true, get: function () 
 var registerUser_1 = require("./registerUser");
 Object.defineProperty(exports, "registerUser", { enumerable: true, get: function () { return registerUser_1.registerUser; } });
 Object.defineProperty(exports, "registerUserErrorHandler", { enumerable: true, get: function () { return registerUser_1.registerUserErrorHandler; } });
-exports.date = __importStar(require("./dates"));
+exports.date = __importStar(require("./date"));

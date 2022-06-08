@@ -12,4 +12,4 @@ export {
     RegisterUserInput,
 } from "./registerUser";
 
-export * as date from "./dates";
+export * as date from "./date";
