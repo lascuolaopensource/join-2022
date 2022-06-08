@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { helpers as h } from 'shared';
+
 	export let start = new Date();
-	export let hours = 24;
+	export let step = 60 * 60 * 1000;
 	export let days = 7;
 
 	/**
@@ -21,41 +23,25 @@
 		daysList.push(newDate);
 	}
 
-	// Listing the hours
-	let hoursList: Array<number> = [];
-	for (let i = 0; i < hours; i++) {
-		hoursList.push(i);
-	}
-
-	/**
-	 * Helper functions
-	 */
-
-	// Hour formatter
-	function formatHour(h: number) {
-		return h.toLocaleString('it-IT', {
-			minimumIntegerDigits: 2,
-			useGrouping: false
-		});
-	}
+	// Listing the steps
+	let stepList: Array<number> = h.date.splitDayInSlots(step);
 
 	// Datetime builder
-	function buildDateTime(d: Date, h: number) {
-		const date = new Date(d.getTime());
-		date.setHours(h);
+	function buildDateTime(d: Date, ms: number) {
+		const date = new Date(d.getTime() + ms);
 		return date;
 	}
 </script>
 
 <!--  -->
 
-<div class="miniCal" style:--cols={days + 1} style:--rows={hours + 1}>
+<div class="miniCal" style:--cols={days + 1} style:--rows={stepList.length + 1}>
 	<!-- First empty cell -->
 	<div class="miniCal__header" />
 
 	<!-- Hours column -->
-	{#each hoursList as h}
-		<div class="miniCal__hour">{formatHour(h)}:00</div>
+	{#each stepList as s}
+		<div class="miniCal__hour">{h.date.msToHHMM(s)}</div>
 	{/each}
 
 	<!-- Days columns -->
@@ -64,10 +50,10 @@
 		<div class="miniCal__header">
 			{d.getDate()}
 		</div>
-		<!-- Hours per day -->
-		{#each hoursList as h}
-			{@const startDate = buildDateTime(d, h)}
-			{@const endDate = buildDateTime(d, h + 1)}
+		<!-- Steps per day -->
+		{#each stepList as s}
+			{@const startDate = buildDateTime(d, s)}
+			{@const endDate = buildDateTime(d, s + step)}
 			<div class="miniCal__cell">
 				<slot {startDate} {endDate} />
 			</div>

@@ -14,5 +14,5 @@ export const tools = writable<Array<t.ToolEntity>>([]);
  * Temporary
  */
 
-export const toolDayRequest = writable<e.DayReq>(null);
+export const toolDayRequest = writable<e.DayReq | null>(null);
 export const toolDaysRequest = writable<Array<e.DayReq>>([]);
