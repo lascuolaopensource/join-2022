@@ -9,8 +9,8 @@
 	import BatchEdit from '$lib/partials/admin/tools/manageAvailability/BatchEdit.svelte';
 	import type { EventDetail } from '$lib/partials/admin/tools/manageAvailability/BatchEdit.svelte';
 
-	import { BottomBar, Button, Modal } from '$lib/components';
-	import { close, open } from '$lib/components/modal.svelte';
+	import { BottomBar, Button } from '$lib/components';
+	import { writable } from 'svelte/store';
 
 	/**
 	 * Basic variables
@@ -175,6 +175,16 @@
 		// Closing modal
 		close();
 	}
+
+	//
+
+	const showModal = writable(false);
+	const close = () => {
+		$showModal = false;
+	};
+	const open = () => {
+		$showModal = true;
+	};
 </script>
 
 <!--  -->
@@ -219,17 +229,18 @@
 
 	<!-- Bottom bar -->
 	{#if editsExist}
-		<BottomBar spaceBetween={true}>
-			<p class="text-base">Ci sono modifiche</p>
-			<div>
-				<Button hierarchy="Secondary" on:click={undoEdits}>Annulla</Button>
-				<Button on:click={saveEdits}>Salva</Button>
+		<BottomBar>
+			<div class="flex flex-row flex-nowrap justify-between items-center">
+				<p class="text-base">Ci sono modifiche</p>
+				<div>
+					<Button hierarchy="secondary" on:click={undoEdits}>Annulla</Button>
+					<Button on:click={saveEdits}>Salva</Button>
+				</div>
 			</div>
 		</BottomBar>
 	{/if}
 
 	<!-- Multiple block modal -->
-	<Modal title="Modifica multipla">
-		<BatchEdit {dates} {times} on:updateSlots={batchEdit} />
-	</Modal>
+
+	<BatchEdit visible={showModal} {dates} {times} on:updateSlots={batchEdit} />
 {/await}
