@@ -7,7 +7,6 @@
 	export let title = '';
 
 	function close() {
-		console.log('clicked');
 		$visible = false;
 	}
 </script>
