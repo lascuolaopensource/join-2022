@@ -1,65 +1,76 @@
 <script lang="ts">
+	import { toolNeeds } from '$lib/stores';
 	import type { endpoints as e, types as t } from 'shared';
-	import { tools } from '$lib/stores';
-
-	import { nanoid } from 'nanoid';
-
-	import { Button, CardToolDay } from '$lib/components';
+	import _ from 'lodash';
 	import { goto } from '$app/navigation';
+
+	import { Button, BottomBar, Container } from '$lib/components';
+	import DayCard from '$lib/partials/tools/needs/dayCard.svelte';
 
 	//
 
-	let days: Array<t.ID<e.BookToolsCheckAvailabilityDay>> = [];
+	function addDay() {
+		const newDay: e.ToolNeedsDay = {
+			id: $toolNeeds.length,
+			tools: [],
+			hours: 1
+		};
+		$toolNeeds = [...$toolNeeds, newDay];
+	}
 
-	function getDayIndexByID(id: string) {
-		for (let d of days) {
-			if (d.id == id) return days.indexOf(d);
+	function deleteDay(id: number) {
+		const day = _.find($toolNeeds, { id });
+		if (day) {
+			const index = $toolNeeds.indexOf(day);
+			$toolNeeds.splice(index, 1);
+			reorderDays();
+			$toolNeeds = $toolNeeds;
 		}
 	}
 
-	function addDay() {
-		days = [
-			...days,
-			{
-				id: nanoid(5),
-				tool_ids: [],
-				hours: 1
-			}
-		];
-	}
-
-	function deleteDay(id: string) {
-		const i = getDayIndexByID(id);
-		days.splice(i, 1);
-		days = days;
+	function reorderDays() {
+		for (let [i, d] of Object.entries($toolNeeds)) {
+			d.id = parseInt(i);
+		}
 	}
 
 	// Adding first day as default
-	addDay();
-
-	//
+	if ($toolNeeds.length === 0) {
+		addDay();
+	}
 
 	async function next() {
-		const query = encodeURIComponent(JSON.stringify(days));
-		await goto(`/inside/tools/slots-${query}`);
+		await goto(`/inside/tools/availabilities`);
 	}
+
+	let ready = false;
+	$: ready = $toolNeeds.every((d) => d.tools.length > 0 && d.hours > 0);
 </script>
 
 <!--  -->
 
-<div class="space-between">
-	{#each days as day, i (day.id)}
-		<CardToolDay
-			tools={$tools}
-			{day}
-			index={i + 1}
-			on:click={() => {
-				deleteDay(day.id);
-			}}
-		/>
-	{/each}
+<Container>
+	<div>
+		{#each $toolNeeds as day (day)}
+			<div class="mb-4">
+				<DayCard
+					bind:day
+					on:click={() => {
+						deleteDay(day.id);
+					}}
+				/>
+			</div>
+		{/each}
 
-	<button class="btn btn-w-fill" on:click={addDay}>Aggiungi uno giorno</button>
+		<Button hierarchy="secondary" fullWidth on:click={addDay}
+			>+ Aggiungi un giorno</Button
+		>
+	</div>
+</Container>
 
-	<Button hierarchy="Primary" on:click={next}>Avanti</Button>
-</div>
+<BottomBar background="default">
+	<div class="flex flex-row flex-nowrap justify-end">
+		<Button hierarchy="primary" disabled={!ready} on:click={next}>Avanti</Button
+		>
+	</div>
+</BottomBar>

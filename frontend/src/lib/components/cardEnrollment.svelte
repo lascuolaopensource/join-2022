@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { writable } from 'svelte/store';
 	import { types as t } from 'shared';
 	import prependHttp from 'prepend-http';
 
@@ -9,12 +10,12 @@
 
 	console.log(enrollment);
 
-	const owner: t.UsersPermissionsUser = enrollment.owner?.data.attributes;
-	const ownerInfo: t.UserInfo = owner?.userInfo?.data.attributes;
+	const owner: t.UsersPermissionsUser = enrollment.owner?.data?.attributes;
+	const ownerInfo: t.UserInfo = owner?.userInfo?.data?.attributes;
 
 	//
 
-	let showLetter = false;
+	let showLetter = writable(false);
 
 	function copy(s: string) {
 		// var copyText = document.getElementById("content").value;
@@ -95,7 +96,7 @@
 			<button
 				class="btn btn-small btn-tertiary"
 				on:click={() => {
-					showLetter = true;
+					$showLetter = true;
 				}}>Lettera motivazionale</button
 			>
 		{/if}
@@ -163,7 +164,7 @@
 
 <Modal
 	title="Lettera – {ownerInfo.name} {ownerInfo.surname}"
-	bind:open={showLetter}
+	visible={showLetter}
 >
 	{enrollment.motivationalLetter}
 </Modal>

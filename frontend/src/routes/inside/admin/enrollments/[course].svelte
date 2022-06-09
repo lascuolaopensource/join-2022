@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import _ from 'lodash';
 	import qs from 'qs';
+	import { writable } from 'svelte/store';
 
 	import {
 		Loading,
@@ -13,7 +14,6 @@
 		Tooltip
 	} from '$lib/components';
 
-	import { open } from '$lib/components/modal.svelte';
 	import { setFormError } from '$lib/components/form';
 	import { navHgt } from '$lib/components/navbarMain.svelte';
 	import type { TooltipContent } from '$lib/components/tooltip.svelte';
@@ -182,6 +182,16 @@
 			};
 		}
 	}
+
+	//
+
+	const showModal = writable(false);
+	const close = () => {
+		$showModal = false;
+	};
+	const open = () => {
+		$showModal = true;
+	};
 </script>
 
 <!--  -->
@@ -233,7 +243,7 @@
 
 	<hr />
 
-	<Modal title="Attenzione!">
+	<Modal visible={showModal} title="Attenzione!">
 		<p class="mb-2">
 			Sei sicur* di notificare? <br />
 			Verranno inviate mail di conferma ai partecipanti a cui è stata aggiornata
