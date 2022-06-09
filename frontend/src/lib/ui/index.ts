@@ -1,6 +1,6 @@
-import SelectableList from './selectableList.svelte';
-import SelectableListControls from './selectableListControls.svelte';
+import CardWithButton from './cardWithButton.svelte';
+import SelectableTileControls from './selectableTileControls.svelte';
 import SelectableTile from './selectableTile.svelte';
 import WeekCal from './weekCal.svelte';
 
-export { SelectableTile, SelectableListControls, SelectableList, WeekCal };
+export { CardWithButton, SelectableTile, SelectableTileControls, WeekCal };
