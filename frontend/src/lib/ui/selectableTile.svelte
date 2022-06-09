@@ -1,59 +1,44 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
-	import { getCtx } from './selectableList.svelte';
+	export let group: Array<any>;
+	export let value: any;
+	export let checked = false;
 
-	//
+	$: updateCheckbox(group);
+	$: updateGroup(checked);
 
-	export let item: any;
-
-	//
-
-	// Getting context
-	const { selection, items } = getCtx();
-
-	// Handling creation and destruction
-	onMount(() => {
-		// Adding item to context
-		$items = [...$items, item];
-	});
-
-	onDestroy(() => {
-		// Removing from context
-		removeItemFromArray($items, item);
-		removeItemFromArray($selection, item);
-		$selection = [...$selection];
-	});
-
-	// Checking if item is selected
-	let selected = false;
-	$: selected = $selection.includes(item);
-
-	// Updating selection
-	function updateSelection() {
-		if (selected) {
-			removeItemFromArray($selection, item);
-		} else {
-			$selection.push(item);
-		}
-		$selection = [...$selection];
+	function updateCheckbox(group: Array<any>) {
+		checked = group.indexOf(value) >= 0;
 	}
 
-	// Utils
-	function removeItemFromArray(array: Array<any>, item: any) {
-		const index = array.indexOf(item);
-		if (index >= 0) {
-			array.splice(index, 1);
+	function updateGroup(checked: boolean) {
+		const index = group.indexOf(value);
+		if (checked) {
+			if (index < 0) {
+				group.push(value);
+				group = group;
+			}
+		} else {
+			if (index >= 0) {
+				group.splice(index, 1);
+				group = group;
+			}
 		}
+	}
+
+	function updateGroupClick() {
+		updateGroup(!checked);
 	}
 </script>
 
 <!--  -->
 
 <div
-	on:click={updateSelection}
-	class="p-2"
-	class:bg-slate-200={!selected}
-	class:bg-blue-400={selected}
+	on:click={updateGroupClick}
+	class="
+		p-3
+		{!checked ? 'bg-gray-300 hover:bg-gray-400' : ''}
+		{checked ? 'bg-blue-400' : ''}
+	"
 >
 	<slot />
 </div>
