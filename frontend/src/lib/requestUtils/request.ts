@@ -10,7 +10,7 @@ export async function request(
 	fetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
 	url: RequestInfo,
 	method: 'GET' | 'POST' | 'PUT' = 'GET',
-	body: Record<string, any> = null,
+	body: Record<string, any> | null = null,
 	headers: HeadersInit = {}
 ) {
 	try {
