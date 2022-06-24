@@ -1,4 +1,6 @@
 import { writable } from 'svelte/store';
+import { writable as writableLS } from 'svelte-local-storage-store';
+
 import type { types as t, endpoints as e } from 'shared';
 
 //
@@ -14,6 +16,6 @@ export const tools = writable<Array<t.ToolEntity>>([]);
  * Temporary
  */
 
-export const toolNeeds = writable<Array<e.ToolNeedsDay>>([]);
+export const toolNeeds = writableLS<Array<e.ToolNeedsDay>>('ToolNeeds', []);
 export const toolDayRequest = writable<e.DayReq | null>(null);
 export const toolDaysRequest = writable<Array<e.DayReq>>([]);

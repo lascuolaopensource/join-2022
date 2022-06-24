@@ -1,20 +1,25 @@
 <script lang="ts">
+	import { req } from '$lib/requestUtils';
+	import { goto } from '$app/navigation';
 	import { toolNeeds } from '$lib/stores';
 
-	console.log($toolNeeds);
+	console.log($toolNeeds.length);
+
+	// Redirecting if there's no data
+	if ($toolNeeds.length == 0) {
+		goto('/inside/tools/needs');
+	}
+
 	// import { page } from '$app/stores';
-	// import { req } from '$lib/requestUtils';
 	// import type { endpoints as e } from 'shared';
 	// import { helpers as h } from 'shared';
 
 	// import { toolDayRequest, toolDaysRequest } from '$lib/stores';
-	// import { goto } from '$app/navigation';
-	// import { stringify } from 'qs';
-	// import { object } from 'yup/lib/locale';
 
-	// const query: Array<{ id: string; tool_ids: Array<string>; hours: number }> =
-	// 	JSON.parse(decodeURIComponent($page.params.query));
-	// const promise = req.checkSlots({ days: query });
+	const promise = req.checkSlots({
+		days: $toolNeeds,
+		start: new Date().toISOString()
+	});
 
 	// //
 
