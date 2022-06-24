@@ -224,7 +224,7 @@ export const req = {
 		// lt: lower than | gt: greater than
 		const filterOperator = mode == 'expired' ? '$lt' : '$gt';
 		// Building the filters object
-		const filters = { enrollmentDeadline: {} };
+		const filters: any = { enrollmentDeadline: {} };
 		filters.enrollmentDeadline[filterOperator] = today;
 		// Building query
 		const query = qs.stringify({
@@ -309,7 +309,10 @@ export const req = {
 
 	//
 
-	adminUpdateEnrollments: async (data, fetchFn = fetch) => {
+	adminUpdateEnrollments: async (
+		data: e.AdminEnrollmentsUpdateReq,
+		fetchFn = fetch
+	) => {
 		return await request(
 			fetchFn,
 			`${b}api/admin-enrollments/update`,
