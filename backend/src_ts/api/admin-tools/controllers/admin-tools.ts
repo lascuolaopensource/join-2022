@@ -62,7 +62,7 @@ module.exports = {
             const availSlots = await slots.findSlotsBetween(
                 beforeDate.toISOString(),
                 afterDate.toISOString(),
-                toolID,
+                [toolID],
                 t.Enum_Toolslot_Type.Availability
             );
 

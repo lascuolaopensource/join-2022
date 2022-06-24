@@ -1,7 +1,17 @@
-import { types as t } from "shared";
+import { helpers, types as t } from "shared";
 import { entities } from "./entities";
 import { dateDiff } from "./date";
 import { ToolSlot, ToolSlotInput } from "shared/dist/types";
+
+//
+
+export type BaseAlignmentTable = Record<string, Array<boolean>>;
+export type AlignmentTableRow = {
+    start: Date;
+    end: Date;
+    values: Array<boolean>;
+};
+export type AlignmentTable = Array<AlignmentTableRow>;
 
 /**
  *
@@ -17,7 +27,7 @@ export class Interval {
         this.end = end;
     }
 
-    length(): number {
+    get length(): number {
         return this.end - this.start;
     }
 
@@ -48,6 +58,151 @@ export class Interval {
 
         return leftovers;
     }
+
+    //
+
+    isMultipleofLength(l: number): boolean {
+        return Number.isInteger(this.length / l);
+    }
+
+    divideByLength(l: number): Array<Interval> {
+        // Array to store chunks
+        const chunks: Array<Interval> = [];
+
+        // Saving chunks
+        let start = this.start;
+        let end = start + l;
+        while (end <= this.end) {
+            chunks.push(new Interval(start, end));
+            start = end;
+            end = start + l;
+        }
+
+        // Measuring leftover
+        const leftover = this.end - start;
+
+        // Saving leftover space
+        if (leftover > 0) {
+            chunks.push(new Interval(start, this.end));
+        }
+
+        return chunks;
+    }
+}
+
+/**
+ *
+ */
+
+export class DateInterval {
+    start: Date;
+    end: Date;
+    interval: Interval;
+
+    constructor(start: Date, end: Date) {
+        this.start = start;
+        this.end = end;
+        this.interval = new Interval(start.getTime(), end.getTime());
+    }
+
+    get startISO(): string {
+        return this.start.toISOString();
+    }
+
+    get endISO(): string {
+        return this.end.toISOString();
+    }
+
+    divideByLength(l: number): Array<DateInterval> {
+        return this.interval.divideByLength(l).map((i) => {
+            return new DateInterval(new Date(i.start), new Date(i.end));
+        });
+    }
+}
+
+/**
+ *
+ */
+
+export class AligmentCalendar {
+    step: number;
+    dateInterval: DateInterval;
+    intervals: Array<DateInterval>;
+
+    constructor(start: Date, end: Date, step: number) {
+        this.step = step;
+        this.dateInterval = new DateInterval(start, end);
+        this.intervals = [];
+        if (!this.dateInterval.interval.isMultipleofLength(this.step)) {
+            throw new Error("InvalidStepLength");
+        }
+    }
+
+    addInterval(i: DateInterval): void {
+        this.intervals.push(i);
+    }
+
+    addIntervals(a: Array<DateInterval>): void {
+        a.forEach((i) => {
+            this.addInterval(i);
+        });
+    }
+
+    createTable(): AlignmentTable {
+        // Creating empty base table
+        const baseTable: BaseAlignmentTable = {};
+        // Filling with empty arrays
+        const steps = this.dateInterval.divideByLength(this.step);
+        for (let step of steps) {
+            baseTable[step.startISO] = [];
+        }
+        // Adding content to arrays
+        for (let int of this.intervals) {
+            const steps = int.divideByLength(this.step);
+            for (let step of steps) {
+                if (!(step.startISO in baseTable)) {
+                    throw new Error("StepNotInTable");
+                }
+                baseTable[step.startISO].push(true);
+            }
+        }
+        // Converting record to array
+        const table: AlignmentTable = [];
+        for (let [key, value] of Object.entries(baseTable)) {
+            table.push({
+                start: new Date(key),
+                end: helpers.date.addTime(new Date(key), this.step),
+                values: value,
+            });
+        }
+        // Sorting table
+        table.sort((a, b) => a.start.getTime() - b.start.getTime());
+        //
+        return table;
+    }
+
+    checkAlignments(width: number, height: number): Array<DateInterval> {
+        const table = this.createTable();
+        const intervals: Array<DateInterval> = [];
+        for (let i = 0; i < table.length - height; i++) {
+            // Filling cursor
+            const cursor: AlignmentTable = [];
+            for (let s = 0; s < height; s++) {
+                cursor.push(table[i + s]);
+            }
+            // Checking cursor
+            const valid = cursor.every(
+                (r) => r.values.every((v) => v) && r.values.length == width
+            );
+            //
+            if (valid) {
+                const start = cursor[0].start;
+                const end = cursor[height - 1].end;
+                intervals.push(new DateInterval(start, end));
+            }
+        }
+        return intervals;
+    }
 }
 
 /**
@@ -60,6 +215,18 @@ export function slotToInterval(s: ToolSlotInput | ToolSlot): Interval {
     const start = Date.parse(s.start);
     const end = Date.parse(s.end);
     return new Interval(start, end);
+}
+
+/**
+ * Converts a slot to a date interval
+ * @param s The slot
+ * @returns The DateInterval
+ */
+
+export function slotToDateInterval(s: ToolSlotInput | ToolSlot): DateInterval {
+    const start = new Date(s.start);
+    const end = new Date(s.end);
+    return new DateInterval(start, end);
 }
 
 /**
@@ -297,7 +464,7 @@ export function getLastDate(a: Array<t.ToolSlot | t.ToolSlotInput>): Date {
 export async function findSlotsBetween(
     start: string,
     end: string,
-    tool: string,
+    tools: Array<string>,
     type: t.Enum_Toolslot_Type
 ): Promise<Array<t.ID<t.ToolSlot>>> {
     const slots: Array<t.ID<t.ToolSlot>> = await strapi.entityService.findMany(
@@ -308,7 +475,7 @@ export async function findSlotsBetween(
                 $and: [
                     { start: { $lt: end } },
                     { end: { $gt: start } },
-                    { tool: { id: { $eq: tool } } },
+                    { tool: { id: { $in: tools } } },
                     { type: { $eq: type } },
                 ],
             },

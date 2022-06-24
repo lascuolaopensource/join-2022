@@ -29,7 +29,7 @@ module.exports = {
             const beforeDate = shared_1.helpers.date.addDays(firstDate, -1);
             const lastDate = utils_1.slots.getLastDate(toolUpdates);
             const afterDate = shared_1.helpers.date.addDays(lastDate, 1);
-            const availSlots = await utils_1.slots.findSlotsBetween(beforeDate.toISOString(), afterDate.toISOString(), toolID, shared_1.types.Enum_Toolslot_Type.Availability);
+            const availSlots = await utils_1.slots.findSlotsBetween(beforeDate.toISOString(), afterDate.toISOString(), [toolID], shared_1.types.Enum_Toolslot_Type.Availability);
             const newSlots = utils_1.slots.groupMergeSlots(availSlots.map((s) => utils_1.slots.slotToInput(s)));
             for (let a of availSlots) {
                 await strapi.entityService.delete(utils_1.entities.toolSlot, a.id);
