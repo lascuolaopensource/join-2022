@@ -20,7 +20,7 @@
 
 	// This one executes every time $page changes
 	// Checks if the href variable matches with the current url
-	$: active = $page.url.pathname == href;
+	$: active = $page.url.pathname == href || $page.url.pathname.includes(href);
 </script>
 
 <!--  -->

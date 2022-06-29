@@ -16,6 +16,7 @@
 {#if $visible}
 	<div
 		class="
+			modal
 			fixed top-0 left-0
 			w-screen h-screen z-[9999] bg-white
 			flex flex-col flex-nowrap"
@@ -35,3 +36,9 @@
 		<slot name="bottom" />
 	</div>
 {/if}
+
+<style>
+	.modal {
+		margin: 0 !important;
+	}
+</style>
