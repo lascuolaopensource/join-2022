@@ -16,8 +16,8 @@
 	// Quindi deve essere unica per ogni form
 
 	export let initialValues = {};
-	export let validate = null;
-	export let validationSchema = null;
+	export let validate = undefined;
+	export let validationSchema = undefined;
 	export let onSubmit = () => {
 		throw new Error(
 			'onSubmit is a required property in <Form /> when using the fallback context'
@@ -26,7 +26,7 @@
 
 	// Creating form
 	// (We also export it in case one wants to pass a created form)
-	export let formContext = createForm({
+	export let formContext = createForm<any>({
 		initialValues,
 		onSubmit,
 		validate,
