@@ -5,7 +5,7 @@
 <!--  -->
 
 <div class="container">
-	<h1>Ciao {$userInfo.name}!</h1>
+	<h1>Ciao {$userInfo?.name}!</h1>
 	<a href="/inside/courses/active">Beccati sti corsi</a>
 </div>
 

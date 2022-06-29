@@ -18,6 +18,7 @@
 		setFormError
 	} from '$lib/components/form';
 	import { icons } from '$lib/icons';
+	import { Link } from '$lib/ui';
 
 	//
 
@@ -30,10 +31,12 @@
 			lsSet(lsKeys.name, res.name);
 			// And redirect the user to the password
 			await goto('/login/password');
-		} catch (e) {
-			const message =
-				e?.message == '404' ? "L'email non è corretta" : e.message;
-			setFormError(message);
+		} catch (e: any) {
+			if ('message' in e) {
+				const message =
+					e?.message == '404' ? "L'email non è corretta" : e.message;
+				setFormError(message);
+			}
 		}
 	}
 
@@ -60,23 +63,7 @@
 	<SubmitButton>Avanti</SubmitButton>
 </Form>
 
-<div class="message">
-	<p>Non hai un account?</p>
-	<a href="/register" class="registrati">Registrati!</a>
-</div>
-
-<!-- --- Style --- -->
-<style>
-	.message {
-		display: flex;
-		flex-flow: row nowrap;
-		width: 100%;
-		justify-content: center;
-		align-items: center;
-		margin-top: var(--s-6);
-	}
-
-	.registrati {
-		margin-left: var(--s-0);
-	}
-</style>
+<p>
+	Non hai un account?
+	<span class="ml-1"><Link href="/register">Registrati!</Link></span>
+</p>
