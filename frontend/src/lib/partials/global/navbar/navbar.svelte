@@ -20,7 +20,7 @@
 	import { icons } from '$lib/icons';
 	import { IconButton } from '$lib/components';
 	import NavbarMenuLink from './navbarMenuLink.svelte';
-	import NavbarDivider from './tools/navbarDivider.svelte';
+	import NavbarDivider from './navbarDivider.svelte';
 
 	//
 

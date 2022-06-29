@@ -8,7 +8,7 @@
 
 	//
 
-	import Navbar from '$lib/partials/navbar.svelte';
+	import Navbar from '$lib/partials/global/navbar/navbar.svelte';
 	import Loading from '$lib/components/loading.svelte';
 
 	//

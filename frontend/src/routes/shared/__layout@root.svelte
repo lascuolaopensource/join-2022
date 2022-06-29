@@ -6,7 +6,7 @@
 	import { user, userInfo } from '$lib/stores';
 
 	import { Loading } from '$lib/components';
-	import Navbar from '$lib/partials/navbar.svelte';
+	import Navbar from '$lib/partials/global/navbar/navbar.svelte';
 
 	//
 
