@@ -17,5 +17,4 @@ export const tools = writable<Array<t.ToolEntity>>([]);
  */
 
 export const toolNeeds = writableLS<Array<e.ToolNeedsDay>>('ToolNeeds', []);
-export const toolDayRequest = writable<e.DayReq | null>(null);
-export const toolDaysRequest = writable<Array<e.DayReq>>([]);
+export const toolDates = writableLS<Array<[string, string]>>('ToolDates', []);
