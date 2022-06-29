@@ -6,6 +6,7 @@
 
 	import { Button, BottomBar, Container } from '$lib/components';
 	import DayCard from '$lib/partials/tools/needs/dayCard.svelte';
+	import ToolsSteps from '$lib/partials/tools/toolsSteps.svelte';
 
 	//
 
@@ -50,6 +51,7 @@
 <!--  -->
 
 <Container>
+	<ToolsSteps />
 	<div>
 		{#each $toolNeeds as day (day)}
 			<div class="mb-4">
