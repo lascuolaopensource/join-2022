@@ -1,16 +1,27 @@
 <script lang="ts">
-	import { toolDayRequest, toolDaysRequest, tools } from '$lib/stores';
+	import { toolNeeds, toolDates, tools } from '$lib/stores';
 	import { req } from '$lib/requestUtils';
 	import { goto } from '$app/navigation';
 	import type { endpoints as e } from 'shared';
-	console.log($toolDayRequest);
-	console.log($toolDaysRequest);
+
+	import { Button, BottomBar } from '$lib/components';
+
+	//
+
+	const valid = $toolNeeds.length > 0 && $toolNeeds.length == $toolDates.length;
 
 	const days: Array<e.DayReq> = [];
-	if ($toolDayRequest) {
-		days.push($toolDayRequest);
-	} else if ($toolDaysRequest.length) {
-		days.push(...$toolDaysRequest);
+	if (valid) {
+		for (let i = 0; i < $toolNeeds.length; i++) {
+			const tool_ids = $toolNeeds[i].tools;
+			const start = $toolDates[i][0];
+			const end = $toolDates[i][1];
+			days.push({
+				tool_ids,
+				start,
+				end
+			});
+		}
 	}
 
 	async function bookTools() {
@@ -23,31 +34,46 @@
 
 <!--  -->
 
-{#if days.length}
-	{#each days as d}
-		<div class="p-4 border-2 mb-2">
-			<div>
-				<h3 class="text-lg font-bold">Data</h3>
-				<p>
-					{d.start.toLocaleDateString('IT-it')}
-				</p>
-			</div>
-			<div>
-				<h3 class="text-lg font-bold">Ore</h3>
-				<p>
-					{d.start.getHours()} → {d.end.getHours()}
-				</p>
-			</div>
-			<div>
-				<h3 class="text-lg font-bold">Strumenti</h3>
-				{#each d.tool_ids as t}
+<div class="container mx-auto p-6">
+	{#if days.length}
+		{#each days as d}
+			{@const start = new Date(d.start)}
+			{@const end = new Date(d.end)}
+			<div class="p-4 border-2 mb-2">
+				<!--  -->
+				<div>
+					<h3 class="text-lg font-bold">Data</h3>
 					<p>
-						{$tools[parseInt(t)].attributes.name}
+						{start.toLocaleDateString('IT-it')}
 					</p>
-				{/each}
+				</div>
+				<!--  -->
+				<div>
+					<h3 class="text-lg font-bold">Ore</h3>
+					<p>
+						{start.getHours()} → {end.getHours()}
+					</p>
+				</div>
+				<!--  -->
+				<div>
+					<h3 class="text-lg font-bold">Strumenti</h3>
+					{#each d.tool_ids as t}
+						{@const toolID = parseInt(t)}
+						{@const tool = $tools[toolID]}
+						{#if tool.attributes}
+							<p>{tool.attributes.name}</p>
+						{/if}
+					{/each}
+				</div>
 			</div>
-		</div>
-	{/each}
+		{/each}
+	{/if}
+</div>
 
-	<button class="btn btn-primary" on:click={bookTools}>Prenota!</button>
-{/if}
+<BottomBar background="default">
+	<div class="flex flex-row flex-nowrap justify-end">
+		<Button hierarchy="primary" disabled={!valid} on:click={bookTools}
+			>Avanti</Button
+		>
+	</div>
+</BottomBar>

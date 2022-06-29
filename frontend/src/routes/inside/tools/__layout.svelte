@@ -8,7 +8,8 @@
 	const data: Array<StepData> = [
 		{ href: '/inside/tools', label: 'Start' },
 		{ href: '/inside/tools/needs', label: 'Cosa' },
-		{ href: '/inside/tools/availabilities', label: 'Quando' }
+		{ href: '/inside/tools/availabilities', label: 'Quando' },
+		{ href: '/inside/tools/recap', label: 'Recap' }
 	];
 
 	// Fetching tools
