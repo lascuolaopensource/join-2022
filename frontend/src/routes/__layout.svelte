@@ -7,7 +7,8 @@
 	import { lsGetToken } from '$lib/localStorageUtils';
 	import { req } from '$lib/requestUtils';
 
-	import { Loading, NavbarOutside } from '$lib/components';
+	import { Loading } from '$lib/components';
+	import Navbar from '$lib/partials/navbar.svelte';
 
 	//
 
@@ -37,7 +38,7 @@
 
 <!-- --- Markup --- -->
 
-<NavbarOutside />
+<Navbar />
 <div class="container">
 	{#if loading}
 		<Loading />

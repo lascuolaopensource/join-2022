@@ -8,7 +8,7 @@
 
 	//
 
-	import NavbarMain from '$lib/components/navbarMain.svelte';
+	import Navbar from '$lib/partials/navbar.svelte';
 	import Loading from '$lib/components/loading.svelte';
 
 	//
@@ -40,6 +40,6 @@
 {#if loading}
 	<Loading />
 {:else}
-	<NavbarMain />
+	<Navbar />
 	<slot />
 {/if}
