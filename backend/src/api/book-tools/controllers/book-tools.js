@@ -10,6 +10,36 @@ const TIMESTEP = 60 * 60 * 1000;
 module.exports = {
     book: async (ctx, next) => {
         strapi.log.info("In book-tools/index controller");
+        const body = ctx.request.body;
+        const user = ctx.state.user;
+        const data = {
+            slots: [],
+            owner: user.id,
+        };
+        const toolsBooking = await strapi.entityService.create(utils_1.entities.toolsBooking, { data });
+        const slots = [];
+        for (let d of body.days) {
+            for (let toolID of d.tool_ids) {
+                const data = {
+                    start: d.start,
+                    end: d.end,
+                    tool: toolID,
+                    type: shared_1.types.Enum_Toolslot_Type.Booking,
+                    booking: toolsBooking.id,
+                };
+                const toolSlot = await strapi.entityService.create(utils_1.entities.toolSlot, {
+                    data,
+                });
+                slots.push(toolSlot.id);
+                const bounding = await utils_1.slots.getBoundingSlot(data);
+                await utils_1.slots.breakAvailabilitySlot(bounding, data);
+            }
+        }
+        const updateData = {
+            slots,
+        };
+        await strapi.entityService.update(utils_1.entities.toolsBooking, toolsBooking.id, { data: updateData });
+        return {};
     },
     checkAvailability: async (ctx, next) => {
         strapi.log.info("In book-tools/check-availability controller");

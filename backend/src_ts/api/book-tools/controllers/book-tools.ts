@@ -18,73 +18,69 @@ module.exports = {
     book: async (ctx: any, next: any) => {
         strapi.log.info("In book-tools/index controller");
 
-        // // Getting data
-        // const body: e.BookToolsReq = ctx.request.body;
-        // const user: t.ID<t.UsersPermissionsUser> = ctx.state.user;
+        // Getting data
+        const body: e.BookToolsReq = ctx.request.body;
+        const user: t.ID<t.UsersPermissionsUser> = ctx.state.user;
 
-        // /**
-        //  * Creating master booking
-        //  */
+        /**
+         * Creating master booking
+         */
 
-        // const data: t.ToolsBookingInput = {
-        //     slots: [],
-        //     owner: user.id,
-        // };
-        // const toolsBooking: t.ID<t.ToolsBooking> =
-        //     await strapi.entityService.create(entities.toolsBooking, { data });
+        const data: t.ToolsBookingInput = {
+            slots: [],
+            owner: user.id,
+        };
+        const toolsBooking: t.ID<t.ToolsBooking> =
+            await strapi.entityService.create(entities.toolsBooking, { data });
 
-        // /**
-        //  * Creating slots
-        //  */
+        /**
+         * Creating slots
+         */
 
-        // // Saving the ids of the created slots
-        // const slots: Array<string> = [];
+        // Saving the ids of the created slots
+        const slots: Array<string> = [];
 
-        // // Creating slots
-        // for (let d of body.days) {
-        //     for (let toolID of d.tool_ids) {
-        //         const data: t.ToolSlotInput = {
-        //             start: d.start,
-        //             end: d.end,
-        //             tool: toolID,
-        //             type: t.Enum_Toolslot_Type.Booking,
-        //             booking: toolsBooking.id,
-        //         };
+        // Creating slots
+        for (let d of body.days) {
+            for (let toolID of d.tool_ids) {
+                // Input
+                const data: t.ToolSlotInput = {
+                    start: d.start,
+                    end: d.end,
+                    tool: toolID,
+                    type: t.Enum_Toolslot_Type.Booking,
+                    booking: toolsBooking.id,
+                };
 
-        //         const toolSlot: t.ID<t.ToolSlot> =
-        //             await strapi.entityService.create(entities.toolSlot, {
-        //                 data,
-        //             });
+                // Creazione slot
+                const toolSlot: t.ID<t.ToolSlot> =
+                    await strapi.entityService.create(entities.toolSlot, {
+                        data,
+                    });
 
-        //         slots.push(toolSlot.id);
+                // Aggiungere alla lista degli slot creati
+                slots.push(toolSlot.id);
 
-        //         /**
-        //          * TODO: Bisogna splittare gli slot di disponibilità
-        //          */
-        //         await ss.breakAvailabilitySlot(data);
-        //     }
-        // }
+                // Splittare gli slot di disponibilit
+                const bounding = await s.getBoundingSlot(data);
+                await s.breakAvailabilitySlot(bounding, data);
+            }
+        }
 
-        // /**
-        //  * Updating master booking
-        //  */
+        /**
+         * Updating master booking
+         */
 
-        // const updateData: t.ToolsBookingInput = {
-        //     slots,
-        // };
-        // await strapi.entityService.update(
-        //     entities.toolsBooking,
-        //     toolsBooking.id,
-        //     { data }
-        // );
+        const updateData: t.ToolsBookingInput = {
+            slots,
+        };
+        await strapi.entityService.update(
+            entities.toolsBooking,
+            toolsBooking.id,
+            { data: updateData }
+        );
 
-        // //
-
-        // try {
-        //     ctx.body = { ok: "ok" };
-        // } catch (err) {
-        //     ctx.body = { err };
-        // }
+        return {};
     },
 
     /**
