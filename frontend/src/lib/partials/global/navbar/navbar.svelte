@@ -37,6 +37,10 @@
 		profile: {
 			href: '/inside/profile',
 			label: $userInfo?.name ? $userInfo.name : 'User name'
+		},
+		logout: {
+			href: '/logout',
+			label: '↖ Logout'
 		}
 	};
 
@@ -100,6 +104,9 @@
 				on:click={toggleMenu}
 				mode="dark"
 			/>
+		{:else}
+			<!-- Invisible placeholder to keep height consistent -->
+			<div class="h-8 invisible" />
 		{/if}
 	</div>
 </nav>
@@ -154,7 +161,9 @@
 		</NavbarMenuLink>
 
 		<!-- Logout -->
-		<NavbarMenuLink href={null} on:click={logout}>↖ Logout</NavbarMenuLink>
+		<NavbarMenuLink href={data.logout.href}>
+			{data.logout.label}
+		</NavbarMenuLink>
 	</div>
 {/if}
 
