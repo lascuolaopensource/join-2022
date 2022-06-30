@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { isOpen } from '$lib/utils';
 
 	export let href: string;
 
 	let active = false;
-	$: active = $page.url.pathname.includes(href) || $page.url.pathname == href;
+	$: active = isOpen(href, $page.url);
 </script>
 
 <a

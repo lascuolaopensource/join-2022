@@ -16,6 +16,7 @@
 	import { lsRemove, lsKeys } from '$lib/localStorageUtils';
 	import { goto } from '$app/navigation';
 	import _ from 'lodash';
+	import { isOpen } from '$lib/utils';
 
 	import { icons } from '$lib/icons';
 	import { IconButton } from '$lib/components';
@@ -46,9 +47,8 @@
 
 	// Detecting current menu section
 	let currentSection: MenuItem | undefined;
-	$: currentSection = _.find(
-		data,
-		(value, key) => value.href == $page.url.pathname
+	$: currentSection = _.find(data, (value, key) =>
+		isOpen(value.href, $page.url)
 	);
 
 	// Opening and closing menu
@@ -77,37 +77,44 @@
 
 <nav
 	class="
-		bg-gray-900 px-4 py-2
-		flex flex-row flex-nowrap items-center justify-between
+		bg-gray-900 
 		border-b-[1] 
 		{open ? 'border-gray-500' : 'border-transparent'}
 		z-[99]
 	"
 	bind:clientHeight={$navHgt}
 >
-	<!-- Title -->
-	<h3 class="text-white font-bold">Join / SOS</h3>
+	<!-- Container -->
+	<div
+		class="
+			container mx-auto px-4 py-2
+			flex flex-row flex-nowrap items-center justify-between
+		"
+	>
+		<!-- Title -->
+		<h3 class="text-white font-bold">Join / SOS</h3>
 
-	<!-- Right controls -->
-	<div class="flex flex-row flex-nowrap items-center justify-end">
-		{#if $user}
-			<!-- Current section -->
-			<p class="text-white mr-2">
-				{#if currentSection}
-					{currentSection.label}
-				{/if}
-			</p>
+		<!-- Right controls -->
+		<div class="flex flex-row flex-nowrap items-center justify-end">
+			{#if $user}
+				<!-- Current section -->
+				<p class="text-white mr-2">
+					{#if currentSection}
+						{currentSection.label}
+					{/if}
+				</p>
 
-			<!-- Close / Open button -->
-			<IconButton
-				icon={open ? icons.close : icons.menu}
-				on:click={toggleMenu}
-				mode="dark"
-			/>
-		{:else}
-			<!-- Invisible placeholder to keep height consistent -->
-			<div class="h-8 invisible" />
-		{/if}
+				<!-- Close / Open button -->
+				<IconButton
+					icon={open ? icons.close : icons.menu}
+					on:click={toggleMenu}
+					mode="dark"
+				/>
+			{:else}
+				<!-- Invisible placeholder to keep height consistent -->
+				<div class="h-8 invisible" />
+			{/if}
+		</div>
 	</div>
 </nav>
 
@@ -115,55 +122,61 @@
 
 {#if $user && open}
 	<div
-		class="menu w-full fixed bg-gray-800 p-4 z-[98]
-			flex flex-col flex-nowrap space-y-2"
+		class="menu w-full fixed bg-gray-800 z-[98]"
 		style:--navHgt="{$navHgt}px"
 	>
-		<!-- Home -->
-		<NavbarMenuLink href={data.home.href}>
-			{data.home.label}
-		</NavbarMenuLink>
-
-		<NavbarDivider />
-
-		<!-- Courses -->
-		<NavbarMenuLink href={data.courses.href}
-			>{data.courses.label}</NavbarMenuLink
+		<div
+			class="
+				container mx-auto w-full
+				flex flex-col flex-nowrap space-y-2 p-4
+			"
 		>
-
-		<!-- Tools -->
-		<NavbarMenuLink href={data.tools.href}>
-			{data.tools.label}
-		</NavbarMenuLink>
-
-		<NavbarDivider />
-
-		<!-- Admin enrollments -->
-		{#if adminEnrolls}
-			<NavbarMenuLink href={data.adminEnrollments.href}>
-				{data.adminEnrollments.label}
+			<!-- Home -->
+			<NavbarMenuLink href={data.home.href}>
+				{data.home.label}
 			</NavbarMenuLink>
-		{/if}
-		<!-- Admin tools -->
-		{#if adminTools}
-			<NavbarMenuLink href={data.adminTools.href}>
-				{data.adminTools.label}
-			</NavbarMenuLink>
-		{/if}
-		<!-- Admin divider -->
-		{#if admin}
+
 			<NavbarDivider />
-		{/if}
 
-		<!-- Profile -->
-		<NavbarMenuLink href={data.profile.href}>
-			{data.profile.label}
-		</NavbarMenuLink>
+			<!-- Courses -->
+			<NavbarMenuLink href={data.courses.href}
+				>{data.courses.label}</NavbarMenuLink
+			>
 
-		<!-- Logout -->
-		<NavbarMenuLink href={data.logout.href}>
-			{data.logout.label}
-		</NavbarMenuLink>
+			<!-- Tools -->
+			<NavbarMenuLink href={data.tools.href}>
+				{data.tools.label}
+			</NavbarMenuLink>
+
+			<NavbarDivider />
+
+			<!-- Admin enrollments -->
+			{#if adminEnrolls}
+				<NavbarMenuLink href={data.adminEnrollments.href}>
+					{data.adminEnrollments.label}
+				</NavbarMenuLink>
+			{/if}
+			<!-- Admin tools -->
+			{#if adminTools}
+				<NavbarMenuLink href={data.adminTools.href}>
+					{data.adminTools.label}
+				</NavbarMenuLink>
+			{/if}
+			<!-- Admin divider -->
+			{#if admin}
+				<NavbarDivider />
+			{/if}
+
+			<!-- Profile -->
+			<NavbarMenuLink href={data.profile.href}>
+				{data.profile.label}
+			</NavbarMenuLink>
+
+			<!-- Logout -->
+			<NavbarMenuLink href={data.logout.href}>
+				{data.logout.label}
+			</NavbarMenuLink>
+		</div>
 	</div>
 {/if}
 
