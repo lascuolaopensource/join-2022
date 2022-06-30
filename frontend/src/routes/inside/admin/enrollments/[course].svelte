@@ -15,7 +15,7 @@
 	} from '$lib/components';
 
 	import { setFormError } from '$lib/components/form';
-	import { navHgt } from '$lib/components/navbarMain.svelte';
+	import { navHgt } from '$lib/partials/global/navbar/navbar.svelte';
 	import type { TooltipContent } from '$lib/components/tooltip.svelte';
 	import { s, enrollmentStatesAdmin } from '$lib/strings';
 
