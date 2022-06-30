@@ -4,6 +4,7 @@ import SelectableTile from './selectableTile.svelte';
 import SelectableTileControls from './selectableTileControls.svelte';
 import Title from './title.svelte';
 import WeekCal from './weekCal.svelte';
+import NavLink from './navLink.svelte';
 
 export {
 	CardWithButton,
@@ -11,5 +12,6 @@ export {
 	SelectableTile,
 	SelectableTileControls,
 	Title,
-	WeekCal
+	WeekCal,
+	NavLink
 };

@@ -20,7 +20,7 @@
 
 	import { icons } from '$lib/icons';
 	import { IconButton } from '$lib/components';
-	import NavbarMenuLink from './navbarMenuLink.svelte';
+	import { NavLink } from '$lib/ui';
 	import NavbarDivider from './navbarDivider.svelte';
 
 	//
@@ -132,35 +132,33 @@
 			"
 		>
 			<!-- Home -->
-			<NavbarMenuLink href={data.home.href}>
+			<NavLink href={data.home.href}>
 				{data.home.label}
-			</NavbarMenuLink>
+			</NavLink>
 
 			<NavbarDivider />
 
 			<!-- Courses -->
-			<NavbarMenuLink href={data.courses.href}
-				>{data.courses.label}</NavbarMenuLink
-			>
+			<NavLink href={data.courses.href}>{data.courses.label}</NavLink>
 
 			<!-- Tools -->
-			<NavbarMenuLink href={data.tools.href}>
+			<NavLink href={data.tools.href}>
 				{data.tools.label}
-			</NavbarMenuLink>
+			</NavLink>
 
 			<NavbarDivider />
 
 			<!-- Admin enrollments -->
 			{#if adminEnrolls}
-				<NavbarMenuLink href={data.adminEnrollments.href}>
+				<NavLink href={data.adminEnrollments.href}>
 					{data.adminEnrollments.label}
-				</NavbarMenuLink>
+				</NavLink>
 			{/if}
 			<!-- Admin tools -->
 			{#if adminTools}
-				<NavbarMenuLink href={data.adminTools.href}>
+				<NavLink href={data.adminTools.href}>
 					{data.adminTools.label}
-				</NavbarMenuLink>
+				</NavLink>
 			{/if}
 			<!-- Admin divider -->
 			{#if admin}
@@ -168,14 +166,14 @@
 			{/if}
 
 			<!-- Profile -->
-			<NavbarMenuLink href={data.profile.href}>
+			<NavLink href={data.profile.href}>
 				{data.profile.label}
-			</NavbarMenuLink>
+			</NavLink>
 
 			<!-- Logout -->
-			<NavbarMenuLink href={data.logout.href}>
+			<NavLink href={data.logout.href}>
 				{data.logout.label}
-			</NavbarMenuLink>
+			</NavLink>
 		</div>
 	</div>
 {/if}
