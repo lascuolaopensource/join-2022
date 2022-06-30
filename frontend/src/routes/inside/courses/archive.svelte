@@ -2,8 +2,8 @@
 	import { req } from '$lib/requestUtils';
 
 	/** @type {import('@sveltejs/kit').Load} */
-	export async function load({ params, fetch, session, stuff }) {
-		const courses = await req.getCoursesByDeadline('expired');
+	export async function load({ params, fetch, session, stuff }: any) {
+		const courses = await req.getCoursesByDeadline('expired', fetch);
 
 		return {
 			props: {
@@ -15,33 +15,30 @@
 
 <script lang="ts">
 	import type { types as t } from 'shared';
-	import CardCourse from '$lib/components/cardCourse.svelte';
+
+	import { Container, CardCourse } from '$lib/components';
+	import { Title } from '$lib/ui';
 
 	export let courses: t.CourseEntityResponseCollection;
 </script>
 
 <!--  -->
 
-<div class="container">
-	<h1 class="title">Archivio corsi</h1>
+<Container>
+	<Title margin>Archivio corsi</Title>
 	{#if courses.data.length}
-		<div class="space-between">
+		<div class="space-y-2">
 			{#each courses.data as course}
-				<CardCourse
-					title={course.attributes.title}
-					deadline={course.attributes.enrollmentDeadline}
-					href="/inside/course/{course.attributes.slug}"
-				/>
+				{#if course.attributes}
+					<CardCourse
+						title={course.attributes.title}
+						deadline={course.attributes.enrollmentDeadline}
+						href="/inside/course/{course.attributes.slug}"
+					/>
+				{/if}
 			{/each}
 		</div>
 	{:else}
-		Non ci sono corsi nell'archivio!
+		<p class="block text-center">Non ci sono corsi nell'archivio!</p>
 	{/if}
-</div>
-
-<!--  -->
-<style>
-	.title {
-		margin-bottom: 20px;
-	}
-</style>
+</Container>
