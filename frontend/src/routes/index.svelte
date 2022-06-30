@@ -18,7 +18,7 @@
 		setFormError
 	} from '$lib/components/form';
 	import { icons } from '$lib/icons';
-	import { Link } from '$lib/ui';
+	import { Link, Title } from '$lib/ui';
 
 	//
 
@@ -32,11 +32,11 @@
 			// And redirect the user to the password
 			await goto('/login/password');
 		} catch (e: any) {
+			let message = JSON.stringify(e);
 			if ('message' in e) {
-				const message =
-					e?.message == '404' ? "L'email non è corretta" : e.message;
-				setFormError(message);
+				message = e.message;
 			}
+			setFormError(message);
 		}
 	}
 
@@ -49,7 +49,7 @@
 
 <!--  -->
 
-<OutsideTitle>Login</OutsideTitle>
+<Title margin>Login</Title>
 
 <Form {formContext}>
 	<TextField
@@ -63,7 +63,7 @@
 	<SubmitButton>Avanti</SubmitButton>
 </Form>
 
-<p>
+<p class="text-center mt-6">
 	Non hai un account?
 	<span class="ml-1"><Link href="/register">Registrati!</Link></span>
 </p>

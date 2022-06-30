@@ -11,7 +11,7 @@
 
 	//
 
-	import { OutsideTitle } from '$lib/components';
+	import { Title, Link } from '$lib/ui';
 
 	import {
 		Form,
@@ -61,9 +61,9 @@
 
 <!-- --- Markup --- -->
 
-<a class="backlink" href="/">Login</a>
+<Link href="/" backlink margin>Login</Link>
 
-<OutsideTitle>Cambio password</OutsideTitle>
+<Title margin>Cambio password</Title>
 
 <Form {formContext}>
 	<TextField

@@ -1,16 +1,14 @@
 <script lang="ts">
-	import OutsideTitle from '$lib/components/outsideTitle.svelte';
+	import { Title, Link } from '$lib/ui';
 </script>
 
 <!-- --- Markup --- -->
 
-<a class="backlink" href="/">Torna alla home</a>
+<Link href="/" backlink margin>Torna alla home</Link>
 
-<OutsideTitle>Recupera password</OutsideTitle>
+<Title margin>Recupera password</Title>
 
 <p>
-	Ti abbiamo mandato un'email di conferma per il recupero della password!
-	<br />
-	<br />
-	Ora puoi tranquillamente chiudere questa pagina :)
+	Ti abbiamo mandato un'email di conferma per il recupero della password! Ora
+	puoi tranquillamente chiudere questa pagina :)
 </p>

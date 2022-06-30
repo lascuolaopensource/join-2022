@@ -9,7 +9,7 @@
 
 	//
 
-	import { OutsideTitle } from '$lib/components';
+	import { Link, Title } from '$lib/ui';
 
 	import {
 		Form,
@@ -57,11 +57,11 @@
 
 <!-- --- Markup --- -->
 
-<a href="/" class="backlink">Login</a>
+<Link href="/" backlink margin>Login</Link>
 
-<OutsideTitle>
+<Title margin>
 	Ciao {lsGet(lsKeys.name)}!
-</OutsideTitle>
+</Title>
 
 <Form {formContext}>
 	<TextField
