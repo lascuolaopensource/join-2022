@@ -39,8 +39,13 @@
 
 {#if c}
 	<!-- Cover -->
-	<div class="cover">
-		<h1>{c.title}</h1>
+	<div
+		class="
+			max-h-[500px] h-[40vh] bg-gray-200
+			flex flex-row flex-nowrap items-center justify-center
+		"
+	>
+		<h1 class="text-2xl font-bold">{c.title}</h1>
 	</div>
 
 	<!-- Descrizione -->
@@ -71,18 +76,6 @@
 
 <!--  -->
 <style>
-	.cover {
-		display: block;
-		background-color: lightgray;
-		min-height: 40vh;
-		max-height: 500px;
-		display: flex;
-		flex-flow: column nowrap;
-		align-items: center;
-		justify-content: center;
-		padding: 20px;
-	}
-
 	.cover h1 {
 		text-align: center;
 	}

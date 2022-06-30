@@ -80,7 +80,7 @@
 		bg-gray-900 
 		border-b-[1] 
 		{open ? 'border-gray-500' : 'border-transparent'}
-		z-[99]
+		z-[99] sticky top-0
 	"
 	bind:clientHeight={$navHgt}
 >
