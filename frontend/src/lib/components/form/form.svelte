@@ -155,11 +155,19 @@
 
 <!--  -->
 
-<form class="form" on:submit={handleSubmitClearErr}>
+<form class="space-y-6" on:submit={handleSubmitClearErr}>
 	<slot />
 </form>
 
 <!-- Loading spinner -->
 {#if $isSubmitting}
-	<div class="form__loading"><Spinner /></div>
+	<div
+		class="
+			w-screen h-screen bg-white/80
+			flex flex-row flex-nowrap items-center justify-center
+			fixed top-0 left-0 z-[9000]	
+		"
+	>
+		<Spinner />
+	</div>
 {/if}

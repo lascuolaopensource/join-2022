@@ -2,26 +2,29 @@
 	export let fieldName: string; // The field name
 
 	export let text = '';
-	export let icon: Function = null;
-	export let link: { text: string; href: string } = null;
+	export let icon: Function | null = null;
+	export let link: { text: string; href: string } | null = null;
+
+	import { Link } from '$lib/ui';
 </script>
 
 <!--  -->
 
 {#if text}
-	<div class="field__top">
+	<div class="flex flex-row flex-nowrap items-center justify-between">
 		<!-- Label -->
-		<div class="field__label">
+		<div class="flex flex-row flex-nowrap items-center justify-start">
 			<!-- Icon -->
 			{#if icon}
-				<svelte:component this={icon} class="field__label__icon" />
+				<svelte:component this={icon} class="fill-gray-700" />
 			{/if}
 			<!-- Label text -->
-			<label class="field__label__text" for={fieldName}>{text}</label>
+			<label class="ml-1 text-gray-700" for={fieldName}>{text}</label>
 		</div>
+
 		<!-- Right-side link -->
 		{#if link}
-			<a class="field__label__link" href={link.href}>{link.text}</a>
+			<Link href={link.href} size="sm">{link.text}</Link>
 		{/if}
 	</div>
 {/if}

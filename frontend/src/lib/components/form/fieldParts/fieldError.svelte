@@ -12,9 +12,9 @@
 <!--  -->
 
 {#if get($errors, fieldName)}
-	<div class="field__error">
-		<svelte:component this={icons.form.error} class="field__error__icon" />
-		<small class="field__error__text" {...$$props}
+	<div class="flex flex-row flex-nowrap items-center justify-start">
+		<svelte:component this={icons.form.error} class="fill-red-600" />
+		<small class="text-red-600 text-sm ml-1" {...$$props}
 			>{get($errors, fieldName)}</small
 		>
 	</div>
