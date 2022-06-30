@@ -18,7 +18,7 @@
 		class="
 			modal
 			fixed top-0 left-0
-			w-screen h-screen z-[9999] bg-white
+			w-screen h-screen z-[8000] bg-white
 			flex flex-col flex-nowrap"
 	>
 		<div
