@@ -1,11 +1,17 @@
 <script lang="ts">
-	export let background: 'alert' | 'default' = 'alert';
+	export let background: 'alert' | 'default' | 'blur' = 'alert';
 </script>
 
 <div
-	class="sticky bottom-0 w-full left-0 py-4 px-6"
+	class="
+		sticky bottom-0 w-full left-0 py-2 px-4
+		border-t-1 border-gray-500
+		{background == 'blur' ? 'backdrop-blur-sm bg-white/30' : ''}
+	"
 	class:bg-yellow-100={background == 'alert'}
 	class:bg-white={background == 'default'}
 >
-	<slot />
+	<div class="container mx-auto">
+		<slot />
+	</div>
 </div>

@@ -4,29 +4,11 @@
 	export let href: string;
 </script>
 
-<a {href}>
-	<h3>
+<!--  -->
+
+<a {href} class="block p-4 w-full bg-gray-300 hover:bg-gray-400">
+	<h3 class="text-lg font-bold">
 		{title}
 	</h3>
 	<p>Deadline: {deadline}</p>
-	<h3 class="arrow">→</h3>
 </a>
-
-<style>
-	a {
-		display: block;
-		text-decoration: none;
-		padding: 20px;
-		width: 100%;
-		background-color: rgba(0, 0, 0, 0.1);
-	}
-
-	a:hover {
-		background-color: rgba(0, 0, 0, 0.2);
-	}
-
-	.arrow {
-		width: 100%;
-		text-align: right;
-	}
-</style>
