@@ -73,10 +73,3 @@
 		</BottomBar>
 	{/if}
 {/if}
-
-<!--  -->
-<style>
-	.cover h1 {
-		text-align: center;
-	}
-</style>
