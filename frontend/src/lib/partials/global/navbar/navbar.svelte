@@ -13,8 +13,6 @@
 	import { user, userInfo, userRole } from '$lib/stores';
 	import { types as t } from 'shared';
 	import { page } from '$app/stores';
-	import { lsRemove, lsKeys } from '$lib/localStorageUtils';
-	import { goto } from '$app/navigation';
 	import _ from 'lodash';
 	import { isOpen } from '$lib/utils';
 
@@ -22,6 +20,8 @@
 	import { IconButton } from '$lib/components';
 	import { NavLink } from '$lib/ui';
 	import NavbarDivider from './navbarDivider.svelte';
+
+	import { afterNavigate } from '$app/navigation';
 
 	//
 
@@ -57,20 +57,15 @@
 		open = !open;
 	}
 
+	// Closing after navigation
+	afterNavigate(() => {
+		open = false;
+	});
+
 	// Checking if user is admin
 	const adminTools = $userRole == t.UserPermissionRoles.AdminTools;
 	const adminEnrolls = $userRole == t.UserPermissionRoles.AdminEnrollments;
 	const admin = adminEnrolls || adminTools;
-
-	// Logout function
-	function logout() {
-		// We remove the token from localstorage
-		lsRemove(lsKeys.token);
-		// And the user from the store
-		$user = null;
-		// Then we redirect
-		goto('/');
-	}
 </script>
 
 <!-- Navbar -->
