@@ -31,7 +31,7 @@
 	const c = course.attributes;
 
 	function goToEnroll() {
-		goto(`src/routes/shared/enroll/${slug}.svelte`);
+		goto(`/shared/enroll/${slug}`);
 	}
 </script>
 
