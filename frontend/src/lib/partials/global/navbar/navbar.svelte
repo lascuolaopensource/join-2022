@@ -19,7 +19,7 @@
 	import { icons } from '$lib/icons';
 	import { IconButton } from '$lib/components';
 	import { NavLink } from '$lib/ui';
-	import NavbarDivider from './navbarDivider.svelte';
+	import HR from '$lib/components/hr.svelte';
 
 	import { afterNavigate } from '$app/navigation';
 
@@ -131,7 +131,7 @@
 				{data.home.label}
 			</NavLink>
 
-			<NavbarDivider />
+			<HR />
 
 			<!-- Courses -->
 			<NavLink href={data.courses.href}>{data.courses.label}</NavLink>
@@ -141,7 +141,7 @@
 				{data.tools.label}
 			</NavLink>
 
-			<NavbarDivider />
+			<HR />
 
 			<!-- Admin enrollments -->
 			{#if adminEnrolls}
@@ -157,7 +157,7 @@
 			{/if}
 			<!-- Admin divider -->
 			{#if admin}
-				<NavbarDivider />
+				<HR />
 			{/if}
 
 			<!-- Profile -->
