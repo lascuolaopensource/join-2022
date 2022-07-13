@@ -11,6 +11,6 @@
 	<Title margin>Ciao {$userInfo?.name}!</Title>
 	<div class="flex flex-col">
 		<Link href="/inside/courses/active">Corsi</Link>
-		<Link href="/inside/courses/active">Strumenti e spazi</Link>
+		<Link href="/inside/tools">Strumenti e spazi</Link>
 	</div>
 </Container>

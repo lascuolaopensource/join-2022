@@ -34,12 +34,10 @@
 	<Loading />
 {:then res}
 	<NavbarSecondary>
-		<NavbarItem href="/inside/admin/tools/manageAvailability"
-			>Gestione disponibilità</NavbarItem
-		>
+		<NavbarItem href="/inside/admin/tools/manageAvailability">
+			Gestione disponibilità
+		</NavbarItem>
 	</NavbarSecondary>
 
-	<Container>
-		<slot />
-	</Container>
+	<slot />
 {/await}

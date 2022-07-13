@@ -27,7 +27,10 @@
 
 <!-- Card with all the hours -->
 
-<div class="space-y-4 bg-slate-200 hover:bg-slate-300 p-4" on:click={open}>
+<div
+	class="space-y-4 bg-slate-200 hover:bg-slate-300 p-4 hover:cursor-pointer"
+	on:click={open}
+>
 	{#each combo as day}
 		{@const date = new Date(day[0][0]).toLocaleDateString('IT-it')}
 		<div>
@@ -45,7 +48,7 @@
 
 <!-- Modal with selection -->
 
-<Modal {visible}>
+<Modal {visible} title="Seleziona le disponibilità">
 	<!-- List with selection -->
 
 	<div class="space-y-4">

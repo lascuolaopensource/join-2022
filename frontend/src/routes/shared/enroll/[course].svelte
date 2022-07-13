@@ -3,7 +3,7 @@
 	import { helpers as h, endpoints as e, types as t } from 'shared';
 
 	/** @type {import('@sveltejs/kit').Load} */
-	export async function load({ params, fetch, session, stuff }) {
+	export async function load({ params, fetch, session, stuff }: any) {
 		const slug = params.course;
 		const course = await req.getCourseBySlug(slug, fetch);
 
@@ -42,7 +42,8 @@
 		setFormError,
 		SubmitButton
 	} from '$lib/components/form';
-	import { Loading, Callout } from '$lib/components';
+	import { Loading, Callout, HR } from '$lib/components';
+	import { Link, Title } from '$lib/ui';
 
 	/**
 	 * Exports
@@ -69,7 +70,7 @@
 	 */
 
 	// Shorthand for course attributes
-	const c: t.Course = course.attributes;
+	const c: t.Course = course.attributes as t.Course;
 
 	// Getting course info
 	const paymentNeeded = h.course.isPaymentNeeded(c);
@@ -149,11 +150,11 @@
 	<Loading />
 {:then res}
 	{#if $user}
-		<a class="backlink" href="/inside/course/{slug}">Torna al corso</a>
+		<Link href="/inside/course/{slug}" backlink margin>Torna al corso</Link>
 	{/if}
 
-	<h2>{course.attributes.title}</h2>
-	<h1>Iscriviti</h1>
+	<p class="text-gray-900">{course.attributes.title}</p>
+	<Title margin>Iscriviti</Title>
 
 	{#if !$user}
 		<Callout>
@@ -167,7 +168,7 @@
 	<Form {formContext}>
 		<!-- Info -->
 		{#if !$user || c.motivationalLetterNeeded || paymentNeeded}
-			<hr />
+			<HR mode="light" />
 
 			<div>
 				<h2>{s.enroll.info.title}</h2>
@@ -188,7 +189,7 @@
 			</div>
 		{/if}
 
-		<hr />
+		<HR mode="light" />
 
 		<!-- Contatti -->
 
@@ -205,7 +206,7 @@
 			helperText="Ti chiediamo il numero di telefono per contattarti solo in casi di urgenza. Sarà eliminato al termine del corso."
 		/>
 
-		<hr />
+		<HR mode="light" />
 
 		<!-- Valutazione -->
 
@@ -227,7 +228,7 @@
 		{/if}
 
 		{#if evaluationNeeded}
-			<hr />
+			<HR mode="light" />
 		{/if}
 
 		<!-- Error -->

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Button from '$lib/components/button.svelte';
+
 	export let values: Array<any>;
 	export let group: Array<any>;
 	export let select = true;
@@ -15,15 +17,13 @@
 
 <!--  -->
 
-<div>
+<div class="flex flex-row flex-nowrap justify-end items-center space-x-1">
 	{#if deselect}
-		<button class="btn btn-secondary" on:click={deselectAll}
-			>Deseleziona tutti</button
+		<Button hierarchy="secondary" on:click={deselectAll}
+			>Deseleziona tutti</Button
 		>
 	{/if}
 	{#if select}
-		<button class="btn btn-secondary" on:click={selectAll}
-			>Seleziona tutti</button
-		>
+		<Button hierarchy="secondary" on:click={selectAll}>Seleziona tutti</Button>
 	{/if}
 </div>

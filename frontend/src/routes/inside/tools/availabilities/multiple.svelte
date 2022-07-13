@@ -4,6 +4,7 @@
 	import { req } from '$lib/requestUtils';
 
 	import Multiple from '$lib/partials/tools/availabilities/multiple.svelte';
+	import Container from '$lib/components/container.svelte';
 
 	// Making request
 	const promise = req.checkSlots({
@@ -26,12 +27,17 @@
 
 <!--  -->
 
-<div class="container mx-auto px-6 space-y-4">
-	{#await promise then res}
-		{#if res.kind == 'multiple'}
-			{#each res.data as combo}
-				<Multiple {combo} on:click={submit} />
-			{/each}
-		{/if}
-	{/await}
-</div>
+<Container>
+	<div class="space-y-4">
+		{#await promise then res}
+			{#if res.kind == 'multiple'}
+				{#if res.data.length == 0}
+					<p class="text-gray-400">Nessun risultato trovato</p>
+				{/if}
+				{#each res.data as combo}
+					<Multiple {combo} on:click={submit} />
+				{/each}
+			{/if}
+		{/await}
+	</div>
+</Container>

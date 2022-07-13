@@ -1,6 +1,9 @@
-<script lang="ts">
-	import ToolsSteps from '$lib/partials/tools/toolsSteps.svelte';
+<script lang="ts" context="module">
+	/** @type {import('@sveltejs/kit').Load} */
+	export async function load({ params, fetch, session, stuff }) {
+		return {
+			status: 302,
+			redirect: `/inside/tools/needs`
+		};
+	}
 </script>
-
-<ToolsSteps />
-<a href="/inside/tools/needs">Vai alla prenotazione</a>
