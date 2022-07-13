@@ -5,7 +5,9 @@
 	export let data: Array<StepData>;
 </script>
 
-<div>
+<!--  -->
+
+<div class="flex flex-row flex-nowrap space-x-1 items-center justify-start">
 	{#each data as s, i}
 		{#if i != 0}
 			<p>&#8594;</p>
@@ -13,11 +15,3 @@
 		<Step data={s} />
 	{/each}
 </div>
-
-<style>
-	div {
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
-	}
-</style>
