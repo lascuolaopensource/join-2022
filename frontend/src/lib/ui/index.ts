@@ -15,3 +15,5 @@ export {
 	WeekCal,
 	NavLink
 };
+
+export * from './table';
