@@ -2,8 +2,6 @@ import Button from './button.svelte';
 import BottomBar from './bottomBar.svelte';
 import Callout from './callout.svelte';
 import CardCourse from './cardCourse.svelte';
-import CardCourseEnrolls from './cardCourseEnrolls.svelte';
-import CardEnrollment from './cardEnrollment.svelte';
 import Container from './container.svelte';
 import IconButton from './iconButton.svelte';
 import Loading from './loading.svelte';
@@ -17,14 +15,13 @@ import ProfileNavbar from './profileNavbar.svelte';
 import Tooltip from './tooltip.svelte';
 import Spinner from './spinner.svelte';
 import Steps from './steps.svelte';
+import HR from './hr.svelte';
 
 export {
 	Button,
 	BottomBar,
 	Callout,
 	CardCourse,
-	CardCourseEnrolls,
-	CardEnrollment,
 	Container,
 	IconButton,
 	Loading,
@@ -37,5 +34,6 @@ export {
 	ProfileNavbar,
 	Tooltip,
 	Spinner,
-	Steps
+	Steps,
+	HR
 };
