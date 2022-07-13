@@ -5,7 +5,7 @@
 	import { lsGetToken } from '$lib/localStorageUtils';
 	import { user, userInfo } from '$lib/stores';
 
-	import { Loading } from '$lib/components';
+	import { Loading, Container } from '$lib/components';
 	import Navbar from '$lib/partials/global/navbar/navbar.svelte';
 
 	//
@@ -39,7 +39,7 @@
 	<Loading />
 {:else}
 	<Navbar />
-	<div class="container">
+	<Container>
 		<slot />
-	</div>
+	</Container>
 {/if}
