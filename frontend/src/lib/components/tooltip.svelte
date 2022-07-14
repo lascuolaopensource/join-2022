@@ -24,7 +24,7 @@
 
 <!--  -->
 
-{#if visible}
+{#if visible && content}
 	<div
 		out:fade
 		class="shadow"

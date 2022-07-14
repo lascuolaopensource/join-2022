@@ -9,7 +9,6 @@
 
 	//
 
-	import { OutsideTitle } from '$lib/components';
 	import {
 		Form,
 		FormError,

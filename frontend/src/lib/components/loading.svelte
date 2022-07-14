@@ -2,18 +2,8 @@
 	import Spinner from '$lib/components/spinner.svelte';
 </script>
 
-<div>
+<div
+	class="flex flex-row flex-nowrap justify-center items-center w-full h-full"
+>
 	<Spinner />
 </div>
-
-<style>
-	div {
-		display: flex;
-		flex-flow: row nowrap;
-		justify-content: center;
-		align-items: center;
-
-		width: 100%;
-		height: 100%;
-	}
-</style>
