@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { formKey } from './form.svelte';
+	import { formKey } from '../form.svelte';
 	import { multipageKey } from './multipageForm.svelte';
 
-	import SubmitButton from './submitButton.svelte';
-	import FormError from './formError.svelte';
+	import SubmitButton from '../submitButton.svelte';
+	import FormError from '../formError.svelte';
 
 	//
 	const { form } = getContext(formKey);
