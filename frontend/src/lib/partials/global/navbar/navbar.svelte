@@ -17,7 +17,7 @@
 	import { isOpen } from '$lib/utils';
 
 	import { icons } from '$lib/icons';
-	import { IconButton, NavLink, HR } from '$lib/components';
+	import { IconButton, NavLink, Hr } from '$lib/components';
 
 	import { afterNavigate } from '$app/navigation';
 
@@ -129,7 +129,7 @@
 				{data.home.label}
 			</NavLink>
 
-			<HR />
+			<Hr />
 
 			<!-- Courses -->
 			<NavLink href={data.courses.href}>{data.courses.label}</NavLink>
@@ -139,7 +139,7 @@
 				{data.tools.label}
 			</NavLink>
 
-			<HR />
+			<Hr />
 
 			<!-- Admin enrollments -->
 			{#if adminEnrolls}
@@ -155,7 +155,7 @@
 			{/if}
 			<!-- Admin divider -->
 			{#if admin}
-				<HR />
+				<Hr />
 			{/if}
 
 			<!-- Profile -->

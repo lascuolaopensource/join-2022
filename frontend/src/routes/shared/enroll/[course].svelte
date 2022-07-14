@@ -42,7 +42,7 @@
 		setFormError,
 		SubmitButton
 	} from '$lib/components/form';
-	import { Loading, Callout, HR, Link, Title } from '$lib/components';
+	import { Loading, Callout, Hr, Link, Title } from '$lib/components';
 
 	/**
 	 * Exports
@@ -167,7 +167,7 @@
 	<Form {formContext}>
 		<!-- Info -->
 		{#if !$user || c.motivationalLetterNeeded || paymentNeeded}
-			<HR mode="light" />
+			<Hr mode="light" />
 
 			<div>
 				<h2>{s.enroll.info.title}</h2>
@@ -188,7 +188,7 @@
 			</div>
 		{/if}
 
-		<HR mode="light" />
+		<Hr mode="light" />
 
 		<!-- Contatti -->
 
@@ -205,7 +205,7 @@
 			helperText="Ti chiediamo il numero di telefono per contattarti solo in casi di urgenza. Sarà eliminato al termine del corso."
 		/>
 
-		<HR mode="light" />
+		<Hr mode="light" />
 
 		<!-- Valutazione -->
 
@@ -227,7 +227,7 @@
 		{/if}
 
 		{#if evaluationNeeded}
-			<HR mode="light" />
+			<Hr mode="light" />
 		{/if}
 
 		<!-- Error -->

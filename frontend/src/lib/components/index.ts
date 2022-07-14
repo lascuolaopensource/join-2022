@@ -3,7 +3,7 @@ import Button from './button.svelte';
 import Callout from './callout.svelte';
 import CardWithButton from './cardWithButton.svelte';
 import Container from './container.svelte';
-import HR from './hr.svelte';
+import Hr from './hr.svelte';
 import IconButton from './iconButton.svelte';
 import Link from './link.svelte';
 import Loading from './loading.svelte';
@@ -26,7 +26,7 @@ export {
 	Callout,
 	CardWithButton,
 	Container,
-	HR,
+	Hr,
 	IconButton,
 	Link,
 	Loading,
