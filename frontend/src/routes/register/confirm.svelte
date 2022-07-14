@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Title, Link } from '$lib/ui';
+	import { Title, Link } from '$lib/components';
 </script>
 
 <!-- --- Markup --- -->

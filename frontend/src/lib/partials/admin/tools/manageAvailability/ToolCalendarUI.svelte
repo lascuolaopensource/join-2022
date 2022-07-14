@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ToolCalendar } from './ToolCalendar';
 	import ToolCalendarCellUI from './ToolCalendarCellUI.svelte';
-	import WeekCal from '$lib/ui/weekCal.svelte';
+	import { WeekCal } from '$lib/components';
 
 	export let cal: ToolCalendar;
 

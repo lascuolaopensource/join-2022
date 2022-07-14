@@ -2,8 +2,7 @@
 	import { req } from '$lib/requestUtils';
 	import { helpers as h, types as t } from 'shared';
 
-	import { Loading, Container } from '$lib/components';
-	import { Title } from '$lib/ui';
+	import { Loading, Container, Title } from '$lib/components';
 	import CourseCard from '$lib/partials/admin/enrollments/courseCard.svelte';
 
 	//

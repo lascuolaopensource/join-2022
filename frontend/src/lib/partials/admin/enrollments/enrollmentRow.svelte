@@ -5,8 +5,7 @@
 
 	import Modal from '$lib/components/modal.svelte';
 
-	import { Tr, Td } from '$lib/ui';
-	import { Button } from '$lib/components';
+	import { Tr, Td, Button } from '$lib/components';
 
 	export let enrollment: t.Enrollment;
 	export let state = enrollment.state;

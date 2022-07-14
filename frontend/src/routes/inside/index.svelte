@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { userInfo } from '$lib/stores';
 
-	import { Container } from '$lib/components';
-	import { Title, Link } from '$lib/ui';
+	import { Container, Title, Link } from '$lib/components';
 </script>
 
 <!--  -->

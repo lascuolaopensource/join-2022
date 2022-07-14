@@ -17,9 +17,7 @@
 	import { isOpen } from '$lib/utils';
 
 	import { icons } from '$lib/icons';
-	import { IconButton } from '$lib/components';
-	import { NavLink } from '$lib/ui';
-	import HR from '$lib/components/hr.svelte';
+	import { IconButton, NavLink, HR } from '$lib/components';
 
 	import { afterNavigate } from '$app/navigation';
 

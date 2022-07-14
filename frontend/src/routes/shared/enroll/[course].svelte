@@ -42,8 +42,7 @@
 		setFormError,
 		SubmitButton
 	} from '$lib/components/form';
-	import { Loading, Callout, HR } from '$lib/components';
-	import { Link, Title } from '$lib/ui';
+	import { Loading, Callout, HR, Link, Title } from '$lib/components';
 
 	/**
 	 * Exports

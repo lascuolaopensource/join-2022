@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { NavbarSecondary } from '$lib/components';
-	import { NavLink } from '$lib/ui';
+	import { NavbarSecondary, NavLink } from '$lib/components';
 </script>
 
 <!--  -->

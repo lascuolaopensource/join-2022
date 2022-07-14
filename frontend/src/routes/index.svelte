@@ -14,10 +14,11 @@
 		FormError,
 		TextField,
 		SubmitButton,
-		setFormError
-	} from '$lib/components/form';
+		setFormError,
+		Link,
+		Title
+	} from '$lib/components';
 	import { icons } from '$lib/icons';
-	import { Link, Title } from '$lib/ui';
 
 	//
 

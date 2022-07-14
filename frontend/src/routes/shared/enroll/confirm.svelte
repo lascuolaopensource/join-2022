@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { user } from '$lib/stores';
 	import { lsKeys } from '$lib/localStorageUtils';
-	import { Title, Link } from '$lib/ui';
+	import { Title, Link } from '$lib/components';
 
 	// Si svuota il localstorage con il form di pagamento
 	localStorage.removeItem(lsKeys.paymentForm);

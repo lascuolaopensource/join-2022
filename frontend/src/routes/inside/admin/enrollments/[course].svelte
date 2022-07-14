@@ -9,7 +9,6 @@
 	import type { TooltipContent } from '$lib/components/tooltip.svelte';
 	import { s, enrollmentStatesAdmin } from '$lib/strings';
 
-	import { Link, Title, Table, Th, Td, Tr } from '$lib/ui';
 	import {
 		Container,
 		Button,
@@ -17,7 +16,13 @@
 		Loading,
 		Modal,
 		ModalConfirm,
-		Tooltip
+		Tooltip,
+		Link,
+		Title,
+		Table,
+		Th,
+		Td,
+		Tr
 	} from '$lib/components';
 
 	import EnrollmentRow from '$lib/partials/admin/enrollments/enrollmentRow.svelte';

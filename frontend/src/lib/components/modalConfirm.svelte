@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { TextField, Form, SubmitButton } from '$lib/components/form';
+	import { TextField, Form, SubmitButton } from './form';
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 

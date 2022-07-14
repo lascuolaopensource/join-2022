@@ -9,7 +9,7 @@
 
 	//
 
-	import { Link, Title } from '$lib/ui';
+	import { Link, Title } from '$lib/components';
 
 	import {
 		Form,

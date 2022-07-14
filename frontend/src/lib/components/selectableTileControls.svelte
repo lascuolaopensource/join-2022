@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$lib/components/button.svelte';
+	import Button from './button.svelte';
 
 	export let values: Array<any>;
 	export let group: Array<any>;

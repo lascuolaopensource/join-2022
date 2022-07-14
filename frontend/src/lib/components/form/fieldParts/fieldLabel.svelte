@@ -5,7 +5,7 @@
 	export let icon: Function | null = null;
 	export let link: { text: string; href: string } | null = null;
 
-	import { Link } from '$lib/ui';
+	import { Link } from '$lib/components';
 </script>
 
 <!--  -->

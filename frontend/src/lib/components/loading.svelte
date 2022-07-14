@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Spinner from '$lib/components/spinner.svelte';
+	import Spinner from './spinner.svelte';
 </script>
 
 <div

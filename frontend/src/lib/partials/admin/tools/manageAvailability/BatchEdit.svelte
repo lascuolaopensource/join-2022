@@ -12,8 +12,13 @@
 	import { createEventDispatcher } from 'svelte';
 	import { helpers as h, types as t } from 'shared';
 
-	import { SelectableTile, SelectableTileControls } from '$lib/ui';
-	import { BottomBar, Button, Modal } from '$lib/components';
+	import {
+		BottomBar,
+		Button,
+		Modal,
+		SelectableTile,
+		SelectableTileControls
+	} from '$lib/components';
 
 	//
 
