@@ -9,9 +9,6 @@ import Modal from './modal.svelte';
 import ModalConfirm from './modalConfirm.svelte';
 import NavbarItem from './navbarItem.svelte';
 import NavbarSecondary from './navbarSecondary.svelte';
-import OutsideBacklink from './outsideBacklink.svelte';
-import OutsideTitle from './outsideTitle.svelte';
-import ProfileNavbar from './profileNavbar.svelte';
 import Tooltip from './tooltip.svelte';
 import Spinner from './spinner.svelte';
 import Steps from './steps.svelte';
@@ -29,9 +26,6 @@ export {
 	ModalConfirm,
 	NavbarItem,
 	NavbarSecondary,
-	OutsideBacklink,
-	OutsideTitle,
-	ProfileNavbar,
 	Tooltip,
 	Spinner,
 	Steps,
