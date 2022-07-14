@@ -1,7 +1,6 @@
 import Button from './button.svelte';
 import BottomBar from './bottomBar.svelte';
 import Callout from './callout.svelte';
-import CardCourse from './cardCourse.svelte';
 import Container from './container.svelte';
 import IconButton from './iconButton.svelte';
 import Loading from './loading.svelte';
@@ -18,7 +17,6 @@ export {
 	Button,
 	BottomBar,
 	Callout,
-	CardCourse,
 	Container,
 	IconButton,
 	Loading,

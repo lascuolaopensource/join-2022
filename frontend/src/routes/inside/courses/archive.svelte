@@ -16,7 +16,8 @@
 <script lang="ts">
 	import type { types as t } from 'shared';
 
-	import { Container, CardCourse } from '$lib/components';
+	import { Container } from '$lib/components';
+	import CardCourse from '$lib/partials/courses/cardCourse.svelte';
 	import { Title } from '$lib/ui';
 
 	export let courses: t.CourseEntityResponseCollection;
