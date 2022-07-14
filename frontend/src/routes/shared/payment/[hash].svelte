@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	/** @type {import('@sveltejs/kit').Load} */
-	export async function load({ params, fetch, session, stuff }) {
+	export async function load({ params, fetch, session, stuff }: any) {
 		try {
 			const paymentDetails = await req.getPaymentDetails(params.hash);
 
@@ -53,7 +53,7 @@
 		FormError
 	} from '$lib/components/form';
 
-	import { Callout } from '$lib/components';
+	import { Callout, Table, Th, Td, Tr, Title, Hr } from '$lib/components';
 
 	//
 
@@ -77,7 +77,7 @@
 				);
 			}
 		} catch (e) {
-			setFormError(e);
+			setFormError(JSON.stringify(e));
 		}
 	}
 
@@ -100,54 +100,56 @@
 
 <!--  -->
 
-<h1>Pagamento</h1>
+<div class="space-y-6 mb-6">
+	<Title>Pagamento</Title>
 
-<Callout>
-	{s.pay.callout}
-</Callout>
+	<Callout>
+		{s.pay.callout}
+	</Callout>
 
-<table>
-	<tr>
-		<th>Destinatario</th>
-		<td>{paymentDetails.owner}</td>
-	</tr>
-	<tr>
-		<th>Oggetto</th>
-		<td>{paymentDetails.category} – {paymentDetails.title}</td>
-	</tr>
-	<tr>
-		<th>Prezzo</th>
-		<td>
-			{f.formatPriceNumber(paymentDetails.price)}
-		</td>
-	</tr>
-	<tr>
-		<th>Scadenza pagamento</th>
-		<td>
-			{f.formatDateString(paymentDetails.expiration)}
-		</td>
-	</tr>
-</table>
+	<Table>
+		<Tr>
+			<Th>Destinatario</Th>
+			<Td>{paymentDetails.owner}</Td>
+		</Tr>
+		<Tr>
+			<Th>Oggetto</Th>
+			<Td>{paymentDetails.category} – {paymentDetails.title}</Td>
+		</Tr>
+		<Tr>
+			<Th>Prezzo</Th>
+			<Td>
+				{f.formatPriceNumber(paymentDetails.price)}
+			</Td>
+		</Tr>
+		<Tr>
+			<Th>Scadenza pagamento</Th>
+			<Td>
+				{f.formatDateString(paymentDetails.expiration)}
+			</Td>
+		</Tr>
+	</Table>
 
-<div class="notes">
-	<h2>{s.pay.info}</h2>
-	<ul>
-		<li>{s.pay.dataAgain}</li>
-		<li>{s.pay.link}</li>
-	</ul>
+	<div class="space-y-1">
+		<Title heading="h2">{s.pay.info}</Title>
+		<ul class="list-disc pl-5 space-y-1">
+			<li>{s.pay.dataAgain}</li>
+			<li>{s.pay.link}</li>
+		</ul>
+	</div>
 </div>
 
 <Form {formContext} lsKey={lsKeys.paymentForm}>
-	<hr />
+	<Hr />
 
 	<!--  -->
 
-	<h2>Dati di fatturazione</h2>
+	<Title>Dati di fatturazione</Title>
 
 	<RadioField name="billingOption" items={radioValues} labelText="Chi paga?" />
 
 	{#if $form.billingOption}
-		<hr />
+		<Title heading="h2">Dati identificativi</Title>
 
 		{#if $form.billingOption == billingOptions[0]}
 			<!-- Io -->
@@ -170,7 +172,7 @@
 			<TextField name="company.pec" labelText="PEC" type="email" />
 		{/if}
 
-		<hr />
+		<Title heading="h2">Indirizzo completo</Title>
 
 		<TextField
 			name="{$form.billingOption}.address.street"
@@ -199,8 +201,6 @@
 		</div>
 
 		<FormError />
-
-		<hr />
 
 		<SubmitButton>Vai al pagamento</SubmitButton>
 	{/if}

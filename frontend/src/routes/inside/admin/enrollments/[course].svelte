@@ -6,18 +6,26 @@
 	import qs from 'qs';
 	import { writable } from 'svelte/store';
 
-	import {
-		Loading,
-		CardEnrollment,
-		Modal,
-		ModalConfirm,
-		Tooltip
-	} from '$lib/components';
-
-	import { setFormError } from '$lib/components/form';
-	import { navHgt } from '$lib/components/navbarMain.svelte';
 	import type { TooltipContent } from '$lib/components/tooltip.svelte';
 	import { s, enrollmentStatesAdmin } from '$lib/strings';
+
+	import {
+		Container,
+		Button,
+		BottomBar,
+		Loading,
+		Modal,
+		ModalConfirm,
+		Tooltip,
+		Link,
+		Title,
+		Table,
+		Th,
+		Td,
+		Tr
+	} from '$lib/components';
+
+	import EnrollmentRow from '$lib/partials/admin/enrollments/enrollmentRow.svelte';
 
 	//
 
@@ -196,134 +204,124 @@
 
 <!--  -->
 
-{#await promise}
-	<Loading />
-{:then res}
-	<a class="backlink" href="/inside/admin/enrollments"
-		>Torna alla lista dei corsi</a
-	>
+<Container>
+	{#await promise}
+		<Loading />
+	{:then res}
+		<Link backlink margin href="/inside/admin/enrollments"
+			>Torna alla lista dei corsi</Link
+		>
 
-	<!-- Tabella con info -->
+		<!-- Tabella con info -->
 
-	<h1>{res.course.title}</h1>
+		<Title margin>{res.course.title}</Title>
 
-	<table>
-		<tr>
-			<td> Stato </td>
-			<td>
-				{res.course.canStart ? '' : '⚠️'}
-				Il corso {res.course.canStart ? '' : 'non'} può partire
-			</td>
-		</tr>
-		<tr>
-			<td> Selezione </td>
-			<td>{res.course.enrollsMessage}</td>
-		</tr>
-		<tr>
-			<td> Iscrizioni totali </td>
-			<td
-				>{res.course.enrollsNum} / min {res.course.enrollmentMin} / max {res
-					.course.enrollmentMax}</td
+		<Table>
+			<Tr>
+				<Th>Stato</Th>
+				<Td>
+					{res.course.canStart ? '' : '⚠️'}
+					Il corso {res.course.canStart ? '' : 'non'} può partire
+				</Td>
+			</Tr>
+			<Tr>
+				<Th>Selezione</Th>
+				<Td>{res.course.enrollsMessage}</Td>
+			</Tr>
+			<Tr>
+				<Th>Iscrizioni totali</Th>
+				<Td
+					>{res.course.enrollsNum} / min {res.course.enrollmentMin} / max {res
+						.course.enrollmentMax}</Td
+				>
+			</Tr>
+			<Tr>
+				<Th>Iscrizioni approvate</Th>
+				<Td
+					>{enrollsApprovedNum} / min {res.course.enrollmentMin} / max
+					{res.course.enrollmentMax}</Td
+				>
+			</Tr>
+		</Table>
+
+		<!-- Notifica dell'iscrizione -->
+
+		<div class="my-6">
+			<Button hierarchy="secondary" on:click={open}
+				>Invia conferma di iscrizione agli utenti</Button
 			>
-		</tr>
-		<tr>
-			<td>Iscrizioni approvate</td>
-			<td
-				>{enrollsApprovedNum} / min {res.course.enrollmentMin} / max
-				{res.course.enrollmentMax}</td
-			>
-		</tr>
-	</table>
+		</div>
 
-	<!-- Notifica dell'iscrizione -->
+		<hr />
 
-	<button class="btn btn-tertiary btn-notify" on:click={open}>
-		Notifica gli utenti dell'iscrizione
-	</button>
+		<Modal visible={showModal} title="Attenzione!">
+			<p class="mb-2">
+				Sei sicur* di notificare? <br />
+				Verranno inviate mail di conferma ai partecipanti a cui è stata aggiornata
+				l'iscrizione. <br />
+			</p>
+			<p class="mb-2">
+				Per procedere, digita qui il titolo del corso
+				<strong>{res.course.title}</strong>
+			</p>
+			<ModalConfirm match={res.course.title} onSubmit={notify} />
+		</Modal>
 
-	<hr />
+		<!-- Liste con iscrizioni -->
 
-	<Modal visible={showModal} title="Attenzione!">
-		<p class="mb-2">
-			Sei sicur* di notificare? <br />
-			Verranno inviate mail di conferma ai partecipanti a cui è stata aggiornata
-			l'iscrizione. <br />
-		</p>
-		<p class="mb-2">
-			Per procedere, digita qui il titolo del corso
-			<strong>{res.course.title}</strong>
-		</p>
-		<ModalConfirm match={res.course.title} onSubmit={notify} />
-	</Modal>
+		<div class="mt-6">
+			<Table>
+				{#each states as s}
+					{@const enList = filterEnrollmentsByState(enrollments, s)}
+					{@const enNum = enList.length}
 
-	<!-- Liste con iscrizioni -->
+					<Tr>
+						<Th colspan={100}
+							>{enrollmentStatesAdmin[s]}
 
-	<div class="table-container">
-		<table>
-			{#each states as s}
-				{@const enList = filterEnrollmentsByState(enrollments, s)}
-				{@const enNum = enList.length}
+							{#if s == t.Enum_Enrollment_State.Approved}
+								({enNum}/{res.course.enrollmentMin})
+							{:else}
+								({enNum})
+							{/if}
+						</Th>
+					</Tr>
+					{#if enNum > 0}
+						{#each enList as id (id)}
+							<EnrollmentRow
+								enrollment={enrollments[id]}
+								bind:state={enrollments[id].state}
+							/>
+						{/each}
+					{:else}
+						<Tr>
+							<Td colspan={100}>
+								<p class="font-gray-400">
+									Non ci sono iscrizioni in questa sezione
+								</p>
+							</Td>
+						</Tr>
+					{/if}
+				{/each}
+			</Table>
+		</div>
 
-				<tr>
-					<th colspan="100"
-						>{enrollmentStatesAdmin[s]}
+		<!--  -->
 
-						{#if s == t.Enum_Enrollment_State.Approved}
-							({enNum}/{res.course.enrollmentMin})
-						{:else}
-							({enNum})
-						{/if}
-					</th>
-				</tr>
-				{#if enNum > 0}
-					{#each enList as id}
-						<CardEnrollment
-							enrollment={enrollments[id]}
-							bind:state={enrollments[id].state}
-						/>
-					{/each}
-				{:else}
-					<tr>
-						<td colspan="100" style:color="gray"
-							>Non ci sono iscrizioni in questa sezione</td
-						>
-					</tr>
-				{/if}
-			{/each}
-		</table>
-	</div>
+		<Tooltip content={tooltipContent} />
+	{:catch err}
+		{err}
+	{/await}
+</Container>
 
-	<!--  -->
-
-	{#if changed}
-		<div class="submit">
+{#if changed}
+	<BottomBar>
+		<div class="flex flex-row flex-nowrap items-center justify-between">
 			<p>Ci sono cambiamenti</p>
-			<div>
-				<button class="btn btn-secondary" on:click={undo}>Annulla</button>
-				<button class="btn btn-primary" on:click={save}>Salva!</button>
+			<div class="space-x-1">
+				<Button hierarchy="secondary" on:click={undo}>Annulla</Button>
+				<Button on:click={save}>Salva!</Button>
 			</div>
 		</div>
-	{/if}
-
-	<!--  -->
-
-	<Tooltip content={tooltipContent} />
-{:catch err}
-	{err}
-{/await}
-
-<!--  -->
-<style>
-	.submit {
-		position: fixed;
-		width: 100%;
-		bottom: 0;
-		left: 0;
-		padding: var(--s-2) var(--s-3);
-		background-color: #fff7cc;
-		display: flex;
-		flex-flow: row nowrap;
-		justify-content: space-between;
-		align-items: center;
-	}
-</style>
+	</BottomBar>
+{/if}

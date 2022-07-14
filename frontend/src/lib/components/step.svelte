@@ -25,33 +25,13 @@
 
 <!--  -->
 
-<a class:inactive={!active} class:active {href}>
+<a
+	{href}
+	class="
+		inline-block w-fit px-3 py-2
+		{!active ? 'text-gray-900 bg-gray-300 hover:bg-gray-400' : ''}
+		{active ? 'text-white bg-gray-900' : ''}
+	"
+>
 	{label}
 </a>
-
-<!--  -->
-<style>
-	a {
-		display: inline-block;
-		width: fit-content;
-		text-decoration: none;
-		padding: var(--item-padding);
-		border-radius: var(--border-radius);
-		font-size: var(--text-normal);
-		line-height: var(--text-normal);
-	}
-
-	.inactive {
-		color: black;
-		background-color: lightgray;
-	}
-
-	.inactive:hover {
-		background-color: gray;
-	}
-
-	.active {
-		color: white;
-		background-color: black;
-	}
-</style>

@@ -1,14 +1,16 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import { formKey } from './form.svelte';
+	import Button from '$lib/components/button.svelte';
 
+	// TODO: Bottone valido che prende le informazioni dal field
+	// import { getContext } from 'svelte';
+	// import { formKey } from './form.svelte';
 	// const { isValid } = getContext(formKey);
 </script>
 
 <!--  -->
 
-<div class="submit__container">
-	<button type="submit" class="btn btn-primary">
+<div class="w-full flex flex-row flex-nowrap justify-end items-center">
+	<Button type="submit">
 		<slot />
-	</button>
+	</Button>
 </div>

@@ -3,7 +3,6 @@
 	import type { StepData } from '$lib/components/step.svelte';
 
 	const data: Array<StepData> = [
-		{ href: '/inside/tools', label: 'Start' },
 		{ href: '/inside/tools/needs', label: 'Cosa' },
 		{ href: '/inside/tools/availabilities', label: 'Quando' },
 		{ href: '/inside/tools/recap', label: 'Recap' }
@@ -12,4 +11,6 @@
 
 <!--  -->
 
-<Steps {data} />
+<div class="mb-6">
+	<Steps {data} />
+</div>

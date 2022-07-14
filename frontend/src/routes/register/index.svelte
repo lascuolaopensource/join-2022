@@ -10,7 +10,7 @@
 
 	//
 
-	import { OutsideTitle } from '$lib/components';
+	import { Title, Link } from '$lib/components';
 
 	import {
 		Form,
@@ -59,11 +59,11 @@
 	});
 </script>
 
-<!-- ---  Markup --- -->
+<!--  -->
 
-<a class="backlink" href="/">Login</a>
+<Link href="/" backlink margin>Login</Link>
 
-<OutsideTitle>Crea un account</OutsideTitle>
+<Title margin>Crea un account</Title>
 
 <Form {formContext}>
 	<TextField

@@ -21,7 +21,7 @@
 	<div class="field__bottom">
 		<!-- Helper text -->
 		{#if helperText}
-			<small class="field__helperText">{helperText}</small>
+			<small class="text-sm text-gray-600">{helperText}</small>
 		{/if}
 		<!-- Field error -->
 		<FieldError {fieldName} />

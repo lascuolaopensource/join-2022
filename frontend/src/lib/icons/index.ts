@@ -19,9 +19,8 @@ export const icons = {
 	close: Close24,
 	alert: WarningAltFilled24,
 	form: {
-		error: WarningAltFilled16,
-		close: Close24,
-		formError: WarningAlt24
+		error: WarningAltFilled24,
+		close: Close24
 	},
 	arrows: {
 		up: ArrowUp24,

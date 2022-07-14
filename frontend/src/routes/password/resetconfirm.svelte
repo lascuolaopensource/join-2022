@@ -1,9 +1,9 @@
 <script lang="ts">
-	import OutsideTitle from '$lib/components/outsideTitle.svelte';
+	import { Title, Link } from '$lib/components';
 </script>
 
 <!-- --- Markup --- -->
 
-<OutsideTitle>Password resettata!</OutsideTitle>
+<Title margin>Password resettata!</Title>
 
-<a href="/">Vai al login →</a>
+<Link href="/">Vai al login →</Link>

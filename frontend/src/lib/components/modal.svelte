@@ -18,9 +18,10 @@
 		class="
 			modal
 			fixed top-0 left-0
-			w-screen h-screen z-[9999] bg-white
+			w-screen h-screen z-[8000] bg-white
 			flex flex-col flex-nowrap"
 	>
+		<!-- Navbar -->
 		<div
 			class="
 				flex flex-row flex-nowrap justify-between items-center
@@ -30,9 +31,13 @@
 			<p class="font-bold">{title}</p>
 			<IconButton icon={icons.close} on:click={close} />
 		</div>
+
+		<!-- Content -->
 		<div class="grow p-4 overflow-y-auto">
 			<slot />
 		</div>
+
+		<!-- Slot for bottom bar -->
 		<slot name="bottom" />
 	</div>
 {/if}

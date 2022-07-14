@@ -12,6 +12,11 @@
 	import { BottomBar, Button } from '$lib/components';
 	import { writable } from 'svelte/store';
 
+	import IconButton from '$lib/components/iconButton.svelte';
+	import { icons } from '$lib/icons';
+	import Loading from '$lib/components/loading.svelte';
+	import Container from '$lib/components/container.svelte';
+
 	/**
 	 * Basic variables
 	 */
@@ -190,42 +195,38 @@
 <!--  -->
 
 {#await promise}
-	loading
+	<Loading />
 {:then res}
 	<!-- Main container -->
-	<div class="flex flex-row flex-nowrap gap-6">
-		<!-- Sidebar -->
-		<div class="grow basis-60 shrink-0">
-			<div class="sticky top-16 flex flex-col flex-nowrap gap-4">
-				<div>
-					<button
-						class="bg-slate-200 hover:bg-slate-300 w-10 h-10"
-						on:click={previousWeek}>-</button
-					>
-					<button
-						class="bg-slate-200 hover:bg-slate-300 w-10 h-10"
-						on:click={nextWeek}>+</button
+	<Container>
+		<div class="flex flex-row flex-nowrap gap-6">
+			<!-- Sidebar -->
+			<div class="grow basis-60 shrink-0">
+				<div class="sticky top-16 flex flex-col flex-nowrap gap-4">
+					<div>
+						<Button hierarchy="secondary" on:click={previousWeek}>-</Button>
+						<Button hierarchy="secondary" on:click={nextWeek}>+</Button>
+					</div>
+					{dateStart}
+
+					<Button hierarchy="secondary" on:click={open}
+						>Modifica multipla</Button
 					>
 				</div>
-				{dateStart}
+			</div>
 
-				<button class="btn btn-secondary" on:click={open}
-					>Modifica multipla</button
-				>
+			<!-- Calendars -->
+			<div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+				{#each calendars as cal}
+					{@const tool = _.find($tools, { id: cal.toolID })}
+					<div class="self-stretch flex flex-col flex-nowrap justify-between">
+						<p><strong>{tool?.attributes?.name}</strong></p>
+						<ToolCalendarUI bind:cal />
+					</div>
+				{/each}
 			</div>
 		</div>
-
-		<!-- Calendars -->
-		<div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-			{#each calendars as cal}
-				{@const tool = _.find($tools, { id: cal.toolID })}
-				<div class="self-stretch flex flex-col flex-nowrap justify-between">
-					<p><strong>{tool?.attributes?.name}</strong></p>
-					<ToolCalendarUI bind:cal />
-				</div>
-			{/each}
-		</div>
-	</div>
+	</Container>
 
 	<!-- Bottom bar -->
 	{#if editsExist}

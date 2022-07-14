@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { OutsideTitle, OutsideBacklink } from '$lib/components';
+	import { Title, Link } from '$lib/components';
 </script>
 
 <!-- --- Markup --- -->
 
-<OutsideBacklink href="/" text="Torna alla home" />
-<OutsideTitle>Grazie per esserti registrato!</OutsideTitle>
+<Link href="/" backlink margin>Home</Link>
+
+<Title margin>Grazie per esserti registrato!</Title>
 
 <p>
 	Ti abbiamo inviato un'email di conferma. Clicca il link all'interno per
-	confermare il tuo account!
+	attivare il tuo account!
 	<br />
-	<br />
-	Ora puoi tranquillamente chiudere questa pagina :)
+	Puoi tranquillamente chiudere questa pagina :)
 </p>

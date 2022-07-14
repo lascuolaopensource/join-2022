@@ -15,7 +15,7 @@
 
 	//
 
-	export let handleSubmit: (pagesState) => Promise<void>;
+	export let handleSubmit: (pagesState: any) => Promise<void>;
 	export let pages: Array<Function>;
 
 	export let extraProps = {};
@@ -23,16 +23,16 @@
 	//
 
 	const index = writable(0);
-	const pagesState = [];
+	const pagesState: Array<any> = [];
 
-	function onBack(values) {
+	function onBack(values: any) {
 		pagesState[$index] = values;
 		if ($index > 0) {
 			$index -= 1;
 		}
 	}
 
-	async function onSubmit(values) {
+	async function onSubmit(values: any) {
 		pagesState[$index] = values;
 		if ($index < pages.length - 1) {
 			$index += 1;

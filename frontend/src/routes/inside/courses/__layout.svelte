@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { NavbarItem, NavbarSecondary } from '$lib/components';
+	import { NavbarSecondary, NavLink } from '$lib/components';
 </script>
 
 <!--  -->
 
 <NavbarSecondary>
-	<NavbarItem href="/inside/courses/active">Corsi attivi</NavbarItem>
-	<NavbarItem href="/inside/courses/archive">Archivio corsi</NavbarItem>
+	<NavLink href="/inside/courses/active" theme="medium">Corsi attivi</NavLink>
+	<NavLink href="/inside/courses/archive" theme="medium">Archivio corsi</NavLink
+	>
 </NavbarSecondary>
 <slot />

@@ -16,8 +16,8 @@
 	// Quindi deve essere unica per ogni form
 
 	export let initialValues = {};
-	export let validate = null;
-	export let validationSchema = null;
+	export let validate = undefined;
+	export let validationSchema = undefined;
 	export let onSubmit = () => {
 		throw new Error(
 			'onSubmit is a required property in <Form /> when using the fallback context'
@@ -26,7 +26,7 @@
 
 	// Creating form
 	// (We also export it in case one wants to pass a created form)
-	export let formContext = createForm({
+	export let formContext = createForm<any>({
 		initialValues,
 		onSubmit,
 		validate,
@@ -155,11 +155,19 @@
 
 <!--  -->
 
-<form class="form" on:submit={handleSubmitClearErr}>
+<form class="space-y-6" on:submit={handleSubmitClearErr}>
 	<slot />
 </form>
 
 <!-- Loading spinner -->
 {#if $isSubmitting}
-	<div class="form__loading"><Spinner /></div>
+	<div
+		class="
+			w-screen h-screen bg-white/80
+			flex flex-row flex-nowrap items-center justify-center
+			fixed top-0 left-0 z-[9000]	
+		"
+	>
+		<Spinner />
+	</div>
 {/if}

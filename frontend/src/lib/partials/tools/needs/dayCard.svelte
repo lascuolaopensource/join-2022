@@ -5,12 +5,13 @@
 	import _ from 'lodash';
 
 	import Modal from '$lib/components/modal.svelte';
-	import { IconButton, Button } from '$lib/components';
 	import {
+		IconButton,
+		Button,
 		SelectableTile,
 		SelectableTileControls,
 		CardWithButton
-	} from '$lib/ui';
+	} from '$lib/components';
 
 	import { icons } from '$lib/icons';
 

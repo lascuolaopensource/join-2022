@@ -9,14 +9,15 @@
 
 	//
 
-	import { OutsideTitle } from '$lib/components';
 	import {
 		Form,
 		FormError,
 		TextField,
 		SubmitButton,
-		setFormError
-	} from '$lib/components/form';
+		setFormError,
+		Link,
+		Title
+	} from '$lib/components';
 	import { icons } from '$lib/icons';
 
 	//
@@ -30,9 +31,11 @@
 			lsSet(lsKeys.name, res.name);
 			// And redirect the user to the password
 			await goto('/login/password');
-		} catch (e) {
-			const message =
-				e?.message == '404' ? "L'email non è corretta" : e.message;
+		} catch (e: any) {
+			let message = JSON.stringify(e);
+			if ('message' in e) {
+				message = e.message;
+			}
 			setFormError(message);
 		}
 	}
@@ -46,7 +49,7 @@
 
 <!--  -->
 
-<OutsideTitle>Login</OutsideTitle>
+<Title margin>Login</Title>
 
 <Form {formContext}>
 	<TextField
@@ -60,23 +63,7 @@
 	<SubmitButton>Avanti</SubmitButton>
 </Form>
 
-<div class="message">
-	<p>Non hai un account?</p>
-	<a href="/register" class="registrati">Registrati!</a>
-</div>
-
-<!-- --- Style --- -->
-<style>
-	.message {
-		display: flex;
-		flex-flow: row nowrap;
-		width: 100%;
-		justify-content: center;
-		align-items: center;
-		margin-top: var(--s-6);
-	}
-
-	.registrati {
-		margin-left: var(--s-0);
-	}
-</style>
+<p class="text-center mt-6">
+	Non hai un account?
+	<span class="ml-1"><Link href="/register">Registrati!</Link></span>
+</p>

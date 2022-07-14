@@ -15,32 +15,15 @@
 		$page.url.pathname == href;
 </script>
 
-<a class:inactive={!active} class:active {href}>
+<!--  -->
+
+<a
+	{href}
+	class="
+		inline-block px-3 py-2
+		{!active ? 'bg-slate-600 hover:bg-slate-500 text-white' : ''}
+		{active ? 'bg-white text-slate-900' : ''}
+	"
+>
 	<slot />
 </a>
-
-<style>
-	a {
-		display: inline-block;
-		width: fit-content;
-		text-decoration: none;
-		padding: var(--item-padding);
-		border-radius: var(--border-radius);
-		font-size: var(--text-normal);
-		line-height: var(--text-normal);
-	}
-
-	.inactive {
-		color: var(--nav-main-item-text);
-		background-color: var(--nav-main-item-bg);
-	}
-
-	.inactive:hover {
-		background-color: var(--nav-main-item-hover);
-	}
-
-	.active {
-		color: var(--nav-main-item-text-active);
-		background-color: var(--nav-main-item-bg-active);
-	}
-</style>

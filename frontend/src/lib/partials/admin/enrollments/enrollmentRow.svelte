@@ -3,7 +3,9 @@
 	import { types as t } from 'shared';
 	import prependHttp from 'prepend-http';
 
-	import Modal from './modal.svelte';
+	import Modal from '$lib/components/modal.svelte';
+
+	import { Tr, Td, Button } from '$lib/components';
 
 	export let enrollment: t.Enrollment;
 	export let state = enrollment.state;
@@ -33,46 +35,48 @@
 
 <!--  -->
 
-<tr class="en-card">
+<Tr>
 	<!-- Nome e cognome -->
-	<td class="info">
+	<Td>
 		{#if ownerInfo}
 			<p>
 				{ownerInfo.name}
 				{ownerInfo.surname}
 			</p>
 		{/if}
-	</td>
+	</Td>
 
 	<!-- Contatti -->
 
-	<td class="contacts">
+	<Td>
 		<!-- Email -->
 		{#if owner}
-			<button
-				class="btn btn-small btn-tertiary"
+			<Button
+				hierarchy="secondary"
+				small
 				on:click={() => {
 					copy(owner.email);
 				}}
 			>
 				email
-			</button>
+			</Button>
 		{/if}
 
 		<!-- Telefono -->
-		<button
-			class="btn btn-small btn-tertiary"
+		<Button
+			hierarchy="secondary"
+			small
 			on:click={() => {
 				copy(enrollment.phoneNumber.data.attributes.number);
 			}}
 		>
 			tel
-		</button>
-	</td>
+		</Button>
+	</Td>
 
 	<!-- Valutazione -->
 
-	<td class="ev">
+	<Td>
 		<!-- CV -->
 		{#if enrollment.cvUrl}
 			<a
@@ -93,74 +97,81 @@
 
 		<!-- Lettera motivazionale -->
 		{#if enrollment.motivationalLetter}
-			<button
-				class="btn btn-small btn-tertiary"
+			<Button
+				hierarchy="secondary"
+				small
 				on:click={() => {
 					$showLetter = true;
-				}}>Lettera motivazionale</button
+				}}>Lettera motivazionale</Button
 			>
 		{/if}
-	</td>
+	</Td>
 
 	<!-- Pulsanti di stato -->
 
-	<td class="state">
+	<Td>
 		{#if state == t.Enum_Enrollment_State.AwaitingPayment}
 			<!--  -->
 		{:else if state == t.Enum_Enrollment_State.Approved}
-			<button
-				class="btn btn-small btn-tertiary"
+			<Button
+				hierarchy="secondary"
+				small
 				on:click={() => {
 					changeState(t.Enum_Enrollment_State.Rejected);
 				}}
 			>
 				Rifiuta
-			</button>
-			<button
-				class="btn btn-small btn-tertiary"
+			</Button>
+			<Button
+				hierarchy="secondary"
+				small
 				on:click={() => {
 					changeState(t.Enum_Enrollment_State.Pending);
 				}}
 			>
 				Sposta in "Da approvare"
-			</button>
+			</Button>
 		{:else if state == t.Enum_Enrollment_State.Pending}
-			<button
-				class="btn btn-small btn-tertiary"
+			<Button
+				hierarchy="secondary"
+				small
 				on:click={() => {
 					changeState(t.Enum_Enrollment_State.Approved);
 				}}
 			>
 				Approva
-			</button>
-			<button
-				class="btn btn-small btn-tertiary"
+			</Button>
+			<Button
+				hierarchy="secondary"
+				small
 				on:click={() => {
 					changeState(t.Enum_Enrollment_State.Rejected);
 				}}
 			>
 				Rifiuta
-			</button>
+			</Button>
 		{:else if state == t.Enum_Enrollment_State.Rejected}
-			<button
-				class="btn btn-small btn-tertiary"
+			<Button
+				hierarchy="secondary"
+				small
 				on:click={() => {
 					changeState(t.Enum_Enrollment_State.Approved);
 				}}
 			>
 				Approva
-			</button>
-			<button
-				class="btn btn-small btn-tertiary"
+			</Button>
+			<Button
+				hierarchy="secondary"
+				small
 				on:click={() => {
 					changeState(t.Enum_Enrollment_State.Pending);
 				}}
 			>
 				Sposta in "Da approvare"
-			</button>
+			</Button>
 		{/if}
-	</td>
-</tr>
+	</Td>
+</Tr>
 
 <Modal
 	title="Lettera – {ownerInfo.name} {ownerInfo.surname}"
@@ -168,10 +179,3 @@
 >
 	{enrollment.motivationalLetter}
 </Modal>
-
-<!--  -->
-<style>
-	.info p {
-		color: gray;
-	}
-</style>

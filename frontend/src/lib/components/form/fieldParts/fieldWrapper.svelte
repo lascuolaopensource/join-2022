@@ -8,15 +8,15 @@
 	export let fieldName: string;
 	// Label props
 	export let labelText = '';
-	export let labelIcon: Function = null;
-	export let labelLink: { text: string; href: string } = null;
+	export let labelIcon: Function | null = null;
+	export let labelLink: { text: string; href: string } | null = null;
 	// Bottom props
 	export let helperText = '';
 </script>
 
 <!--  -->
 
-<div class="field">
+<div class="space-y-1">
 	<FieldLabel {fieldName} text={labelText} icon={labelIcon} link={labelLink} />
 	<slot />
 	<FieldHelpers {fieldName} {helperText} />
