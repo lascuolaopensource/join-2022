@@ -2,35 +2,70 @@
 	import { writable } from 'svelte/store';
 	import { types as t } from 'shared';
 	import prependHttp from 'prepend-http';
+	import { copy } from '$lib/utils';
 
 	import Modal from '$lib/components/modal.svelte';
-
-	import { Tr, Td, Button } from '$lib/components';
-
-	export let enrollment: t.Enrollment;
-	export let state = enrollment.state;
-
-	console.log(enrollment);
-
-	const owner: t.UsersPermissionsUser = enrollment.owner?.data?.attributes;
-	const ownerInfo: t.UserInfo = owner?.userInfo?.data?.attributes;
+	import { Tr, Td, Button, ButtonLink } from '$lib/components';
 
 	//
 
-	let showLetter = writable(false);
+	export let enrollment: t.EnrollmentEntity;
+	export let isCourseConfirmed: boolean;
 
-	function copy(s: string) {
-		// var copyText = document.getElementById("content").value;
-		navigator.clipboard.writeText(s).then(() => {
-			// Alert the user that the action took place.
-			// Nobody likes hidden stuff being done under the hood!
-			alert('Copied to clipboard');
-		});
+	/**
+	 * Data variables
+	 */
+
+	const owner = enrollment.attributes?.owner?.data?.attributes;
+	const ownerInfo = owner?.userInfo?.data?.attributes;
+
+	const cvUrl = enrollment.attributes?.cvUrl;
+	const portfolioUrl = enrollment.attributes?.portfolioUrl;
+	const motivationalLetter = enrollment.attributes?.motivationalLetter;
+	const evaluation = cvUrl || portfolioUrl || motivationalLetter;
+
+	/**
+	 * Copy functions
+	 */
+
+	function copyEmail() {
+		copy(owner?.email);
 	}
+
+	function copyPhone() {
+		const phone = enrollment.attributes?.phoneNumber.data?.attributes?.number;
+		copy(phone);
+	}
+
+	console.log(enrollment);
+
+	/**
+	 * State functions
+	 */
 
 	function changeState(s: t.Enum_Enrollment_State) {
-		state = s;
+		if (enrollment.attributes) {
+			enrollment.attributes.state = s;
+		}
 	}
+
+	function setPending() {
+		changeState(t.Enum_Enrollment_State.Pending);
+	}
+
+	function setApproved() {
+		changeState(t.Enum_Enrollment_State.Approved);
+	}
+
+	function setRejected() {
+		changeState(t.Enum_Enrollment_State.Rejected);
+	}
+
+	/**
+	 * Writable for modal
+	 */
+
+	let showLetter = writable(false);
 </script>
 
 <!--  -->
@@ -47,135 +82,84 @@
 	</Td>
 
 	<!-- Contatti -->
-
 	<Td>
 		<!-- Email -->
 		{#if owner}
-			<Button
-				hierarchy="secondary"
-				small
-				on:click={() => {
-					copy(owner.email);
-				}}
-			>
-				email
-			</Button>
+			<Button hierarchy="secondary" small on:click={copyEmail}>email</Button>
 		{/if}
 
 		<!-- Telefono -->
-		<Button
-			hierarchy="secondary"
-			small
-			on:click={() => {
-				copy(enrollment.phoneNumber.data.attributes.number);
-			}}
-		>
-			tel
-		</Button>
+		<Button hierarchy="secondary" small on:click={copyPhone}>tel</Button>
 	</Td>
 
 	<!-- Valutazione -->
+	{#if evaluation}
+		<Td>
+			<!-- CV -->
+			{#if cvUrl}
+				<ButtonLink href={prependHttp(cvUrl)} blank>CV [↗]</ButtonLink>
+			{/if}
 
-	<Td>
-		<!-- CV -->
-		{#if enrollment.cvUrl}
-			<a
-				class="btn btn-small btn-tertiary"
-				href={prependHttp(enrollment.cvUrl)}
-				target="_blank">CV [↗]</a
-			>
-		{/if}
+			<!-- Portfolio -->
+			{#if portfolioUrl}
+				<ButtonLink href={prependHttp(portfolioUrl)} blank>
+					Portfolio [↗]
+				</ButtonLink>
+			{/if}
 
-		<!-- Portfolio -->
-		{#if enrollment.portfolioUrl}
-			<a
-				class="btn btn-small btn-tertiary"
-				href={prependHttp(enrollment.portfolioUrl)}
-				target="_blank">Portfolio [↗]</a
-			>
-		{/if}
-
-		<!-- Lettera motivazionale -->
-		{#if enrollment.motivationalLetter}
-			<Button
-				hierarchy="secondary"
-				small
-				on:click={() => {
-					$showLetter = true;
-				}}>Lettera motivazionale</Button
-			>
-		{/if}
-	</Td>
+			<!-- Lettera motivazionale -->
+			{#if motivationalLetter}
+				<Button
+					hierarchy="secondary"
+					small
+					on:click={() => {
+						$showLetter = true;
+					}}>Lettera motivazionale</Button
+				>
+			{/if}
+		</Td>
+	{/if}
 
 	<!-- Pulsanti di stato -->
+	{#if !isCourseConfirmed}
+		<Td>
+			<!-- Shortcut for state -->
+			{@const state = enrollment.attributes?.state}
 
-	<Td>
-		{#if state == t.Enum_Enrollment_State.AwaitingPayment}
-			<!--  -->
-		{:else if state == t.Enum_Enrollment_State.Approved}
-			<Button
-				hierarchy="secondary"
-				small
-				on:click={() => {
-					changeState(t.Enum_Enrollment_State.Rejected);
-				}}
-			>
-				Rifiuta
-			</Button>
-			<Button
-				hierarchy="secondary"
-				small
-				on:click={() => {
-					changeState(t.Enum_Enrollment_State.Pending);
-				}}
-			>
-				Sposta in "Da approvare"
-			</Button>
-		{:else if state == t.Enum_Enrollment_State.Pending}
-			<Button
-				hierarchy="secondary"
-				small
-				on:click={() => {
-					changeState(t.Enum_Enrollment_State.Approved);
-				}}
-			>
-				Approva
-			</Button>
-			<Button
-				hierarchy="secondary"
-				small
-				on:click={() => {
-					changeState(t.Enum_Enrollment_State.Rejected);
-				}}
-			>
-				Rifiuta
-			</Button>
-		{:else if state == t.Enum_Enrollment_State.Rejected}
-			<Button
-				hierarchy="secondary"
-				small
-				on:click={() => {
-					changeState(t.Enum_Enrollment_State.Approved);
-				}}
-			>
-				Approva
-			</Button>
-			<Button
-				hierarchy="secondary"
-				small
-				on:click={() => {
-					changeState(t.Enum_Enrollment_State.Pending);
-				}}
-			>
-				Sposta in "Da approvare"
-			</Button>
-		{/if}
-	</Td>
+			<!-- It's possible to take action if the enrollment is not awaitingPayment -->
+			{#if state != t.Enum_Enrollment_State.AwaitingPayment}
+				<!-- If not approved, can be set as approved -->
+				{#if state != t.Enum_Enrollment_State.Approved}
+					<Button hierarchy="secondary" small on:click={setApproved}>
+						Approva
+					</Button>
+				{/if}
+
+				<!-- If not pending, can be set as pending -->
+				{#if state != t.Enum_Enrollment_State.Pending}
+					<Button hierarchy="secondary" small on:click={setPending}>
+						Sposta in "Da approvare"
+					</Button>
+				{/if}
+
+				<!-- If not rejected, can be set as rejected -->
+				{#if state != t.Enum_Enrollment_State.Rejected}
+					<Button hierarchy="secondary" small on:click={setRejected}>
+						Rifiuta
+					</Button>
+				{/if}
+			{/if}
+		</Td>
+	{/if}
 </Tr>
 
-<Modal
-	title="Lettera – {ownerInfo.name} {ownerInfo.surname}"
-	visible={showLetter}
->
-	{enrollment.motivationalLetter}
-</Modal>
+<!-- Modal to display motivational letter -->
+{#if motivationalLetter && ownerInfo}
+	<!-- Modal title -->
+	{@const title = `Lettera – ${ownerInfo.name} ${ownerInfo.surname}`}
+
+	<!-- The modal -->
+	<Modal {title} visible={showLetter}>
+		{motivationalLetter}
+	</Modal>
+{/if}

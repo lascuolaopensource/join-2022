@@ -276,21 +276,23 @@ export const req = {
 	adminGetCourseEnrollments: async (
 		courseID: number | string,
 		fetchFn = fetch
-	): Promise<t.EnrollmentEntityResponseCollection> => {
+	): Promise<t.CourseEntityResponse> => {
 		const query = qs.stringify(
 			{
-				filters: {
-					course: {
-						id: {
-							$eq: courseID
+				populate: {
+					meetings: {
+						populate: '*'
+					},
+					enrollments: {
+						populate: {
+							owner: {
+								populate: ['userInfo']
+							},
+							phoneNumber: {
+								populate: '*'
+							}
 						}
 					}
-				},
-				populate: {
-					owner: {
-						populate: ['userInfo']
-					},
-					phoneNumber: '*'
 				}
 			},
 			{
@@ -300,7 +302,7 @@ export const req = {
 
 		return await request(
 			fetchFn,
-			`${b}api/enrollments?${query}`,
+			`${b}api/courses/${courseID}?${query}`,
 			'GET',
 			null,
 			headersAuth()
@@ -370,13 +372,13 @@ export const req = {
 	},
 	//
 
-	adminEnrollmentsNotify: async (
+	adminEnrollmentsCloseCourse: async (
 		courseID: string | number,
 		fetchFn = fetch
 	) => {
 		return await request(
 			fetchFn,
-			`${b}api/admin-enrollments/notify/${courseID}`,
+			`${b}api/admin-enrollments/close-course/${courseID}`,
 			'GET',
 			null,
 			headersAuth()
