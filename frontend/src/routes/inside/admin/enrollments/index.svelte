@@ -11,8 +11,7 @@
 		const res = await req.adminGetUpcomingCourses();
 		const courses = res.courses as any as Array<t.ID<t.Course>>;
 
-		console.log(courses);
-
+		// Active courses
 		const active = courses.filter((c) => {
 			const enrollments = c.enrollments as any as Array<t.Enrollment>;
 			return h.course.isActive(c, enrollments);
@@ -30,10 +29,10 @@
 		});
 
 		return [
-			{ label: 'Corsi attivi', courses: active },
+			{ label: 'Iscrizioni aperte', courses: isEnrollmentTime },
 			{ label: 'Corsi in partenza', courses: canStart },
-			{ label: 'Corsi non partiti', courses: cannotStart },
-			{ label: 'Iscrizioni aperte', courses: isEnrollmentTime }
+			{ label: 'Corsi attivi', courses: active },
+			{ label: 'Corsi non partiti', courses: cannotStart }
 		];
 	})();
 </script>

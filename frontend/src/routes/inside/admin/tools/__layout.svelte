@@ -2,12 +2,7 @@
 	import { req } from '$lib/requestUtils';
 	import { tools } from '$lib/stores';
 
-	import {
-		NavbarSecondary,
-		NavbarItem,
-		Container,
-		Loading
-	} from '$lib/components';
+	import { NavbarSecondary, NavbarItem, Loading } from '$lib/components';
 
 	//
 

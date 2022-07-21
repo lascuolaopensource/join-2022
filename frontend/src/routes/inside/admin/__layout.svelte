@@ -6,12 +6,7 @@
 	import { userRole } from '$lib/stores';
 	import { types as t } from 'shared';
 
-	import {
-		Loading,
-		NavbarSecondary,
-		NavbarItem,
-		Container
-	} from '$lib/components';
+	import { Loading } from '$lib/components';
 
 	//
 
