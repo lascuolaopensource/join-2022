@@ -28,7 +28,9 @@
       "type": "integer"
     },
     "confirmed": {
-      "type": "boolean"
+      "type": "boolean",
+      "required": true,
+      "default": false
     },
     "enrollmentDeadline": {
       "type": "datetime"
