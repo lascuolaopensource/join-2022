@@ -37,8 +37,6 @@
 		copy(phone);
 	}
 
-	console.log(enrollment);
-
 	/**
 	 * State functions
 	 */
