@@ -39,6 +39,6 @@
 			{/each}
 		</div>
 	{:else}
-		<p class="block text-center">Non ci sono corsi nell'archivio!</p>
+		<p>Non ci sono corsi nell'archivio!</p>
 	{/if}
 </Container>

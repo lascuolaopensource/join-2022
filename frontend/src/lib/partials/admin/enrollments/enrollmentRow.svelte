@@ -95,12 +95,12 @@
 		<Td>
 			<!-- CV -->
 			{#if cvUrl}
-				<ButtonLink href={prependHttp(cvUrl)} blank>CV [↗]</ButtonLink>
+				<ButtonLink href={prependHttp(cvUrl)} blank small>CV [↗]</ButtonLink>
 			{/if}
 
 			<!-- Portfolio -->
 			{#if portfolioUrl}
-				<ButtonLink href={prependHttp(portfolioUrl)} blank>
+				<ButtonLink href={prependHttp(portfolioUrl)} blank small>
 					Portfolio [↗]
 				</ButtonLink>
 			{/if}

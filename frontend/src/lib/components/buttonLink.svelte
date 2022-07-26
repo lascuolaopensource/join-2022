@@ -12,6 +12,7 @@
 	{disabled}
 	target={blank ? '_blank' : '_self'}
 	class="
+		inline-block
 		{small ? 'py-1 px-2' : 'p-3'}
 		{!disabled ? 'text-black bg-gray-300 hover:bg-gray-400' : ''}
 		{disabled ? 'text-gray-400 bg-gray-300' : ''}
