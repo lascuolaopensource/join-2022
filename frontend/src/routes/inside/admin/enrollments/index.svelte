@@ -11,28 +11,20 @@
 		const res = await req.adminGetUpcomingCourses();
 		const courses = res.courses as any as Array<t.ID<t.Course>>;
 
-		// Active courses
-		const active = courses.filter((c) => {
-			const enrollments = c.enrollments as any as Array<t.Enrollment>;
-			return h.course.isActive(c, enrollments);
-		});
-		const canStart = courses.filter((c) => {
-			const enrollments = c.enrollments as any as Array<t.Enrollment>;
-			return h.course.canStart(c, enrollments);
-		});
-		const cannotStart = courses.filter((c) => {
-			const enrollments = c.enrollments as any as Array<t.Enrollment>;
-			return h.course.cannotStart(c, enrollments);
-		});
 		const isEnrollmentTime = courses.filter((c) => {
 			return h.course.isErollmentTime(c);
+		});
+		const isEvaluationTime = courses.filter((c) => {
+			return h.course.isEvaluationTime(c) && !c.confirmed;
+		});
+		const isConfirmed = courses.filter((c) => {
+			return c.confirmed;
 		});
 
 		return [
 			{ label: 'Iscrizioni aperte', courses: isEnrollmentTime },
-			{ label: 'Corsi in partenza', courses: canStart },
-			{ label: 'Corsi attivi', courses: active },
-			{ label: 'Corsi non partiti', courses: cannotStart }
+			{ label: 'Iscrizioni chiuse', courses: isEvaluationTime },
+			{ label: 'Confermati', courses: isConfirmed }
 		];
 	})();
 </script>
