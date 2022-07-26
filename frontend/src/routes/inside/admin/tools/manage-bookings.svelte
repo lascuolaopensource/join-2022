@@ -33,8 +33,12 @@
 	}
 
 	async function deleteBooking() {
-		console.log(bookingToDelete);
-		$visible = false;
+		const id = bookingToDelete?.id;
+		if (id) {
+			await req.deleteBooking(id);
+			$visible = false;
+			promise = getData();
+		}
 	}
 </script>
 
@@ -50,6 +54,9 @@
 				}}
 			/>
 		{/each}
+		{#if bookings.length == 0}
+			<p class="text-gray-400">Non ci sono prenotazioni</p>
+		{/if}
 	{/await}
 </Container>
 

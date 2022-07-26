@@ -12,8 +12,6 @@
 	import { BottomBar, Button } from '$lib/components';
 	import { writable } from 'svelte/store';
 
-	import IconButton from '$lib/components/iconButton.svelte';
-	import { icons } from '$lib/icons';
 	import Loading from '$lib/components/loading.svelte';
 	import Container from '$lib/components/container.svelte';
 
