@@ -204,7 +204,10 @@ export const req = {
 		});
 		const res: t.CourseEntityResponseCollection = await request(
 			fetchFn,
-			`${b}api/courses?${query}`
+			`${b}api/courses?${query}`,
+			'GET',
+			null,
+			headersAuth()
 		);
 		if (!res.data[0]) {
 			throw new Error('Course not found');
