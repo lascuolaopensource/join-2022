@@ -29,17 +29,18 @@
     },
     "confirmed": {
       "type": "boolean",
-      "required": true,
-      "default": false
+      "required": true
     },
     "enrollmentDeadline": {
       "type": "datetime"
     },
     "enrollmentMin": {
-      "type": "integer"
+      "type": "integer",
+      "required": true
     },
     "enrollmentMax": {
-      "type": "integer"
+      "type": "integer",
+      "required": false
     },
     "meetings": {
       "type": "component",
