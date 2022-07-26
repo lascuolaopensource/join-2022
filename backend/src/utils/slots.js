@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findSlotsBetween = exports.getLastDate = exports.getFirstDate = exports.slotToInput = exports.breakAvailabilitySlot = exports.getBoundingSlot = exports.groupMergeSlots = exports.mergeSlotsGroup = exports.groupSlots = exports.checkSlotsConsistency = exports.sortSlots = exports.slotToDateInterval = exports.slotToInterval = exports.AligmentCalendar = exports.DateInterval = exports.Interval = void 0;
+exports.slotsCleanup = exports.getSlotsBounds = exports.findSlotsBetween = exports.getLastDate = exports.getFirstDate = exports.slotToInput = exports.breakAvailabilitySlot = exports.getBoundingSlot = exports.groupMergeSlots = exports.mergeSlotsGroup = exports.groupSlots = exports.checkSlotsConsistency = exports.sortSlots = exports.slotToDateInterval = exports.slotToInterval = exports.AligmentCalendar = exports.DateInterval = exports.Interval = void 0;
 const shared_1 = require("shared");
 const entities_1 = require("./entities");
 const date_1 = require("./date");
@@ -294,3 +294,27 @@ async function findSlotsBetween(start, end, tools, type) {
     return slots;
 }
 exports.findSlotsBetween = findSlotsBetween;
+function getSlotsBounds(slots) {
+    const firstDate = getFirstDate(slots);
+    const beforeDate = shared_1.helpers.date.addDays(firstDate, -1);
+    const lastDate = getLastDate(slots);
+    const afterDate = shared_1.helpers.date.addDays(lastDate, 1);
+    return {
+        start: beforeDate,
+        end: afterDate,
+    };
+}
+exports.getSlotsBounds = getSlotsBounds;
+async function slotsCleanup(toolID, startDate, endDate) {
+    const availSlots = await findSlotsBetween(startDate.toISOString(), endDate.toISOString(), [toolID], shared_1.types.Enum_Toolslot_Type.Availability);
+    const newSlots = groupMergeSlots(availSlots.map((s) => slotToInput(s)));
+    for (let a of availSlots) {
+        await strapi.entityService.delete(entities_1.entities.toolSlot, a.id);
+    }
+    for (let m of newSlots) {
+        await strapi.entityService.create(entities_1.entities.toolSlot, {
+            data: m,
+        });
+    }
+}
+exports.slotsCleanup = slotsCleanup;
