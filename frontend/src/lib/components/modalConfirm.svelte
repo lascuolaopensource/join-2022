@@ -1,21 +1,21 @@
 <script lang="ts">
 	import { TextField, Form, SubmitButton } from './form';
+	import { createEventDispatcher } from 'svelte';
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 
 	export let match: string;
-	export let onSubmit: () => Promise<any> = async () => {
-		console.log('submitting');
-	};
+
+	const dispatch = createEventDispatcher();
+	function confirmed() {
+		dispatch('confirmed');
+	}
 
 	const formContext = createForm({
 		initialValues: {
 			confirm: ''
 		},
-		onSubmit: async () => {
-			await onSubmit();
-			close();
-		},
+		onSubmit: confirmed,
 		validationSchema: yup.object({
 			confirm: yup.string().required().oneOf([match])
 		})

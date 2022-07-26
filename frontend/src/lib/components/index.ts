@@ -1,5 +1,6 @@
 import BottomBar from './bottomBar.svelte';
 import Button from './button.svelte';
+import ButtonLink from './buttonLink.svelte';
 import Callout from './callout.svelte';
 import CardWithButton from './cardWithButton.svelte';
 import Container from './container.svelte';
@@ -23,6 +24,7 @@ import WeekCal from './weekCal.svelte';
 export {
 	BottomBar,
 	Button,
+	ButtonLink,
 	Callout,
 	CardWithButton,
 	Container,

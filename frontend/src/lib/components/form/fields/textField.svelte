@@ -39,7 +39,6 @@
 		{name}
 		id={name}
 		value={get($form, name)}
-		class:field__input-error={get($errors, name)}
 		{placeholder}
 		on:keyup={handleChange}
 		on:blur={handleChange}

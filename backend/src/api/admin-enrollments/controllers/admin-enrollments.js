@@ -23,19 +23,17 @@ module.exports = {
         strapi.log.info("In admin-enrollments/update controller");
         const body = ctx.request.body;
         try {
-            for (let id of Object.keys(body)) {
-                const enrollment = await strapi.entityService.findOne(utils_1.entities.enrollment, id, {
-                    populate: ["owner", "course"],
-                });
-                const oldState = enrollment.state;
-                const newState = body[id].state;
-                if (oldState != newState) {
-                    await strapi.entityService.update(utils_1.entities.enrollment, id, {
-                        data: {
-                            state: newState,
-                        },
+            for (let e of body) {
+                if (e.id && e.attributes) {
+                    const enrollment = await strapi.entityService.findOne(utils_1.entities.enrollment, e.id, {
+                        populate: ["owner", "course"],
                     });
-                    strapi.log.info(`Updated enrollment ${id}: ${oldState} -> ${newState}`);
+                    const oldState = enrollment.state;
+                    const newState = e.attributes.state;
+                    if (oldState != newState) {
+                        await strapi.entityService.update(utils_1.entities.enrollment, e.id, { data: { state: newState } });
+                        strapi.log.info(`Updated enrollment ${e.id}: ${oldState} -> ${newState}`);
+                    }
                 }
             }
         }
@@ -45,9 +43,10 @@ module.exports = {
         }
         return {};
     },
-    notify: async (ctx, next) => {
-        strapi.log.info("In admin-enrollments/notify controller");
-        const course = await (0, utils_1.getCourseByID)(ctx.params.courseID, {
+    closeCourse: async (ctx, next) => {
+        strapi.log.info("In admin-enrollments/closeCourse controller");
+        const courseID = ctx.params.courseID;
+        const course = await (0, utils_1.getCourseByID)(courseID, {
             populate: {
                 enrollments: {
                     populate: {
@@ -56,6 +55,13 @@ module.exports = {
                         },
                     },
                 },
+            },
+        });
+        if (course.confirmed)
+            return {};
+        await strapi.entityService.update(utils_1.entities.course, courseID, {
+            data: {
+                confirmed: true,
             },
         });
         const enrollments = course.enrollments;
@@ -75,6 +81,6 @@ module.exports = {
                 });
             }
         }
-        return { ok: true };
+        return {};
     },
 };

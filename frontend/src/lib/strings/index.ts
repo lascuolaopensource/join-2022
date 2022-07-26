@@ -55,8 +55,8 @@ export const enrollmentStates: Record<t.Enum_Enrollment_State, string> = {
 };
 
 export const enrollmentStatesAdmin: Record<t.Enum_Enrollment_State, string> = {
-	pending: 'In attesa di approvazione',
-	approved: 'Approvate',
-	awaitingPayment: 'Pagamento non avvenuto',
-	rejected: 'Rifiutate'
+	pending: '⏸️ In attesa di approvazione',
+	approved: '✅ Approvate',
+	awaitingPayment: '💰 Pagamento non avvenuto',
+	rejected: '❌ Rifiutate'
 };

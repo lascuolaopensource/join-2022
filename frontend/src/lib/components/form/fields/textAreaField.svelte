@@ -29,10 +29,12 @@
 	<textarea
 		{name}
 		id={name}
-		class="field__input field__input__textarea"
-		class:field__input-error={get($errors, name)}
 		{placeholder}
 		on:keyup={handleChange}
-		on:blur={handleChange}>{get($form, name)}</textarea
-	>
+		on:blur={handleChange}
+		class="
+			bg-gray-200 hover:bg-gray-300 p-3 w-full h-60
+			{get($errors, name) ? 'outline-2 outline-red-600' : ''}
+		"
+	/>
 </FieldWrapper>
