@@ -8,19 +8,21 @@
 	import type { TooltipContent } from '$lib/components/tooltip.svelte';
 
 	import {
-		Container,
-		Button,
 		BottomBar,
+		Button,
+		Callout,
+		Container,
+		Hr,
+		Link,
 		Loading,
 		Modal,
 		ModalConfirm,
-		Tooltip,
-		Link,
 		Title,
-		Hr
+		Tooltip
 	} from '$lib/components';
 
 	import EnrollmentsTable from '$lib/partials/admin/enrollments/enrollmentsTable.svelte';
+	import Alerts from '$lib/partials/admin/enrollments/alerts.svelte';
 
 	/**
 	 * Setup base variables
@@ -33,23 +35,7 @@
 	let course: t.CourseEntity;
 
 	/**
-	 * Course additional info variables
-	 */
-
-	let isEvaluationTime: boolean;
-	let enrollmentDeadline: Date;
-	let confirmed: boolean;
-
-	function calcCourseData() {
-		if (course && course.attributes) {
-			isEvaluationTime = h.course.isEvaluationTime(course.attributes);
-			enrollmentDeadline = new Date(course.attributes.enrollmentDeadline);
-			confirmed = course.attributes.confirmed;
-		}
-	}
-
-	/**
-	 * Enrollments management and changes
+	 * Enrollments
 	 */
 
 	// Enrollments will be stored here
@@ -62,6 +48,24 @@
 	// Regenerates "enrollmentsInit" from current "enrollments"
 	function resetInit() {
 		enrollmentsInit = _.cloneDeep(enrollments);
+	}
+
+	/**
+	 * Course additional info variables
+	 */
+
+	let isEvaluationTime: boolean;
+	let enrollmentDeadline: Date;
+	let confirmed: boolean;
+
+	function calcCourseData() {
+		const c = course.attributes;
+		//
+		if (course && c && enrollments) {
+			isEvaluationTime = h.course.isEvaluationTime(c);
+			enrollmentDeadline = new Date(c.enrollmentDeadline);
+			confirmed = c.confirmed;
+		}
 	}
 
 	/**
@@ -79,7 +83,6 @@
 		if (courseRes.data) {
 			// Saving course
 			course = courseRes.data;
-			calcCourseData();
 
 			// Extracting enrollments
 			const enrollmentsRes = course.attributes?.enrollments;
@@ -90,6 +93,9 @@
 				enrollments = enrollmentsRes.data;
 				// Updating backup
 				resetInit();
+
+				// Calculating all course data
+				calcCourseData();
 			}
 		}
 	}
@@ -174,7 +180,9 @@
 
 			<!-- Content -->
 			<div class="space-y-6">
-				<!-- Tabella con info -->
+				{#if !course.attributes.confirmed}
+					<Alerts {course} bind:enrollments />
+				{/if}
 
 				<Hr mode="light" />
 
@@ -215,13 +223,14 @@
 
 			<!-- Confirmation modal -->
 			<Modal visible={showModal} title="Attenzione!">
-				<div class="space-y-2">
+				<div class="space-y-4">
 					<!-- Info text -->
 					<p>
 						Sei sicur* di chiudere il corso? <br />
 						Verranno inviate mail di conferma a tutte le persone che hanno inviato
 						la candidatura.
 					</p>
+					<Alerts {course} {enrollments} />
 					<p>
 						Per procedere, digita qui il titolo del corso
 						<strong>{course.attributes?.title}</strong>

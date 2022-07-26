@@ -238,7 +238,13 @@ export const req = {
 			filters
 		});
 		// Requesting...
-		return await request(fetchFn, `${b}api/courses?${query}`);
+		return await request(
+			fetchFn,
+			`${b}api/courses?${query}`,
+			'GET',
+			null,
+			headersAuth()
+		);
 	},
 
 	//
