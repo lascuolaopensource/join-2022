@@ -469,6 +469,16 @@ export const req = {
 			);
 		},
 
+	deleteBooking: async (id: string) => {
+		await request(
+			fetch,
+			`${b}api/admin-tools/delete-booking/${id}`,
+			'GET',
+			null,
+			headersAuth()
+		);
+	},
+
 	/**
 	 * Tools client
 	 */
