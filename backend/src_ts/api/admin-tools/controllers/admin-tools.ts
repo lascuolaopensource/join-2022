@@ -86,4 +86,14 @@ module.exports = {
 
         return {};
     },
+
+    /**
+     *
+     */
+
+    deleteBooking: async (ctx: any, next: any) => {
+        const id: string = ctx.params.id;
+        console.log(id);
+        return {};
+    },
 };

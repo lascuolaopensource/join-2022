@@ -42,4 +42,9 @@ module.exports = {
         }
         return {};
     },
+    deleteBooking: async (ctx, next) => {
+        const id = ctx.params.id;
+        console.log(id);
+        return {};
+    },
 };
