@@ -18,4 +18,28 @@ module.exports = {
         const role = user.role;
         return { role: role.type };
     },
+    tools: async (ctx, next) => {
+        strapi.log.info("In getUserRelations/tools controller.");
+        const usr = ctx.state.user;
+        const user = await strapi.entityService.findOne(utils_1.entities.user, usr.id, {
+            populate: {
+                tools_bookings: {
+                    populate: {
+                        slots: {
+                            populate: ["tool"],
+                        },
+                    },
+                },
+            },
+            sort: {
+                tools_bookings: {
+                    slots: {
+                        start: "desc",
+                    },
+                },
+            },
+        });
+        const bookings = user.tools_bookings;
+        return bookings;
+    },
 };

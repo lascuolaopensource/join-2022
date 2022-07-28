@@ -18,5 +18,14 @@ module.exports = {
                 middlewares: [],
             },
         },
+        {
+            method: "GET",
+            path: "/get-user-relations/tools",
+            handler: "get-user-relations.tools",
+            config: {
+                policies: ["global::user-exists"],
+                middlewares: [],
+            },
+        },
     ],
 };

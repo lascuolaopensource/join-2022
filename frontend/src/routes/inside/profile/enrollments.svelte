@@ -1,47 +1,49 @@
 <script lang="ts">
 	import { req } from '$lib/requestUtils';
-	import { Loading, Callout } from '$lib/components';
-	import { types as t, formatters as f, helpers as h } from 'shared';
-	import { enrollmentStates } from '$lib/strings';
+	import { Loading, Callout, Title } from '$lib/components';
+	import { types as t, helpers as h } from 'shared';
 
-	const promise = (async () => {
-		const enrollmentsReq = await req.getUserEnrollments();
-		const enrollments = enrollmentsReq.enrollments;
+	import CardEnrollment from '$lib/partials/profile/cardEnrollment.svelte';
+
+	//
+
+	let promise = getData();
+	let enrollments_current: Array<t.Enrollment> = [];
+	let enrollments_past: Array<t.Enrollment> = [];
+
+	async function getData() {
+		// Getting data
+		const enrollments = await req.getUserEnrollments();
+
+		// Getting today expressed as integer
 		const today = new Date().valueOf();
 
 		// Current enrollments
-		const enrollments_current = enrollments.filter((e) => {
-			const startDate = Date.parse(h.course.getStartDate(e.course));
-			return today < startDate && e.state != t.Enum_Enrollment_State.Rejected;
+		enrollments_current = enrollments.filter((e) => {
+			const course = e.course as any as t.Course;
+			const startDate = Date.parse(h.course.getStartDate(course));
+			return today < startDate;
 		});
-		enrollments_current.sort((a, b) => {
-			return (
-				Date.parse(a.course.enrollmentDeadline) -
-				Date.parse(b.course.enrollmentDeadline)
-			);
-		});
+		sortEnrollmentsArray(enrollments_current);
 
 		// Past enrollments
-		const enrollments_past = enrollments.filter((e) => {
-			const endDate = Date.parse(h.course.getEndDate(e.course));
-			return today > endDate || e.state == t.Enum_Enrollment_State.Rejected;
+		enrollments_past = enrollments.filter((e) => {
+			const course = e.course as any as t.Course;
+			const startDate = Date.parse(h.course.getStartDate(course));
+			return today > startDate;
 		});
-		enrollments_past.sort((a, b) => {
-			return (
-				Date.parse(a.course.enrollmentDeadline) -
-				Date.parse(b.course.enrollmentDeadline)
-			);
+		sortEnrollmentsArray(enrollments_past);
+	}
+
+	function sortEnrollmentsArray(a: Array<t.Enrollment>) {
+		a.sort((a, b) => {
+			const courseA = a.course as any as t.Course;
+			const deadA = Date.parse(courseA.enrollmentDeadline);
+			const courseB = b.course as any as t.Course;
+			const deadB = Date.parse(courseB.enrollmentDeadline);
+			return deadA - deadB;
 		});
-
-		return { enrollments_current, enrollments_past };
-	})();
-
-	const statesColors: Record<t.Enum_Enrollment_State, string> = {
-		pending: 'orange',
-		awaitingPayment: 'orange',
-		approved: 'green',
-		rejected: 'red'
-	};
+	}
 </script>
 
 <!--  -->
@@ -50,68 +52,35 @@
 	<Loading />
 {:then res}
 	<!-- Iscrizioni attive -->
+	<div class="space-y-4">
+		<Title>Iscrizioni attive</Title>
 
-	{#if res.enrollments_current.length}
-		<h1>Iscrizioni attive</h1>
+		{#if enrollments_current.length}
+			<Callout>
+				<strong>Nota:</strong> Per annullare un'iscrizione
+				<a href="mailto:didattica@lascuolaopensource.xyz"
+					>contatta il team didattica</a
+				>
+			</Callout>
 
-		<Callout>
-			<strong>Nota:</strong> Per annullare un'iscrizione
-			<a href="mailto:didattica@lascuolaopensource.xyz"
-				>contatta il team didattica</a
-			>
-		</Callout>
-
-		<div class="enrollment__container">
-			{#each res.enrollments_current as en}
-				{@const course = en.course}
-				<div class="enrollment">
-					<p><strong>{course.title}</strong></p>
-					<p>Iscritto il: {f.formatDateString(en.createdAt)}</p>
-					<p>
-						Stato: <span style:color={statesColors[en.state]}
-							>{enrollmentStates[en.state]}</span
-						>
-					</p>
-				</div>
+			{#each enrollments_current as enrollment}
+				<CardEnrollment {enrollment} />
 			{/each}
-		</div>
-	{/if}
+		{:else}
+			<p class="text-gray-400">Non ci sono iscrizioni in questa sezione</p>
+		{/if}
+	</div>
 
 	<!-- Iscrizioni passate -->
-	{#if res.enrollments_past.length}
-		<h1>Iscrizioni passate</h1>
+	<div class="space-y-4 mt-8">
+		<Title>Iscrizioni passate</Title>
 
-		<div class="enrollment__container">
-			{#each res.enrollments_past as en}
-				{@const course = en.course}
-				<div class="enrollment">
-					<p><strong>{course.title}</strong></p>
-					<p>Iscritto il: {f.formatDateString(en.createdAt)}</p>
-					<p>
-						Stato: <span style:color={statesColors[en.state]}
-							>{enrollmentStates[en.state]}</span
-						>
-					</p>
-				</div>
+		{#if enrollments_past.length}
+			{#each enrollments_past as enrollment}
+				<CardEnrollment {enrollment} />
 			{/each}
-		</div>
-	{/if}
+		{:else}
+			<p class="text-gray-400">Non ci sono iscrizioni in questa sezione</p>
+		{/if}
+	</div>
 {/await}
-
-<!--  -->
-<style>
-	h1 {
-		margin-bottom: var(--s-3);
-	}
-
-	.enrollment__container {
-		margin-bottom: var(--s-3);
-		margin-top: var(--s-3);
-	}
-
-	.enrollment {
-		background-color: white;
-		border: 1px solid gray;
-		padding: var(--s-2);
-	}
-</style>

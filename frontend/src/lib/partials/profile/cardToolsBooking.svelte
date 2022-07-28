@@ -1,18 +1,16 @@
 <script lang="ts">
-	import type { types as t } from 'shared';
 	import { formatters as f } from 'shared';
+	import type { types as t } from 'shared';
 	import _ from 'lodash';
 
-	import { IconButton, Hr } from '$lib/components';
-	import { icons } from '$lib/icons';
+	export let toolsBooking: t.ToolsBooking;
 
-	export let booking: t.ToolsBookingEntity;
-	export let button = true;
+	// Extracting variables
+	const slots = toolsBooking.slots as any as Array<t.ToolSlot>;
 
-	const book = booking.attributes;
-	const owner = book?.owner?.data?.attributes;
-	const ownerInfo = owner?.userInfo?.data?.attributes;
-	const slots = book?.slots?.data;
+	/**
+	 * Grouping slots
+	 */
 
 	type SlotGroup = {
 		start: Date;
@@ -23,10 +21,7 @@
 	const days: Array<SlotGroup> = [];
 
 	if (slots) {
-		const groups = _.groupBy(slots, (s) => [
-			s.attributes?.start,
-			s.attributes?.end
-		]);
+		const groups = _.groupBy(slots, (s) => [s.start, s.end]);
 
 		for (let [dates, slots] of Object.entries(groups)) {
 			const datesStr = dates.split(',');
@@ -34,7 +29,7 @@
 			const end = new Date(datesStr[1]);
 			const tools: Array<t.Tool> = [];
 			slots.forEach((s) => {
-				const tool = s.attributes?.tool?.data?.attributes;
+				const tool = s.tool as t.ID<t.Tool>;
 				if (tool) tools.push(tool);
 			});
 			days.push({ start, end, tools });
@@ -50,24 +45,15 @@
         flex flex-row flex-nowrap items-start justify-between
     "
 >
-	{#if book && owner && slots && ownerInfo}
+	{#if slots}
 		<!-- Info -->
 		<div class="grow mr-4 space-y-4">
-			<!-- Owner -->
-			<div>
-				<p><strong>Utente</strong></p>
-				<p>{ownerInfo.name} {ownerInfo.surname}</p>
-				<p>{owner.email}</p>
-			</div>
-
-			<Hr mode="light" />
-
-			<!-- Slots -->
+			<!-- Days -->
 			{#each days as d}
 				{@const start = f.formatDateString(d.start.toISOString())}
 				{@const end = f.formatDateString(d.end.toISOString())}
 				<div>
-					<!-- Days -->
+					<!-- Time range -->
 					<p>
 						<strong>
 							{start} &#8594; {end}
@@ -80,16 +66,7 @@
 						{/each}
 					</ul>
 				</div>
-				<!-- {s.attributes?.start}
-				{s.attributes?.end} -->
 			{/each}
 		</div>
-
-		<!-- Button -->
-		{#if button}
-			<div class="shrink-0">
-				<IconButton icon={icons.trash} on:click />
-			</div>
-		{/if}
 	{/if}
 </div>
