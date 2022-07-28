@@ -433,6 +433,52 @@ export const req = {
 		);
 	},
 
+	//
+
+	getToolsBookings:
+		async (): Promise<t.ToolsBookingEntityResponseCollection> => {
+			const query = qs.stringify(
+				{
+					populate: {
+						slots: {
+							populate: ['tool']
+						},
+						owner: {
+							populate: ['userInfo']
+						}
+					},
+					filters: {
+						slots: {
+							start: {
+								$gt: new Date().toISOString()
+							}
+						}
+					}
+				},
+				{
+					encodeValuesOnly: true
+				}
+			);
+
+			return await request(
+				fetch,
+				`${b}api/tools-bookings?${query}`,
+				'GET',
+				null,
+				headersAuth()
+			);
+		},
+
+	deleteBooking: async (id: string) => {
+		await request(
+			fetch,
+			`${b}api/admin-tools/delete-booking/${id}`,
+			'GET',
+			null,
+			headersAuth()
+		);
+	},
+
 	/**
 	 * Tools client
 	 */

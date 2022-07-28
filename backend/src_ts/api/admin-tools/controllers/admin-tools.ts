@@ -50,38 +50,66 @@ module.exports = {
              * Merging the availability slots
              */
 
-            // Getting one day before edits
-            const firstDate = slots.getFirstDate(toolUpdates);
-            const beforeDate = h.date.addDays(firstDate, -1);
+            const bounds = slots.getSlotsBounds(toolUpdates);
+            await slots.slotsCleanup(toolID, bounds.start, bounds.end);
+        }
 
-            // Getting one day after edits
-            const lastDate = slots.getLastDate(toolUpdates);
-            const afterDate = h.date.addDays(lastDate, 1);
+        return {};
+    },
 
-            // Getting all the slots between the dates
-            const availSlots = await slots.findSlotsBetween(
-                beforeDate.toISOString(),
-                afterDate.toISOString(),
-                [toolID],
-                t.Enum_Toolslot_Type.Availability
-            );
+    /**
+     *
+     */
 
-            // Grouping+Merging slots
-            const newSlots = slots.groupMergeSlots(
-                availSlots.map((s) => slots.slotToInput(s))
-            );
+    deleteBooking: async (ctx: any, next: any) => {
+        strapi.log.info("In admin-tools/deleteBooking controller");
 
-            // Deleting the found slots
-            for (let a of availSlots) {
-                await strapi.entityService.delete(entities.toolSlot, a.id);
-            }
+        // Getting booking id
+        const id: string = ctx.params.id;
 
-            // Creating new slots
-            for (let m of newSlots) {
-                await strapi.entityService.create(entities.toolSlot, {
-                    data: m,
-                });
-            }
+        // ** Booking ** //
+
+        // Getting booking
+        const booking: t.ID<t.ToolsBooking> =
+            await strapi.entityService.findOne(entities.toolsBooking, id, {
+                populate: {
+                    slots: {
+                        populate: ["tool"],
+                    },
+                },
+            });
+
+        console.log(booking);
+
+        // Deleting booking
+        await strapi.entityService.delete(entities.toolsBooking, booking.id);
+
+        // ** Slots ** //
+
+        // Getting slots
+        const bookingSlots = booking.slots as any as Array<t.ID<t.ToolSlot>>;
+
+        // Getting tools ids
+        let toolIDs: Array<string> = bookingSlots.map((s) => {
+            const tool = s.tool as any as t.ID<t.Tool>;
+            return tool.id;
+        });
+
+        toolIDs = _.uniq(toolIDs);
+
+        // Converting slots to availability
+        for (let s of bookingSlots) {
+            await strapi.entityService.update(entities.toolSlot, s.id, {
+                data: {
+                    type: t.Enum_Toolslot_Type.Availability,
+                },
+            });
+        }
+
+        // Doing cleanup
+        const bounds = slots.getSlotsBounds(bookingSlots);
+        for (let toolID of toolIDs) {
+            await slots.slotsCleanup(toolID, bounds.start, bounds.end);
         }
 
         return {};

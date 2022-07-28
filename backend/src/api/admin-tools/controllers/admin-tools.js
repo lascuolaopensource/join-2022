@@ -1,7 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const shared_1 = require("shared");
 const utils_1 = require("../../../utils");
+const lodash_1 = __importDefault(require("lodash"));
 module.exports = {
     updateSlots: async (ctx, next) => {
         const body = ctx.request.body;
@@ -25,20 +29,39 @@ module.exports = {
                     data: a,
                 });
             }
-            const firstDate = utils_1.slots.getFirstDate(toolUpdates);
-            const beforeDate = shared_1.helpers.date.addDays(firstDate, -1);
-            const lastDate = utils_1.slots.getLastDate(toolUpdates);
-            const afterDate = shared_1.helpers.date.addDays(lastDate, 1);
-            const availSlots = await utils_1.slots.findSlotsBetween(beforeDate.toISOString(), afterDate.toISOString(), [toolID], shared_1.types.Enum_Toolslot_Type.Availability);
-            const newSlots = utils_1.slots.groupMergeSlots(availSlots.map((s) => utils_1.slots.slotToInput(s)));
-            for (let a of availSlots) {
-                await strapi.entityService.delete(utils_1.entities.toolSlot, a.id);
-            }
-            for (let m of newSlots) {
-                await strapi.entityService.create(utils_1.entities.toolSlot, {
-                    data: m,
-                });
-            }
+            const bounds = utils_1.slots.getSlotsBounds(toolUpdates);
+            await utils_1.slots.slotsCleanup(toolID, bounds.start, bounds.end);
+        }
+        return {};
+    },
+    deleteBooking: async (ctx, next) => {
+        strapi.log.info("In admin-tools/deleteBooking controller");
+        const id = ctx.params.id;
+        const booking = await strapi.entityService.findOne(utils_1.entities.toolsBooking, id, {
+            populate: {
+                slots: {
+                    populate: ["tool"],
+                },
+            },
+        });
+        console.log(booking);
+        await strapi.entityService.delete(utils_1.entities.toolsBooking, booking.id);
+        const bookingSlots = booking.slots;
+        let toolIDs = bookingSlots.map((s) => {
+            const tool = s.tool;
+            return tool.id;
+        });
+        toolIDs = lodash_1.default.uniq(toolIDs);
+        for (let s of bookingSlots) {
+            await strapi.entityService.update(utils_1.entities.toolSlot, s.id, {
+                data: {
+                    type: shared_1.types.Enum_Toolslot_Type.Availability,
+                },
+            });
+        }
+        const bounds = utils_1.slots.getSlotsBounds(bookingSlots);
+        for (let toolID of toolIDs) {
+            await utils_1.slots.slotsCleanup(toolID, bounds.start, bounds.end);
         }
         return {};
     },

@@ -1,4 +1,4 @@
-import { helpers, types as t } from "shared";
+import { helpers as h, types as t } from "shared";
 import { entities } from "./entities";
 import { dateDiff } from "./date";
 import { ToolSlot, ToolSlotInput } from "shared/dist/types";
@@ -171,7 +171,7 @@ export class AligmentCalendar {
         for (let [key, value] of Object.entries(baseTable)) {
             table.push({
                 start: new Date(key),
-                end: helpers.date.addTime(new Date(key), this.step),
+                end: h.date.addTime(new Date(key), this.step),
                 values: value,
             });
         }
@@ -483,4 +483,58 @@ export async function findSlotsBetween(
     );
 
     return slots;
+}
+
+/**
+ * Gets one day before and one day after an array of slots
+ */
+
+export function getSlotsBounds(
+    slots: Array<t.ToolSlot> | Array<t.ToolSlotInput>
+): { start: Date; end: Date } {
+    // Getting one day before
+    const firstDate = getFirstDate(slots);
+    const beforeDate = h.date.addDays(firstDate, -1);
+
+    // Getting one day after
+    const lastDate = getLastDate(slots);
+    const afterDate = h.date.addDays(lastDate, 1);
+
+    return {
+        start: beforeDate,
+        end: afterDate,
+    };
+}
+
+/**
+ * Finds and merges slots between a given range
+ */
+
+export async function slotsCleanup(
+    toolID: string,
+    startDate: Date,
+    endDate: Date
+) {
+    // Getting all the slots between the dates
+    const availSlots = await findSlotsBetween(
+        startDate.toISOString(),
+        endDate.toISOString(),
+        [toolID],
+        t.Enum_Toolslot_Type.Availability
+    );
+
+    // Grouping+Merging slots
+    const newSlots = groupMergeSlots(availSlots.map((s) => slotToInput(s)));
+
+    // Deleting the found slots
+    for (let a of availSlots) {
+        await strapi.entityService.delete(entities.toolSlot, a.id);
+    }
+
+    // Creating new slots
+    for (let m of newSlots) {
+        await strapi.entityService.create(entities.toolSlot, {
+            data: m,
+        });
+    }
 }

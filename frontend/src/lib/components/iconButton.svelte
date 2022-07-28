@@ -9,6 +9,7 @@
 <button
 	on:click
 	class="
+		flex flex-row flex-nowrap items-center justify-center
 		w-8 h-8 p-1 leading-none rounded-none hover:cursor-pointer
 		{!transparent && mode == 'light' ? 'bg-gray-300 hover:bg-gray-400' : ''}
 		{!transparent && mode == 'dark' ? 'bg-gray-700 hover:bg-gray-600' : ''}

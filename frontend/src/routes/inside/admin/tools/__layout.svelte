@@ -32,6 +32,9 @@
 		<NavbarItem href="/inside/admin/tools/manageAvailability">
 			Gestione disponibilità
 		</NavbarItem>
+		<NavbarItem href="/inside/admin/tools/manage-bookings">
+			Gestione prenotazioni
+		</NavbarItem>
 	</NavbarSecondary>
 
 	<slot />
