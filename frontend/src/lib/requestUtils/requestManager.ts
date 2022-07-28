@@ -252,12 +252,23 @@ export const req = {
 
 	//
 
-	getUserEnrollments: async (
-		fetchFn = fetch
-	): Promise<e.GetUserRelationsEnrollmentsRes> => {
-		return await request(
+	getUserEnrollments: async (fetchFn = fetch): Promise<Array<t.Enrollment>> => {
+		const res = await request(
 			fetchFn,
 			`${b}api/get-user-relations/enrollments`,
+			'GET',
+			null,
+			headersAuth()
+		);
+		return res.enrollments;
+	},
+
+	getUserToolsBooking: async (
+		fetchFn = fetch
+	): Promise<Array<t.ToolsBooking>> => {
+		return await request(
+			fetchFn,
+			`${b}api/get-user-relations/tools`,
 			'GET',
 			null,
 			headersAuth()
