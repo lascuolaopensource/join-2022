@@ -6,7 +6,7 @@ export default {
             handler: "account.create",
             config: {
                 policies: [],
-                middlewares: [],
+                middlewares: ["plugin::users-permissions.rateLimit"],
             },
         },
     ],
