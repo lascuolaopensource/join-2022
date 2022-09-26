@@ -1,3 +1,6 @@
+import { isBodyValid } from "../../../policies/is-body-valid";
+import { routes as r } from "join-shared";
+
 export default {
     routes: [
         {
@@ -5,7 +8,7 @@ export default {
             path: "/account/create",
             handler: "account.create",
             config: {
-                policies: [],
+                policies: [isBodyValid({ schema: r.Account.Create.schema })],
                 middlewares: ["plugin::users-permissions.rateLimit"],
             },
         },

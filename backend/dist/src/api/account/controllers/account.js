@@ -1,13 +1,15 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * A set of functions called "actions" for `register-user`
  */
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     create: async (ctx, next) => {
         try {
             // Getting body
             const body = ctx.request.body;
+            // Adding username to body, in order to comply with auth controller
+            body["username"] = body.email;
             // Registering user by calling u&p auth controller
             await strapi
                 .service("api::account.use-auth-controller")
