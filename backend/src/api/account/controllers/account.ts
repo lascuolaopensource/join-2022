@@ -1,11 +1,12 @@
-import { routes as r } from "join-shared";
+import { routes as r, types as t } from "join-shared";
+import { entities as e } from "../../../utils";
 
 /**
- * A set of functions called "actions" for `register-user`
+ * A set of functions called "actions" for `account`
  */
 
 export default {
-    create: async (ctx, next) => {
+    create: async (ctx, next): Promise<void> => {
         try {
             // Getting body
             const body: r.Account.Create.Req = ctx.request.body;
@@ -19,12 +20,19 @@ export default {
                 .register(ctx);
 
             // Getting user
-            const user = ctx.response.body.user;
+            const user = ctx.response.body.user as t.UsersPermissionsMe;
 
             // Creating userInfo
-            // TODO
+            const data: t.UserInfoInput = {
+                name: body.name,
+                surname: body.surname,
+                owner: user.id,
+            };
+            await strapi.entityService.create(e.userInfo, {
+                data,
+            });
 
-            console.log(user);
+            //
         } catch (err) {
             ctx.body = err;
         }

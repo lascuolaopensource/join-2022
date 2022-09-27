@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../../../utils");
 /**
- * A set of functions called "actions" for `register-user`
+ * A set of functions called "actions" for `account`
  */
 exports.default = {
     create: async (ctx, next) => {
@@ -17,8 +18,15 @@ exports.default = {
             // Getting user
             const user = ctx.response.body.user;
             // Creating userInfo
-            // TODO
-            console.log(user);
+            const data = {
+                name: body.name,
+                surname: body.surname,
+                owner: user.id,
+            };
+            await strapi.entityService.create(utils_1.entities.userInfo, {
+                data,
+            });
+            //
         }
         catch (err) {
             ctx.body = err;
