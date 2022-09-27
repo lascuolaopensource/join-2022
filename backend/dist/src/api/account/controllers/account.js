@@ -16,6 +16,8 @@ exports.default = {
                 .register(ctx);
             // Getting user
             const user = ctx.response.body.user;
+            // Creating userInfo
+            // TODO
             console.log(user);
         }
         catch (err) {
