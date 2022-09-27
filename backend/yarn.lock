@@ -6596,7 +6596,7 @@
     "supports-color" "^8.0.0"
 
 "join-shared@github:lascuolaopensource/join-shared#refresh":
-  "resolved" "git+ssh://git@github.com/lascuolaopensource/join-shared.git#8d3fe6764c7d8fb23cfc3a1ab76d4c12c8c4ff2a"
+  "resolved" "git+ssh://git@github.com/lascuolaopensource/join-shared.git#787191e82481ab5a8e7b6bbd9d71fb0d8c49fc8d"
   "version" "0.0.1"
   dependencies:
     "yup" "^0.32.11"
