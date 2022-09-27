@@ -1,15 +1,21 @@
-# Account
+# Endpoint
 
-## Registrazione
+Lista di endpoint
+
+---
+
+## Account
+
+### Registrazione
 
 -   account / user-exists
--   account / create
+-   ~~account / create~~
 
-## Login
+### Login
 
 -   auth / local [D]
 
-## Password
+### Password
 
 -   auth / forgot-password [D]
 -   auth / reset-password [D]
