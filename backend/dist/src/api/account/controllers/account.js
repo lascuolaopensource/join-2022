@@ -26,7 +26,7 @@ exports.default = {
             await strapi.entityService.create(utils_1.entities.userInfo, {
                 data,
             });
-            //
+            return user;
         }
         catch (err) {
             ctx.body = err;

@@ -6,7 +6,7 @@ import { entities as e } from "../../../utils";
  */
 
 export default {
-    create: async (ctx, next): Promise<void> => {
+    create: async (ctx, next): Promise<r.Account.Create.Res> => {
         try {
             // Getting body
             const body: r.Account.Create.Req = ctx.request.body;
@@ -32,7 +32,7 @@ export default {
                 data,
             });
 
-            //
+            return user;
         } catch (err) {
             ctx.body = err;
         }
