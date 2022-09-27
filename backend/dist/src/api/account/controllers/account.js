@@ -5,7 +5,11 @@ const utils_1 = require("../../../utils");
  * A set of functions called "actions" for `account`
  */
 exports.default = {
+    /**
+     * Creates an account
+     */
     create: async (ctx, next) => {
+        strapi.log.info("CONTROLLER - account/create");
         try {
             // Getting body
             const body = ctx.request.body;
@@ -27,6 +31,25 @@ exports.default = {
                 data,
             });
             return user;
+        }
+        catch (err) {
+            ctx.body = err;
+        }
+    },
+    /**
+     * Checks if user with given email exists
+     */
+    userExists: async (ctx, next) => {
+        strapi.log.info("CONTROLLER - account/userExists");
+        try {
+            // Getting body
+            const body = ctx.request.body;
+            // Checking if some users exist
+            const users = await strapi.entityService.findMany(utils_1.entities.user, {
+                filters: body,
+            });
+            // Return true if there are users
+            return { exists: users.length > 0 };
         }
         catch (err) {
             ctx.body = err;

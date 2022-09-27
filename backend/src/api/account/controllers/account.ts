@@ -6,7 +6,12 @@ import { entities as e } from "../../../utils";
  */
 
 export default {
+    /**
+     * Creates an account
+     */
     create: async (ctx, next): Promise<r.Account.Create.Res> => {
+        strapi.log.info("CONTROLLER - account/create");
+
         try {
             // Getting body
             const body: r.Account.Create.Req = ctx.request.body;
@@ -33,6 +38,29 @@ export default {
             });
 
             return user;
+        } catch (err) {
+            ctx.body = err;
+        }
+    },
+
+    /**
+     * Checks if user with given email exists
+     */
+    userExists: async (ctx, next): Promise<r.Account.UserExists.Res> => {
+        strapi.log.info("CONTROLLER - account/userExists");
+
+        try {
+            // Getting body
+            const body: r.Account.UserExists.Req = ctx.request.body;
+
+            // Checking if some users exist
+            const users: Array<t.ID<t.UsersPermissionsUser>> =
+                await strapi.entityService.findMany(e.user, {
+                    filters: body,
+                });
+
+            // Return true if there are users
+            return { exists: users.length > 0 };
         } catch (err) {
             ctx.body = err;
         }
