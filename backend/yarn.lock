@@ -6595,7 +6595,7 @@
     "merge-stream" "^2.0.0"
     "supports-color" "^8.0.0"
 
-"join-shared@github:lascuolaopensource/join-shared#refresh":
+"join-shared@github:lascuolaopensource/join-shared#refresh-didattica":
   "resolved" "git+ssh://git@github.com/lascuolaopensource/join-shared.git#47dd0f7746fa918488fd2755b43754350a66c60c"
   "version" "0.0.1"
   dependencies:

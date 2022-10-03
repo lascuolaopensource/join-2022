@@ -16,7 +16,7 @@
         "@strapi/provider-email-nodemailer": "^4.3.9",
         "@strapi/strapi": "4.3.9",
         "better-sqlite3": "7.4.6",
-        "join-shared": "github:lascuolaopensource/join-shared#refresh"
+        "join-shared": "github:lascuolaopensource/join-shared#refresh-didattica"
     },
     "author": {
         "name": "A Strapi developer"
