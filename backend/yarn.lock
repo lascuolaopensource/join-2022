@@ -5628,7 +5628,7 @@
   dependencies:
     "tslib" "~2.3.0"
 
-"graphql-tag@^2.11.0", "graphql-tag@^2.12.6":
+"graphql-tag@^2.11.0":
   "integrity" "sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg=="
   "resolved" "https://registry.npmjs.org/graphql-tag/-/graphql-tag-2.12.6.tgz"
   "version" "2.12.6"
@@ -6596,7 +6596,7 @@
     "supports-color" "^8.0.0"
 
 "join-shared@github:lascuolaopensource/join-shared#refresh":
-  "resolved" "git+ssh://git@github.com/lascuolaopensource/join-shared.git#6972fa5b9149d5bd7fa226e2f767d54184fe3046"
+  "resolved" "git+ssh://git@github.com/lascuolaopensource/join-shared.git#47dd0f7746fa918488fd2755b43754350a66c60c"
   "version" "0.0.1"
   dependencies:
     "yup" "^0.32.11"
@@ -9437,13 +9437,6 @@
   "integrity" "sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ=="
   "resolved" "https://registry.npmjs.org/shallowequal/-/shallowequal-1.1.0.tgz"
   "version" "1.1.0"
-
-"shared@github:lascuolaopensource/join-shared":
-  "resolved" "git+ssh://git@github.com/lascuolaopensource/join-shared.git#a1f62ffd1c52f5be4f97ee0531c4550ac64ef954"
-  "version" "0.0.1"
-  dependencies:
-    "graphql-tag" "^2.12.6"
-    "yup" "^0.32.11"
 
 "sharp@0.31.0":
   "integrity" "sha512-ft96f8WzGxavg0rkLpMw90MTPMUZDyf0tHjPPh8Ob59xt6KzX8EqtotcqZGUm7kwqpX2pmYiyYX2LL0IZ/FDEw=="
