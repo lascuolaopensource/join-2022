@@ -1,4 +1,4 @@
-export enum LifecycleEvent {
+export enum LifecycleAction {
     beforeCreate = "beforeCreate",
     beforeCreateMany = "beforeCreateMany",
     afterCreate = "afterCreate",
@@ -19,13 +19,13 @@ export enum LifecycleEvent {
     afterFindMany = "afterFindMany",
 }
 
-export interface LifecycleEventParam<T> {
-    action: LifecycleEvent;
-    model: T;
+export interface LifecycleEvent<T, M> {
+    action: LifecycleAction;
+    model: M;
     params: {
-        data: any;
+        data: T;
         select: any;
-        where: any;
+        where: { id: number };
         orderBy: any;
         limit: any;
         offset: any;
