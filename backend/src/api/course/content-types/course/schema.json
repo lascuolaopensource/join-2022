@@ -18,7 +18,8 @@
     },
     "slug": {
       "type": "uid",
-      "required": true
+      "required": true,
+      "targetField": "name"
     },
     "fields": {
       "type": "relation",
@@ -52,7 +53,8 @@
       ]
     },
     "enrollmentDeadline": {
-      "type": "datetime"
+      "type": "datetime",
+      "required": true
     },
     "enrollmentMin": {
       "type": "integer",

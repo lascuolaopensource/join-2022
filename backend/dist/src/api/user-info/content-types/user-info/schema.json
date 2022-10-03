@@ -4,7 +4,7 @@
     "info": {
         "singularName": "user-info",
         "pluralName": "user-infos",
-        "displayName": "UserInfo",
+        "displayName": "User Info",
         "description": ""
     },
     "options": {
@@ -24,9 +24,7 @@
             "type": "richtext"
         },
         "picture": {
-            "allowedTypes": [
-                "images"
-            ],
+            "allowedTypes": ["images"],
             "type": "media",
             "multiple": false
         },

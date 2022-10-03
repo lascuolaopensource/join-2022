@@ -25,7 +25,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::course.course",
-      "inversedBy": "places"
+      "mappedBy": "places"
     }
   }
 }
