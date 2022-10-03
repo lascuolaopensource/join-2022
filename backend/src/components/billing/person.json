@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_billing_people",
+  "info": {
+    "displayName": "person",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "surname": {
+      "type": "string",
+      "required": true
+    },
+    "fiscalCode": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    }
+  }
+}

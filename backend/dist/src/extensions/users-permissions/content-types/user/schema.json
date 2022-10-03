@@ -68,6 +68,24 @@
             "relation": "oneToOne",
             "target": "api::user-info.user-info",
             "inversedBy": "owner"
+        },
+        "enrollments": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::enrollment.enrollment",
+            "mappedBy": "owner"
+        },
+        "payments": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::payment.payment",
+            "mappedBy": "owner"
+        },
+        "billingDatas": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::billing-data.billing-data",
+            "mappedBy": "owner"
         }
     }
 }

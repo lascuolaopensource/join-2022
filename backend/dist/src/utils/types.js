@@ -1,0 +1,24 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LifecycleEvent = void 0;
+var LifecycleEvent;
+(function (LifecycleEvent) {
+    LifecycleEvent["beforeCreate"] = "beforeCreate";
+    LifecycleEvent["beforeCreateMany"] = "beforeCreateMany";
+    LifecycleEvent["afterCreate"] = "afterCreate";
+    LifecycleEvent["afterCreateMany"] = "afterCreateMany";
+    LifecycleEvent["beforeUpdate"] = "beforeUpdate";
+    LifecycleEvent["beforeUpdateMany"] = "beforeUpdateMany";
+    LifecycleEvent["afterUpdate"] = "afterUpdate";
+    LifecycleEvent["afterUpdateMany"] = "afterUpdateMany";
+    LifecycleEvent["beforeDelete"] = "beforeDelete";
+    LifecycleEvent["beforeDeleteMany"] = "beforeDeleteMany";
+    LifecycleEvent["afterDelete"] = "afterDelete";
+    LifecycleEvent["afterDeleteMany"] = "afterDeleteMany";
+    LifecycleEvent["beforeCount"] = "beforeCount";
+    LifecycleEvent["afterCount"] = "afterCount";
+    LifecycleEvent["beforeFindOne"] = "beforeFindOne";
+    LifecycleEvent["afterFindOne"] = "afterFindOne";
+    LifecycleEvent["beforeFindMany"] = "beforeFindMany";
+    LifecycleEvent["afterFindMany"] = "afterFindMany";
+})(LifecycleEvent = exports.LifecycleEvent || (exports.LifecycleEvent = {}));

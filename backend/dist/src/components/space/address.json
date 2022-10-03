@@ -1,0 +1,29 @@
+{
+    "collectionName": "components_space_addresses",
+    "info": {
+        "displayName": "address"
+    },
+    "options": {},
+    "attributes": {
+        "municipality": {
+            "type": "string",
+            "required": true
+        },
+        "province": {
+            "type": "string",
+            "required": true
+        },
+        "street": {
+            "type": "string",
+            "required": true
+        },
+        "number": {
+            "type": "string",
+            "required": true
+        },
+        "zip": {
+            "type": "string",
+            "required": true
+        }
+    }
+}

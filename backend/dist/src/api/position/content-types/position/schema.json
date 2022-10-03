@@ -1,0 +1,19 @@
+{
+    "kind": "collectionType",
+    "collectionName": "positions",
+    "info": {
+        "singularName": "position",
+        "pluralName": "positions",
+        "displayName": "Position"
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "name": {
+            "type": "string",
+            "required": true
+        }
+    }
+}
