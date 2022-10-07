@@ -92,7 +92,8 @@
     },
     "confirmed": {
       "type": "boolean",
-      "required": true
+      "required": true,
+      "default": false
     },
     "roles": {
       "type": "component",
