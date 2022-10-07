@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LifecycleAction = void 0;
+//
 var LifecycleAction;
 (function (LifecycleAction) {
     LifecycleAction["beforeCreate"] = "beforeCreate";

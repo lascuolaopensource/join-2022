@@ -1,3 +1,16 @@
+import { types as t } from "join-shared";
+
+export interface CTX<T> {
+    state: {
+        user: t.ID<t.UsersPermissionsUser>;
+    };
+    request: {
+        body: T;
+    };
+}
+
+//
+
 export enum LifecycleAction {
     beforeCreate = "beforeCreate",
     beforeCreateMany = "beforeCreateMany",

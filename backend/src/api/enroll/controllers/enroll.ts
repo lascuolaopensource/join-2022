@@ -1,4 +1,4 @@
-// import { endpoints as e, types as t, helpers as h } from "shared";
+import { routes as r, types as t } from "join-shared";
 // import {
 //     getCourseByID,
 //     generateSecureString,
@@ -19,6 +19,12 @@
 export default {
     index: async (ctx: any, next: any) => {
         strapi.log.info("CONTROLLER - enroll/index");
+
+        const user: t.ID<t.UsersPermissionsUser> = ctx.state.user;
+        const body: r.Enroll.Req = ctx.request.body;
+
+        // console.log(user, body);
+        return (ctx.body = "ok");
         // // Getting the body of the request
         // const body: e.EnrollReq = ctx.request.body;
         // // Getting the course

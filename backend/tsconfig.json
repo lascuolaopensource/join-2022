@@ -2,11 +2,7 @@
     "extends": "@strapi/typescript-utils/tsconfigs/server",
     "compilerOptions": {
         "outDir": "dist",
-        "rootDir": ".",
-        "paths": {
-            "@utils/*": ["./src/utils/*"],
-            "@utils": ["./src/utils"]
-        }
+        "rootDir": "."
     },
     "include": ["./", "./**/*.ts", "./**/*.js", "src/**/*.json"],
     "exclude": [

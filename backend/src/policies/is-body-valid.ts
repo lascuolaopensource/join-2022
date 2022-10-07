@@ -30,10 +30,10 @@ export default async function (
     config: IsBodyValidConfig,
     { strapi }: { strapi: Strapi }
 ) {
-    strapi.log.info(`In ${policyName} policy`);
+    strapi.log.info(`POLICY - ${policyName}`);
 
     // Getting validator
-    const schema = config.schema;
+    const { schema } = config;
 
     // Throwing error if no schema
     if (!schema) {
@@ -45,7 +45,7 @@ export default async function (
 
     // Validating body
     try {
-        await schema.validate(body);
+        await schema.validate(body, { abortEarly: false });
     } catch (err) {
         throw new PolicyError(e.policies.bodyNotValid, { policyName });
     }

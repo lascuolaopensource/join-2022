@@ -1,5 +1,5 @@
 "use strict";
-// import { endpoints as e, types as t, helpers as h } from "shared";
+Object.defineProperty(exports, "__esModule", { value: true });
 // import {
 //     getCourseByID,
 //     generateSecureString,
@@ -12,13 +12,16 @@
 //     paths,
 // } from "../../../utils";
 // import { emailSender, EnrollEmailTemplateArgs } from "../../../emails";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * A set of functions called "actions" for `enroll`
  */
 exports.default = {
     index: async (ctx, next) => {
         strapi.log.info("CONTROLLER - enroll/index");
+        const user = ctx.state.user;
+        const body = ctx.request.body;
+        // console.log(user, body);
+        return (ctx.body = "ok");
         // // Getting the body of the request
         // const body: e.EnrollReq = ctx.request.body;
         // // Getting the course

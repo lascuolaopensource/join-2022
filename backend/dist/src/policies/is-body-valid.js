@@ -17,9 +17,9 @@ function isBodyValid(config) {
 exports.isBodyValid = isBodyValid;
 //
 async function default_1(policyContext, config, { strapi }) {
-    strapi.log.info(`In ${policyName} policy`);
+    strapi.log.info(`POLICY - ${policyName}`);
     // Getting validator
-    const schema = config.schema;
+    const { schema } = config;
     // Throwing error if no schema
     if (!schema) {
         throw new PolicyError(join_shared_1.errors.policies.noSchemaInConfig, { policyName });
@@ -28,7 +28,7 @@ async function default_1(policyContext, config, { strapi }) {
     const body = policyContext.request.body;
     // Validating body
     try {
-        await schema.validate(body);
+        await schema.validate(body, { abortEarly: false });
     }
     catch (err) {
         throw new PolicyError(join_shared_1.errors.policies.bodyNotValid, { policyName });
