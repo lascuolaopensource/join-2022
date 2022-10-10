@@ -1,5 +1,4 @@
 import { routes as r } from "join-shared";
-import { isBodyValid } from "../../../policies/is-body-valid";
 
 export default {
     routes: [
@@ -8,7 +7,12 @@ export default {
             path: r.Enroll.path,
             handler: "enroll.index",
             config: {
-                policies: ["is-enroll-body-valid", "user-exists"],
+                policies: [
+                    "is-enroll-body-valid",
+                    "past-deadline",
+                    "user-exists",
+                    "already-enrolled",
+                ],
                 middlewares: [],
             },
         },

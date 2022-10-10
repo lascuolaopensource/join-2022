@@ -8,7 +8,12 @@ exports.default = {
             path: join_shared_1.routes.Enroll.path,
             handler: "enroll.index",
             config: {
-                policies: ["is-enroll-body-valid", "user-exists"],
+                policies: [
+                    "is-enroll-body-valid",
+                    "past-deadline",
+                    "user-exists",
+                    "already-enrolled",
+                ],
                 middlewares: [],
             },
         },

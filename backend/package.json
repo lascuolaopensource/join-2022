@@ -15,8 +15,11 @@
         "@strapi/plugin-users-permissions": "4.3.9",
         "@strapi/provider-email-nodemailer": "^4.3.9",
         "@strapi/strapi": "4.3.9",
+        "@types/html-to-text": "^8.1.1",
         "better-sqlite3": "7.4.6",
-        "join-shared": "github:lascuolaopensource/join-shared#refresh-didattica"
+        "html-to-text": "^8.2.1",
+        "join-shared": "github:lascuolaopensource/join-shared#refresh-didattica",
+        "url-join": "^5.0.0"
     },
     "author": {
         "name": "A Strapi developer"
