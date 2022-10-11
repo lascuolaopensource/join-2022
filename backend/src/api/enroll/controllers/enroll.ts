@@ -64,7 +64,7 @@ export default {
             user = ctx.response.body.user;
 
             // Sending registration email
-            await EnrollAccountEmail.send(user.email, {
+            EnrollAccountEmail.send(user.email, {
                 COURSE_NAME: course.name,
                 PASSWORD: password,
             });
@@ -123,7 +123,7 @@ export default {
             );
 
             // Sending payment email
-            await EnrollPaymentEmail.send(user.email, {
+            EnrollPaymentEmail.send(user.email, {
                 COURSE_NAME: course.name,
                 PAYMENT: {
                     DEADLINE: f.formatDate(new Date(course.enrollmentDeadline)),
@@ -144,7 +144,7 @@ export default {
          * Confirmation email
          */
 
-        await EnrollConfirmEmail.send(user.email, { COURSE_NAME: course.name });
+        EnrollConfirmEmail.send(user.email, { COURSE_NAME: course.name });
 
         /**
          * Returning

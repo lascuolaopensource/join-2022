@@ -44,7 +44,7 @@ exports.default = {
             // Setting user
             user = ctx.response.body.user;
             // Sending registration email
-            await emails_1.EnrollAccountEmail.send(user.email, {
+            emails_1.EnrollAccountEmail.send(user.email, {
                 COURSE_NAME: course.name,
                 PASSWORD: password,
             });
@@ -84,7 +84,7 @@ exports.default = {
             // Creating payment url
             const paymentUrl = (0, utils_1.urlJoin)(process.env.FRONTEND_URL, process.env.FRONTEND_PAYMENT_PATH.replace("[id]", paymentData.uid));
             // Sending payment email
-            await emails_1.EnrollPaymentEmail.send(user.email, {
+            emails_1.EnrollPaymentEmail.send(user.email, {
                 COURSE_NAME: course.name,
                 PAYMENT: {
                     DEADLINE: join_shared_1.formatters.formatDate(new Date(course.enrollmentDeadline)),
@@ -102,7 +102,7 @@ exports.default = {
         /**
          * Confirmation email
          */
-        await emails_1.EnrollConfirmEmail.send(user.email, { COURSE_NAME: course.name });
+        emails_1.EnrollConfirmEmail.send(user.email, { COURSE_NAME: course.name });
         /**
          * Returning
          */
