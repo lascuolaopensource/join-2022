@@ -1,29 +1,34 @@
 {
-  "collectionName": "components_space_addresses",
-  "info": {
-    "displayName": "address"
-  },
-  "options": {},
-  "attributes": {
-    "municipality": {
-      "type": "string",
-      "required": true
+    "collectionName": "components_space_addresses",
+    "info": {
+        "displayName": "address",
+        "description": ""
     },
-    "province": {
-      "type": "string",
-      "required": true
-    },
-    "street": {
-      "type": "string",
-      "required": true
-    },
-    "number": {
-      "type": "string",
-      "required": true
-    },
-    "zip": {
-      "type": "string",
-      "required": true
+    "options": {},
+    "attributes": {
+        "country": {
+            "type": "string",
+            "required": true
+        },
+        "administrativeArea": {
+            "type": "string",
+            "required": true
+        },
+        "city": {
+            "type": "string",
+            "required": true
+        },
+        "postCode": {
+            "type": "string",
+            "required": true
+        },
+        "street": {
+            "type": "string",
+            "required": true
+        },
+        "number": {
+            "type": "string",
+            "required": true
+        }
     }
-  }
 }

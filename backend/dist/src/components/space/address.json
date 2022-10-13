@@ -1,15 +1,24 @@
 {
     "collectionName": "components_space_addresses",
     "info": {
-        "displayName": "address"
+        "displayName": "address",
+        "description": ""
     },
     "options": {},
     "attributes": {
-        "municipality": {
+        "country": {
             "type": "string",
             "required": true
         },
-        "province": {
+        "administrativeArea": {
+            "type": "string",
+            "required": true
+        },
+        "city": {
+            "type": "string",
+            "required": true
+        },
+        "postCode": {
             "type": "string",
             "required": true
         },
@@ -18,10 +27,6 @@
             "required": true
         },
         "number": {
-            "type": "string",
-            "required": true
-        },
-        "zip": {
             "type": "string",
             "required": true
         }

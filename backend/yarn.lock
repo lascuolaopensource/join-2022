@@ -6630,8 +6630,8 @@
     "merge-stream" "^2.0.0"
     "supports-color" "^8.0.0"
 
-"join-shared@github:lascuolaopensource/join-shared#refresh-didattica":
-  "resolved" "git+ssh://git@github.com/lascuolaopensource/join-shared.git#577f28ae03cc42f2e106dbc91beea6c7f02fcbe0"
+"join-shared@github:lascuolaopensource/join-shared#refresh-payment":
+  "resolved" "git+ssh://git@github.com/lascuolaopensource/join-shared.git#21a74147662cbb554c96ed762a8baa60be5d4a11"
   "version" "0.0.1"
   dependencies:
     "yup" "^0.32.11"

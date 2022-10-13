@@ -1,6 +1,7 @@
 import { types as t } from "join-shared";
 
 export interface CTX<T> {
+    body: any;
     state: {
         user: t.ID<t.UsersPermissionsUser>;
     };

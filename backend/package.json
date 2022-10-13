@@ -18,7 +18,7 @@
         "@types/html-to-text": "^8.1.1",
         "better-sqlite3": "7.4.6",
         "html-to-text": "^8.2.1",
-        "join-shared": "github:lascuolaopensource/join-shared#refresh-didattica",
+        "join-shared": "github:lascuolaopensource/join-shared#refresh-payment",
         "url-join": "^5.0.0"
     },
     "author": {
