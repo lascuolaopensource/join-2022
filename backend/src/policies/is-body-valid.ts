@@ -47,6 +47,7 @@ export default async function (
     try {
         await schema.validate(body, { abortEarly: false });
     } catch (err) {
+        console.log(err);
         throw new PolicyError(e.policies.bodyNotValid, { policyName });
     }
 

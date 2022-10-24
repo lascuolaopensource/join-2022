@@ -1,5 +1,0 @@
-/**
- * pay service
- */
-
-export default () => ({});

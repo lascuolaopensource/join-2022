@@ -31,6 +31,7 @@ async function default_1(policyContext, config, { strapi }) {
         await schema.validate(body, { abortEarly: false });
     }
     catch (err) {
+        console.log(err);
         throw new PolicyError(join_shared_1.errors.policies.bodyNotValid, { policyName });
     }
     return true;

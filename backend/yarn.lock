@@ -2372,7 +2372,7 @@
   "resolved" "https://registry.npmjs.org/@types/minimatch/-/minimatch-5.1.2.tgz"
   "version" "5.1.2"
 
-"@types/node@*", "@types/node@>= 12":
+"@types/node@*", "@types/node@>= 12", "@types/node@>=8.1.0":
   "integrity" "sha512-rLFzK5bhM0YPyCoTC8bolBjMk7bwnZ8qeZUBslBfjZQou2ssJdWslx9CZ8DGM+Dx7QXQiiTVZ/6QO6kwtHkZCA=="
   "resolved" "https://registry.npmjs.org/@types/node/-/node-18.7.21.tgz"
   "version" "18.7.21"
@@ -6631,7 +6631,7 @@
     "supports-color" "^8.0.0"
 
 "join-shared@github:lascuolaopensource/join-shared#refresh-payment":
-  "resolved" "git+ssh://git@github.com/lascuolaopensource/join-shared.git#21a74147662cbb554c96ed762a8baa60be5d4a11"
+  "resolved" "git+ssh://git@github.com/lascuolaopensource/join-shared.git#0756e77c1866511c318af924a8377027a2ed2e75"
   "version" "0.0.1"
   dependencies:
     "yup" "^0.32.11"
@@ -8532,7 +8532,7 @@
     "request-multipart" "^1.0.0"
     "request-oauth" "^1.0.1"
 
-"qs@^6.10.2", "qs@^6.10.3", "qs@^6.4.0", "qs@^6.5.2", "qs@^6.9.6":
+"qs@^6.10.2", "qs@^6.10.3", "qs@^6.11.0", "qs@^6.4.0", "qs@^6.5.2", "qs@^6.9.6":
   "integrity" "sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q=="
   "resolved" "https://registry.npmjs.org/qs/-/qs-6.11.0.tgz"
   "version" "6.11.0"
@@ -9907,6 +9907,14 @@
   "resolved" "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-2.0.1.tgz"
   "version" "2.0.1"
 
+"stripe@^10.15.0":
+  "integrity" "sha512-KXw7dozfIEQCxsshjKUwsNwlD55CkhcvVgwwxFtQNikVlRpNUPy6Ljz2mN9OXjinbbmLIcn26MAiPxfNp8Adtg=="
+  "resolved" "https://registry.npmjs.org/stripe/-/stripe-10.15.0.tgz"
+  "version" "10.15.0"
+  dependencies:
+    "@types/node" ">=8.1.0"
+    "qs" "^6.11.0"
+
 "style-loader@3.3.1":
   "integrity" "sha512-GPcQ+LDJbrcxHORTRes6Jy2sfvK2kS6hpSfI/fXhPt+spVzxF6LJ1dHLN9zIGmVaaP044YKaIatFaufENRiDoQ=="
   "resolved" "https://registry.npmjs.org/style-loader/-/style-loader-3.3.1.tgz"
@@ -10404,11 +10412,6 @@
   "integrity" "sha512-Am1ousAhSLBeB9cG/7k7r2R0zj50uDRlZHPGbazid5s9rlF1F/QKYObEKSIunSjIOkJZqwRRLpvewjEkM7pSqg=="
   "resolved" "https://registry.npmjs.org/urix/-/urix-0.1.0.tgz"
   "version" "0.1.0"
-
-"url-join@^5.0.0":
-  "integrity" "sha512-n2huDr9h9yzd6exQVnH/jU5mr+Pfx08LRXXZhkLLetAMESRj+anQsTAh940iMrIetKAmry9coFuZQ2jY8/p3WA=="
-  "resolved" "https://registry.npmjs.org/url-join/-/url-join-5.0.0.tgz"
-  "version" "5.0.0"
 
 "url-join@4.0.1":
   "integrity" "sha512-jk1+QP6ZJqyOiuEI9AEWQfju/nB2Pw466kbA0LEZljHwKeMgd9WrAEgEGxjPDD2+TNbbb37rTyhEfrCXfuKXnA=="

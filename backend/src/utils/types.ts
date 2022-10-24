@@ -1,5 +1,7 @@
 import { types as t } from "join-shared";
 
+export type ErrorFunction = (message: string, detail?: Object) => any;
+
 export interface CTX<T> {
     body: any;
     state: {
@@ -8,6 +10,8 @@ export interface CTX<T> {
     request: {
         body: T;
     };
+    notFound: ErrorFunction;
+    badRequest: ErrorFunction;
 }
 
 //
