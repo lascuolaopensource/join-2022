@@ -5,6 +5,10 @@
     "packages/apps/*",
     "packages/modules/*"
   ],
+  "scripts": {
+    "build": "lerna run build",
+    "dev": "lerna run dev"
+  },
   "devDependencies": {
     "lerna": "^6.0.3"
   }
