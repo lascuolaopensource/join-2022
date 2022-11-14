@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"$types": ["src/types"],
+			"$types/*": ["src/types/*"],
+			"$routes": ["src/routes"],
+			"$routes/*": ["src/routes/*"],
+			"$validation": ["src/validation"],
+			"$validation/*": ["src/validation/*"]
+		}
+	}
+}
