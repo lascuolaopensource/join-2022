@@ -1,0 +1,30 @@
+{
+    "name": "join-backend",
+    "version": "0.1.0",
+    "description": "A Strapi application",
+    "scripts": {
+        "dev": "strapi develop --browser false",
+        "start": "strapi start",
+        "build": "strapi build",
+        "strapi": "strapi"
+    },
+    "devDependencies": {},
+    "dependencies": {
+        "join-routes": "*",
+        "@strapi/strapi": "4.5.0",
+        "@strapi/plugin-users-permissions": "4.5.0",
+        "@strapi/plugin-i18n": "4.5.0",
+        "better-sqlite3": "7.4.6"
+    },
+    "author": {
+        "name": "A Strapi developer"
+    },
+    "strapi": {
+        "uuid": "b2207e7f-43df-4691-99ba-a986e58ffeec"
+    },
+    "engines": {
+        "node": ">=14.19.1 <=18.x.x",
+        "npm": ">=6.0.0"
+    },
+    "license": "MIT"
+}
