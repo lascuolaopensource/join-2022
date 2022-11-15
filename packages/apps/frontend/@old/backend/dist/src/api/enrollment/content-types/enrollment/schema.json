@@ -1,0 +1,59 @@
+{
+    "kind": "collectionType",
+    "collectionName": "enrollments",
+    "info": {
+        "singularName": "enrollment",
+        "pluralName": "enrollments",
+        "displayName": "Enrollment",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "owner": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "plugin::users-permissions.user",
+            "inversedBy": "enrollments"
+        },
+        "course": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::course.course",
+            "inversedBy": "enrollments"
+        },
+        "state": {
+            "type": "enumeration",
+            "enum": [
+                "awaitingPayment",
+                "pending",
+                "approved",
+                "rejected"
+            ],
+            "required": true,
+            "default": "pending"
+        },
+        "cvUrl": {
+            "type": "string",
+            "required": false
+        },
+        "portfolioUrl": {
+            "type": "string"
+        },
+        "motivationalLetter": {
+            "type": "text"
+        },
+        "phoneNumber": {
+            "type": "string",
+            "required": true
+        },
+        "payment": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::payment.payment",
+            "mappedBy": "enrollment"
+        }
+    }
+}

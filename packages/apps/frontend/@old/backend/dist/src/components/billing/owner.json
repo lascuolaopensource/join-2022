@@ -1,0 +1,14 @@
+{
+    "collectionName": "components_people_owners",
+    "info": {
+        "displayName": "owner",
+        "description": ""
+    },
+    "options": {},
+    "attributes": {
+        "fiscalCode": {
+            "type": "string",
+            "required": true
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_billing_companies",
+  "info": {
+    "displayName": "company",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "vatNumber": {
+      "type": "string",
+      "required": true
+    },
+    "sdiCode": {
+      "type": "string",
+      "required": true
+    },
+    "certifiedEmail": {
+      "type": "email",
+      "required": true
+    }
+  }
+}

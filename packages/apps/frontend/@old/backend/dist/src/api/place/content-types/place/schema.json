@@ -1,0 +1,31 @@
+{
+    "kind": "collectionType",
+    "collectionName": "places",
+    "info": {
+        "singularName": "place",
+        "pluralName": "places",
+        "displayName": "Place",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "address": {
+            "type": "component",
+            "repeatable": false,
+            "component": "space.address"
+        },
+        "courses": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::course.course",
+            "mappedBy": "places"
+        }
+    }
+}
