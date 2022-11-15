@@ -1,5 +1,0 @@
-/**
- * enroll service
- */
-
-export default () => ({});
