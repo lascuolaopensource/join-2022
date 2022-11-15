@@ -224,19 +224,25 @@ var UserExists;
   }).required();
 })(UserExists || (UserExists = {}));
 
-var Login;
-(function (Login) {
-  Login.path = "/auth/local";
-  Login.method = HTTPMethod.POST;
-  Login.values = {
-    identifier: "",
-    password: ""
-  };
-  Login.schema = yup__namespace.object({
-    identifier: Schemas.email.required(),
-    password: yup__namespace.string().required()
-  }).required();
-})(Login || (Login = {}));
+//
+var path = "/auth/local";
+var method = HTTPMethod.POST;
+var values = {
+  identifier: "",
+  password: ""
+};
+var schema = yup__namespace.object({
+  identifier: Schemas.email.required(),
+  password: yup__namespace.string().required()
+}).required();
+
+var login = {
+	__proto__: null,
+	path: path,
+	method: method,
+	values: values,
+	schema: schema
+};
 
 var Forgot;
 (function (Forgot) {
@@ -274,10 +280,10 @@ var index$8 = {
 
 var index$7 = {
 	__proto__: null,
+	Login: login,
 	Password: index$8,
 	get Create () { return Create; },
-	get UserExists () { return UserExists; },
-	get Login () { return Login; }
+	get UserExists () { return UserExists; }
 };
 
 var Contacts;
