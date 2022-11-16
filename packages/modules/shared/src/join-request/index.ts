@@ -19,7 +19,6 @@ export async function send<Res>(args: Req.Args) {
     argsCopy.errorHandler = errorHandler;
     argsCopy.path = `${backendURL}/${args.path}`;
     if (args.auth) argsCopy.auth = `Bearer ${args.auth}`;
-    console.log(argsCopy);
 
     return req.send<Res>({ ...argsCopy });
 }

@@ -6,9 +6,11 @@
     "packages/modules/*"
   ],
   "scripts": {
-    "build": "lerna run build",
-    "dev": "lerna run dev --parallel",
-    "clean": "lerna clean"
+    "build": "source $HOME/.nvm/nvm.sh; nvm use 16; lerna run build",
+    "dev": "source $HOME/.nvm/nvm.sh; nvm use 16; lerna run dev --parallel",
+    "clean": "source $HOME/.nvm/nvm.sh; nvm use 16; lerna clean",
+    "cypress": "source $HOME/.nvm/nvm.sh; nvm use 16; yarn workspace join-frontend test",
+    "types": "source $HOME/.nvm/nvm.sh; nvm use 16; yarn workspace join-shared types"
   },
   "devDependencies": {
     "lerna": "^6.0.3"

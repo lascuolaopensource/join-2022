@@ -251,7 +251,7 @@
 	// Error handler
 
 	// Send function
-	var send$2 = function send(_ref) {
+	var send$3 = function send(_ref) {
 	  var method = _ref.method,
 	    path = _ref.path,
 	    data = _ref.data,
@@ -304,7 +304,7 @@
 
 	var request = {
 		__proto__: null,
-		send: send$2,
+		send: send$3,
 		defaultErrorHandler: defaultErrorHandler
 	};
 
@@ -323,14 +323,13 @@
 	  return _extends.apply(this, arguments);
 	}
 
-	var send$1 = function send(args) {
+	var send$2 = function send(args) {
 	  try {
 	    var argsCopy = _extends({}, args);
 	    argsCopy.errorHandler = errorHandler;
 	    argsCopy.path = backendURL + "/" + args.path;
 	    if (args.auth) argsCopy.auth = "Bearer " + args.auth;
-	    console.log(argsCopy);
-	    return Promise.resolve(send$2(_extends({}, argsCopy)));
+	    return Promise.resolve(send$3(_extends({}, argsCopy)));
 	  } catch (e) {
 	    return Promise.reject(e);
 	  }
@@ -350,12 +349,12 @@
 
 	//
 
-	var send = function send(data, fetchImpl) {
+	var send$1 = function send(data, fetchImpl) {
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
-	    return Promise.resolve(send$1({
-	      path: path,
-	      method: method,
+	    return Promise.resolve(send$2({
+	      path: path$1,
+	      method: method$1,
 	      data: data,
 	      fetchImpl: fetchImpl
 	    }));
@@ -363,8 +362,8 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path = "auth/local";
-	var method = HTTPMethod.POST;
+	var path$1 = "auth/local";
+	var method$1 = HTTPMethod.POST;
 	var values = {
 	  identifier: "",
 	  password: ""
@@ -376,9 +375,9 @@
 
 	var login = {
 		__proto__: null,
-		send: send,
-		path: path,
-		method: method,
+		send: send$1,
+		path: path$1,
+		method: method$1,
 		values: values,
 		schema: schema
 	};
@@ -417,10 +416,34 @@
 		get Reset () { return Reset; }
 	};
 
+	var send = function send(token, fetchImpl) {
+	  try {
+	    if (fetchImpl === undefined) fetchImpl = fetch;
+	    return Promise.resolve(send$2({
+	      path: path,
+	      method: method,
+	      auth: token,
+	      fetchImpl: fetchImpl
+	    }));
+	  } catch (e) {
+	    return Promise.reject(e);
+	  }
+	};
+	var path = "users/me?populate=info";
+	var method = HTTPMethod.GET;
+
+	var me = {
+		__proto__: null,
+		send: send,
+		path: path,
+		method: method
+	};
+
 	var index$7 = {
 		__proto__: null,
 		Login: login,
 		Password: index$8,
+		Me: me,
 		get Create () { return Create; },
 		get UserExists () { return UserExists; }
 	};
@@ -742,7 +765,7 @@
 	exports.helpers = index$1;
 	exports.request = request;
 	exports.routes = index$2;
-	exports.send = send$1;
+	exports.send = send$2;
 	exports.types = index$9;
 	exports.validation = index$a;
 
