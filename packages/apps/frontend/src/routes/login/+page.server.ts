@@ -1,9 +1,7 @@
 import type { PageServerLoad, Actions } from './$types';
-import type { AppLocals } from '$lib/types/appLocals';
+import type { AppLocals } from '$lib/types';
 
 import { invalid, redirect } from '@sveltejs/kit';
-import { Request } from '$lib/request';
-import { p } from '$lib/request/request';
 
 import { routes as r } from 'join-shared';
 
@@ -16,29 +14,30 @@ export const load: PageServerLoad = ({ locals }) => {
 //
 
 export const actions: Actions = {
-	default: async ({ cookies, request }) => {
+	default: async ({ cookies, request, fetch }) => {
 		const data = await request.formData();
 
 		const email = data.get('email');
 		const password = data.get('password');
-		console.log(email, password);
 
-		const res = await Request.post(p(r.Account.Login));
+		if (!(Boolean(email) && Boolean(password))) {
+			throw new Error(); // TODO
+		}
 
-		// const body = await Request.post('users/login', {
-		// 	user: {
-		// 		email: data.get('email'),
-		// 		password: data.get('password')
-		// 	}
-		// });
+		const body: r.Account.Login.Req = {
+			identifier: email as string,
+			password: password as string
+		};
 
-		// if (body.errors) {
-		// 	return invalid(401, body);
-		// }
+		try {
+			const res = await r.Account.Login.send(body, fetch);
 
-		// const value = Buffer.from(JSON.stringify(body.user), 'base64');
-		// cookies.set('jwt', value.toString(), { path: '/' });
+			const value = Buffer.from(JSON.stringify(res.jwt), 'base64');
+			cookies.set('jwt', value.toString(), { path: '/' });
 
-		// throw redirect(307, '/');
+			throw redirect(307, '/');
+		} catch (error) {
+			return invalid(401, {});
+		}
 	}
 };

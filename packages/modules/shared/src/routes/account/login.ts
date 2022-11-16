@@ -1,18 +1,18 @@
 import * as yup from "yup";
 import { Schemas } from "../../validation";
-import { HTTPMethod, UsersPermissionsMe } from "../../types";
+import { UsersPermissionsMe } from "../../types";
+import { Request as Req } from "../../request";
+import { send as s } from "../../join-request";
 
 //
 
-export const path = "/auth/local";
-export const method = HTTPMethod.POST;
+export const path = "auth/local";
+export const method = Req.HTTPMethod.POST;
 
-//
-
-export interface Req {
+export type Req = {
     identifier: string;
     password: string;
-}
+};
 
 export const values: Req = {
     identifier: "",
@@ -26,7 +26,11 @@ export const schema = yup
     })
     .required();
 
-export interface Res {
+export type Res = {
     user: UsersPermissionsMe;
     jwt: string;
+};
+
+export async function send(data: Req, fetchImpl = fetch) {
+    return s<Res>({ path, method, data, fetchImpl });
 }

@@ -54,7 +54,7 @@ export async function send<T = Data>({ method, path, data, token }: Args): Promi
 	}
 
 	if (token) {
-		opts.headers['Authorization'] = `Token ${token}`;
+		opts.headers['Authorization'] = `Bearer ${token}`;
 	}
 
 	const res = await fetch(path, opts);

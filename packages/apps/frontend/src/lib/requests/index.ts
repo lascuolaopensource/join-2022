@@ -1,11 +1,8 @@
 import type { types as t, routes as r } from 'join-shared';
 import { Request } from '../request';
+
 // import { headersAuth } from './authorizationHeader';
 // import qs from 'qs';
-
-// export async function login(body: e.LoginReq, fetchFn = fetch): Promise<e.LoginRes> {
-// 	return await Request.post(fetchFn, b + 'api/auth/local', 'POST', body);
-// }
 
 // // Request manager
 // export const req = {
