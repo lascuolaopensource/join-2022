@@ -212,7 +212,7 @@ const defaultErrorHandler = async res => {
   return new Error(res.statusText);
 };
 // Send function
-async function send$2({
+async function send$3({
   method,
   path,
   data,
@@ -243,7 +243,7 @@ async function send$2({
 var request = {
 	__proto__: null,
 	defaultErrorHandler: defaultErrorHandler,
-	send: send$2
+	send: send$3
 };
 
 function _extends() {
@@ -268,18 +268,17 @@ const errorHandler = async res => {
   const message = (data == null ? void 0 : (_data$error = data.error) == null ? void 0 : _data$error.message) || (data == null ? void 0 : (_data$message = data.message) == null ? void 0 : (_data$message$ = _data$message[0]) == null ? void 0 : (_data$message$$messag = _data$message$.messages) == null ? void 0 : (_data$message$$messag2 = _data$message$$messag[0]) == null ? void 0 : _data$message$$messag2.message) || (data == null ? void 0 : data.message) || res.statusText || `Unknown error: ${res.status}`;
   return new Error(message);
 };
-async function send$1(args) {
+async function send$2(args) {
   const argsCopy = _extends({}, args);
   argsCopy.errorHandler = errorHandler;
   argsCopy.path = `${backendURL}/${args.path}`;
   if (args.auth) argsCopy.auth = `Bearer ${args.auth}`;
-  console.log(argsCopy);
-  return send$2(_extends({}, argsCopy));
+  return send$3(_extends({}, argsCopy));
 }
 
 //
-const path = "auth/local";
-const method = HTTPMethod.POST;
+const path$1 = "auth/local";
+const method$1 = HTTPMethod.POST;
 const values = {
   identifier: "",
   password: ""
@@ -288,10 +287,10 @@ const schema = yup.object({
   identifier: Schemas.email.required(),
   password: yup.string().required()
 }).required();
-async function send(data, fetchImpl = fetch) {
-  return send$1({
-    path,
-    method,
+async function send$1(data, fetchImpl = fetch) {
+  return send$2({
+    path: path$1,
+    method: method$1,
     data,
     fetchImpl
   });
@@ -299,11 +298,11 @@ async function send(data, fetchImpl = fetch) {
 
 var login = {
 	__proto__: null,
-	path: path,
-	method: method,
+	path: path$1,
+	method: method$1,
 	values: values,
 	schema: schema,
-	send: send
+	send: send$1
 };
 
 var Forgot;
@@ -340,10 +339,29 @@ var index$8 = {
 	get Reset () { return Reset; }
 };
 
+const path = "users/me?populate=info";
+const method = HTTPMethod.GET;
+async function send(token, fetchImpl = fetch) {
+  return send$2({
+    path,
+    method,
+    auth: token,
+    fetchImpl
+  });
+}
+
+var me = {
+	__proto__: null,
+	path: path,
+	method: method,
+	send: send
+};
+
 var index$7 = {
 	__proto__: null,
 	Login: login,
 	Password: index$8,
+	Me: me,
 	get Create () { return Create; },
 	get UserExists () { return UserExists; }
 };
@@ -648,5 +666,5 @@ var index = {
 	formatDate: formatDate
 };
 
-export { types as Request, backendURL, errorHandler, errors, index as formatters, index$1 as helpers, request, index$2 as routes, send$1 as send, index$9 as types, index$a as validation };
+export { types as Request, backendURL, errorHandler, errors, index as formatters, index$1 as helpers, request, index$2 as routes, send$2 as send, index$9 as types, index$a as validation };
 //# sourceMappingURL=index.modern.js.map

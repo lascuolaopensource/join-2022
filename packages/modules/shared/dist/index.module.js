@@ -228,7 +228,7 @@ var types = {
 // Error handler
 
 // Send function
-var send$2 = function send(_ref) {
+var send$3 = function send(_ref) {
   var method = _ref.method,
     path = _ref.path,
     data = _ref.data,
@@ -281,7 +281,7 @@ var defaultErrorHandler = function defaultErrorHandler(res) {
 
 var request = {
 	__proto__: null,
-	send: send$2,
+	send: send$3,
 	defaultErrorHandler: defaultErrorHandler
 };
 
@@ -300,14 +300,13 @@ function _extends() {
   return _extends.apply(this, arguments);
 }
 
-var send$1 = function send(args) {
+var send$2 = function send(args) {
   try {
     var argsCopy = _extends({}, args);
     argsCopy.errorHandler = errorHandler;
     argsCopy.path = backendURL + "/" + args.path;
     if (args.auth) argsCopy.auth = "Bearer " + args.auth;
-    console.log(argsCopy);
-    return Promise.resolve(send$2(_extends({}, argsCopy)));
+    return Promise.resolve(send$3(_extends({}, argsCopy)));
   } catch (e) {
     return Promise.reject(e);
   }
@@ -327,12 +326,12 @@ var errorHandler = function errorHandler(res) {
 
 //
 
-var send = function send(data, fetchImpl) {
+var send$1 = function send(data, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$1({
-      path: path,
-      method: method,
+    return Promise.resolve(send$2({
+      path: path$1,
+      method: method$1,
       data: data,
       fetchImpl: fetchImpl
     }));
@@ -340,8 +339,8 @@ var send = function send(data, fetchImpl) {
     return Promise.reject(e);
   }
 };
-var path = "auth/local";
-var method = HTTPMethod.POST;
+var path$1 = "auth/local";
+var method$1 = HTTPMethod.POST;
 var values = {
   identifier: "",
   password: ""
@@ -353,9 +352,9 @@ var schema = yup.object({
 
 var login = {
 	__proto__: null,
-	send: send,
-	path: path,
-	method: method,
+	send: send$1,
+	path: path$1,
+	method: method$1,
 	values: values,
 	schema: schema
 };
@@ -394,10 +393,34 @@ var index$8 = {
 	get Reset () { return Reset; }
 };
 
+var send = function send(token, fetchImpl) {
+  try {
+    if (fetchImpl === undefined) fetchImpl = fetch;
+    return Promise.resolve(send$2({
+      path: path,
+      method: method,
+      auth: token,
+      fetchImpl: fetchImpl
+    }));
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+var path = "users/me?populate=info";
+var method = HTTPMethod.GET;
+
+var me = {
+	__proto__: null,
+	send: send,
+	path: path,
+	method: method
+};
+
 var index$7 = {
 	__proto__: null,
 	Login: login,
 	Password: index$8,
+	Me: me,
 	get Create () { return Create; },
 	get UserExists () { return UserExists; }
 };
@@ -711,5 +734,5 @@ var index = {
 	formatDate: formatDate
 };
 
-export { types as Request, backendURL, errorHandler, errors, index as formatters, index$1 as helpers, request, index$2 as routes, send$1 as send, index$9 as types, index$a as validation };
+export { types as Request, backendURL, errorHandler, errors, index as formatters, index$1 as helpers, request, index$2 as routes, send$2 as send, index$9 as types, index$a as validation };
 //# sourceMappingURL=index.module.js.map

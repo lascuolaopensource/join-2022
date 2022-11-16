@@ -1,14 +1,13 @@
 import type { PageServerLoad, Actions } from './$types';
-import type { AppLocals } from '$lib/types';
 
-import { invalid, redirect } from '@sveltejs/kit';
+import { invalid, redirect, error } from '@sveltejs/kit';
 
 import { routes as r } from 'join-shared';
 
 //
 
 export const load: PageServerLoad = ({ locals }) => {
-	if ((locals as AppLocals).user) throw redirect(307, '/');
+	if (locals.user) throw redirect(307, '/');
 };
 
 //
@@ -21,7 +20,7 @@ export const actions: Actions = {
 		const password = data.get('password');
 
 		if (!(Boolean(email) && Boolean(password))) {
-			throw new Error(); // TODO
+			return invalid(401, {}); // TODO
 		}
 
 		const body: r.Account.Login.Req = {
@@ -29,15 +28,22 @@ export const actions: Actions = {
 			password: password as string
 		};
 
+		let res: r.Account.Login.Res | null = null;
 		try {
-			const res = await r.Account.Login.send(body, fetch);
-
-			const value = Buffer.from(JSON.stringify(res.jwt), 'base64');
-			cookies.set('jwt', value.toString(), { path: '/' });
-
-			throw redirect(307, '/');
+			res = await r.Account.Login.send(body, fetch);
 		} catch (error) {
-			return invalid(401, {});
+			console.log(error);
 		}
+
+		if (!res) throw error(400); // TODO
+
+		cookies.set('jwt', res.jwt, {
+			path: '/',
+			httpOnly: true,
+			sameSite: 'strict',
+			maxAge: 60 * 60 * 24 * 30
+		});
+
+		throw redirect(307, '/');
 	}
 };

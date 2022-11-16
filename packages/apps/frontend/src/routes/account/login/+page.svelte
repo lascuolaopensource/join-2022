@@ -3,15 +3,13 @@
 	import type { ActionData } from './$types';
 	// import ListErrors from '$lib/ListErrors.svelte';
 	import { Card, Input, Label, Button, Heading, P, A } from 'flowbite-svelte';
-
-	export let form: ActionData;
 </script>
 
 <svelte:head>
 	<title>Sign in</title>
 </svelte:head>
 
-<div class="flex flex-row items-center justify-center w-screen h-screen bg-gray-200">
+<div class="flex flex-row items-center justify-center w-screen min-h-screen">
 	<div class="basis-80">
 		<Card>
 			<div class="space-y-8">
@@ -34,15 +32,22 @@
 								id="email"
 								placeholder="mario@rossi.com"
 								required
+								data-test="email"
 							/>
 						</div>
 						<div>
 							<Label for="password">Password</Label>
-							<Input name="password" type="password" id="password" required />
+							<Input
+								name="password"
+								type="password"
+								id="password"
+								required
+								data-test="password"
+							/>
 						</div>
 					</div>
 
-					<Button type="submit">Sign in</Button>
+					<Button type="submit" data-test="submit">Sign in</Button>
 				</form>
 			</div>
 		</Card>
