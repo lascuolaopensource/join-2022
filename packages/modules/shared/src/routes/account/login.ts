@@ -1,30 +1,36 @@
 import * as yup from "yup";
 import { Schemas } from "../../validation";
-import { HTTPMethod, UsersPermissionsMe } from "../../types";
+import { UsersPermissionsMe } from "../../types";
+import { Request as Req } from "../../request";
+import { send as s } from "../../join-request";
 
-export namespace Login {
-	export const path = "/auth/local";
-	export const method = HTTPMethod.POST;
+//
 
-	export interface Req {
-		identifier: string;
-		password: string;
-	}
+export const path = "auth/local";
+export const method = Req.HTTPMethod.POST;
 
-	export const values: Req = {
-		identifier: "",
-		password: "",
-	};
+export type Req = {
+    identifier: string;
+    password: string;
+};
 
-	export const schema = yup
-		.object({
-			identifier: Schemas.email.required(),
-			password: yup.string().required(),
-		})
-		.required();
+export const values: Req = {
+    identifier: "",
+    password: "",
+};
 
-	export interface Res {
-		user: UsersPermissionsMe;
-		jwt: string;
-	}
+export const schema = yup
+    .object({
+        identifier: Schemas.email.required(),
+        password: yup.string().required(),
+    })
+    .required();
+
+export type Res = {
+    user: UsersPermissionsMe;
+    jwt: string;
+};
+
+export async function send(data: Req, fetchImpl = fetch) {
+    return s<Res>({ path, method, data, fetchImpl });
 }

@@ -1,13 +1,17 @@
 {
-	"compilerOptions": {
-		"baseUrl": ".",
-		"paths": {
-			"$types": ["src/types"],
-			"$types/*": ["src/types/*"],
-			"$routes": ["src/routes"],
-			"$routes/*": ["src/routes/*"],
-			"$validation": ["src/validation"],
-			"$validation/*": ["src/validation/*"]
-		}
-	}
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "$types": ["src/types"],
+            "$types/*": ["src/types/*"],
+            "$routes": ["src/routes"],
+            "$routes/*": ["src/routes/*"],
+            "$validation": ["src/validation"],
+            "$validation/*": ["src/validation/*"],
+            "$request": ["src/request"],
+            "$request/*": ["src/request/*"],
+            "$join-request": ["src/join-request"],
+            "$join-request/*": ["src/join-request/*"]
+        }
+    }
 }

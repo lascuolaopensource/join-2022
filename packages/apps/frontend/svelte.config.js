@@ -12,7 +12,10 @@ const config = {
 	],
 
 	kit: {
-		adapter: adapter({ out: 'build' })
+		adapter: adapter({ out: 'build' }),
+		files: {
+			lib: 'src/lib'
+		}
 	}
 };
 

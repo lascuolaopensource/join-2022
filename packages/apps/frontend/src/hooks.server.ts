@@ -1,0 +1,20 @@
+import type { Handle } from '@sveltejs/kit';
+import { routes } from 'join-shared';
+
+export const handle: Handle = async ({ event, resolve }) => {
+	const token = event.cookies.get('jwt');
+
+	// If there is no session load page as normal
+	if (!token) {
+		return await resolve(event);
+	}
+
+	const user = await routes.Account.Me.send(token, event.fetch);
+
+	if (user) {
+		event.locals.user = user;
+		console.log(user);
+	}
+
+	return await resolve(event);
+};

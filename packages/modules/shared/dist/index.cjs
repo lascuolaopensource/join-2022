@@ -172,7 +172,7 @@ var EnrollmentStates = Object.values(Enum_Enrollment_State);
 // 	AdminTools = "admin_tools",
 // }
 
-var HTTPMethod;
+var HTTPMethod$1;
 (function (HTTPMethod) {
   HTTPMethod["CONNECT"] = "CONNECT";
   HTTPMethod["DELETE"] = "DELETE";
@@ -183,11 +183,11 @@ var HTTPMethod;
   HTTPMethod["POST"] = "POST";
   HTTPMethod["PUT"] = "PUT";
   HTTPMethod["TRACE"] = "TRACE";
-})(HTTPMethod || (HTTPMethod = {}));
+})(HTTPMethod$1 || (HTTPMethod$1 = {}));
 
 var index$9 = {
 	__proto__: null,
-	get HTTPMethod () { return HTTPMethod; },
+	get HTTPMethod () { return HTTPMethod$1; },
 	get Enum_Enrollment_State () { return Enum_Enrollment_State; },
 	get PublicationState () { return PublicationState; },
 	get PaymentCategories () { return PaymentCategories; },
@@ -197,7 +197,7 @@ var index$9 = {
 var Create;
 (function (Create) {
   Create.path = "/account/create";
-  Create.method = HTTPMethod.POST;
+  Create.method = HTTPMethod$1.POST;
   Create.values = {
     name: "",
     surname: "",
@@ -215,7 +215,7 @@ var Create;
 var UserExists;
 (function (UserExists) {
   UserExists.path = "/account/user-exists";
-  UserExists.method = HTTPMethod.POST;
+  UserExists.method = HTTPMethod$1.POST;
   UserExists.values = {
     email: ""
   };
@@ -224,24 +224,165 @@ var UserExists;
   }).required();
 })(UserExists || (UserExists = {}));
 
-var Login;
-(function (Login) {
-  Login.path = "/auth/local";
-  Login.method = HTTPMethod.POST;
-  Login.values = {
-    identifier: "",
-    password: ""
+/**
+ * Type utilities
+ */
+var HTTPMethod;
+(function (HTTPMethod) {
+  HTTPMethod["CONNECT"] = "CONNECT";
+  HTTPMethod["DELETE"] = "DELETE";
+  HTTPMethod["GET"] = "GET";
+  HTTPMethod["HEAD"] = "HEAD";
+  HTTPMethod["OPTIONS"] = "OPTIONS";
+  HTTPMethod["PATCH"] = "PATCH";
+  HTTPMethod["POST"] = "POST";
+  HTTPMethod["PUT"] = "PUT";
+  HTTPMethod["TRACE"] = "TRACE";
+})(HTTPMethod || (HTTPMethod = {}));
+
+var types = {
+	__proto__: null,
+	get HTTPMethod () { return HTTPMethod; }
+};
+
+// Error handler
+
+// Send function
+var send$3 = function send(_ref) {
+  var method = _ref.method,
+    path = _ref.path,
+    data = _ref.data,
+    auth = _ref.auth,
+    _ref$fetchImpl = _ref.fetchImpl,
+    fetchImpl = _ref$fetchImpl === void 0 ? fetch : _ref$fetchImpl,
+    _ref$errorHandler = _ref.errorHandler,
+    errorHandler = _ref$errorHandler === void 0 ? defaultErrorHandler : _ref$errorHandler;
+  try {
+    var opts = {
+      method: method,
+      headers: {}
+    };
+    if (data && method != HTTPMethod.GET) {
+      opts.headers["Content-Type"] = "application/json";
+      opts.body = JSON.stringify(data);
+    }
+    if (auth) {
+      opts.headers["Authorization"] = auth;
+    }
+    return Promise.resolve(fetchImpl(path, opts)).then(function (res) {
+      var _exit;
+      function _temp3(_result) {
+        return _exit ? _result : Promise.resolve(errorHandler(res)).then(function (_errorHandler) {
+          throw _errorHandler;
+        });
+      }
+      var _temp2 = function () {
+        if (res.ok || res.status === 422) {
+          return Promise.resolve(res.text()).then(function (text) {
+            var _temp = text ? JSON.parse(text) : {};
+            _exit = 1;
+            return _temp; // TODO: Fix – Fails in case response is not JSON.
+          });
+        }
+      }();
+      return _temp2 && _temp2.then ? _temp2.then(_temp3) : _temp3(_temp2);
+    });
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+var defaultErrorHandler = function defaultErrorHandler(res) {
+  try {
+    return Promise.resolve(new Error(res.statusText));
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+
+var request = {
+	__proto__: null,
+	send: send$3,
+	defaultErrorHandler: defaultErrorHandler
+};
+
+function _extends() {
+  _extends = Object.assign ? Object.assign.bind() : function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
   };
-  Login.schema = yup__namespace.object({
-    identifier: Schemas.email.required(),
-    password: yup__namespace.string().required()
-  }).required();
-})(Login || (Login = {}));
+  return _extends.apply(this, arguments);
+}
+
+var send$2 = function send(args) {
+  try {
+    var argsCopy = _extends({}, args);
+    argsCopy.errorHandler = errorHandler;
+    argsCopy.path = backendURL + "/" + args.path;
+    if (args.auth) argsCopy.auth = "Bearer " + args.auth;
+    return Promise.resolve(send$3(_extends({}, argsCopy)));
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+var backendURL = "http://localhost:1337/api";
+var errorHandler = function errorHandler(res) {
+  try {
+    return Promise.resolve(res.json()).then(function (data) {
+      var _data$error, _data$message, _data$message$, _data$message$$messag, _data$message$$messag2;
+      var message = (data == null ? void 0 : (_data$error = data.error) == null ? void 0 : _data$error.message) || (data == null ? void 0 : (_data$message = data.message) == null ? void 0 : (_data$message$ = _data$message[0]) == null ? void 0 : (_data$message$$messag = _data$message$.messages) == null ? void 0 : (_data$message$$messag2 = _data$message$$messag[0]) == null ? void 0 : _data$message$$messag2.message) || (data == null ? void 0 : data.message) || res.statusText || "Unknown error: " + res.status;
+      return new Error(message);
+    });
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+
+//
+
+var send$1 = function send(data, fetchImpl) {
+  try {
+    if (fetchImpl === undefined) fetchImpl = fetch;
+    return Promise.resolve(send$2({
+      path: path$1,
+      method: method$1,
+      data: data,
+      fetchImpl: fetchImpl
+    }));
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+var path$1 = "auth/local";
+var method$1 = HTTPMethod.POST;
+var values = {
+  identifier: "",
+  password: ""
+};
+var schema = yup__namespace.object({
+  identifier: Schemas.email.required(),
+  password: yup__namespace.string().required()
+}).required();
+
+var login = {
+	__proto__: null,
+	send: send$1,
+	path: path$1,
+	method: method$1,
+	values: values,
+	schema: schema
+};
 
 var Forgot;
 (function (Forgot) {
   Forgot.path = "/auth/forgot-password";
-  Forgot.method = HTTPMethod.POST;
+  Forgot.method = HTTPMethod$1.POST;
   Forgot.values = {
     email: ""
   };
@@ -253,7 +394,7 @@ var Forgot;
 var Reset;
 (function (Reset) {
   Reset.path = "/auth/reset-password";
-  Reset.method = HTTPMethod.POST;
+  Reset.method = HTTPMethod$1.POST;
   Reset.values = {
     password: "string",
     passwordConfirmation: "string",
@@ -272,12 +413,36 @@ var index$8 = {
 	get Reset () { return Reset; }
 };
 
+var send = function send(token, fetchImpl) {
+  try {
+    if (fetchImpl === undefined) fetchImpl = fetch;
+    return Promise.resolve(send$2({
+      path: path,
+      method: method,
+      auth: token,
+      fetchImpl: fetchImpl
+    }));
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+var path = "users/me?populate=info";
+var method = HTTPMethod.GET;
+
+var me = {
+	__proto__: null,
+	send: send,
+	path: path,
+	method: method
+};
+
 var index$7 = {
 	__proto__: null,
+	Login: login,
 	Password: index$8,
+	Me: me,
 	get Create () { return Create; },
-	get UserExists () { return UserExists; },
-	get Login () { return Login; }
+	get UserExists () { return UserExists; }
 };
 
 var Contacts;
@@ -403,7 +568,7 @@ var index$6 = {
 var Execute;
 (function (Execute) {
   Execute.path = "/pay/execute";
-  Execute.method = HTTPMethod.POST;
+  Execute.method = HTTPMethod$1.POST;
   Execute.values = {
     paymentId: "",
     billingOption: Options[0],
@@ -425,7 +590,7 @@ var Execute;
 var Confirm;
 (function (Confirm) {
   Confirm.path = "/pay/confirm";
-  Confirm.method = HTTPMethod.POST;
+  Confirm.method = HTTPMethod$1.POST;
   Confirm.schema = yup__namespace.object({
     confirmationCode: yup__namespace.string().required()
   });
@@ -441,7 +606,7 @@ var index$5 = {
 var Update;
 (function (Update) {
   Update.path = "/admin-enrollments/update";
-  Update.method = HTTPMethod.POST;
+  Update.method = HTTPMethod$1.POST;
   Update.itemSchema = yup__namespace.object({
     id: yup__namespace.string().required(),
     state: yup__namespace.string().oneOf(EnrollmentStates).required()
@@ -461,25 +626,10 @@ var index$3 = {
 	Enrollments: index$4
 };
 
-function _extends() {
-  _extends = Object.assign ? Object.assign.bind() : function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-    return target;
-  };
-  return _extends.apply(this, arguments);
-}
-
 var Enroll;
 (function (Enroll) {
   Enroll.path = "/enroll";
-  Enroll.method = HTTPMethod.POST;
+  Enroll.method = HTTPMethod$1.POST;
   Enroll.values = {
     courseId: "",
     contacts: Contacts.values,
@@ -604,10 +754,15 @@ var index = {
 	formatDate: formatDate
 };
 
+exports.Request = types;
+exports.backendURL = backendURL;
+exports.errorHandler = errorHandler;
 exports.errors = errors;
 exports.formatters = index;
 exports.helpers = index$1;
+exports.request = request;
 exports.routes = index$2;
+exports.send = send$2;
 exports.types = index$9;
 exports.validation = index$a;
 //# sourceMappingURL=index.cjs.map

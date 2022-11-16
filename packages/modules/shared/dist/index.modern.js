@@ -134,7 +134,7 @@ const EnrollmentStates = Object.values(Enum_Enrollment_State);
 // 	AdminTools = "admin_tools",
 // }
 
-var HTTPMethod;
+var HTTPMethod$1;
 (function (HTTPMethod) {
   HTTPMethod["CONNECT"] = "CONNECT";
   HTTPMethod["DELETE"] = "DELETE";
@@ -145,11 +145,11 @@ var HTTPMethod;
   HTTPMethod["POST"] = "POST";
   HTTPMethod["PUT"] = "PUT";
   HTTPMethod["TRACE"] = "TRACE";
-})(HTTPMethod || (HTTPMethod = {}));
+})(HTTPMethod$1 || (HTTPMethod$1 = {}));
 
 var index$9 = {
 	__proto__: null,
-	get HTTPMethod () { return HTTPMethod; },
+	get HTTPMethod () { return HTTPMethod$1; },
 	get Enum_Enrollment_State () { return Enum_Enrollment_State; },
 	get PublicationState () { return PublicationState; },
 	get PaymentCategories () { return PaymentCategories; },
@@ -159,7 +159,7 @@ var index$9 = {
 var Create;
 (function (Create) {
   Create.path = "/account/create";
-  Create.method = HTTPMethod.POST;
+  Create.method = HTTPMethod$1.POST;
   Create.values = {
     name: "",
     surname: "",
@@ -177,7 +177,7 @@ var Create;
 var UserExists;
 (function (UserExists) {
   UserExists.path = "/account/user-exists";
-  UserExists.method = HTTPMethod.POST;
+  UserExists.method = HTTPMethod$1.POST;
   UserExists.values = {
     email: ""
   };
@@ -186,24 +186,129 @@ var UserExists;
   }).required();
 })(UserExists || (UserExists = {}));
 
-var Login;
-(function (Login) {
-  Login.path = "/auth/local";
-  Login.method = HTTPMethod.POST;
-  Login.values = {
-    identifier: "",
-    password: ""
+/**
+ * Type utilities
+ */
+var HTTPMethod;
+(function (HTTPMethod) {
+  HTTPMethod["CONNECT"] = "CONNECT";
+  HTTPMethod["DELETE"] = "DELETE";
+  HTTPMethod["GET"] = "GET";
+  HTTPMethod["HEAD"] = "HEAD";
+  HTTPMethod["OPTIONS"] = "OPTIONS";
+  HTTPMethod["PATCH"] = "PATCH";
+  HTTPMethod["POST"] = "POST";
+  HTTPMethod["PUT"] = "PUT";
+  HTTPMethod["TRACE"] = "TRACE";
+})(HTTPMethod || (HTTPMethod = {}));
+
+var types = {
+	__proto__: null,
+	get HTTPMethod () { return HTTPMethod; }
+};
+
+// Error handler
+const defaultErrorHandler = async res => {
+  return new Error(res.statusText);
+};
+// Send function
+async function send$3({
+  method,
+  path,
+  data,
+  auth,
+  fetchImpl = fetch,
+  errorHandler = defaultErrorHandler
+}) {
+  const opts = {
+    method,
+    headers: {}
   };
-  Login.schema = yup.object({
-    identifier: Schemas.email.required(),
-    password: yup.string().required()
-  }).required();
-})(Login || (Login = {}));
+  if (data && method != HTTPMethod.GET) {
+    opts.headers["Content-Type"] = "application/json";
+    opts.body = JSON.stringify(data);
+  }
+  if (auth) {
+    opts.headers["Authorization"] = auth;
+  }
+  const res = await fetchImpl(path, opts);
+  if (res.ok || res.status === 422) {
+    const text = await res.text();
+    return text ? JSON.parse(text) : {}; // TODO: Fix – Fails in case response is not JSON.
+  }
+
+  throw await errorHandler(res);
+}
+
+var request = {
+	__proto__: null,
+	defaultErrorHandler: defaultErrorHandler,
+	send: send$3
+};
+
+function _extends() {
+  _extends = Object.assign ? Object.assign.bind() : function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  return _extends.apply(this, arguments);
+}
+
+const backendURL = "http://localhost:1337/api";
+const errorHandler = async res => {
+  var _data$error, _data$message, _data$message$, _data$message$$messag, _data$message$$messag2;
+  const data = await res.json();
+  const message = (data == null ? void 0 : (_data$error = data.error) == null ? void 0 : _data$error.message) || (data == null ? void 0 : (_data$message = data.message) == null ? void 0 : (_data$message$ = _data$message[0]) == null ? void 0 : (_data$message$$messag = _data$message$.messages) == null ? void 0 : (_data$message$$messag2 = _data$message$$messag[0]) == null ? void 0 : _data$message$$messag2.message) || (data == null ? void 0 : data.message) || res.statusText || `Unknown error: ${res.status}`;
+  return new Error(message);
+};
+async function send$2(args) {
+  const argsCopy = _extends({}, args);
+  argsCopy.errorHandler = errorHandler;
+  argsCopy.path = `${backendURL}/${args.path}`;
+  if (args.auth) argsCopy.auth = `Bearer ${args.auth}`;
+  return send$3(_extends({}, argsCopy));
+}
+
+//
+const path$1 = "auth/local";
+const method$1 = HTTPMethod.POST;
+const values = {
+  identifier: "",
+  password: ""
+};
+const schema = yup.object({
+  identifier: Schemas.email.required(),
+  password: yup.string().required()
+}).required();
+async function send$1(data, fetchImpl = fetch) {
+  return send$2({
+    path: path$1,
+    method: method$1,
+    data,
+    fetchImpl
+  });
+}
+
+var login = {
+	__proto__: null,
+	path: path$1,
+	method: method$1,
+	values: values,
+	schema: schema,
+	send: send$1
+};
 
 var Forgot;
 (function (Forgot) {
   Forgot.path = "/auth/forgot-password";
-  Forgot.method = HTTPMethod.POST;
+  Forgot.method = HTTPMethod$1.POST;
   Forgot.values = {
     email: ""
   };
@@ -215,7 +320,7 @@ var Forgot;
 var Reset;
 (function (Reset) {
   Reset.path = "/auth/reset-password";
-  Reset.method = HTTPMethod.POST;
+  Reset.method = HTTPMethod$1.POST;
   Reset.values = {
     password: "string",
     passwordConfirmation: "string",
@@ -234,12 +339,31 @@ var index$8 = {
 	get Reset () { return Reset; }
 };
 
+const path = "users/me?populate=info";
+const method = HTTPMethod.GET;
+async function send(token, fetchImpl = fetch) {
+  return send$2({
+    path,
+    method,
+    auth: token,
+    fetchImpl
+  });
+}
+
+var me = {
+	__proto__: null,
+	path: path,
+	method: method,
+	send: send
+};
+
 var index$7 = {
 	__proto__: null,
+	Login: login,
 	Password: index$8,
+	Me: me,
 	get Create () { return Create; },
-	get UserExists () { return UserExists; },
-	get Login () { return Login; }
+	get UserExists () { return UserExists; }
 };
 
 var Contacts;
@@ -365,7 +489,7 @@ var index$6 = {
 var Execute;
 (function (Execute) {
   Execute.path = "/pay/execute";
-  Execute.method = HTTPMethod.POST;
+  Execute.method = HTTPMethod$1.POST;
   Execute.values = {
     paymentId: "",
     billingOption: Options[0],
@@ -387,7 +511,7 @@ var Execute;
 var Confirm;
 (function (Confirm) {
   Confirm.path = "/pay/confirm";
-  Confirm.method = HTTPMethod.POST;
+  Confirm.method = HTTPMethod$1.POST;
   Confirm.schema = yup.object({
     confirmationCode: yup.string().required()
   });
@@ -403,7 +527,7 @@ var index$5 = {
 var Update;
 (function (Update) {
   Update.path = "/admin-enrollments/update";
-  Update.method = HTTPMethod.POST;
+  Update.method = HTTPMethod$1.POST;
   Update.itemSchema = yup.object({
     id: yup.string().required(),
     state: yup.string().oneOf(EnrollmentStates).required()
@@ -423,25 +547,10 @@ var index$3 = {
 	Enrollments: index$4
 };
 
-function _extends() {
-  _extends = Object.assign ? Object.assign.bind() : function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-    return target;
-  };
-  return _extends.apply(this, arguments);
-}
-
 var Enroll;
 (function (Enroll) {
   Enroll.path = "/enroll";
-  Enroll.method = HTTPMethod.POST;
+  Enroll.method = HTTPMethod$1.POST;
   Enroll.values = {
     courseId: "",
     contacts: Contacts.values,
@@ -557,5 +666,5 @@ var index = {
 	formatDate: formatDate
 };
 
-export { errors, index as formatters, index$1 as helpers, index$2 as routes, index$9 as types, index$a as validation };
+export { types as Request, backendURL, errorHandler, errors, index as formatters, index$1 as helpers, request, index$2 as routes, send$2 as send, index$9 as types, index$a as validation };
 //# sourceMappingURL=index.modern.js.map
