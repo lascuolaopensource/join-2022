@@ -194,35 +194,20 @@ var index$9 = {
 	EnrollmentStates: EnrollmentStates
 };
 
-var Create;
-(function (Create) {
-  Create.path = "/account/create";
-  Create.method = HTTPMethod$1.POST;
-  Create.values = {
-    name: "",
-    surname: "",
-    email: "",
-    password: ""
+function _extends() {
+  _extends = Object.assign ? Object.assign.bind() : function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
   };
-  Create.schema = yup__namespace.object({
-    name: yup__namespace.string().required(),
-    surname: yup__namespace.string().required(),
-    email: Schemas.email.required(),
-    password: yup__namespace.string().required()
-  }).required();
-})(Create || (Create = {}));
-
-var UserExists;
-(function (UserExists) {
-  UserExists.path = "/account/user-exists";
-  UserExists.method = HTTPMethod$1.POST;
-  UserExists.values = {
-    email: ""
-  };
-  UserExists.schema = yup__namespace.object({
-    email: Schemas.email.required()
-  }).required();
-})(UserExists || (UserExists = {}));
+  return _extends.apply(this, arguments);
+}
 
 /**
  * Type utilities
@@ -245,18 +230,26 @@ var types = {
 	get HTTPMethod () { return HTTPMethod; }
 };
 
-// Error handler
-
 // Send function
-var send$3 = function send(_ref) {
+
+function _catch(body, recover) {
+  try {
+    var result = body();
+  } catch (e) {
+    return recover(e);
+  }
+  if (result && result.then) {
+    return result.then(void 0, recover);
+  }
+  return result;
+}
+var send$4 = function send(_ref) {
   var method = _ref.method,
     path = _ref.path,
     data = _ref.data,
     auth = _ref.auth,
     _ref$fetchImpl = _ref.fetchImpl,
-    fetchImpl = _ref$fetchImpl === void 0 ? fetch : _ref$fetchImpl,
-    _ref$errorHandler = _ref.errorHandler,
-    errorHandler = _ref$errorHandler === void 0 ? defaultErrorHandler : _ref$errorHandler;
+    fetchImpl = _ref$fetchImpl === void 0 ? fetch : _ref$fetchImpl;
   try {
     var opts = {
       method: method,
@@ -270,30 +263,13 @@ var send$3 = function send(_ref) {
       opts.headers["Authorization"] = auth;
     }
     return Promise.resolve(fetchImpl(path, opts)).then(function (res) {
-      var _exit;
-      function _temp3(_result) {
-        return _exit ? _result : Promise.resolve(errorHandler(res)).then(function (_errorHandler) {
-          throw _errorHandler;
-        });
-      }
-      var _temp2 = function () {
-        if (res.ok || res.status === 422) {
-          return Promise.resolve(res.text()).then(function (text) {
-            var _temp = text ? JSON.parse(text) : {};
-            _exit = 1;
-            return _temp; // TODO: Fix – Fails in case response is not JSON.
-          });
-        }
-      }();
-      return _temp2 && _temp2.then ? _temp2.then(_temp3) : _temp3(_temp2);
+      if (!res.ok) throw new Error(res.statusText);
+      return _catch(function () {
+        return Promise.resolve(res.json());
+      }, function () {
+        return Promise.resolve(res.text());
+      });
     });
-  } catch (e) {
-    return Promise.reject(e);
-  }
-};
-var defaultErrorHandler = function defaultErrorHandler(res) {
-  try {
-    return Promise.resolve(new Error(res.statusText));
   } catch (e) {
     return Promise.reject(e);
   }
@@ -301,55 +277,78 @@ var defaultErrorHandler = function defaultErrorHandler(res) {
 
 var request = {
 	__proto__: null,
-	send: send$3,
-	defaultErrorHandler: defaultErrorHandler
+	send: send$4
 };
 
-function _extends() {
-  _extends = Object.assign ? Object.assign.bind() : function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-    return target;
-  };
-  return _extends.apply(this, arguments);
-}
-
-var send$2 = function send(args) {
+var send$3 = function send(args) {
   try {
     var argsCopy = _extends({}, args);
-    argsCopy.errorHandler = errorHandler;
     argsCopy.path = backendURL + "/" + args.path;
     if (args.auth) argsCopy.auth = "Bearer " + args.auth;
-    return Promise.resolve(send$3(_extends({}, argsCopy)));
+    return Promise.resolve(send$4(_extends({}, argsCopy)));
   } catch (e) {
     return Promise.reject(e);
   }
 };
 var backendURL = "http://localhost:1337/api";
-var errorHandler = function errorHandler(res) {
+
+//
+
+var send$2 = function send(data, fetchImpl) {
   try {
-    return Promise.resolve(res.json()).then(function (data) {
-      var _data$error, _data$message, _data$message$, _data$message$$messag, _data$message$$messag2;
-      var message = (data == null ? void 0 : (_data$error = data.error) == null ? void 0 : _data$error.message) || (data == null ? void 0 : (_data$message = data.message) == null ? void 0 : (_data$message$ = _data$message[0]) == null ? void 0 : (_data$message$$messag = _data$message$.messages) == null ? void 0 : (_data$message$$messag2 = _data$message$$messag[0]) == null ? void 0 : _data$message$$messag2.message) || (data == null ? void 0 : data.message) || res.statusText || "Unknown error: " + res.status;
-      return new Error(message);
-    });
+    if (fetchImpl === undefined) fetchImpl = fetch;
+    return Promise.resolve(send$3({
+      path: path$2,
+      method: method$2,
+      data: data,
+      fetchImpl: fetchImpl
+    }));
   } catch (e) {
     return Promise.reject(e);
   }
 };
+var path$2 = "account/register";
+var method$2 = HTTPMethod$1.POST;
+var values$1 = {
+  name: "",
+  surname: "",
+  email: "",
+  password: ""
+};
+var schema$1 = yup__namespace.object({
+  name: yup__namespace.string().required(),
+  surname: yup__namespace.string().required(),
+  email: Schemas.email.required(),
+  password: yup__namespace.string().required()
+}).required();
+
+var register = {
+	__proto__: null,
+	send: send$2,
+	path: path$2,
+	method: method$2,
+	values: values$1,
+	schema: schema$1
+};
+
+var UserExists;
+(function (UserExists) {
+  UserExists.path = "/account/user-exists";
+  UserExists.method = HTTPMethod$1.POST;
+  UserExists.values = {
+    email: ""
+  };
+  UserExists.schema = yup__namespace.object({
+    email: Schemas.email.required()
+  }).required();
+})(UserExists || (UserExists = {}));
 
 //
 
 var send$1 = function send(data, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$2({
+    return Promise.resolve(send$3({
       path: path$1,
       method: method$1,
       data: data,
@@ -416,7 +415,7 @@ var index$8 = {
 var send = function send(token, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$2({
+    return Promise.resolve(send$3({
       path: path,
       method: method,
       auth: token,
@@ -438,10 +437,10 @@ var me = {
 
 var index$7 = {
 	__proto__: null,
+	Register: register,
 	Login: login,
 	Password: index$8,
 	Me: me,
-	get Create () { return Create; },
 	get UserExists () { return UserExists; }
 };
 
@@ -756,13 +755,12 @@ var index = {
 
 exports.Request = types;
 exports.backendURL = backendURL;
-exports.errorHandler = errorHandler;
 exports.errors = errors;
 exports.formatters = index;
 exports.helpers = index$1;
 exports.request = request;
 exports.routes = index$2;
-exports.send = send$2;
+exports.send = send$3;
 exports.types = index$9;
 exports.validation = index$a;
 //# sourceMappingURL=index.cjs.map

@@ -45,7 +45,7 @@ export default {
             const password = generateSecureString(24);
 
             // Creating the data for creating the new user
-            const createAccountBody: r.Account.Create.Req = {
+            const createAccountBody: r.Account.Register.Req = {
                 name: body.contacts.name,
                 surname: body.contacts.surname,
                 email: body.contacts.email,

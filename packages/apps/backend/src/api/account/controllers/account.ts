@@ -9,12 +9,12 @@ export default {
     /**
      * Creates an account
      */
-    create: async (ctx, next): Promise<r.Account.Create.Res> => {
-        strapi.log.info("CONTROLLER - account/create");
+    register: async (ctx, next): Promise<r.Account.Register.Res> => {
+        strapi.log.info("CONTROLLER - account/register");
 
         try {
             // Getting body
-            const body: r.Account.Create.Req = ctx.request.body;
+            const body: r.Account.Register.Req = ctx.request.body;
 
             // Adding username to body, in order to comply with auth controller
             body["username"] = body.email;
@@ -25,19 +25,19 @@ export default {
                 .register(ctx);
 
             // Getting user
-            const user = ctx.response.body.user as t.UsersPermissionsMe;
+            const res = ctx.response.body as t.UsersPermissionsLoginPayload;
 
             // Creating userInfo
             const data: t.UserInfoInput = {
                 name: body.name,
                 surname: body.surname,
-                owner: user.id,
+                owner: res.user.id,
             };
             await strapi.entityService.create(e.userInfo, {
                 data,
             });
 
-            return user;
+            return res;
         } catch (err) {
             ctx.body = err;
         }

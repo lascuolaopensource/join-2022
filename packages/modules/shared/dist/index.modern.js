@@ -156,35 +156,20 @@ var index$9 = {
 	EnrollmentStates: EnrollmentStates
 };
 
-var Create;
-(function (Create) {
-  Create.path = "/account/create";
-  Create.method = HTTPMethod$1.POST;
-  Create.values = {
-    name: "",
-    surname: "",
-    email: "",
-    password: ""
+function _extends() {
+  _extends = Object.assign ? Object.assign.bind() : function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
   };
-  Create.schema = yup.object({
-    name: yup.string().required(),
-    surname: yup.string().required(),
-    email: Schemas.email.required(),
-    password: yup.string().required()
-  }).required();
-})(Create || (Create = {}));
-
-var UserExists;
-(function (UserExists) {
-  UserExists.path = "/account/user-exists";
-  UserExists.method = HTTPMethod$1.POST;
-  UserExists.values = {
-    email: ""
-  };
-  UserExists.schema = yup.object({
-    email: Schemas.email.required()
-  }).required();
-})(UserExists || (UserExists = {}));
+  return _extends.apply(this, arguments);
+}
 
 /**
  * Type utilities
@@ -207,18 +192,13 @@ var types = {
 	get HTTPMethod () { return HTTPMethod; }
 };
 
-// Error handler
-const defaultErrorHandler = async res => {
-  return new Error(res.statusText);
-};
 // Send function
-async function send$3({
+async function send$4({
   method,
   path,
   data,
   auth,
-  fetchImpl = fetch,
-  errorHandler = defaultErrorHandler
+  fetchImpl = fetch
 }) {
   const opts = {
     method,
@@ -232,49 +212,72 @@ async function send$3({
     opts.headers["Authorization"] = auth;
   }
   const res = await fetchImpl(path, opts);
-  if (res.ok || res.status === 422) {
-    const text = await res.text();
-    return text ? JSON.parse(text) : {}; // TODO: Fix – Fails in case response is not JSON.
+  if (!res.ok) throw new Error(res.statusText);
+  try {
+    return await res.json();
+  } catch (e) {
+    return await res.text();
   }
-
-  throw await errorHandler(res);
 }
 
 var request = {
 	__proto__: null,
-	defaultErrorHandler: defaultErrorHandler,
-	send: send$3
+	send: send$4
 };
-
-function _extends() {
-  _extends = Object.assign ? Object.assign.bind() : function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-    return target;
-  };
-  return _extends.apply(this, arguments);
-}
 
 const backendURL = "http://localhost:1337/api";
-const errorHandler = async res => {
-  var _data$error, _data$message, _data$message$, _data$message$$messag, _data$message$$messag2;
-  const data = await res.json();
-  const message = (data == null ? void 0 : (_data$error = data.error) == null ? void 0 : _data$error.message) || (data == null ? void 0 : (_data$message = data.message) == null ? void 0 : (_data$message$ = _data$message[0]) == null ? void 0 : (_data$message$$messag = _data$message$.messages) == null ? void 0 : (_data$message$$messag2 = _data$message$$messag[0]) == null ? void 0 : _data$message$$messag2.message) || (data == null ? void 0 : data.message) || res.statusText || `Unknown error: ${res.status}`;
-  return new Error(message);
-};
-async function send$2(args) {
+async function send$3(args) {
   const argsCopy = _extends({}, args);
-  argsCopy.errorHandler = errorHandler;
   argsCopy.path = `${backendURL}/${args.path}`;
   if (args.auth) argsCopy.auth = `Bearer ${args.auth}`;
-  return send$3(_extends({}, argsCopy));
+  const res = await send$4(_extends({}, argsCopy));
+  return res;
 }
+
+//
+const path$2 = "account/register";
+const method$2 = HTTPMethod$1.POST;
+const values$1 = {
+  name: "",
+  surname: "",
+  email: "",
+  password: ""
+};
+const schema$1 = yup.object({
+  name: yup.string().required(),
+  surname: yup.string().required(),
+  email: Schemas.email.required(),
+  password: yup.string().required()
+}).required();
+async function send$2(data, fetchImpl = fetch) {
+  return send$3({
+    path: path$2,
+    method: method$2,
+    data,
+    fetchImpl
+  });
+}
+
+var register = {
+	__proto__: null,
+	path: path$2,
+	method: method$2,
+	values: values$1,
+	schema: schema$1,
+	send: send$2
+};
+
+var UserExists;
+(function (UserExists) {
+  UserExists.path = "/account/user-exists";
+  UserExists.method = HTTPMethod$1.POST;
+  UserExists.values = {
+    email: ""
+  };
+  UserExists.schema = yup.object({
+    email: Schemas.email.required()
+  }).required();
+})(UserExists || (UserExists = {}));
 
 //
 const path$1 = "auth/local";
@@ -288,7 +291,7 @@ const schema = yup.object({
   password: yup.string().required()
 }).required();
 async function send$1(data, fetchImpl = fetch) {
-  return send$2({
+  return send$3({
     path: path$1,
     method: method$1,
     data,
@@ -342,7 +345,7 @@ var index$8 = {
 const path = "users/me?populate=info";
 const method = HTTPMethod.GET;
 async function send(token, fetchImpl = fetch) {
-  return send$2({
+  return send$3({
     path,
     method,
     auth: token,
@@ -359,10 +362,10 @@ var me = {
 
 var index$7 = {
 	__proto__: null,
+	Register: register,
 	Login: login,
 	Password: index$8,
 	Me: me,
-	get Create () { return Create; },
 	get UserExists () { return UserExists; }
 };
 
@@ -666,5 +669,5 @@ var index = {
 	formatDate: formatDate
 };
 
-export { types as Request, backendURL, errorHandler, errors, index as formatters, index$1 as helpers, request, index$2 as routes, send$2 as send, index$9 as types, index$a as validation };
+export { types as Request, backendURL, errors, index as formatters, index$1 as helpers, request, index$2 as routes, send$3 as send, index$9 as types, index$a as validation };
 //# sourceMappingURL=index.modern.js.map

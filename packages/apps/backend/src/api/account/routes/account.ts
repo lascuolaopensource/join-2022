@@ -5,11 +5,11 @@ export default {
     routes: [
         // Creates an account
         {
-            path: r.Account.Create.path,
-            method: r.Account.Create.method,
-            handler: "account.create",
+            path: r.Account.Register.path,
+            method: r.Account.Register.method,
+            handler: "account.register",
             config: {
-                policies: [isBodyValid({ schema: r.Account.Create.schema })],
+                policies: [isBodyValid({ schema: r.Account.Register.schema })],
                 middlewares: ["plugin::users-permissions.rateLimit"],
             },
         },

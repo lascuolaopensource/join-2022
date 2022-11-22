@@ -23,16 +23,12 @@ export enum HTTPMethod {
  * "Send" function definitions
  */
 
-export type Data = Record<string, unknown>;
-export type ErrorHandler = (res: Response) => Promise<Error>;
-
 export interface Args {
     method: HTTPMethod;
     path: string;
-    data?: Data;
+    data?: Record<string, unknown>;
     auth?: string;
     fetchImpl?: Fetch;
-    errorHandler?: ErrorHandler;
 }
 
 export interface Options {

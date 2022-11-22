@@ -1,21 +1,14 @@
-import { HTTPMethod, ErrorHandler, Data, Options, Args } from "./types";
-
-// Error handler
-
-export const defaultErrorHandler: ErrorHandler = async (res) => {
-    return new Error(res.statusText);
-};
+import { HTTPMethod, Options, Args } from "./types";
 
 // Send function
 
-export async function send<Res = Data>({
+export async function send({
     method,
     path,
     data,
     auth,
     fetchImpl = fetch,
-    errorHandler = defaultErrorHandler,
-}: Args): Promise<Res> {
+}: Args): Promise<any> {
     const opts: Options = { method, headers: {} };
 
     if (data && method != HTTPMethod.GET) {
@@ -29,10 +22,11 @@ export async function send<Res = Data>({
 
     const res = await fetchImpl(path, opts);
 
-    if (res.ok || res.status === 422) {
-        const text = await res.text();
-        return text ? JSON.parse(text) : {}; // TODO: Fix – Fails in case response is not JSON.
-    }
+    if (!res.ok) throw new Error(res.statusText);
 
-    throw await errorHandler(res);
+    try {
+        return await res.json();
+    } catch (e) {
+        return await res.text();
+    }
 }

@@ -16,15 +16,12 @@ export declare enum HTTPMethod {
 /**
  * "Send" function definitions
  */
-export declare type Data = Record<string, unknown>;
-export declare type ErrorHandler = (res: Response) => Promise<Error>;
 export interface Args {
     method: HTTPMethod;
     path: string;
-    data?: Data;
+    data?: Record<string, unknown>;
     auth?: string;
     fetchImpl?: Fetch;
-    errorHandler?: ErrorHandler;
 }
 export interface Options {
     method: HTTPMethod;
