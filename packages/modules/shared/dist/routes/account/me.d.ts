@@ -1,6 +1,6 @@
 import { Request } from "$request";
 import { UsersPermissionsMe, UserInfo } from "../../types";
-export declare const path = "users/me?populate=info";
+export declare const path = "/users/me?populate=info";
 export declare const method = Request.HTTPMethod.GET;
 export declare type Res = (UsersPermissionsMe & {
     info: UserInfo;

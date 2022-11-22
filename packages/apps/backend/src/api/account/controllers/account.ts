@@ -39,7 +39,7 @@ export default {
 
             return res;
         } catch (err) {
-            ctx.body = err;
+            return ctx.internalServerError(err.message);
         }
     },
 

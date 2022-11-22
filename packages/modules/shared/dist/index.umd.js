@@ -266,12 +266,24 @@
 	      opts.headers["Authorization"] = auth;
 	    }
 	    return Promise.resolve(fetchImpl(path, opts)).then(function (res) {
-	      if (!res.ok) throw new Error(res.statusText);
-	      return _catch(function () {
-	        return Promise.resolve(res.json());
+	      var resData = {
+	        ok: res.ok,
+	        status: res.status,
+	        statusText: res.statusText,
+	        data: null
+	      };
+	      var _temp = _catch(function () {
+	        return Promise.resolve(res.json()).then(function (_res$json) {
+	          resData.data = _res$json;
+	        });
 	      }, function () {
-	        return Promise.resolve(res.text());
+	        return Promise.resolve(res.text()).then(function (_res$text) {
+	          resData.data = _res$text;
+	        });
 	      });
+	      return _temp && _temp.then ? _temp.then(function () {
+	        return resData;
+	      }) : resData;
 	    });
 	  } catch (e) {
 	    return Promise.reject(e);
@@ -288,7 +300,9 @@
 	    var argsCopy = _extends({}, args);
 	    argsCopy.path = "" + backendURL + args.path;
 	    if (args.auth) argsCopy.auth = "Bearer " + args.auth;
-	    return Promise.resolve(send$4(_extends({}, argsCopy)));
+	    return Promise.resolve(send$4(_extends({}, argsCopy))).then(function (res) {
+	      if (!res.ok) throw res;else return res.data;
+	    });
 	  } catch (e) {
 	    return Promise.reject(e);
 	  }
@@ -428,7 +442,7 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path = "users/me?populate=info";
+	var path = "/users/me?populate=info";
 	var method = HTTPMethod.GET;
 
 	var me = {

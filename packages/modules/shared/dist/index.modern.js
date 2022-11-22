@@ -212,12 +212,18 @@ async function send$4({
     opts.headers["Authorization"] = auth;
   }
   const res = await fetchImpl(path, opts);
-  if (!res.ok) throw new Error(res.statusText);
+  let resData = {
+    ok: res.ok,
+    status: res.status,
+    statusText: res.statusText,
+    data: null
+  };
   try {
-    return await res.json();
+    resData.data = await res.json();
   } catch (e) {
-    return await res.text();
+    resData.data = await res.text();
   }
+  return resData;
 }
 
 var request = {
@@ -231,7 +237,7 @@ async function send$3(args) {
   argsCopy.path = `${backendURL}${args.path}`;
   if (args.auth) argsCopy.auth = `Bearer ${args.auth}`;
   const res = await send$4(_extends({}, argsCopy));
-  return res;
+  if (!res.ok) throw res;else return res.data;
 }
 
 //
@@ -342,7 +348,7 @@ var index$8 = {
 	get Reset () { return Reset; }
 };
 
-const path = "users/me?populate=info";
+const path = "/users/me?populate=info";
 const method = HTTPMethod.GET;
 async function send(token, fetchImpl = fetch) {
   return send$3({

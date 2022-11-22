@@ -1,5 +1,5 @@
 import type { PageServerLoad, Actions } from './$types';
-import { routes as r } from 'join-shared';
+import { routes as r, Request as Req } from 'join-shared';
 import { invalid, error, redirect } from '@sveltejs/kit';
 import paths from '$lib/constants/paths';
 
@@ -33,7 +33,8 @@ export const actions: Actions = {
 		try {
 			res = await r.Account.Register.send(body, fetch);
 		} catch (e) {
-			throw error(500, e as Error);
+			const err = e as Req.Res;
+			// throw error(err.status, err.);
 		}
 
 		// if (!res) throw error(400); // TODO

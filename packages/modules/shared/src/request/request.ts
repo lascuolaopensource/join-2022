@@ -1,4 +1,4 @@
-import { HTTPMethod, Options, Args } from "./types";
+import { HTTPMethod, Options, Args, Res } from "./types";
 
 // Send function
 
@@ -8,7 +8,7 @@ export async function send({
     data,
     auth,
     fetchImpl = fetch,
-}: Args): Promise<any> {
+}: Args): Promise<Res> {
     const opts: Options = { method, headers: {} };
 
     if (data && method != HTTPMethod.GET) {
@@ -22,11 +22,18 @@ export async function send({
 
     const res = await fetchImpl(path, opts);
 
-    if (!res.ok) throw new Error(res.statusText);
+    let resData: Res = {
+        ok: res.ok,
+        status: res.status,
+        statusText: res.statusText,
+        data: null,
+    };
 
     try {
-        return await res.json();
+        resData.data = await res.json();
     } catch (e) {
-        return await res.text();
+        resData.data = await res.text();
     }
+
+    return resData;
 }
