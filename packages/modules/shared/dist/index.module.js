@@ -263,7 +263,7 @@ var request = {
 var send$3 = function send(args) {
   try {
     var argsCopy = _extends({}, args);
-    argsCopy.path = backendURL + "/" + args.path;
+    argsCopy.path = "" + backendURL + args.path;
     if (args.auth) argsCopy.auth = "Bearer " + args.auth;
     return Promise.resolve(send$4(_extends({}, argsCopy)));
   } catch (e) {
@@ -287,7 +287,7 @@ var send$2 = function send(data, fetchImpl) {
     return Promise.reject(e);
   }
 };
-var path$2 = "account/register";
+var path$2 = "/account/register";
 var method$2 = HTTPMethod$1.POST;
 var values$1 = {
   name: "",
@@ -338,7 +338,7 @@ var send$1 = function send(data, fetchImpl) {
     return Promise.reject(e);
   }
 };
-var path$1 = "auth/local";
+var path$1 = "/auth/local";
 var method$1 = HTTPMethod.POST;
 var values = {
   identifier: "",

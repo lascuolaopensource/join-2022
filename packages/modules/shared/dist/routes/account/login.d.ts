@@ -1,6 +1,6 @@
 import { UsersPermissionsMe } from "../../types";
 import { Request as Req } from "../../request";
-export declare const path = "auth/local";
+export declare const path = "/auth/local";
 export declare const method = Req.HTTPMethod.POST;
 export declare type Req = {
     identifier: string;

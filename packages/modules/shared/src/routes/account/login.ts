@@ -6,7 +6,7 @@ import { send as s } from "../../join-request";
 
 //
 
-export const path = "auth/local";
+export const path = "/auth/local";
 export const method = Req.HTTPMethod.POST;
 
 export type Req = {

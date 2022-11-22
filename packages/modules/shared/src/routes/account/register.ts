@@ -5,7 +5,7 @@ import { send as s } from "../../join-request";
 
 //
 
-export const path = "account/register";
+export const path = "/account/register";
 export const method = HTTPMethod.POST;
 
 export type Req = {

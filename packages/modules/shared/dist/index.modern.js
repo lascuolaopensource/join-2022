@@ -228,14 +228,14 @@ var request = {
 const backendURL = "http://localhost:1337/api";
 async function send$3(args) {
   const argsCopy = _extends({}, args);
-  argsCopy.path = `${backendURL}/${args.path}`;
+  argsCopy.path = `${backendURL}${args.path}`;
   if (args.auth) argsCopy.auth = `Bearer ${args.auth}`;
   const res = await send$4(_extends({}, argsCopy));
   return res;
 }
 
 //
-const path$2 = "account/register";
+const path$2 = "/account/register";
 const method$2 = HTTPMethod$1.POST;
 const values$1 = {
   name: "",
@@ -280,7 +280,7 @@ var UserExists;
 })(UserExists || (UserExists = {}));
 
 //
-const path$1 = "auth/local";
+const path$1 = "/auth/local";
 const method$1 = HTTPMethod.POST;
 const values = {
   identifier: "",
