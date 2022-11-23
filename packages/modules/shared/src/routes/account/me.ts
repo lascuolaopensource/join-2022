@@ -1,4 +1,4 @@
-import { send as s } from "$join-request";
+import { send as s, Res as R } from "$join-request";
 import { Request } from "$request";
 import { UsersPermissionsMe, UserInfo } from "../../types";
 
@@ -7,7 +7,7 @@ export const method = Request.HTTPMethod.GET;
 
 export type Res = (UsersPermissionsMe & { info: UserInfo }) | undefined;
 
-export async function send(token: string, fetchImpl = fetch) {
+export async function send(token: string, fetchImpl = fetch): Promise<R<Res>> {
     return s<Res>({
         path,
         method,

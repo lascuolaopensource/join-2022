@@ -263,24 +263,19 @@ var send$4 = function send(_ref) {
       opts.headers["Authorization"] = auth;
     }
     return Promise.resolve(fetchImpl(path, opts)).then(function (res) {
-      var resData = {
-        ok: res.ok,
-        status: res.status,
-        statusText: res.statusText,
-        data: null
-      };
-      var _temp = _catch(function () {
-        return Promise.resolve(res.json()).then(function (_res$json) {
-          resData.data = _res$json;
+      return _catch(function () {
+        return Promise.resolve(res.json()).then(function (data) {
+          return {
+            ok: res.ok,
+            status: res.status,
+            statusText: res.statusText,
+            data: res.ok ? data : null,
+            error: !res.ok ? data : null
+          };
         });
-      }, function () {
-        return Promise.resolve(res.text()).then(function (_res$text) {
-          resData.data = _res$text;
-        });
+      }, function (e) {
+        throw new Error("Failed to parse response: " + e);
       });
-      return _temp && _temp.then ? _temp.then(function () {
-        return resData;
-      }) : resData;
     });
   } catch (e) {
     return Promise.reject(e);
@@ -297,9 +292,7 @@ var send$3 = function send(args) {
     var argsCopy = _extends({}, args);
     argsCopy.path = "" + backendURL + args.path;
     if (args.auth) argsCopy.auth = "Bearer " + args.auth;
-    return Promise.resolve(send$4(_extends({}, argsCopy))).then(function (res) {
-      if (!res.ok) throw res;else return res.data;
-    });
+    return Promise.resolve(send$4(_extends({}, argsCopy)));
   } catch (e) {
     return Promise.reject(e);
   }

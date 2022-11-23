@@ -40,9 +40,10 @@ export interface Options {
     body?: string;
 }
 
-export interface Res {
+export interface Res<T, E> {
     ok: boolean;
     status: number;
     statusText: string;
-    data: any;
+    data: T | null;
+    error: E | null;
 }

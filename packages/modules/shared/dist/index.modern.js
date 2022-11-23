@@ -212,18 +212,18 @@ async function send$4({
     opts.headers["Authorization"] = auth;
   }
   const res = await fetchImpl(path, opts);
-  let resData = {
-    ok: res.ok,
-    status: res.status,
-    statusText: res.statusText,
-    data: null
-  };
   try {
-    resData.data = await res.json();
+    const _data = await res.json();
+    return {
+      ok: res.ok,
+      status: res.status,
+      statusText: res.statusText,
+      data: res.ok ? _data : null,
+      error: !res.ok ? _data : null
+    };
   } catch (e) {
-    resData.data = await res.text();
+    throw new Error(`Failed to parse response: ${e}`);
   }
-  return resData;
 }
 
 var request = {
@@ -236,8 +236,7 @@ async function send$3(args) {
   const argsCopy = _extends({}, args);
   argsCopy.path = `${backendURL}${args.path}`;
   if (args.auth) argsCopy.auth = `Bearer ${args.auth}`;
-  const res = await send$4(_extends({}, argsCopy));
-  if (!res.ok) throw res;else return res.data;
+  return await send$4(_extends({}, argsCopy));
 }
 
 //

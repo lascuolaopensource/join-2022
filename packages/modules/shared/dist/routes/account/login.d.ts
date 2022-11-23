@@ -1,5 +1,6 @@
 import { UsersPermissionsMe } from "../../types";
 import { Request as Req } from "../../request";
+import { Res as R } from "../../join-request";
 export declare const path = "/auth/local";
 export declare const method = Req.HTTPMethod.POST;
 export declare type Req = {
@@ -18,4 +19,4 @@ export declare type Res = {
     user: UsersPermissionsMe;
     jwt: string;
 };
-export declare function send(data: Req, fetchImpl?: typeof fetch): Promise<Res>;
+export declare function send(data: Req, fetchImpl?: typeof fetch): Promise<R<Res>>;

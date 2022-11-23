@@ -2,7 +2,7 @@ import * as yup from "yup";
 import { Schemas } from "../../validation";
 import { UsersPermissionsMe } from "../../types";
 import { Request as Req } from "../../request";
-import { send as s } from "../../join-request";
+import { send as s, Res as R } from "../../join-request";
 
 //
 

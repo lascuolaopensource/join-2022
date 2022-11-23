@@ -2,13 +2,13 @@ import { HTTPMethod, Options, Args, Res } from "./types";
 
 // Send function
 
-export async function send({
+export async function send<T, E = any>({
     method,
     path,
     data,
     auth,
     fetchImpl = fetch,
-}: Args): Promise<Res> {
+}: Args): Promise<Res<T, E>> {
     const opts: Options = { method, headers: {} };
 
     if (data && method != HTTPMethod.GET) {
@@ -22,18 +22,16 @@ export async function send({
 
     const res = await fetchImpl(path, opts);
 
-    let resData: Res = {
-        ok: res.ok,
-        status: res.status,
-        statusText: res.statusText,
-        data: null,
-    };
-
     try {
-        resData.data = await res.json();
+        const data = await res.json();
+        return {
+            ok: res.ok,
+            status: res.status,
+            statusText: res.statusText,
+            data: res.ok ? data : null,
+            error: !res.ok ? data : null,
+        };
     } catch (e) {
-        resData.data = await res.text();
+        throw new Error(`Failed to parse response: ${e}`);
     }
-
-    return resData;
 }

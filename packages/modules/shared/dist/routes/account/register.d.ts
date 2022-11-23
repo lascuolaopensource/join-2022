@@ -21,4 +21,4 @@ export declare const schema: import("yup/lib/object").RequiredObjectSchema<{
 }>>;
 export interface Res extends UsersPermissionsLoginPayload {
 }
-export declare function send(data: Req, fetchImpl?: typeof fetch): Promise<Res>;
+export declare function send(data: Req, fetchImpl?: typeof fetch): Promise<import("../../join-request").Res<Res>>;
