@@ -29,14 +29,16 @@
 					};
 				}}
 			>
-				<Button type="submit" color="light">
+				<Button type="submit" color="light" data-test="nav-btn-logout">
 					<ArrowRightOnRectangle class="w-5 h-5" />
 				</Button>
 			</form>
 		{:else}
 			<div>
-				<Button href="/account/login" color="light">Login</Button>
-				<Button href="/account/register" color="light">Register</Button>
+				<Button href="/account/login" color="light" data-test="nav-btn-login">Login</Button>
+				<Button href="/account/register" color="light" data-test="nav-btn-register"
+					>Register</Button
+				>
 			</div>
 		{/if}
 	</div>

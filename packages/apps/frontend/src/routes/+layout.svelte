@@ -6,7 +6,8 @@
 	import Navbar from '$lib/components/navbar.svelte';
 
 	//
-	let user = ($page.data as PageData).user;
+	let user: App.Locals['user'];
+	$: user = ($page.data as PageData).user;
 </script>
 
 <div class="w-screen min-h-screen flex flex-col bg-gray-200">
