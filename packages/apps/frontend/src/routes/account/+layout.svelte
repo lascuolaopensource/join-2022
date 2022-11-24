@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Container from '$lib/components/container.svelte';
-	import { Heading, P, A, Card } from 'flowbite-svelte';
+	import { Card } from 'flowbite-svelte';
 </script>
 
 <Container center>
