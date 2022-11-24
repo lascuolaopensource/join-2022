@@ -1,9 +1,12 @@
 import type { PageServerLoad, Actions } from './$types';
-import { routes as r, Request as Req } from 'join-shared';
-import { invalid, error, redirect } from '@sveltejs/kit';
+import { routes as r } from 'join-shared';
+import { invalid, redirect } from '@sveltejs/kit';
 import paths from '$lib/constants/paths';
 
-export const load: PageServerLoad = async () => {
+//
+
+export const load: PageServerLoad = async ({ locals }) => {
+	if (locals.user) throw redirect(307, '/');
 	return {};
 };
 
@@ -18,10 +21,6 @@ export const actions: Actions = {
 		const firstName = data.get('firstName');
 		const lastName = data.get('lastName');
 
-		if (!email || !password || !firstName || !lastName) {
-			return invalid(401, {}); // TODO
-		}
-
 		const body: r.Account.Register.Req = {
 			name: firstName as string,
 			surname: lastName as string,
@@ -29,32 +28,26 @@ export const actions: Actions = {
 			password: password as string
 		};
 
-		let res: r.Account.Register.Res | null = null;
-		try {
-			res = await r.Account.Register.send(body, fetch);
-		} catch (e) {
-			const err = e as Req.Res;
-			// throw error(err.status, err.);
+		const res = await r.Account.Register.send(body, fetch);
+
+		if (!res.ok || res.error) {
+			// throw error(res.status, res.error?.error.message);
+			return invalid(400, { firstName, lastName, email, error: res.error?.error.message });
 		}
+		//
+		else if (res.data) {
+			// If there's no jwt, redirect to thank you page
+			if (!res.data.jwt) throw redirect(307, paths.register.thanks);
 
-		// if (!res) throw error(400); // TODO
-		// console.log(res);
-
-		// // If there's jwt in the response
-		// // it means that account confirmation is disabled in the backend
-		// if (res.jwt) {
-		// 	cookies.set('jwt', res.jwt, {
-		// 		path: '/',
-		// 		httpOnly: true,
-		// 		sameSite: 'strict',
-		// 		maxAge: 60 * 60 * 24 * 30
-		// 	});
-
-		// 	throw redirect(307, '/');
-		// }
-
-		// // If there's no jwt in the response
-		// // Sending to the thanks page, asking then for confirmation
-		// throw redirect(307, paths.register.thanks);
+			// If there's jwt in the response
+			// it means that account confirmation is disabled in the backend
+			cookies.set('jwt', res.data.jwt, {
+				path: '/',
+				httpOnly: true,
+				sameSite: 'strict',
+				maxAge: 60 * 60 * 24 * 30
+			});
+			throw redirect(307, paths.login);
+		}
 	}
 };

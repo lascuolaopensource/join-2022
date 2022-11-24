@@ -2,9 +2,10 @@
 	import { enhance } from '$app/forms';
 	import type { ActionData } from './$types';
 	import paths from '$lib/constants/paths';
-	// import ListErrors from '$lib/ListErrors.svelte';
-	import { Card, Input, Label, Button, Heading, P, A } from 'flowbite-svelte';
+	import { Input, Label, Button, Alert } from 'flowbite-svelte';
 	import { TitleAndLink } from '$lib/components';
+
+	export let form: ActionData;
 </script>
 
 <svelte:head>
@@ -67,6 +68,12 @@
 			/>
 		</div>
 	</div>
+
+	{#if form?.error}
+		<Alert color="red" dismissable data-test="error">
+			{form.error}
+		</Alert>
+	{/if}
 
 	<Button type="submit" data-test="submit">Register</Button>
 </form>

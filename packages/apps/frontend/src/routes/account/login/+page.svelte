@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { enhance, applyAction } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import type { ActionData } from './$types';
 	// import ListErrors from '$lib/ListErrors.svelte';
 	import { Card, Input, Label, Button, Heading, P, A } from 'flowbite-svelte';
@@ -17,7 +18,16 @@
 
 <!-- <ListErrors errors={form?.errors} /> -->
 
-<form use:enhance method="POST" class="space-y-8">
+<form
+	use:enhance={() => {
+		return async ({ result }) => {
+			invalidateAll();
+			await applyAction(result);
+		};
+	}}
+	method="POST"
+	class="space-y-8"
+>
 	<div class="space-y-6">
 		<div>
 			<Label for="email">Email</Label>

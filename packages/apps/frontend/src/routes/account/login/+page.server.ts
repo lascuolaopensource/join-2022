@@ -8,6 +8,7 @@ import { routes as r } from 'join-shared';
 
 export const load: PageServerLoad = ({ locals }) => {
 	if (locals.user) throw redirect(307, '/');
+	return {};
 };
 
 //
@@ -28,22 +29,21 @@ export const actions: Actions = {
 			password: password as string
 		};
 
-		let res: r.Account.Login.Res | null = null;
-		try {
-			res = await r.Account.Login.send(body, fetch);
-		} catch (error) {
-			console.log(error);
+		const res = await r.Account.Login.send(body, fetch);
+
+		if (!res.ok || Boolean(res.error)) {
+			throw error(res.status, res.error?.error.message);
 		}
+		//
+		else if (res.data) {
+			cookies.set('jwt', res.data.jwt, {
+				path: '/',
+				httpOnly: true,
+				sameSite: 'strict',
+				maxAge: 60 * 60 * 24 * 30
+			});
 
-		if (!res) throw error(400); // TODO
-
-		cookies.set('jwt', res.jwt, {
-			path: '/',
-			httpOnly: true,
-			sameSite: 'strict',
-			maxAge: 60 * 60 * 24 * 30
-		});
-
-		throw redirect(307, '/');
+			throw redirect(307, '/');
+		}
 	}
 };

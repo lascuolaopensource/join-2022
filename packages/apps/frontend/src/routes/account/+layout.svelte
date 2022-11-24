@@ -4,7 +4,7 @@
 </script>
 
 <Container center>
-	<div class="basis-80">
+	<div class="basis-96">
 		<Card>
 			<div class="space-y-8">
 				<slot />

@@ -9,7 +9,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return await resolve(event);
 	}
 
-	const user = await routes.Account.Me.send(token, event.fetch);
+	const res = await routes.Account.Me.send(token, event.fetch);
+	const user = res.data;
 
 	if (user) {
 		event.locals.user = user;
