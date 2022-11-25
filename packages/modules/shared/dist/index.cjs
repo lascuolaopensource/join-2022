@@ -101,7 +101,7 @@ var Schemas;
   };
 })(Schemas || (Schemas = {}));
 
-var index$a = {
+var index$b = {
 	__proto__: null,
 	get Regex () { return Regex; },
 	get Schemas () { return Schemas; }
@@ -185,7 +185,7 @@ var HTTPMethod$1;
   HTTPMethod["TRACE"] = "TRACE";
 })(HTTPMethod$1 || (HTTPMethod$1 = {}));
 
-var index$9 = {
+var index$a = {
 	__proto__: null,
 	get HTTPMethod () { return HTTPMethod$1; },
 	get Enum_Enrollment_State () { return Enum_Enrollment_State; },
@@ -298,6 +298,12 @@ var send$5 = function send(args) {
   }
 };
 var backendURL = "http://localhost:1337/api";
+
+var index$9 = {
+	__proto__: null,
+	send: send$5,
+	backendURL: backendURL
+};
 
 //
 
@@ -789,7 +795,11 @@ function formatDate(date, locale) {
   if (locale === void 0) {
     locale = "IT-it";
   }
-  return date.toLocaleDateString(locale, {
+  var d;
+  if (typeof date === "string") {
+    d = new Date(date);
+  }
+  return d.toLocaleDateString(locale, {
     month: "2-digit",
     day: "2-digit",
     year: "2-digit"
@@ -803,13 +813,12 @@ var index = {
 };
 
 exports.Request = types;
-exports.backendURL = backendURL;
 exports.errors = errors;
 exports.formatters = index;
 exports.helpers = index$1;
+exports.jr = index$9;
 exports.request = request;
 exports.routes = index$2;
-exports.send = send$5;
-exports.types = index$9;
-exports.validation = index$a;
+exports.types = index$a;
+exports.validation = index$b;
 //# sourceMappingURL=index.cjs.map
