@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { PUBLIC_BACKEND_URL } from '$env/static/public';
 	import type { PageData } from './$types';
-	import { Container } from '$lib/components';
+	import { Container, BottomBar } from '$lib/components';
 	import { Heading } from 'flowbite-svelte';
 	import SvelteMarkdown from 'svelte-markdown';
 
@@ -18,11 +18,13 @@
 	</div>
 
 	<Container padding direction="column">
-		<div class="prose prose-h1:mb-6 prose-h1:mt-10 prose-h1:font-semibold prose-sm">
+		<div class="mx-auto prose prose-sm prose-h1:font-semibold">
 			<SvelteMarkdown source={c?.description} />
 		</div>
 	</Container>
 </div>
+
+<BottomBar>yolo</BottomBar>
 
 <style>
 	#cover {
