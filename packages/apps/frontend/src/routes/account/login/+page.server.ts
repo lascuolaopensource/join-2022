@@ -1,8 +1,7 @@
 import type { PageServerLoad, Actions } from './$types';
-
-import { invalid, redirect, error } from '@sveltejs/kit';
-
+import { invalid, redirect } from '@sveltejs/kit';
 import { routes as r } from 'join-shared';
+import { setJWTCookie } from '$lib/utils/setJwtCookie';
 
 //
 
@@ -20,10 +19,6 @@ export const actions: Actions = {
 		const email = data.get('email');
 		const password = data.get('password');
 
-		if (!(Boolean(email) && Boolean(password))) {
-			return invalid(401, {}); // TODO
-		}
-
 		const body: r.Account.Login.Req = {
 			identifier: email as string,
 			password: password as string
@@ -32,17 +27,11 @@ export const actions: Actions = {
 		const res = await r.Account.Login.send(body, fetch);
 
 		if (!res.ok || Boolean(res.error)) {
-			throw error(res.status, res.error?.error.message);
+			return invalid(400, { error: res.error?.error.message });
 		}
 		//
 		else if (res.data) {
-			cookies.set('jwt', res.data.jwt, {
-				path: '/',
-				httpOnly: true,
-				sameSite: 'strict',
-				maxAge: 60 * 60 * 24 * 30
-			});
-
+			setJWTCookie(cookies, res.data.jwt);
 			throw redirect(307, '/');
 		}
 	}

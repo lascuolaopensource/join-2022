@@ -1,2 +1,2 @@
-export { Forgot } from "./forgot";
-export { Reset } from "./reset";
+export * as Forgot from "./forgot";
+export * as Reset from "./reset";

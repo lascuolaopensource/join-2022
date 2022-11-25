@@ -2,6 +2,7 @@ import type { PageServerLoad, Actions } from './$types';
 import { routes as r } from 'join-shared';
 import { invalid, redirect } from '@sveltejs/kit';
 import paths from '$lib/constants/paths';
+import { setJWTCookie } from '$lib/utils/setJwtCookie';
 
 //
 
@@ -41,12 +42,8 @@ export const actions: Actions = {
 
 			// If there's jwt in the response
 			// it means that account confirmation is disabled in the backend
-			cookies.set('jwt', res.data.jwt, {
-				path: '/',
-				httpOnly: true,
-				sameSite: 'strict',
-				maxAge: 60 * 60 * 24 * 30
-			});
+			setJWTCookie(cookies, res.data.jwt);
+
 			throw redirect(307, paths.login);
 		}
 	}
