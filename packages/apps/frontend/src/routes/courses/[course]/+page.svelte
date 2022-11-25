@@ -2,7 +2,7 @@
 	import { PUBLIC_BACKEND_URL } from '$env/static/public';
 	import type { PageData } from './$types';
 	import { Container, BottomBar } from '$lib/components';
-	import { Heading } from 'flowbite-svelte';
+	import { Heading, Button } from 'flowbite-svelte';
 	import SvelteMarkdown from 'svelte-markdown';
 
 	export let data: PageData;
@@ -24,7 +24,9 @@
 	</Container>
 </div>
 
-<BottomBar>yolo</BottomBar>
+<BottomBar background="blur">
+	<Button href={`/enroll/${c?.slug}`}>Enroll!</Button>
+</BottomBar>
 
 <style>
 	#cover {
