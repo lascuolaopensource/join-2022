@@ -4,8 +4,10 @@
 	import type { ActionData } from './$types';
 	// import ListErrors from '$lib/ListErrors.svelte';
 	import { Card, Input, Label, Button, Heading, P, A } from 'flowbite-svelte';
-	import { TitleAndLink } from '$lib/components';
+	import { TitleAndLink, FormError } from '$lib/components';
 	import paths from '$lib/constants/paths';
+
+	export let form: ActionData;
 </script>
 
 <svelte:head>
@@ -41,10 +43,19 @@
 			/>
 		</div>
 		<div>
-			<Label for="password">Password</Label>
+			<div class="flex justify-between">
+				<Label for="password">Password</Label>
+				<Label>
+					<A href={paths.password.forgot.index} data-test="forgot-password"
+						>Forgot password?</A
+					>
+				</Label>
+			</div>
 			<Input name="password" type="password" id="password" required data-test="password" />
 		</div>
 	</div>
+
+	<FormError error={form?.error} />
 
 	<Button type="submit" data-test="submit">Sign in</Button>
 </form>

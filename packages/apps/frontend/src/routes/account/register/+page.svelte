@@ -6,7 +6,8 @@
 	import { routes as r } from 'join-shared';
 
 	import { Input, Label, Button, Alert } from 'flowbite-svelte';
-	import { TitleAndLink } from '$lib/components';
+	import { TitleAndLink, FormError } from '$lib/components';
+	import { error } from '@sveltejs/kit';
 
 	//
 
@@ -106,11 +107,7 @@
 		</div>
 	</div>
 
-	{#if form?.error}
-		<Alert color="red" dismissable data-test="error">
-			{form.error}
-		</Alert>
-	{/if}
+	<FormError error={form?.error} />
 
 	<Button type="submit" data-test="submit">Register</Button>
 </form>
