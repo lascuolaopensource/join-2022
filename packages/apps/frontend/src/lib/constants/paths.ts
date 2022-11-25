@@ -11,5 +11,9 @@ export default {
 			index: '/account/password/forgot',
 			confirm: '/account/password/forgot/confirm'
 		}
+	},
+	courses: {
+		index: '/courses',
+		archive: '/courses?archive=true'
 	}
 };

@@ -21,7 +21,7 @@
 
 	<!-- List of sections -->
 	<div class="pt-6 flex flex-row flex-wrap space-x-4">
-		{#each sections as s}
+		{#each sections as s (s.title)}
 			<div class:opacity-40={s.disabled} class="basis-80">
 				<Card href={!s.disabled ? s.href : ''}>
 					<div class="space-y-2">

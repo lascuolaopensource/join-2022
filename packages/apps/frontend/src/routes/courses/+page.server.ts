@@ -7,9 +7,11 @@ import { jr, Request, types as t } from 'join-shared';
 
 export const load: PageServerLoad = async ({
 	cookies,
-	fetch
+	fetch,
+	url
 }): Promise<t.CourseEntityResponseCollection | { error: string | undefined } | undefined> => {
 	const jwt = getJWT(cookies);
+	const archive = url.searchParams.get('archive');
 
 	// This shouldn't happen, cause the user should be redirected to the login page before this
 	// But it's good to have this check here, for type safety
@@ -17,13 +19,20 @@ export const load: PageServerLoad = async ({
 		console.log('no jwt');
 	}
 
+	// Building filter query
+	const today = new Date().toISOString();
+	// Building the filters object
+	const gtFilter = { $gt: today };
+	const ltFilter = { $lt: today };
+
 	// Building query
 	const query = qs.stringify({
 		populate: {
-			meetings: '*',
-			gallery: '*'
+			meetings: '*'
 		},
-		filters: {}
+		filters: {
+			enrollmentDeadline: archive == 'true' ? ltFilter : gtFilter
+		}
 	});
 
 	const res = await jr.send<t.CourseEntityResponseCollection>({
@@ -40,22 +49,4 @@ export const load: PageServerLoad = async ({
 	if (res.data) {
 		return res.data;
 	}
-
-	// // Getting courses
-	// const today = new Date().toISOString();
-	// // Deciding filter based on mode
-	// // lt: lower than | gt: greater than
-	// const filterOperator = mode == 'expired' ? '$lt' : '$gt';
-	// // Building the filters object
-	// const filters: any = { enrollmentDeadline: {} };
-	// filters.enrollmentDeadline[filterOperator] = today;
-
-	// // Requesting...
-	// return await request(
-	// 	fetchFn,
-	// 	`${b}api/courses?${query}`,
-	// 	'GET',
-	// 	null,
-	// 	headersAuth()
-	// );
 };
