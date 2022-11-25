@@ -13,7 +13,5 @@
 <div class="w-screen min-h-screen flex flex-col bg-gray-200">
 	<Navbar {user} />
 
-	<main class="self-stretch grow flex flex-row items-stretch">
-		<slot />
-	</main>
+	<slot />
 </div>
