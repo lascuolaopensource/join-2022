@@ -246,7 +246,7 @@
 	  }
 	  return result;
 	}
-	var send$4 = function send(_ref) {
+	var send$6 = function send(_ref) {
 	  var method = _ref.method,
 	    path = _ref.path,
 	    data = _ref.data,
@@ -287,15 +287,15 @@
 
 	var request = {
 		__proto__: null,
-		send: send$4
+		send: send$6
 	};
 
-	var send$3 = function send(args) {
+	var send$5 = function send(args) {
 	  try {
 	    var argsCopy = _extends({}, args);
 	    argsCopy.path = "" + backendURL + args.path;
 	    if (args.auth) argsCopy.auth = "Bearer " + args.auth;
-	    return Promise.resolve(send$4(_extends({}, argsCopy)));
+	    return Promise.resolve(send$6(_extends({}, argsCopy)));
 	  } catch (e) {
 	    return Promise.reject(e);
 	  }
@@ -304,12 +304,12 @@
 
 	//
 
-	var send$2 = function send(data, fetchImpl) {
+	var send$4 = function send(data, fetchImpl) {
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
-	    return Promise.resolve(send$3({
-	      path: path$2,
-	      method: method$2,
+	    return Promise.resolve(send$5({
+	      path: path$4,
+	      method: method$4,
 	      data: data,
 	      fetchImpl: fetchImpl
 	    }));
@@ -317,15 +317,15 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$2 = "/account/register";
-	var method$2 = HTTPMethod$1.POST;
-	var values$1 = {
+	var path$4 = "/account/register";
+	var method$4 = HTTPMethod$1.POST;
+	var values$3 = {
 	  name: "",
 	  surname: "",
 	  email: "",
 	  password: ""
 	};
-	var schema$1 = yup__namespace.object({
+	var schema$3 = yup__namespace.object({
 	  name: yup__namespace.string().required(),
 	  surname: yup__namespace.string().required(),
 	  email: Schemas.email.required(),
@@ -334,11 +334,11 @@
 
 	var register = {
 		__proto__: null,
-		send: send$2,
-		path: path$2,
-		method: method$2,
-		values: values$1,
-		schema: schema$1
+		send: send$4,
+		path: path$4,
+		method: method$4,
+		values: values$3,
+		schema: schema$3
 	};
 
 	var UserExists;
@@ -355,10 +355,78 @@
 
 	//
 
+	var send$3 = function send(data, fetchImpl) {
+	  try {
+	    if (fetchImpl === undefined) fetchImpl = fetch;
+	    return Promise.resolve(send$5({
+	      path: path$3,
+	      method: method$3,
+	      data: data,
+	      fetchImpl: fetchImpl
+	    }));
+	  } catch (e) {
+	    return Promise.reject(e);
+	  }
+	};
+	var path$3 = "/auth/local";
+	var method$3 = HTTPMethod.POST;
+	var values$2 = {
+	  identifier: "",
+	  password: ""
+	};
+	var schema$2 = yup__namespace.object({
+	  identifier: Schemas.email.required(),
+	  password: yup__namespace.string().required()
+	}).required();
+
+	var login = {
+		__proto__: null,
+		send: send$3,
+		path: path$3,
+		method: method$3,
+		values: values$2,
+		schema: schema$2
+	};
+
+	//
+
+	var send$2 = function send(data, fetchImpl) {
+	  try {
+	    if (fetchImpl === undefined) fetchImpl = fetch;
+	    return Promise.resolve(send$5({
+	      path: path$2,
+	      method: method$2,
+	      data: data,
+	      fetchImpl: fetchImpl
+	    }));
+	  } catch (e) {
+	    return Promise.reject(e);
+	  }
+	};
+	var path$2 = "/auth/forgot-password";
+	var method$2 = HTTPMethod$1.POST;
+	var values$1 = {
+	  email: ""
+	};
+	var schema$1 = yup__namespace.object({
+	  email: Schemas.email.required()
+	}).required();
+
+	var forgot = {
+		__proto__: null,
+		send: send$2,
+		path: path$2,
+		method: method$2,
+		values: values$1,
+		schema: schema$1
+	};
+
+	//
+
 	var send$1 = function send(data, fetchImpl) {
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
-	    return Promise.resolve(send$3({
+	    return Promise.resolve(send$5({
 	      path: path$1,
 	      method: method$1,
 	      data: data,
@@ -368,18 +436,20 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$1 = "/auth/local";
-	var method$1 = HTTPMethod.POST;
+	var path$1 = "/auth/reset-password";
+	var method$1 = HTTPMethod$1.POST;
 	var values = {
-	  identifier: "",
-	  password: ""
+	  password: "string",
+	  passwordConfirmation: "string",
+	  code: "string"
 	};
 	var schema = yup__namespace.object({
-	  identifier: Schemas.email.required(),
-	  password: yup__namespace.string().required()
+	  password: yup__namespace.string().required(),
+	  passwordConfirmation: yup__namespace.string().required(),
+	  code: yup__namespace.string().required()
 	}).required();
 
-	var login = {
+	var reset = {
 		__proto__: null,
 		send: send$1,
 		path: path$1,
@@ -388,44 +458,16 @@
 		schema: schema
 	};
 
-	var Forgot;
-	(function (Forgot) {
-	  Forgot.path = "/auth/forgot-password";
-	  Forgot.method = HTTPMethod$1.POST;
-	  Forgot.values = {
-	    email: ""
-	  };
-	  Forgot.schema = yup__namespace.object({
-	    email: Schemas.email.required()
-	  }).required();
-	})(Forgot || (Forgot = {}));
-
-	var Reset;
-	(function (Reset) {
-	  Reset.path = "/auth/reset-password";
-	  Reset.method = HTTPMethod$1.POST;
-	  Reset.values = {
-	    password: "string",
-	    passwordConfirmation: "string",
-	    code: "string"
-	  };
-	  Reset.schema = yup__namespace.object({
-	    password: yup__namespace.string().required(),
-	    passwordConfirmation: yup__namespace.string().required(),
-	    code: yup__namespace.string().required()
-	  }).required();
-	})(Reset || (Reset = {}));
-
 	var index$8 = {
 		__proto__: null,
-		get Forgot () { return Forgot; },
-		get Reset () { return Reset; }
+		Forgot: forgot,
+		Reset: reset
 	};
 
 	var send = function send(token, fetchImpl) {
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
-	    return Promise.resolve(send$3({
+	    return Promise.resolve(send$5({
 	      path: path,
 	      method: method,
 	      auth: token,
@@ -770,7 +812,7 @@
 	exports.helpers = index$1;
 	exports.request = request;
 	exports.routes = index$2;
-	exports.send = send$3;
+	exports.send = send$5;
 	exports.types = index$9;
 	exports.validation = index$a;
 

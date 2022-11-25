@@ -193,7 +193,7 @@ var types = {
 };
 
 // Send function
-async function send$4({
+async function send$6({
   method,
   path,
   data,
@@ -228,36 +228,36 @@ async function send$4({
 
 var request = {
 	__proto__: null,
-	send: send$4
+	send: send$6
 };
 
 const backendURL = "http://localhost:1337/api";
-async function send$3(args) {
+async function send$5(args) {
   const argsCopy = _extends({}, args);
   argsCopy.path = `${backendURL}${args.path}`;
   if (args.auth) argsCopy.auth = `Bearer ${args.auth}`;
-  return await send$4(_extends({}, argsCopy));
+  return await send$6(_extends({}, argsCopy));
 }
 
 //
-const path$2 = "/account/register";
-const method$2 = HTTPMethod$1.POST;
-const values$1 = {
+const path$4 = "/account/register";
+const method$4 = HTTPMethod$1.POST;
+const values$3 = {
   name: "",
   surname: "",
   email: "",
   password: ""
 };
-const schema$1 = yup.object({
+const schema$3 = yup.object({
   name: yup.string().required(),
   surname: yup.string().required(),
   email: Schemas.email.required(),
   password: yup.string().required()
 }).required();
-async function send$2(data, fetchImpl = fetch) {
-  return send$3({
-    path: path$2,
-    method: method$2,
+async function send$4(data, fetchImpl = fetch) {
+  return send$5({
+    path: path$4,
+    method: method$4,
     data,
     fetchImpl
   });
@@ -265,11 +265,11 @@ async function send$2(data, fetchImpl = fetch) {
 
 var register = {
 	__proto__: null,
-	path: path$2,
-	method: method$2,
-	values: values$1,
-	schema: schema$1,
-	send: send$2
+	path: path$4,
+	method: method$4,
+	values: values$3,
+	schema: schema$3,
+	send: send$4
 };
 
 var UserExists;
@@ -285,18 +285,76 @@ var UserExists;
 })(UserExists || (UserExists = {}));
 
 //
-const path$1 = "/auth/local";
-const method$1 = HTTPMethod.POST;
-const values = {
+const path$3 = "/auth/local";
+const method$3 = HTTPMethod.POST;
+const values$2 = {
   identifier: "",
   password: ""
 };
-const schema = yup.object({
+const schema$2 = yup.object({
   identifier: Schemas.email.required(),
   password: yup.string().required()
 }).required();
+async function send$3(data, fetchImpl = fetch) {
+  return send$5({
+    path: path$3,
+    method: method$3,
+    data,
+    fetchImpl
+  });
+}
+
+var login = {
+	__proto__: null,
+	path: path$3,
+	method: method$3,
+	values: values$2,
+	schema: schema$2,
+	send: send$3
+};
+
+//
+const path$2 = "/auth/forgot-password";
+const method$2 = HTTPMethod$1.POST;
+const values$1 = {
+  email: ""
+};
+const schema$1 = yup.object({
+  email: Schemas.email.required()
+}).required();
+async function send$2(data, fetchImpl = fetch) {
+  return send$5({
+    path: path$2,
+    method: method$2,
+    data,
+    fetchImpl
+  });
+}
+
+var forgot = {
+	__proto__: null,
+	path: path$2,
+	method: method$2,
+	values: values$1,
+	schema: schema$1,
+	send: send$2
+};
+
+//
+const path$1 = "/auth/reset-password";
+const method$1 = HTTPMethod$1.POST;
+const values = {
+  password: "string",
+  passwordConfirmation: "string",
+  code: "string"
+};
+const schema = yup.object({
+  password: yup.string().required(),
+  passwordConfirmation: yup.string().required(),
+  code: yup.string().required()
+}).required();
 async function send$1(data, fetchImpl = fetch) {
-  return send$3({
+  return send$5({
     path: path$1,
     method: method$1,
     data,
@@ -304,7 +362,7 @@ async function send$1(data, fetchImpl = fetch) {
   });
 }
 
-var login = {
+var reset = {
 	__proto__: null,
 	path: path$1,
 	method: method$1,
@@ -313,44 +371,16 @@ var login = {
 	send: send$1
 };
 
-var Forgot;
-(function (Forgot) {
-  Forgot.path = "/auth/forgot-password";
-  Forgot.method = HTTPMethod$1.POST;
-  Forgot.values = {
-    email: ""
-  };
-  Forgot.schema = yup.object({
-    email: Schemas.email.required()
-  }).required();
-})(Forgot || (Forgot = {}));
-
-var Reset;
-(function (Reset) {
-  Reset.path = "/auth/reset-password";
-  Reset.method = HTTPMethod$1.POST;
-  Reset.values = {
-    password: "string",
-    passwordConfirmation: "string",
-    code: "string"
-  };
-  Reset.schema = yup.object({
-    password: yup.string().required(),
-    passwordConfirmation: yup.string().required(),
-    code: yup.string().required()
-  }).required();
-})(Reset || (Reset = {}));
-
 var index$8 = {
 	__proto__: null,
-	get Forgot () { return Forgot; },
-	get Reset () { return Reset; }
+	Forgot: forgot,
+	Reset: reset
 };
 
 const path = "/users/me?populate=info";
 const method = HTTPMethod.GET;
 async function send(token, fetchImpl = fetch) {
-  return send$3({
+  return send$5({
     path,
     method,
     auth: token,
@@ -674,5 +704,5 @@ var index = {
 	formatDate: formatDate
 };
 
-export { types as Request, backendURL, errors, index as formatters, index$1 as helpers, request, index$2 as routes, send$3 as send, index$9 as types, index$a as validation };
+export { types as Request, backendURL, errors, index as formatters, index$1 as helpers, request, index$2 as routes, send$5 as send, index$9 as types, index$a as validation };
 //# sourceMappingURL=index.modern.js.map
