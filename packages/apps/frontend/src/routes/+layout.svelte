@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 
-	import Navbar from '$lib/components/navbar.svelte';
+	import Navbar from '$lib/partials/navbar.svelte';
 
 	//
 	let user: App.Locals['user'];

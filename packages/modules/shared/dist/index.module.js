@@ -81,7 +81,7 @@ var Schemas;
   };
 })(Schemas || (Schemas = {}));
 
-var index$a = {
+var index$b = {
 	__proto__: null,
 	get Regex () { return Regex; },
 	get Schemas () { return Schemas; }
@@ -165,7 +165,7 @@ var HTTPMethod$1;
   HTTPMethod["TRACE"] = "TRACE";
 })(HTTPMethod$1 || (HTTPMethod$1 = {}));
 
-var index$9 = {
+var index$a = {
 	__proto__: null,
 	get HTTPMethod () { return HTTPMethod$1; },
 	get Enum_Enrollment_State () { return Enum_Enrollment_State; },
@@ -278,6 +278,12 @@ var send$5 = function send(args) {
   }
 };
 var backendURL = "http://localhost:1337/api";
+
+var index$9 = {
+	__proto__: null,
+	send: send$5,
+	backendURL: backendURL
+};
 
 //
 
@@ -769,7 +775,11 @@ function formatDate(date, locale) {
   if (locale === void 0) {
     locale = "IT-it";
   }
-  return date.toLocaleDateString(locale, {
+  var d;
+  if (typeof date === "string") {
+    d = new Date(date);
+  }
+  return d.toLocaleDateString(locale, {
     month: "2-digit",
     day: "2-digit",
     year: "2-digit"
@@ -782,5 +792,5 @@ var index = {
 	formatDate: formatDate
 };
 
-export { types as Request, backendURL, errors, index as formatters, index$1 as helpers, request, index$2 as routes, send$5 as send, index$9 as types, index$a as validation };
+export { types as Request, errors, index as formatters, index$1 as helpers, index$9 as jr, request, index$2 as routes, index$a as types, index$b as validation };
 //# sourceMappingURL=index.module.js.map

@@ -2,7 +2,7 @@ import type { PageServerLoad, Actions } from './$types';
 import { routes as r } from 'join-shared';
 import { invalid, redirect } from '@sveltejs/kit';
 import paths from '$lib/constants/paths';
-import { setJWTCookie } from '$lib/utils/setJwtCookie';
+import { setJWTCookie } from '$lib/utils/cookies';
 
 //
 

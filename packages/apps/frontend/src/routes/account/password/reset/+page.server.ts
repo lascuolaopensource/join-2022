@@ -1,7 +1,7 @@
 import type { Actions } from './$types';
 import { routes as r } from 'join-shared';
 import { invalid, redirect } from '@sveltejs/kit';
-import { setJWTCookie } from '$lib/utils/setJwtCookie';
+import { setJWTCookie } from '$lib/utils/cookies';
 
 //
 
