@@ -1,2 +1,2 @@
-export { Course } from "./course";
+export * as Course from "./course";
 export { Payment } from "./payment";

@@ -4,30 +4,43 @@
 	import { Container, BottomBar } from '$lib/components';
 	import { Heading, Button } from 'flowbite-svelte';
 	import SvelteMarkdown from 'svelte-markdown';
+	import { helpers as h, formatters as f } from 'join-shared';
 
 	export let data: PageData;
 
-	const c = data.attributes;
+	const c = data.attributes!;
+
 	const coverUrl = `${PUBLIC_BACKEND_URL}${c?.gallery?.data[0].attributes?.url}`;
 	const coverBg = `url(${coverUrl})`;
+
+	const hasDeadlinePassed = h.Course.hasDeadlinePassed(c);
 </script>
+
+<!--  -->
 
 <div class="grow flex flex-col">
 	<div id="cover" class="flex flex-col items-center justify-center" style:--cover-bg={coverBg}>
-		<Heading tag="h3" color="text-white" align="center">{c?.name}</Heading>
+		<Heading tag="h3" color="text-white" align="center">{c.name}</Heading>
 	</div>
 
 	<Container padding direction="column">
 		<div class="mx-auto prose prose-sm prose-h1:font-semibold">
-			<SvelteMarkdown source={c?.description} />
+			<SvelteMarkdown source={c.description} />
 		</div>
 	</Container>
 </div>
 
 <BottomBar background="blur">
-	<Button href={`/enroll/${c?.slug}`}>Enroll!</Button>
+	{#if !hasDeadlinePassed}
+		<Button href={`/enroll/${c.slug}`}>Enroll!</Button>
+	{:else}
+		<Button disabled color="alternative">
+			Enrollments closed on {f.formatDate(c.enrollmentDeadline)}
+		</Button>
+	{/if}
 </BottomBar>
 
+<!--  -->
 <style>
 	#cover {
 		height: 50vh;

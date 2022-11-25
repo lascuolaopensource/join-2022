@@ -1,6 +1,5 @@
-import { Course as ICourse } from "$types";
-import { Evaluation } from "$routes";
-export declare namespace Course {
-    function getEvaluationSchemaCtx(c: ICourse): Evaluation.ISchemaCtx;
-    function isPaymentNeeded(c: ICourse): boolean;
-}
+import { Course } from "../types";
+import { Evaluation } from "../routes";
+export declare function getEvaluationSchemaCtx(c: Course): Evaluation.ISchemaCtx;
+export declare function isPaymentNeeded(c: Course): boolean;
+export declare function hasDeadlinePassed(c: Course): boolean;
