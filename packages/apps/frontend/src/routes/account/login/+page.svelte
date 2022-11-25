@@ -18,18 +18,7 @@
 
 <TitleAndLink title="Sign In" link={{ href: paths.register.index, text: 'Need an account?' }} />
 
-<!-- <ListErrors errors={form?.errors} /> -->
-
-<form
-	use:enhance={() => {
-		return async ({ result }) => {
-			invalidateAll();
-			await applyAction(result);
-		};
-	}}
-	method="POST"
-	class="space-y-8"
->
+<form use:enhance method="POST" class="space-y-8">
 	<div class="space-y-6">
 		<div>
 			<Label for="email">Email</Label>
@@ -40,22 +29,31 @@
 				placeholder="mario@rossi.com"
 				required
 				data-test="email"
+				tabindex="1"
 			/>
 		</div>
 		<div>
 			<div class="flex justify-between">
 				<Label for="password">Password</Label>
 				<Label>
-					<A href={paths.password.forgot.index} data-test="forgot-password"
+					<A href={paths.password.forgot.index} data-test="forgot-password" tabindex="4"
 						>Forgot password?</A
 					>
 				</Label>
 			</div>
-			<Input name="password" type="password" id="password" required data-test="password" />
+			<Input
+				name="password"
+				type="password"
+				id="password"
+				required
+				data-test="password"
+				tabindex="2"
+				placeholder="********"
+			/>
 		</div>
 	</div>
 
 	<FormError error={form?.error} />
 
-	<Button type="submit" data-test="submit">Sign in</Button>
+	<Button type="submit" data-test="submit" tabindex="3">Sign in</Button>
 </form>
