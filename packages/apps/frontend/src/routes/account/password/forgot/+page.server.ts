@@ -12,7 +12,6 @@ export const actions: Actions = {
 		const email = data.get('email') as string;
 
 		const res = await r.Account.Password.Forgot.send({ email }, fetch);
-		console.log(res);
 
 		if (!res.ok || res.error) {
 			// throw error(res.status, res.error?.error.message);

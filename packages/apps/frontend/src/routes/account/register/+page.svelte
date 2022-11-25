@@ -16,9 +16,7 @@
 	const formContext = createForm({
 		initialValues: r.Account.Register.values,
 		validationSchema: r.Account.Register.schema,
-		onSubmit: async (values) => {
-			console.log(values);
-		}
+		onSubmit: () => {}
 	});
 
 	const {
