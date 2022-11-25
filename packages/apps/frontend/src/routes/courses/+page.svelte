@@ -20,13 +20,13 @@
 				title="Archived courses"
 				text="These courses are no longer available for enrollment."
 			/>
-			<Button href={paths.courses.index} color="light">View Upcoming</Button>
+			<Button href={paths.courses.index} color="light">Upcoming</Button>
 		{:else}
 			<TitleAndText
 				title="Upcoming courses"
 				text="These courses are available for enrollment."
 			/>
-			<Button href={paths.courses.archive} color="light">View Archive</Button>
+			<Button href={paths.courses.archive} color="light">Archive</Button>
 		{/if}
 	</div>
 

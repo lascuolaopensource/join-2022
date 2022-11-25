@@ -748,21 +748,27 @@ var errors = {
   validationError: "validationError"
 };
 
-var Course;
-(function (Course) {
-  function getEvaluationSchemaCtx(c) {
-    return {
-      cvNeeded: c.cvNeeded,
-      letterNeeded: c.motivationalLetterNeeded,
-      portfolioNeeded: c.portfolioNeeded
-    };
-  }
-  Course.getEvaluationSchemaCtx = getEvaluationSchemaCtx;
-  function isPaymentNeeded(c) {
-    return c.price > 0;
-  }
-  Course.isPaymentNeeded = isPaymentNeeded;
-})(Course || (Course = {}));
+//
+function getEvaluationSchemaCtx(c) {
+  return {
+    cvNeeded: c.cvNeeded,
+    letterNeeded: c.motivationalLetterNeeded,
+    portfolioNeeded: c.portfolioNeeded
+  };
+}
+function isPaymentNeeded(c) {
+  return c.price > 0;
+}
+function hasDeadlinePassed(c) {
+  return Date.now() > Date.parse(c.enrollmentDeadline);
+}
+
+var course = {
+	__proto__: null,
+	getEvaluationSchemaCtx: getEvaluationSchemaCtx,
+	isPaymentNeeded: isPaymentNeeded,
+	hasDeadlinePassed: hasDeadlinePassed
+};
 
 var Payment;
 (function (Payment) {
@@ -774,7 +780,7 @@ var Payment;
 
 var index$1 = {
 	__proto__: null,
-	get Course () { return Course; },
+	Course: course,
 	get Payment () { return Payment; }
 };
 

@@ -11,7 +11,7 @@
 
 <!--  -->
 
-<Navbar navClass="sticky top-0 z-20 ">
+<Navbar navClass="sticky top-0 z-20 border-b-1 border-b-gray-300">
 	<div class="px-6 py-2 flex flex-row justify-between items-center grow">
 		<NavBrand href="/">
 			<Heading tag="h5">Join</Heading>

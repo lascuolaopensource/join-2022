@@ -1,38 +1,35 @@
 import type { PageServerLoad } from './$types';
-import { getJWT } from '$lib/utils/cookies';
-import type { LoadReturn } from '$lib/types';
 import qs from 'qs';
+import { getJWT } from '$lib/utils/cookies';
 import { jr, Request, types as t } from 'join-shared';
+import type { LoadReturn } from '$lib/types';
 
 //
 
 export const load: PageServerLoad = async ({
+	params,
 	cookies,
-	fetch,
-	url
-}): LoadReturn<t.CourseEntityResponseCollection> => {
+	fetch
+}): LoadReturn<t.CourseEntity> => {
 	const jwt = getJWT(cookies);
-	const archive = url.searchParams.get('archive');
+	const { course: slug } = params;
 
 	// This shouldn't happen, cause the user should be redirected to the login page before this
 	// But it's good to have this check here, for type safety
 	if (!jwt) {
 		console.log('no jwt');
 	}
+	console.log(slug);
 
-	// Building filter query
-	const today = new Date().toISOString();
-	// Building the filters object
-	const gtFilter = { $gt: today };
-	const ltFilter = { $lt: today };
-
-	// Building query
+	// Creating filters
 	const query = qs.stringify({
 		populate: {
-			meetings: '*'
+			gallery: '*'
 		},
 		filters: {
-			enrollmentDeadline: archive == 'true' ? ltFilter : gtFilter
+			slug: {
+				$eq: slug
+			}
 		}
 	});
 
@@ -47,7 +44,11 @@ export const load: PageServerLoad = async ({
 		return { error: res.error?.error.message };
 	}
 
+	if (res.data.data.length == 0) {
+		return { error: 'Course not found' };
+	}
+
 	if (res.data) {
-		return res.data;
+		return res.data.data[0];
 	}
 };
