@@ -11,8 +11,8 @@ describe('empty spec', () => {
 	it('should enter data, and submit', () => {
 		cy.visit(paths.register.index);
 		cy.wait(1000);
-		get('firstName').type('Giovanni');
-		get('lastName').type('Bianchi');
+		get('name').type('Giovanni');
+		get('surname').type('Bianchi');
 		get('email').type('bbt.gnn@gmail.com');
 		get('password').type('Giovanni');
 		get('submit').click();

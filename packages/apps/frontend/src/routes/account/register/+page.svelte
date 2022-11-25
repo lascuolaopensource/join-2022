@@ -1,11 +1,35 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { ActionData } from './$types';
+	import { createForm } from 'svelte-forms-lib';
 	import paths from '$lib/constants/paths';
+	import { routes as r } from 'join-shared';
+
 	import { Input, Label, Button, Alert } from 'flowbite-svelte';
 	import { TitleAndLink } from '$lib/components';
 
+	//
+
 	export let form: ActionData;
+
+	const formContext = createForm({
+		initialValues: r.Account.Register.values,
+		validationSchema: r.Account.Register.schema,
+		onSubmit: async (values) => {
+			console.log(values);
+		}
+	});
+
+	const {
+		form: libForm,
+		state,
+		errors,
+		touched,
+		isSubmitting,
+		isValid,
+		handleChange,
+		handleSubmit
+	} = formContext;
 </script>
 
 <svelte:head>
@@ -24,25 +48,31 @@
 <form use:enhance method="POST" class="space-y-8">
 	<div class="space-y-6">
 		<div>
-			<Label for="firstName">First name</Label>
+			<Label for="name">First name</Label>
 			<Input
-				name="firstName"
+				name="name"
 				type="text"
-				id="firstName"
+				id="name"
 				placeholder="Maria"
 				required
-				data-test="firstName"
+				data-test="name"
+				value={$libForm.name}
+				on:change={handleChange}
+				on:blur={handleChange}
 			/>
 		</div>
 		<div>
-			<Label for="lastName">Last name</Label>
+			<Label for="surname">Last name</Label>
 			<Input
-				name="lastName"
+				name="surname"
 				type="text"
-				id="lastName"
+				id="surname"
 				placeholder="Rossi"
 				required
-				data-test="lastName"
+				data-test="surname"
+				value={$libForm.surname}
+				on:change={handleChange}
+				on:blur={handleChange}
 			/>
 		</div>
 		<div>
@@ -54,7 +84,11 @@
 				placeholder="maria@rossi.com"
 				required
 				data-test="email"
+				value={$libForm.email}
+				on:change={handleChange}
+				on:blur={handleChange}
 			/>
+			<p>{$errors.email}</p>
 		</div>
 		<div>
 			<Label for="password">Password</Label>
@@ -65,6 +99,9 @@
 				placeholder="********"
 				required
 				data-test="password"
+				value={$libForm.password}
+				on:change={handleChange}
+				on:blur={handleChange}
 			/>
 		</div>
 	</div>

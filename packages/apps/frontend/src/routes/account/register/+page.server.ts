@@ -18,12 +18,12 @@ export const actions: Actions = {
 
 		const email = data.get('email');
 		const password = data.get('password');
-		const firstName = data.get('firstName');
-		const lastName = data.get('lastName');
+		const name = data.get('name');
+		const surname = data.get('surname');
 
 		const body: r.Account.Register.Req = {
-			name: firstName as string,
-			surname: lastName as string,
+			name: name as string,
+			surname: surname as string,
 			email: email as string,
 			password: password as string
 		};
@@ -32,7 +32,7 @@ export const actions: Actions = {
 
 		if (!res.ok || res.error) {
 			// throw error(res.status, res.error?.error.message);
-			return invalid(400, { firstName, lastName, email, error: res.error?.error.message });
+			return invalid(400, { name, surname, email, error: res.error?.error.message });
 		}
 		//
 		else if (res.data) {
