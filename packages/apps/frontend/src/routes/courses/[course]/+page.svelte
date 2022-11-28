@@ -32,7 +32,7 @@
 
 <BottomBar background="blur">
 	{#if !hasDeadlinePassed}
-		<Button href={`/enroll/${c.slug}`}>Enroll!</Button>
+		<Button href={`/courses/${c.slug}/enroll`}>Enroll!</Button>
 	{:else}
 		<Button disabled color="alternative">
 			Enrollments closed on {f.formatDate(c.enrollmentDeadline)}
