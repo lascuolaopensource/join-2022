@@ -9,7 +9,7 @@ describe('empty spec', () => {
 	});
 
 	it('should enter data, and submit', () => {
-		cy.visit(paths.courses.enroll('corsofichissimo'));
+		cy.visit(paths.courses.enroll.index('corsofichissimo'));
 		cy.wait(1000);
 		get('name').type('Giovanni');
 		get('surname').type('Bianchi');

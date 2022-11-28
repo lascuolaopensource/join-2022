@@ -15,6 +15,12 @@ export default {
 	courses: {
 		index: '/courses',
 		archive: '/courses?archive=true',
-		enroll: (course: string) => `/courses/${course}/enroll`
+		enroll: {
+			index: (course: string) => `/courses/${course}/enroll`,
+			thanks: (course: string) => `/courses/${course}/enroll/thanks`
+		}
+	},
+	payment: {
+		index: (id: string) => `/payments/${id}`
 	}
 };
