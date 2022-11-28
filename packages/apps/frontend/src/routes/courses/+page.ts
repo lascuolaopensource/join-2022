@@ -1,24 +1,15 @@
-import type { PageServerLoad } from './$types';
-import { getJWT } from '$lib/utils/cookies';
+import type { PageLoad } from './$types';
 import type { LoadReturn } from '$lib/types';
 import qs from 'qs';
 import { jr, Request, types as t } from 'join-shared';
 
 //
 
-export const load: PageServerLoad = async ({
-	cookies,
+export const load: PageLoad = async ({
 	fetch,
 	url
 }): LoadReturn<t.CourseEntityResponseCollection> => {
-	const jwt = getJWT(cookies);
 	const archive = url.searchParams.get('archive');
-
-	// This shouldn't happen, cause the user should be redirected to the login page before this
-	// But it's good to have this check here, for type safety
-	if (!jwt) {
-		console.log('no jwt');
-	}
 
 	// Building filter query
 	const today = new Date().toISOString();
@@ -39,7 +30,6 @@ export const load: PageServerLoad = async ({
 	const res = await jr.send<t.CourseEntityResponseCollection>({
 		fetchImpl: fetch,
 		path: `/courses?${query}`,
-		auth: jwt,
 		method: Request.HTTPMethod.GET
 	});
 
