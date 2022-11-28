@@ -126,7 +126,7 @@ export default {
             EnrollPaymentEmail.send(user.email, {
                 COURSE_NAME: course.name,
                 PAYMENT: {
-                    DEADLINE: f.formatDate(new Date(course.enrollmentDeadline)),
+                    DEADLINE: f.formatDate(course.enrollmentDeadline),
                     URL: paymentUrl,
                 },
             });
