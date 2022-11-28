@@ -14,6 +14,8 @@ export function formatDate(date: Date | string, locale = "IT-it") {
     let d: Date;
     if (typeof date === "string") {
         d = new Date(date);
+    } else if (date instanceof Date) {
+        d = date;
     }
     return d.toLocaleDateString(locale, {
         month: "2-digit",

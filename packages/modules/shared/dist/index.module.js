@@ -812,6 +812,8 @@ function formatDate(date, locale) {
   var d;
   if (typeof date === "string") {
     d = new Date(date);
+  } else if (date instanceof Date) {
+    d = date;
   }
   return d.toLocaleDateString(locale, {
     month: "2-digit",
