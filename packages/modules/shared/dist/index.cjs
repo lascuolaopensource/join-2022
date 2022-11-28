@@ -322,13 +322,13 @@ var send$4 = function send(data, fetchImpl) {
 };
 var path$4 = "/account/register";
 var method$4 = HTTPMethod$1.POST;
-var values$3 = {
+var values$4 = {
   name: "",
   surname: "",
   email: "",
   password: ""
 };
-var schema$3 = yup__namespace.object({
+var schema$4 = yup__namespace.object({
   name: yup__namespace.string().required(),
   surname: yup__namespace.string().required(),
   email: Schemas.email.required(),
@@ -340,8 +340,8 @@ var register = {
 	send: send$4,
 	path: path$4,
 	method: method$4,
-	values: values$3,
-	schema: schema$3
+	values: values$4,
+	schema: schema$4
 };
 
 var UserExists;
@@ -373,11 +373,11 @@ var send$3 = function send(data, fetchImpl) {
 };
 var path$3 = "/auth/local";
 var method$3 = HTTPMethod.POST;
-var values$2 = {
+var values$3 = {
   identifier: "",
   password: ""
 };
-var schema$2 = yup__namespace.object({
+var schema$3 = yup__namespace.object({
   identifier: Schemas.email.required(),
   password: yup__namespace.string().required()
 }).required();
@@ -387,8 +387,8 @@ var login = {
 	send: send$3,
 	path: path$3,
 	method: method$3,
-	values: values$2,
-	schema: schema$2
+	values: values$3,
+	schema: schema$3
 };
 
 //
@@ -408,10 +408,10 @@ var send$2 = function send(data, fetchImpl) {
 };
 var path$2 = "/auth/forgot-password";
 var method$2 = HTTPMethod$1.POST;
-var values$1 = {
+var values$2 = {
   email: ""
 };
-var schema$1 = yup__namespace.object({
+var schema$2 = yup__namespace.object({
   email: Schemas.email.required()
 }).required();
 
@@ -420,8 +420,8 @@ var forgot = {
 	send: send$2,
 	path: path$2,
 	method: method$2,
-	values: values$1,
-	schema: schema$1
+	values: values$2,
+	schema: schema$2
 };
 
 //
@@ -441,12 +441,12 @@ var send$1 = function send(data, fetchImpl) {
 };
 var path$1 = "/auth/reset-password";
 var method$1 = HTTPMethod$1.POST;
-var values = {
+var values$1 = {
   password: "string",
   passwordConfirmation: "string",
   code: "string"
 };
-var schema = yup__namespace.object({
+var schema$1 = yup__namespace.object({
   password: yup__namespace.string().required(),
   passwordConfirmation: yup__namespace.string().required(),
   code: yup__namespace.string().required()
@@ -457,8 +457,8 @@ var reset = {
 	send: send$1,
 	path: path$1,
 	method: method$1,
-	values: values,
-	schema: schema
+	values: values$1,
+	schema: schema$1
 };
 
 var index$8 = {
@@ -499,28 +499,31 @@ var index$7 = {
 	get UserExists () { return UserExists; }
 };
 
-var Contacts;
-(function (Contacts) {
-  Contacts.values = {
-    email: "",
-    name: "",
-    surname: "",
-    phone: ""
+var values = {
+  email: "",
+  name: "",
+  surname: "",
+  phone: ""
+};
+var USER_EXISTS = "$userExists";
+var schema = yup__namespace.object({
+  email: yup__namespace.string().email().when(USER_EXISTS, Schemas.thenReq(false)),
+  name: yup__namespace.string().when(USER_EXISTS, Schemas.thenReq(false)),
+  surname: yup__namespace.string().when(USER_EXISTS, Schemas.thenReq(false)),
+  phone: Schemas.phone.required()
+});
+function getSchemaCtx(userExists) {
+  return {
+    userExists: userExists
   };
-  var USER_EXISTS = "$userExists";
-  Contacts.schema = yup__namespace.object({
-    email: yup__namespace.string().email().when(USER_EXISTS, Schemas.thenReq(false)),
-    name: yup__namespace.string().when(USER_EXISTS, Schemas.thenReq(false)),
-    surname: yup__namespace.string().when(USER_EXISTS, Schemas.thenReq(false)),
-    phone: Schemas.phone.required()
-  });
-  function getSchemaCtx(userExists) {
-    return {
-      userExists: userExists
-    };
-  }
-  Contacts.getSchemaCtx = getSchemaCtx;
-})(Contacts || (Contacts = {}));
+}
+
+var contacts = {
+	__proto__: null,
+	values: values,
+	schema: schema,
+	getSchemaCtx: getSchemaCtx
+};
 
 var Evaluation;
 (function (Evaluation) {
@@ -686,18 +689,18 @@ var Enroll;
   Enroll.method = HTTPMethod$1.POST;
   Enroll.values = {
     courseId: "",
-    contacts: Contacts.values,
+    contacts: values,
     evaluation: Evaluation.values
   };
   Enroll.schema = yup__namespace.object({
     courseId: yup__namespace.string().required(),
-    contacts: Contacts.schema.required(),
+    contacts: schema.required(),
     evaluation: Evaluation.schema.required()
   });
-  function getSchemaCtx(userExists, letterNeeded, portfolioNeeded, cvNeeded) {
-    return _extends({}, Contacts.getSchemaCtx(userExists), Evaluation.getSchemaCtx(letterNeeded, portfolioNeeded, cvNeeded));
+  function getSchemaCtx$1(userExists, letterNeeded, portfolioNeeded, cvNeeded) {
+    return _extends({}, getSchemaCtx(userExists), Evaluation.getSchemaCtx(letterNeeded, portfolioNeeded, cvNeeded));
   }
-  Enroll.getSchemaCtx = getSchemaCtx;
+  Enroll.getSchemaCtx = getSchemaCtx$1;
 })(Enroll || (Enroll = {}));
 
 var index$2 = {
@@ -706,9 +709,9 @@ var index$2 = {
 	Pay: index$5,
 	Admin: index$3,
 	get Enroll () { return Enroll; },
-	get Contacts () { return Contacts; },
 	get Evaluation () { return Evaluation; },
 	get Address () { return Address; },
+	Contacts: contacts,
 	Billing: index$6
 };
 

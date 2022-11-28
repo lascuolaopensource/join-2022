@@ -248,13 +248,13 @@ var index$9 = {
 //
 const path$4 = "/account/register";
 const method$4 = HTTPMethod$1.POST;
-const values$3 = {
+const values$4 = {
   name: "",
   surname: "",
   email: "",
   password: ""
 };
-const schema$3 = yup.object({
+const schema$4 = yup.object({
   name: yup.string().required(),
   surname: yup.string().required(),
   email: Schemas.email.required(),
@@ -273,8 +273,8 @@ var register = {
 	__proto__: null,
 	path: path$4,
 	method: method$4,
-	values: values$3,
-	schema: schema$3,
+	values: values$4,
+	schema: schema$4,
 	send: send$4
 };
 
@@ -293,11 +293,11 @@ var UserExists;
 //
 const path$3 = "/auth/local";
 const method$3 = HTTPMethod.POST;
-const values$2 = {
+const values$3 = {
   identifier: "",
   password: ""
 };
-const schema$2 = yup.object({
+const schema$3 = yup.object({
   identifier: Schemas.email.required(),
   password: yup.string().required()
 }).required();
@@ -314,18 +314,18 @@ var login = {
 	__proto__: null,
 	path: path$3,
 	method: method$3,
-	values: values$2,
-	schema: schema$2,
+	values: values$3,
+	schema: schema$3,
 	send: send$3
 };
 
 //
 const path$2 = "/auth/forgot-password";
 const method$2 = HTTPMethod$1.POST;
-const values$1 = {
+const values$2 = {
   email: ""
 };
-const schema$1 = yup.object({
+const schema$2 = yup.object({
   email: Schemas.email.required()
 }).required();
 async function send$2(data, fetchImpl = fetch) {
@@ -341,20 +341,20 @@ var forgot = {
 	__proto__: null,
 	path: path$2,
 	method: method$2,
-	values: values$1,
-	schema: schema$1,
+	values: values$2,
+	schema: schema$2,
 	send: send$2
 };
 
 //
 const path$1 = "/auth/reset-password";
 const method$1 = HTTPMethod$1.POST;
-const values = {
+const values$1 = {
   password: "string",
   passwordConfirmation: "string",
   code: "string"
 };
-const schema = yup.object({
+const schema$1 = yup.object({
   password: yup.string().required(),
   passwordConfirmation: yup.string().required(),
   code: yup.string().required()
@@ -372,8 +372,8 @@ var reset = {
 	__proto__: null,
 	path: path$1,
 	method: method$1,
-	values: values,
-	schema: schema,
+	values: values$1,
+	schema: schema$1,
 	send: send$1
 };
 
@@ -410,28 +410,31 @@ var index$7 = {
 	get UserExists () { return UserExists; }
 };
 
-var Contacts;
-(function (Contacts) {
-  Contacts.values = {
-    email: "",
-    name: "",
-    surname: "",
-    phone: ""
+const values = {
+  email: "",
+  name: "",
+  surname: "",
+  phone: ""
+};
+const USER_EXISTS = "$userExists";
+const schema = yup.object({
+  email: yup.string().email().when(USER_EXISTS, Schemas.thenReq(false)),
+  name: yup.string().when(USER_EXISTS, Schemas.thenReq(false)),
+  surname: yup.string().when(USER_EXISTS, Schemas.thenReq(false)),
+  phone: Schemas.phone.required()
+});
+function getSchemaCtx(userExists) {
+  return {
+    userExists
   };
-  const USER_EXISTS = "$userExists";
-  Contacts.schema = yup.object({
-    email: yup.string().email().when(USER_EXISTS, Schemas.thenReq(false)),
-    name: yup.string().when(USER_EXISTS, Schemas.thenReq(false)),
-    surname: yup.string().when(USER_EXISTS, Schemas.thenReq(false)),
-    phone: Schemas.phone.required()
-  });
-  function getSchemaCtx(userExists) {
-    return {
-      userExists
-    };
-  }
-  Contacts.getSchemaCtx = getSchemaCtx;
-})(Contacts || (Contacts = {}));
+}
+
+var contacts = {
+	__proto__: null,
+	values: values,
+	schema: schema,
+	getSchemaCtx: getSchemaCtx
+};
 
 var Evaluation;
 (function (Evaluation) {
@@ -597,18 +600,18 @@ var Enroll;
   Enroll.method = HTTPMethod$1.POST;
   Enroll.values = {
     courseId: "",
-    contacts: Contacts.values,
+    contacts: values,
     evaluation: Evaluation.values
   };
   Enroll.schema = yup.object({
     courseId: yup.string().required(),
-    contacts: Contacts.schema.required(),
+    contacts: schema.required(),
     evaluation: Evaluation.schema.required()
   });
-  function getSchemaCtx(userExists, letterNeeded, portfolioNeeded, cvNeeded) {
-    return _extends({}, Contacts.getSchemaCtx(userExists), Evaluation.getSchemaCtx(letterNeeded, portfolioNeeded, cvNeeded));
+  function getSchemaCtx$1(userExists, letterNeeded, portfolioNeeded, cvNeeded) {
+    return _extends({}, getSchemaCtx(userExists), Evaluation.getSchemaCtx(letterNeeded, portfolioNeeded, cvNeeded));
   }
-  Enroll.getSchemaCtx = getSchemaCtx;
+  Enroll.getSchemaCtx = getSchemaCtx$1;
 })(Enroll || (Enroll = {}));
 
 var index$2 = {
@@ -617,9 +620,9 @@ var index$2 = {
 	Pay: index$5,
 	Admin: index$3,
 	get Enroll () { return Enroll; },
-	get Contacts () { return Contacts; },
 	get Evaluation () { return Evaluation; },
 	get Address () { return Address; },
+	Contacts: contacts,
 	Billing: index$6
 };
 
