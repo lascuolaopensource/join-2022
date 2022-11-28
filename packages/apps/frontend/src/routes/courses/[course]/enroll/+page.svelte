@@ -6,7 +6,7 @@
 
 	export let data: PageData;
 
-	const c = data.attributes!;
+	const c = data.course!.attributes!;
 </script>
 
 <Container direction="column" padding>

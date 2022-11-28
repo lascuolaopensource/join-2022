@@ -9,7 +9,7 @@
 
 	export let data: PageData;
 
-	const c = data.attributes!;
+	const c = data.course!.attributes!;
 
 	const coverUrl = `${PUBLIC_BACKEND_URL}${c?.gallery?.data[0].attributes?.url}`;
 	const coverBg = `url(${coverUrl})`;

@@ -1,16 +1,31 @@
 import type { Actions } from './$types';
-import type { routes as r } from 'join-shared';
+import type { types as t } from 'join-shared';
+import { routes as r } from 'join-shared';
+import type { PageServerLoad } from './$types';
 // import { invalid, redirect } from '@sveltejs/kit';
 // import paths from '$lib/constants/paths';
 // import { setJWTCookie } from '$lib/utils/cookies';
 
 //
 
+let course: t.CourseEntity | null | undefined = null;
+
+//
+
+export const load: PageServerLoad = async ({ parent }) => {
+	// Loads course data from parent layout
+	// In order to use it in the action, where needed
+	const { course: c } = await parent();
+	course = c;
+
+	return {};
+};
+
+//
+
 export const actions: Actions = {
-	default: async ({ cookies, request, fetch, params }) => {
-		params.course;
+	default: async ({ request, fetch }) => {
 		const data = await request.formData();
-		params.course;
 
 		// const email = data.get('email');
 		// const password = data.get('password');
@@ -18,7 +33,7 @@ export const actions: Actions = {
 		// const surname = data.get('surname');
 
 		const body: r.Enroll.Req = {
-			courseId: '',
+			courseId: course?.id as string,
 			contacts: {
 				email: data.get('contacts.email') as string,
 				phone: data.get('contacts.phone') as string,
@@ -34,7 +49,7 @@ export const actions: Actions = {
 
 		console.log(body);
 
-		// const res = await r.Account.Register.send(body, fetch);
+		// const res = await r.Enroll.send(body, fetch);
 
 		// if (!res.ok || res.error) {
 		// 	// throw error(res.status, res.error?.error.message);

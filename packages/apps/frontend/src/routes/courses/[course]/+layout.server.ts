@@ -5,7 +5,10 @@ import type { LoadReturn } from '$lib/types';
 
 //
 
-export const load: LayoutLoad = async ({ params, fetch }): LoadReturn<t.CourseEntity> => {
+export const load: LayoutLoad = async ({
+	params,
+	fetch
+}): LoadReturn<{ course: t.CourseEntity }> => {
 	const { course: slug } = params;
 
 	// Creating filters
@@ -35,6 +38,6 @@ export const load: LayoutLoad = async ({ params, fetch }): LoadReturn<t.CourseEn
 	}
 
 	if (res.data) {
-		return res.data.data[0];
+		return { course: res.data.data[0] };
 	}
 };
