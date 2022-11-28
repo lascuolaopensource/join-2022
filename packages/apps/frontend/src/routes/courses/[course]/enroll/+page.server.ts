@@ -4,7 +4,7 @@ import { routes as r } from 'join-shared';
 import type { PageServerLoad } from './$types';
 // import { invalid, redirect } from '@sveltejs/kit';
 // import paths from '$lib/constants/paths';
-// import { setJWTCookie } from '$lib/utils/cookies';
+import { getJWT } from '$lib/utils/cookies';
 
 //
 
@@ -24,13 +24,9 @@ export const load: PageServerLoad = async ({ parent }) => {
 //
 
 export const actions: Actions = {
-	default: async ({ request, fetch }) => {
+	default: async ({ request, fetch, cookies }) => {
 		const data = await request.formData();
-
-		// const email = data.get('email');
-		// const password = data.get('password');
-		// const name = data.get('name');
-		// const surname = data.get('surname');
+		const jwt = getJWT(cookies);
 
 		const body: r.Enroll.Req = {
 			courseId: course?.id as string,
@@ -47,24 +43,19 @@ export const actions: Actions = {
 			}
 		};
 
-		console.log(body);
+		const res = await r.Enroll.send(body, jwt, fetch);
 
-		// const res = await r.Enroll.send(body, fetch);
+		if (!res.ok || res.error) {
+			console.log(res.error);
+			return { error: res.error?.error.message };
+		}
+		//
+		else if (res.data) {
+			console.log(res.data.paymentUID);
+			// If there's no jwt, redirect to thank you page
+			// if (!res.data.jwt) throw redirect(307, paths.register.thanks);
 
-		// if (!res.ok || res.error) {
-		// 	// throw error(res.status, res.error?.error.message);
-		// 	return invalid(400, { name, surname, email, error: res.error?.error.message });
-		// }
-		// //
-		// else if (res.data) {
-		// 	// If there's no jwt, redirect to thank you page
-		// 	if (!res.data.jwt) throw redirect(307, paths.register.thanks);
-
-		// 	// If there's jwt in the response
-		// 	// it means that account confirmation is disabled in the backend
-		// 	setJWTCookie(cookies, res.data.jwt);
-
-		// 	throw redirect(307, paths.login);
-		// }
+			// throw redirect(307, paths.login);
+		}
 	}
 };
