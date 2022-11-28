@@ -1,10 +1,11 @@
 import type { Actions } from './$types';
 import type { types as t } from 'join-shared';
-import { routes as r } from 'join-shared';
+import { routes as r, helpers as h } from 'join-shared';
 import type { PageServerLoad } from './$types';
 // import { invalid, redirect } from '@sveltejs/kit';
-// import paths from '$lib/constants/paths';
+import paths from '$lib/constants/paths';
 import { getJWT } from '$lib/utils/cookies';
+import { redirect } from '@sveltejs/kit';
 
 //
 
@@ -51,11 +52,9 @@ export const actions: Actions = {
 		}
 		//
 		else if (res.data) {
-			console.log(res.data.paymentUID);
-			// If there's no jwt, redirect to thank you page
-			// if (!res.data.jwt) throw redirect(307, paths.register.thanks);
-
-			// throw redirect(307, paths.login);
+			if (course?.attributes && h.Course.isPaymentNeeded(course?.attributes))
+				throw redirect(307, paths.courses.enroll.thanks(course.attributes.slug));
+			if (res.data.paymentUID) throw redirect(307, paths.payment.index(res.data.paymentUID));
 		}
 	}
 };
