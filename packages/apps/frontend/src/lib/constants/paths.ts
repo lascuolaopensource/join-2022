@@ -14,6 +14,7 @@ export default {
 	},
 	courses: {
 		index: '/courses',
-		archive: '/courses?archive=true'
+		archive: '/courses?archive=true',
+		enroll: (course: string) => `/courses/${course}/enroll`
 	}
 };

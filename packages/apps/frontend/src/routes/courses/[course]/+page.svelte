@@ -5,6 +5,7 @@
 	import { Heading, Button } from 'flowbite-svelte';
 	import SvelteMarkdown from 'svelte-markdown';
 	import { helpers as h, formatters as f } from 'join-shared';
+	import paths from '$lib/constants/paths';
 
 	export let data: PageData;
 
@@ -32,7 +33,7 @@
 
 <BottomBar background="blur">
 	{#if !hasDeadlinePassed}
-		<Button href={`/courses/${c.slug}/enroll`}>Enroll!</Button>
+		<Button href={paths.courses.enroll(c.slug)}>Enroll!</Button>
 	{:else}
 		<Button disabled color="alternative">
 			Enrollments closed on {f.formatDate(c.enrollmentDeadline)}
