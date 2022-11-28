@@ -1,11 +1,11 @@
-import type { LayoutLoad } from './$types';
+import type { LayoutServerLoad } from './$types';
 import qs from 'qs';
 import { jr, Request, types as t } from 'join-shared';
 import type { LoadReturn } from '$lib/types';
 
 //
 
-export const load: LayoutLoad = async ({
+export const load: LayoutServerLoad = async ({
 	params,
 	fetch
 }): LoadReturn<{ course: t.CourseEntity }> => {
