@@ -94,7 +94,7 @@
 						id="evaluation.portfolio"
 						placeholder="Link to your portfolio (website, drive)"
 						required
-						data-test="motivationalLetter"
+						data-test="portfolio"
 					/>
 				</div>
 			{/if}
@@ -107,14 +107,14 @@
 						id="evaluation.letter"
 						placeholder="Write / paste your letter here"
 						required
-						data-test="motivationalLetter"
+						data-test="letter"
 					/>
 				</div>
 			{/if}
 
 			<Hr hrClass="bg-gray-300 rounded border-0 dark:bg-gray-700" />
 
-			<Button type="submit">Enroll!</Button>
+			<Button type="submit" data-test="submit">Enroll!</Button>
 		</form>
 	</div>
 </Container>
