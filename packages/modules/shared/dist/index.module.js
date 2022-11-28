@@ -81,7 +81,7 @@ var Schemas;
   };
 })(Schemas || (Schemas = {}));
 
-var index$b = {
+var index$c = {
 	__proto__: null,
 	get Regex () { return Regex; },
 	get Schemas () { return Schemas; }
@@ -165,7 +165,7 @@ var HTTPMethod$1;
   HTTPMethod["TRACE"] = "TRACE";
 })(HTTPMethod$1 || (HTTPMethod$1 = {}));
 
-var index$a = {
+var index$b = {
 	__proto__: null,
 	get HTTPMethod () { return HTTPMethod$1; },
 	get Enum_Enrollment_State () { return Enum_Enrollment_State; },
@@ -223,7 +223,7 @@ function _catch(body, recover) {
   }
   return result;
 }
-var send$6 = function send(_ref) {
+var send$7 = function send(_ref) {
   var method = _ref.method,
     path = _ref.path,
     data = _ref.data,
@@ -264,35 +264,35 @@ var send$6 = function send(_ref) {
 
 var request = {
 	__proto__: null,
-	send: send$6
+	send: send$7
 };
 
-var send$5 = function send(args) {
+var send$6 = function send(args) {
   try {
     var argsCopy = _extends({}, args);
     argsCopy.path = "" + backendURL + args.path;
     if (args.auth) argsCopy.auth = "Bearer " + args.auth;
-    return Promise.resolve(send$6(_extends({}, argsCopy)));
+    return Promise.resolve(send$7(_extends({}, argsCopy)));
   } catch (e) {
     return Promise.reject(e);
   }
 };
 var backendURL = "http://localhost:1337/api";
 
-var index$9 = {
+var index$a = {
 	__proto__: null,
-	send: send$5,
+	send: send$6,
 	backendURL: backendURL
 };
 
 //
 
-var send$4 = function send(data, fetchImpl) {
+var send$5 = function send(data, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$5({
-      path: path$4,
-      method: method$4,
+    return Promise.resolve(send$6({
+      path: path$5,
+      method: method$5,
       data: data,
       fetchImpl: fetchImpl
     }));
@@ -300,15 +300,15 @@ var send$4 = function send(data, fetchImpl) {
     return Promise.reject(e);
   }
 };
-var path$4 = "/account/register";
-var method$4 = HTTPMethod$1.POST;
-var values$4 = {
+var path$5 = "/account/register";
+var method$5 = HTTPMethod$1.POST;
+var values$5 = {
   name: "",
   surname: "",
   email: "",
   password: ""
 };
-var schema$4 = yup.object({
+var schema$5 = yup.object({
   name: yup.string().required(),
   surname: yup.string().required(),
   email: Schemas.email.required(),
@@ -317,11 +317,11 @@ var schema$4 = yup.object({
 
 var register = {
 	__proto__: null,
-	send: send$4,
-	path: path$4,
-	method: method$4,
-	values: values$4,
-	schema: schema$4
+	send: send$5,
+	path: path$5,
+	method: method$5,
+	values: values$5,
+	schema: schema$5
 };
 
 var UserExists;
@@ -338,10 +338,45 @@ var UserExists;
 
 //
 
+var send$4 = function send(data, fetchImpl) {
+  try {
+    if (fetchImpl === undefined) fetchImpl = fetch;
+    return Promise.resolve(send$6({
+      path: path$4,
+      method: method$4,
+      data: data,
+      fetchImpl: fetchImpl
+    }));
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+var path$4 = "/auth/local";
+var method$4 = HTTPMethod.POST;
+var values$4 = {
+  identifier: "",
+  password: ""
+};
+var schema$4 = yup.object({
+  identifier: Schemas.email.required(),
+  password: yup.string().required()
+}).required();
+
+var login = {
+	__proto__: null,
+	send: send$4,
+	path: path$4,
+	method: method$4,
+	values: values$4,
+	schema: schema$4
+};
+
+//
+
 var send$3 = function send(data, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$5({
+    return Promise.resolve(send$6({
       path: path$3,
       method: method$3,
       data: data,
@@ -351,18 +386,16 @@ var send$3 = function send(data, fetchImpl) {
     return Promise.reject(e);
   }
 };
-var path$3 = "/auth/local";
-var method$3 = HTTPMethod.POST;
+var path$3 = "/auth/forgot-password";
+var method$3 = HTTPMethod$1.POST;
 var values$3 = {
-  identifier: "",
-  password: ""
+  email: ""
 };
 var schema$3 = yup.object({
-  identifier: Schemas.email.required(),
-  password: yup.string().required()
+  email: Schemas.email.required()
 }).required();
 
-var login = {
+var forgot = {
 	__proto__: null,
 	send: send$3,
 	path: path$3,
@@ -376,7 +409,7 @@ var login = {
 var send$2 = function send(data, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$5({
+    return Promise.resolve(send$6({
       path: path$2,
       method: method$2,
       data: data,
@@ -386,16 +419,20 @@ var send$2 = function send(data, fetchImpl) {
     return Promise.reject(e);
   }
 };
-var path$2 = "/auth/forgot-password";
+var path$2 = "/auth/reset-password";
 var method$2 = HTTPMethod$1.POST;
 var values$2 = {
-  email: ""
+  password: "string",
+  passwordConfirmation: "string",
+  code: "string"
 };
 var schema$2 = yup.object({
-  email: Schemas.email.required()
+  password: yup.string().required(),
+  passwordConfirmation: yup.string().required(),
+  code: yup.string().required()
 }).required();
 
-var forgot = {
+var reset = {
 	__proto__: null,
 	send: send$2,
 	path: path$2,
@@ -404,55 +441,18 @@ var forgot = {
 	schema: schema$2
 };
 
-//
-
-var send$1 = function send(data, fetchImpl) {
-  try {
-    if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$5({
-      path: path$1,
-      method: method$1,
-      data: data,
-      fetchImpl: fetchImpl
-    }));
-  } catch (e) {
-    return Promise.reject(e);
-  }
-};
-var path$1 = "/auth/reset-password";
-var method$1 = HTTPMethod$1.POST;
-var values$1 = {
-  password: "string",
-  passwordConfirmation: "string",
-  code: "string"
-};
-var schema$1 = yup.object({
-  password: yup.string().required(),
-  passwordConfirmation: yup.string().required(),
-  code: yup.string().required()
-}).required();
-
-var reset = {
-	__proto__: null,
-	send: send$1,
-	path: path$1,
-	method: method$1,
-	values: values$1,
-	schema: schema$1
-};
-
-var index$8 = {
+var index$9 = {
 	__proto__: null,
 	Forgot: forgot,
 	Reset: reset
 };
 
-var send = function send(token, fetchImpl) {
+var send$1 = function send(token, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$5({
-      path: path,
-      method: method,
+    return Promise.resolve(send$6({
+      path: path$1,
+      method: method$1,
       auth: token,
       fetchImpl: fetchImpl
     }));
@@ -460,39 +460,39 @@ var send = function send(token, fetchImpl) {
     return Promise.reject(e);
   }
 };
-var path = "/users/me?populate=info";
-var method = HTTPMethod.GET;
+var path$1 = "/users/me?populate=info";
+var method$1 = HTTPMethod.GET;
 
 var me = {
 	__proto__: null,
-	send: send,
-	path: path,
-	method: method
+	send: send$1,
+	path: path$1,
+	method: method$1
 };
 
-var index$7 = {
+var index$8 = {
 	__proto__: null,
 	Register: register,
 	Login: login,
-	Password: index$8,
+	Password: index$9,
 	Me: me,
 	get UserExists () { return UserExists; }
 };
 
-var values = {
+var values$1 = {
   email: "",
   name: "",
   surname: "",
   phone: ""
 };
 var USER_EXISTS = "$userExists";
-var schema = yup.object({
+var schema$1 = yup.object({
   email: yup.string().email().when(USER_EXISTS, Schemas.thenReq(false)),
   name: yup.string().when(USER_EXISTS, Schemas.thenReq(false)),
   surname: yup.string().when(USER_EXISTS, Schemas.thenReq(false)),
   phone: Schemas.phone.required()
 });
-function getSchemaCtx(userExists) {
+function getSchemaCtx$1(userExists) {
   return {
     userExists: userExists
   };
@@ -500,9 +500,9 @@ function getSchemaCtx(userExists) {
 
 var contacts = {
 	__proto__: null,
-	values: values,
-	schema: schema,
-	getSchemaCtx: getSchemaCtx
+	values: values$1,
+	schema: schema$1,
+	getSchemaCtx: getSchemaCtx$1
 };
 
 var Evaluation;
@@ -594,7 +594,7 @@ var Company;
 
 var Options = ["owner", "person", "company"];
 
-var index$6 = {
+var index$7 = {
 	__proto__: null,
 	Options: Options,
 	get Owner () { return Owner; },
@@ -633,7 +633,7 @@ var Confirm;
   });
 })(Confirm || (Confirm = {}));
 
-var index$5 = {
+var index$6 = {
 	__proto__: null,
 	get Execute () { return Execute; },
 	get Confirm () { return Confirm; }
@@ -653,46 +653,71 @@ var Update;
   });
 })(Update || (Update = {}));
 
-var index$4 = {
+var index$5 = {
 	__proto__: null,
 	get Update () { return Update; }
 };
 
-var index$3 = {
+var index$4 = {
 	__proto__: null,
-	Enrollments: index$4
+	Enrollments: index$5
 };
 
-var Enroll;
-(function (Enroll) {
-  Enroll.path = "/enroll";
-  Enroll.method = HTTPMethod$1.POST;
-  Enroll.values = {
-    courseId: "",
-    contacts: values,
-    evaluation: Evaluation.values
-  };
-  Enroll.schema = yup.object({
-    courseId: yup.string().required(),
-    contacts: schema.required(),
-    evaluation: Evaluation.schema.required()
-  });
-  function getSchemaCtx$1(userExists, letterNeeded, portfolioNeeded, cvNeeded) {
-    return _extends({}, getSchemaCtx(userExists), Evaluation.getSchemaCtx(letterNeeded, portfolioNeeded, cvNeeded));
+//
+
+var send = function send(data, token, fetchImpl) {
+  if (token === void 0) {
+    token = null;
   }
-  Enroll.getSchemaCtx = getSchemaCtx$1;
-})(Enroll || (Enroll = {}));
+  try {
+    if (fetchImpl === undefined) fetchImpl = fetch;
+    return Promise.resolve(send$6({
+      path: path,
+      method: method,
+      data: data,
+      fetchImpl: fetchImpl,
+      auth: token
+    }));
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
+var path = "/enroll";
+var method = HTTPMethod$1.POST;
+var values = {
+  courseId: "",
+  contacts: values$1,
+  evaluation: Evaluation.values
+};
+var schema = yup.object({
+  courseId: yup.string().required(),
+  contacts: schema$1.required(),
+  evaluation: Evaluation.schema.required()
+});
+function getSchemaCtx(userExists, letterNeeded, portfolioNeeded, cvNeeded) {
+  return _extends({}, getSchemaCtx$1(userExists), Evaluation.getSchemaCtx(letterNeeded, portfolioNeeded, cvNeeded));
+}
+
+var index$3 = {
+	__proto__: null,
+	send: send,
+	path: path,
+	method: method,
+	values: values,
+	schema: schema,
+	getSchemaCtx: getSchemaCtx
+};
 
 var index$2 = {
 	__proto__: null,
-	Account: index$7,
-	Pay: index$5,
-	Admin: index$3,
-	get Enroll () { return Enroll; },
+	Account: index$8,
+	Pay: index$6,
+	Admin: index$4,
+	Enroll: index$3,
 	get Evaluation () { return Evaluation; },
 	get Address () { return Address; },
 	Contacts: contacts,
-	Billing: index$6
+	Billing: index$7
 };
 
 var errors = {
@@ -801,5 +826,5 @@ var index = {
 	formatDate: formatDate
 };
 
-export { types as Request, errors, index as formatters, index$1 as helpers, index$9 as jr, request, index$2 as routes, index$a as types, index$b as validation };
+export { types as Request, errors, index as formatters, index$1 as helpers, index$a as jr, request, index$2 as routes, index$b as types, index$c as validation };
 //# sourceMappingURL=index.module.js.map
