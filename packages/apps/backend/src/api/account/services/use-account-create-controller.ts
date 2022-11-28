@@ -7,7 +7,7 @@ export default () => ({
         strapi.log.info("SERVICE - account/create");
 
         try {
-            await strapi.controller("api::account.account").create(ctx);
+            await strapi.controller("api::account.account").register(ctx);
         } catch (err) {
             throw err;
         }
