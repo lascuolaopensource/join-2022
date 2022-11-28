@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
-import { get } from '../utils';
-import paths from '../../src/lib/constants/paths';
+import { get } from '../../../utils';
+import paths from '../../../../src/lib/constants/paths';
 
 describe('empty spec', () => {
 	it('should clear previous cookies', () => {
@@ -9,7 +9,7 @@ describe('empty spec', () => {
 	});
 
 	it('should enter data, and submit', () => {
-		cy.visit(paths.courses.enroll('corsofichissimo'));
+		cy.visit(paths.courses.enroll.index('corsofichissimo'));
 		cy.wait(1000);
 		get('name').type('Giovanni');
 		get('surname').type('Bianchi');
@@ -21,9 +21,9 @@ describe('empty spec', () => {
 		get('submit').click();
 	});
 
-	// it('should redirect to thanks page', () => {
-	// 	cy.url().should('include', paths.register.thanks);
-	// });
+	it('should redirect to payment page', () => {
+		cy.url().should('include', 'payments');
+	});
 
 	// it('should create a cookie', () => {
 	// 	cy.wait(1000);
