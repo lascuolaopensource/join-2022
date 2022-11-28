@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
-import { get } from '../utils';
-import paths from '../../src/lib/constants/paths';
+import { get } from '../../../utils';
+import paths from '../../../../src/lib/constants/paths';
 
 describe('empty spec', () => {
 	it('should clear previous cookies', () => {
@@ -21,9 +21,9 @@ describe('empty spec', () => {
 		get('submit').click();
 	});
 
-	// it('should redirect to thanks page', () => {
-	// 	cy.url().should('include', paths.register.thanks);
-	// });
+	it('should redirect to payment page', () => {
+		cy.url().should('include', 'payments');
+	});
 
 	// it('should create a cookie', () => {
 	// 	cy.wait(1000);

@@ -5,4 +5,4 @@
 	export let data: PageData;
 </script>
 
-{$page.params}
+{$page.params.payment}

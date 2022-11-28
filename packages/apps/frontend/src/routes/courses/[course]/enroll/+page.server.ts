@@ -52,9 +52,12 @@ export const actions: Actions = {
 		}
 		//
 		else if (res.data) {
-			if (course?.attributes && h.Course.isPaymentNeeded(course?.attributes))
-				throw redirect(307, paths.courses.enroll.thanks(course.attributes.slug));
 			if (res.data.paymentUID) throw redirect(307, paths.payment.index(res.data.paymentUID));
+			else
+				throw redirect(
+					307,
+					paths.courses.enroll.thanks(course?.attributes?.slug as string)
+				);
 		}
 	}
 };

@@ -47,6 +47,8 @@ export default async function (
     try {
         await r.Enroll.schema.validate(body, { context, abortEarly: false });
     } catch (o) {
+        strapi.log.info(body);
+        strapi.log.info(o);
         strapi.log.info(err.policies.bodyNotValid);
         throw new PolicyError(err.policies.bodyNotValid, { policyName });
     }
