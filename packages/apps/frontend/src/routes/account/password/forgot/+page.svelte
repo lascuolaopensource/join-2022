@@ -1,13 +1,17 @@
 <script lang="ts">
-	import { enhance, applyAction } from '$app/forms';
 	import type { ActionData } from './$types';
-	// import ListErrors from '$lib/ListErrors.svelte';
-	import { Input, Label, Button, P } from 'flowbite-svelte';
-	import { TitleAndLink } from '$lib/components';
 	import paths from '$lib/constants/paths';
-	import FormError from '$lib/components/form/FormError.svelte';
+	import { routes as r } from 'join-shared';
+
+	import { P } from 'flowbite-svelte';
+	import { TitleAndLink } from '$lib/components';
+	import { Form, Input } from '$lib/form';
+
+	//
 
 	export let form: ActionData;
+
+	const { values: initialValues, schema: validationSchema } = r.Account.Password.Forgot;
 </script>
 
 <svelte:head>
@@ -20,22 +24,6 @@
 
 <P>Please enter your email to recover your password.</P>
 
-<form use:enhance method="POST" class="space-y-8">
-	<div class="space-y-6">
-		<div>
-			<Label for="email">Email</Label>
-			<Input
-				name="email"
-				type="email"
-				id="email"
-				placeholder="mario@rossi.com"
-				required
-				data-test="email"
-			/>
-		</div>
-	</div>
-
-	<FormError error={form?.error} />
-
-	<Button type="submit" data-test="submit">Sign in</Button>
-</form>
+<Form {initialValues} {validationSchema} error={form?.error}>
+	<Input label="Email" name="email" type="email" placeholder="maria@rossi.com" required />
+</Form>

@@ -1,13 +1,23 @@
 <script lang="ts">
-	import { enhance, applyAction } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
+	import { routes as r } from 'join-shared';
 	import type { ActionData } from './$types';
-	// import ListErrors from '$lib/ListErrors.svelte';
-	import { Card, Input, Label, Button, Heading, P, A } from 'flowbite-svelte';
-	import { TitleAndLink, FormError } from '$lib/components';
 	import paths from '$lib/constants/paths';
 
+	import { TitleAndLink } from '$lib/components';
+	import { Form, Input } from '$lib/form';
+	import type { AnchorProp } from '$lib/components/types';
+
+	//
+
 	export let form: ActionData;
+
+	const { values: initialValues, schema: validationSchema } = r.Account.Login;
+
+	const passwordLink: AnchorProp = {
+		href: paths.password.forgot.index,
+		text: 'Forgot your password?'
+	};
+	const titleLink: AnchorProp = { href: paths.register.index, text: 'Need an account?' };
 </script>
 
 <svelte:head>
@@ -16,44 +26,16 @@
 
 <!--  -->
 
-<TitleAndLink title="Sign In" link={{ href: paths.register.index, text: 'Need an account?' }} />
+<TitleAndLink title="Sign In" link={titleLink} />
 
-<form use:enhance method="POST" class="space-y-8">
-	<div class="space-y-6">
-		<div>
-			<Label for="email">Email</Label>
-			<Input
-				name="email"
-				type="email"
-				id="email"
-				placeholder="mario@rossi.com"
-				required
-				data-test="email"
-				tabindex="1"
-			/>
-		</div>
-		<div>
-			<div class="flex justify-between">
-				<Label for="password">Password</Label>
-				<Label>
-					<A href={paths.password.forgot.index} data-test="forgot-password" tabindex="4"
-						>Forgot password?</A
-					>
-				</Label>
-			</div>
-			<Input
-				name="password"
-				type="password"
-				id="password"
-				required
-				data-test="password"
-				tabindex="2"
-				placeholder="********"
-			/>
-		</div>
-	</div>
-
-	<FormError error={form?.error} />
-
-	<Button type="submit" data-test="submit" tabindex="3">Sign in</Button>
-</form>
+<Form {initialValues} {validationSchema} error={form?.error}>
+	<Input name="identifier" label="Email" placeholder="maria@rossi.com" type="email" required />
+	<Input
+		name="password"
+		label="Password"
+		placeholder="*********"
+		type="password"
+		required
+		link={passwordLink}
+	/>
+</Form>

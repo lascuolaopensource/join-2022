@@ -16,7 +16,7 @@ export const actions: Actions = {
 	default: async ({ cookies, request, fetch }) => {
 		const data = await request.formData();
 
-		const email = data.get('email');
+		const email = data.get('identifier');
 		const password = data.get('password');
 
 		const body: r.Account.Login.Req = {

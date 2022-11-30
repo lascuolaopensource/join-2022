@@ -6219,6 +6219,11 @@ capital-case@^1.0.4:
     tslib "^2.0.3"
     upper-case-first "^2.0.2"
 
+carbon-icons-svelte@^11.4.0:
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/carbon-icons-svelte/-/carbon-icons-svelte-11.4.0.tgz#1bab38ac0c8f778e0431f8df54324829c81cfd30"
+  integrity sha512-p/llZde2kP2BI9SOqM+QFKGfQnYrW+4dVxF1rAYriEADXDsjt9EYlh+KpQ5qf4JpXAq+e2+TB/r/lIG1xdUbAQ==
+
 caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
@@ -16016,11 +16021,6 @@ svelte-forms-lib@^2.0.1:
   integrity sha512-kwbJ3ynsepsrrJyAMrvSc0Lj/myc9vfI2DL8OKxgArZimrNYsRh1gENYhvrcKEI3BiZrv8q3VFfmGo/GMyk7Zg==
   dependencies:
     dequal "^2.0.2"
-
-svelte-heros-v2@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/svelte-heros-v2/-/svelte-heros-v2-0.2.4.tgz#e898b50b2a52f458ddecd44e9392c189f5f673bb"
-  integrity sha512-3jFlbwiWsa4U80WcSiPc9hCT2LQe41SeYjCj7eErsy/hxtrfYKysY1ISnFp53+vBj2ILFi+mC+SoFjkeMNrq9Q==
 
 svelte-hmr@^0.15.0:
   version "0.15.0"
