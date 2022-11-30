@@ -6,6 +6,8 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import type { InitialValues, Validate, ValidationSchema } from './types';
+
+	import { Button } from 'flowbite-svelte';
 	import FormError from './FormError.svelte';
 
 	//
@@ -17,6 +19,7 @@
 
 	export let action = '';
 	export let error = '';
+	export let buttonText = 'Submit';
 
 	export let key = 'form';
 	// This variable acts both as:
@@ -64,7 +67,11 @@
 	let isSubmitting = writable(false);
 
 	const handleEnhance: SubmitFunction = ({ form, data, action, cancel }) => {
+		// Reset error
+		error = '';
+		// Set loading
 		$isSubmitting = true;
+
 		return async ({ result, update }) => {
 			await applyAction(result);
 			$isSubmitting = false;
@@ -90,6 +97,16 @@
 		isValid,
 		isSubmitting
 	});
+
+	/**
+	 * Checking form validity
+	 *
+	 * $isValid store from svelte-forms-lib
+	 * doesn't seem to work when the form is empty
+	 */
+
+	// const isFilledAndValid = writable<boolean>(false);
+	// $: $isFilledAndValid = Object.values($touched).every((e) => e) && $isValid;
 </script>
 
 <!--  -->
@@ -108,5 +125,8 @@
 		</slot>
 	{/if}
 
-	<slot name="buttons" />
+	<!-- Submit button -->
+	<div class="flex flex-row-reverse">
+		<Button type="submit" data-test="submit">{buttonText}</Button>
+	</div>
 </form>

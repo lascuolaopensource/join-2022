@@ -75,8 +75,4 @@
 			/>
 		</div>
 	</div>
-
-	<svelte:fragment slot="buttons">
-		<Button type="submit" data-test="submit">Register</Button>
-	</svelte:fragment>
 </Form>
