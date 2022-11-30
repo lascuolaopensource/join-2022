@@ -46,7 +46,6 @@ export const actions: Actions = {
 		const res = await r.Enroll.send(course?.id as string, body, jwt, fetch);
 
 		if (!res.ok || res.error) {
-			console.log(res.error);
 			return { error: res.error?.error.message };
 		}
 		//

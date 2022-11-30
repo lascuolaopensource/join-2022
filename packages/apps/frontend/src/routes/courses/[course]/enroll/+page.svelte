@@ -13,7 +13,6 @@
 
 	const { values: initialValues, schema: validationSchema, getSchemaCtx } = r.Enroll;
 
-	// Validation context
 	const validationContext = getSchemaCtx(
 		Boolean(data.user),
 		c.motivationalLetterNeeded,
@@ -66,7 +65,7 @@
 					label="CV (Curriculum Vitae)"
 					placeholder="linktoyourcv.com"
 					help="Link to your cv (website, drive)"
-					type="url"
+					type="text"
 					required
 				/>
 			{/if}

@@ -8723,6 +8723,14 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
+filter-anything@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/filter-anything/-/filter-anything-2.2.4.tgz#658bd0fe3c87a80b87efe809658d17849b33bd41"
+  integrity sha512-yWC4q7o9A53SpOtl1/pLriidgkQH9b3BbVxe7T5i/v2BQ1DsnLU6hgTdufEEMH7x6gFlHQ51A1X7H9y9BG7Qmg==
+  dependencies:
+    is-what "^3.14.1"
+    ts-toolbelt "^9.6.0"
+
 filter-obj@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/filter-obj/-/filter-obj-2.0.2.tgz#fff662368e505d69826abb113f0f6a98f56e9d5f"
@@ -8821,6 +8829,14 @@ flatted@^3.1.0:
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.7.tgz#609f39207cb614b89d0765b477cb2d437fbf9787"
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
+
+flatten-anything@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/flatten-anything/-/flatten-anything-3.0.2.tgz#a8fcff95f88e520f3226f216147f38a2cfe018d5"
+  integrity sha512-Tq5WY32z4jHoP3OPXbEaOyA+cqR6Qhx9XnQD98wGCEPMj7NuzEwXTFornGZCuvNOZOlLYv9twbDE97AwWyQpwA==
+  dependencies:
+    filter-anything "^2.2.4"
+    is-what "^4.1.6"
 
 flowbite-svelte@^0.27.16:
   version "0.27.16"
@@ -10716,6 +10732,16 @@ is-weakref@^1.0.2:
   dependencies:
     call-bind "^1.0.2"
 
+is-what@^3.14.1:
+  version "3.14.1"
+  resolved "https://registry.yarnpkg.com/is-what/-/is-what-3.14.1.tgz#e1222f46ddda85dead0fd1c9df131760e77755c1"
+  integrity sha512-sNxgpk9793nzSs7bA6JQJGeIuRBQhAaNGG77kzYQgMkrID+lS6SlK07K5LaptscDlSaIgH+GPFzf+d75FVxozA==
+
+is-what@^4.1.6:
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/is-what/-/is-what-4.1.7.tgz#c41dc1d2d2d6a9285c624c2505f61849c8b1f9cc"
+  integrity sha512-DBVOQNiPKnGMxRMLIYSwERAS5MVY1B7xYiGnpgctsOFvVDz9f9PFXXxMcTOHuoqYp4NK9qFYQaIC1NRRxLMpBQ==
+
 is-windows@^1.0.1, is-windows@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
@@ -11935,6 +11961,14 @@ meow@^8.0.0:
     type-fest "^0.18.0"
     yargs-parser "^20.2.3"
 
+merge-anything@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/merge-anything/-/merge-anything-4.0.5.tgz#a50b20581d18a83b66375793e4ccf88b0f5e3cad"
+  integrity sha512-YsYvYYMYZZITlVqf8UiGWVU8jI8mFNuv64iNY0hKH6alkrZsE3XNVlUnRbUvWnKIzEeYawfY8wNrTuPwHcbleA==
+  dependencies:
+    is-what "^3.14.1"
+    ts-toolbelt "^9.6.0"
+
 merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
@@ -12437,6 +12471,13 @@ neo-async@^2.6.0, neo-async@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
+
+nestify-anything@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/nestify-anything/-/nestify-anything-2.0.2.tgz#753dbbd5ec85e675fa3909d5ecbf8344d0abc42f"
+  integrity sha512-PPgR+5Dn+wgA4Imflnz268XUHhMHFFQNb0v3LS4eVcrVc5zGBmZo6jiHXeu4WcbOKJlHA0qSGf9lXyX1evArOA==
+  dependencies:
+    merge-anything "^4.0.5"
 
 nexus@1.3.0:
   version "1.3.0"
@@ -16425,6 +16466,11 @@ ts-node@^10.8.1:
     make-error "^1.1.1"
     v8-compile-cache-lib "^3.0.1"
     yn "3.1.1"
+
+ts-toolbelt@^9.6.0:
+  version "9.6.0"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-9.6.0.tgz#50a25426cfed500d4a09bd1b3afb6f28879edfd5"
+  integrity sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==
 
 tsconfig-paths@^3.9.0:
   version "3.14.1"
