@@ -595,24 +595,22 @@ var index$4 = {
 };
 
 //
-const path = "/enroll";
+const path = (id = ":id") => `/enroll/${id}`;
 const method = HTTPMethod$1.POST;
 const values = {
-  courseId: "",
   contacts: values$1,
   evaluation: Evaluation.values
 };
 const schema = yup.object({
-  courseId: yup.string().required(),
   contacts: schema$1.required(),
   evaluation: Evaluation.schema.required()
 });
 function getSchemaCtx(userExists, letterNeeded, portfolioNeeded, cvNeeded) {
   return _extends({}, getSchemaCtx$1(userExists), Evaluation.getSchemaCtx(letterNeeded, portfolioNeeded, cvNeeded));
 }
-async function send(data, token = null, fetchImpl = fetch) {
+async function send(courseID, data, token = null, fetchImpl = fetch) {
   return send$6({
-    path,
+    path: path(courseID),
     method,
     data,
     fetchImpl,

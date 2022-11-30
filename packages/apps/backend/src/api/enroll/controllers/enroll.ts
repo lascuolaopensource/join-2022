@@ -26,6 +26,7 @@ export default {
 
         // Getting data
         const body: r.Enroll.Req = _.clone(ctx.request.body);
+        const courseID = ctx.params.id;
 
         // User may not exist, then the variable will be set in the next block
         let user: t.ID<t.UsersPermissionsUser> = ctx.state.user;
@@ -33,7 +34,7 @@ export default {
         // Getting course
         const course: t.ID<t.Course> = await strapi.entityService.findOne(
             e.course,
-            body.courseId
+            courseID
         );
 
         /**
@@ -79,7 +80,7 @@ export default {
             cvUrl: body.evaluation.cv,
             portfolioUrl: body.evaluation.portfolio,
             motivationalLetter: body.evaluation.letter,
-            course: body.courseId,
+            course: courseID,
             phoneNumber: body.contacts.phone,
             state: t.Enum_Enrollment_State.Pending,
         };

@@ -12,6 +12,7 @@ export interface CTX<T> {
     };
     notFound: ErrorFunction;
     badRequest: ErrorFunction;
+    params: any;
 }
 
 //

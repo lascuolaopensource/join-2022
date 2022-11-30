@@ -665,14 +665,14 @@ var index$4 = {
 
 //
 
-var send = function send(data, token, fetchImpl) {
+var send = function send(courseID, data, token, fetchImpl) {
   if (token === void 0) {
     token = null;
   }
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
     return Promise.resolve(send$6({
-      path: path,
+      path: path(courseID),
       method: method,
       data: data,
       fetchImpl: fetchImpl,
@@ -682,15 +682,18 @@ var send = function send(data, token, fetchImpl) {
     return Promise.reject(e);
   }
 };
-var path = "/enroll";
+var path = function path(id) {
+  if (id === void 0) {
+    id = ":id";
+  }
+  return "/enroll/" + id;
+};
 var method = HTTPMethod$1.POST;
 var values = {
-  courseId: "",
   contacts: values$1,
   evaluation: Evaluation.values
 };
 var schema = yup.object({
-  courseId: yup.string().required(),
   contacts: schema$1.required(),
   evaluation: Evaluation.schema.required()
 });

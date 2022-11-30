@@ -5,23 +5,20 @@ import { send as s } from "../../join-request";
 
 //
 
-export const path = "/enroll";
+export const path = (id = ":id") => `/enroll/${id}`;
 export const method = HTTPMethod.POST;
 
 export type Req = {
-    courseId: string;
     contacts: Contacts.Type;
     evaluation: Evaluation.Type;
 };
 
 export const values: Req = {
-    courseId: "",
     contacts: Contacts.values,
     evaluation: Evaluation.values,
 };
 
 export const schema = yup.object<Shape<Req>>({
-    courseId: yup.string().required(),
     contacts: Contacts.schema.required(),
     evaluation: Evaluation.schema.required(),
 });
@@ -46,6 +43,17 @@ export interface ISchemaCtx
     extends Contacts.ISchemaCtx,
         Evaluation.ISchemaCtx {}
 
-export async function send(data: Req, token = null, fetchImpl = fetch) {
-    return s<Res>({ path, method, data, fetchImpl, auth: token });
+export async function send(
+    courseID: string,
+    data: Req,
+    token = null,
+    fetchImpl = fetch
+) {
+    return s<Res>({
+        path: path(courseID),
+        method,
+        data,
+        fetchImpl,
+        auth: token,
+    });
 }

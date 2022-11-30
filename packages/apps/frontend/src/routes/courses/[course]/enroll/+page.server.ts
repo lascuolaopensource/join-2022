@@ -1,6 +1,6 @@
 import type { Actions } from './$types';
 import type { types as t } from 'join-shared';
-import { routes as r, helpers as h } from 'join-shared';
+import { routes as r } from 'join-shared';
 import type { PageServerLoad } from './$types';
 // import { invalid, redirect } from '@sveltejs/kit';
 import paths from '$lib/constants/paths';
@@ -30,7 +30,6 @@ export const actions: Actions = {
 		const jwt = getJWT(cookies);
 
 		const body: r.Enroll.Req = {
-			courseId: course?.id as string,
 			contacts: {
 				email: data.get('contacts.email') as string,
 				phone: data.get('contacts.phone') as string,
@@ -44,7 +43,7 @@ export const actions: Actions = {
 			}
 		};
 
-		const res = await r.Enroll.send(body, jwt, fetch);
+		const res = await r.Enroll.send(course?.id as string, body, jwt, fetch);
 
 		if (!res.ok || res.error) {
 			console.log(res.error);
