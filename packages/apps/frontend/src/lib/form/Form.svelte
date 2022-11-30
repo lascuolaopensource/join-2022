@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { writable, type Writable } from 'svelte/store';
-	import { setContext, onMount, onDestroy } from 'svelte';
+	import { writable } from 'svelte/store';
+	import { setContext, onMount } from 'svelte';
 	import type { SubmitFunction } from '$app/forms';
 	import { enhance, applyAction } from '$app/forms';
 
@@ -8,8 +8,10 @@
 	import type { InitialValues, Validate, ValidationSchema } from './types';
 	import { key } from './key';
 
-	import { Button } from 'flowbite-svelte';
+	import { Button, Spinner, Card, P } from 'flowbite-svelte';
 	import Error from './Error.svelte';
+
+	import FullscreenOverlay from '$lib/components/FullscreenOverlay.svelte';
 
 	//
 
@@ -143,9 +145,14 @@
 	{/if}
 
 	{#if $isSubmitting}
-		<slot name="loading">
-			<p>Submitting...</p>
-		</slot>
+		<FullscreenOverlay className="bg-white/60 flex items-center justify-center" id="loading">
+			<Card padding="lg">
+				<div class="flex flex-col items-center justify-center space-y-4">
+					<Spinner size="14" />
+					<P align="center">Please wait.<br />Do not leave the page.</P>
+				</div>
+			</Card>
+		</FullscreenOverlay>
 	{/if}
 
 	<!-- Submit button -->
