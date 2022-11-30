@@ -6,6 +6,7 @@
 	import { Input } from 'flowbite-svelte';
 	import type { InputType } from 'flowbite-svelte/types';
 	import FieldInfo from '$lib/components/FieldInfo.svelte';
+	import type { AnchorPropOptional } from '$lib/components/types';
 
 	//
 
@@ -16,6 +17,7 @@
 	export let help = '';
 	export let placeholder = '';
 	export let required = false;
+	export let link: AnchorPropOptional = undefined;
 
 	export let id = name;
 
@@ -35,7 +37,7 @@
 
 <!--  -->
 
-<FieldInfo fieldName={name} {label} {help} {error}>
+<FieldInfo fieldName={name} {label} {help} {error} {link}>
 	<Input
 		{color}
 		{name}

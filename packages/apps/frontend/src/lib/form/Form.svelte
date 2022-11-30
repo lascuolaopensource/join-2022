@@ -159,4 +159,7 @@
 	<div class="flex flex-row-reverse">
 		<Button type="submit" id="submit" disabled={!$isFilledAndValid}>{buttonText}</Button>
 	</div>
+
+	<pre>{JSON.stringify($form, null, 2)}</pre>
+	<pre>{JSON.stringify($errors, null, 2)}</pre>
 </form>

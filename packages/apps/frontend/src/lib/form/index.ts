@@ -1,5 +1,6 @@
 import Form from './Form.svelte';
 import Error from './Error.svelte';
-import TextField from './TextField.svelte';
+import Input from './Input.svelte';
+import Textarea from './Textarea.svelte';
 
-export { Form, Error, TextField };
+export { Form, Error, Input, Textarea };
