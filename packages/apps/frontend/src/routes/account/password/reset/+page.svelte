@@ -4,8 +4,6 @@
 	// import ListErrors from '$lib/ListErrors.svelte';
 	import { Input, Label, Button, P } from 'flowbite-svelte';
 	import { TitleAndLink } from '$lib/components';
-	import paths from '$lib/constants/paths';
-	import FormError from '$lib/components/form/FormError.svelte';
 
 	export let form: ActionData;
 </script>
@@ -45,8 +43,6 @@
 			/>
 		</div>
 	</div>
-
-	<FormError error={form?.error} />
 
 	<Button type="submit" data-test="submit">Sign in</Button>
 </form>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData, ActionData } from './$types';
 
-	import { Container, FormError } from '$lib/components';
+	import { Container } from '$lib/components';
 	import { Input, Label, Hr, Textarea, Button, Heading } from 'flowbite-svelte';
 
 	export let data: PageData;
@@ -114,8 +114,6 @@
 			{/if}
 
 			<Hr hrClass="bg-gray-300 rounded border-0 dark:bg-gray-700" />
-
-			<FormError error={form?.error} />
 
 			<Button type="submit" data-test="submit">Enroll!</Button>
 		</form>
