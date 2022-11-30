@@ -4,7 +4,7 @@
 	import paths from '$lib/constants/paths';
 
 	import { Navbar, NavBrand, Heading, Button } from 'flowbite-svelte';
-	import { ArrowRightOnRectangle } from 'svelte-heros-v2';
+	import Logout from 'carbon-icons-svelte/lib/Logout.svelte';
 
 	export let user: App.Locals['user'];
 </script>
@@ -30,7 +30,7 @@
 				}}
 			>
 				<Button type="submit" color="light" data-test="nav-btn-logout">
-					<ArrowRightOnRectangle class="w-5 h-5" />
+					<Logout size={20} />
 				</Button>
 			</form>
 		{:else}
