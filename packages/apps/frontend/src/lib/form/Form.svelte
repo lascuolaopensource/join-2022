@@ -127,6 +127,6 @@
 
 	<!-- Submit button -->
 	<div class="flex flex-row-reverse">
-		<Button type="submit" data-test="submit">{buttonText}</Button>
+		<Button type="submit" id="submit">{buttonText}</Button>
 	</div>
 </form>

@@ -11,11 +11,11 @@ describe('empty spec', () => {
 	it('should enter data, and submit', () => {
 		cy.visit(paths.register.index);
 		cy.wait(1000);
-		get('name').type('Giovanni');
-		get('surname').type('Bianchi');
-		get('email').type('bbt.gnn@gmail.com');
-		get('password').type('Giovanni');
-		get('submit').click();
+		cy.get('#name').type('Giovanni');
+		cy.get('#surname').type('Bianchi');
+		cy.get('#email').type('bbt.gnn@gmail.com');
+		cy.get('#password').type('Giovanni');
+		cy.get('#submit').click();
 	});
 
 	// it('should redirect to thanks page', () => {
