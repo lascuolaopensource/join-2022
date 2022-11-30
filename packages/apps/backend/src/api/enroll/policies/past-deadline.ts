@@ -16,12 +16,12 @@ export default async function (
     strapi.log.info(`POLICY - ${policyName}`);
 
     // Getting data
-    const body = policyContext.request.body;
+    const courseID = policyContext.params.id;
 
     // Getting course
     const course: t.ID<t.Course> = await strapi.entityService.findOne(
         e.course,
-        body.courseId
+        courseID
     );
 
     // Getting deadline

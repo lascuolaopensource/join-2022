@@ -1,9 +1,8 @@
 import { Contacts, Evaluation } from "../utils";
 import { HTTPMethod, Shape } from "../../types";
-export declare const path = "/enroll";
+export declare const path: (id?: string) => string;
 export declare const method = HTTPMethod.POST;
 export declare type Req = {
-    courseId: string;
     contacts: Contacts.Type;
     evaluation: Evaluation.Type;
 };
@@ -15,4 +14,4 @@ export declare type Res = {
 export declare function getSchemaCtx(userExists: boolean, letterNeeded: boolean, portfolioNeeded: boolean, cvNeeded: boolean): ISchemaCtx;
 export interface ISchemaCtx extends Contacts.ISchemaCtx, Evaluation.ISchemaCtx {
 }
-export declare function send(data: Req, token?: any, fetchImpl?: typeof fetch): Promise<import("../../join-request").Res<Res>>;
+export declare function send(courseID: string, data: Req, token?: any, fetchImpl?: typeof fetch): Promise<import("../../join-request").Res<Res>>;

@@ -17,7 +17,7 @@ export default async function (
 
     // Getting data
     const user = policyContext.state.user;
-    const body = policyContext.request.body;
+    const courseID = policyContext.params.id;
 
     // Saving email
     let email = "";
@@ -32,7 +32,7 @@ export default async function (
         await strapi.entityService.findMany(e.enrollment, {
             filters: {
                 course: {
-                    id: body.courseId,
+                    id: courseID,
                 },
                 owner: {
                     email,

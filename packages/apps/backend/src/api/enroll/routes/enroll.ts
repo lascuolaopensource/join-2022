@@ -4,7 +4,7 @@ export default {
     routes: [
         {
             method: r.Enroll.method,
-            path: r.Enroll.path,
+            path: r.Enroll.path(),
             handler: "enroll.index",
             config: {
                 policies: [

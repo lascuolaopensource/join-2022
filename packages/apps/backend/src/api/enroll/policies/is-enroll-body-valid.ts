@@ -23,16 +23,17 @@ export default async function (
     // Getting data
     const user = policyContext.state.user;
     const body = policyContext.request.body;
+    const courseID = policyContext.params.id;
 
     // Checking that 'courseID' is in body
-    if (!("courseId" in body)) {
+    if (!courseID) {
         throw new PolicyError(err.missingCourseId, { policyName });
     }
 
     // Getting course
     let course: t.ID<t.Course>;
     try {
-        course = await strapi.entityService.findOne(e.course, body.courseId);
+        course = await strapi.entityService.findOne(e.course, courseID);
     } catch (o) {
         strapi.log.info(err.courseNotFound);
         throw new PolicyError(err.courseNotFound, { policyName });
