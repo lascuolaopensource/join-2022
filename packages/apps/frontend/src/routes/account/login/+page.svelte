@@ -5,6 +5,7 @@
 	// import ListErrors from '$lib/ListErrors.svelte';
 	import { Card, Input, Label, Button, Heading, P, A } from 'flowbite-svelte';
 	import { TitleAndLink, FormError } from '$lib/components';
+	import { Form } from '$lib/components/form';
 	import paths from '$lib/constants/paths';
 
 	export let form: ActionData;
@@ -18,7 +19,7 @@
 
 <TitleAndLink title="Sign In" link={{ href: paths.register.index, text: 'Need an account?' }} />
 
-<form use:enhance method="POST" class="space-y-8">
+<Form>
 	<div class="space-y-6">
 		<div>
 			<Label for="email">Email</Label>
@@ -56,4 +57,4 @@
 	<FormError error={form?.error} />
 
 	<Button type="submit" data-test="submit" tabindex="3">Sign in</Button>
-</form>
+</Form>

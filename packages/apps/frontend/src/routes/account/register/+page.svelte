@@ -7,8 +7,7 @@
 
 	import { Input, Label, Button, Alert } from 'flowbite-svelte';
 	import { TitleAndLink, FormError } from '$lib/components';
-	import { error } from '@sveltejs/kit';
-
+	import { Form } from '$lib/components/form';
 	//
 
 	export let form: ActionData;
@@ -44,7 +43,7 @@
 
 <!-- <ListErrors errors={form?.errors} /> -->
 
-<form use:enhance method="POST" class="space-y-8">
+<Form>
 	<div class="space-y-6">
 		<div>
 			<Label for="name">First name</Label>
@@ -108,4 +107,4 @@
 	<FormError error={form?.error} />
 
 	<Button type="submit" data-test="submit">Register</Button>
-</form>
+</Form>
