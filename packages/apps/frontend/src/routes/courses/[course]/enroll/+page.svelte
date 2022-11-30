@@ -77,7 +77,7 @@
 					label="Portfolio"
 					placeholder="linktoyourportfolio.com"
 					help="Link to your portfolio (website, drive)"
-					type="url"
+					type="text"
 					required
 				/>
 			{/if}
