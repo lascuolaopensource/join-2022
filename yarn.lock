@@ -16015,10 +16015,9 @@ svelte-check@^2.7.1:
     svelte-preprocess "^4.0.0"
     typescript "*"
 
-svelte-forms-lib@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/svelte-forms-lib/-/svelte-forms-lib-2.0.1.tgz#64895abacda4a98822d2ae52842a6b8f9aeebcb1"
-  integrity sha512-kwbJ3ynsepsrrJyAMrvSc0Lj/myc9vfI2DL8OKxgArZimrNYsRh1gENYhvrcKEI3BiZrv8q3VFfmGo/GMyk7Zg==
+"svelte-forms-lib@https://github.com/bbtgnn/svelte-forms-lib.git":
+  version "0.0.0-semantically-released"
+  resolved "https://github.com/bbtgnn/svelte-forms-lib.git#32e0cbb44eafa4f8eed02065763dac967672dcb8"
   dependencies:
     dequal "^2.0.2"
 

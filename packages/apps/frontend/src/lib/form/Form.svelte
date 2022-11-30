@@ -18,7 +18,8 @@
 	export let initialValues: InitialValues = {};
 	export let validate: Validate | undefined = undefined;
 	export let validationSchema: ValidationSchema | undefined = undefined;
-	export let onSubmit: () => void = () => {};
+	export let validationContext = {};
+	export let onSubmit: (values: any) => void = () => {};
 
 	export let action = '';
 	export let error = '';
@@ -34,7 +35,8 @@
 		initialValues,
 		validate,
 		validationSchema,
-		onSubmit
+		onSubmit,
+		validationContext
 	});
 
 	/**

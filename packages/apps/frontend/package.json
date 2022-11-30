@@ -48,7 +48,7 @@
 		"nanoid": "^4.0.0",
 		"prepend-http": "^4.0.0",
 		"qs": "^6.11.0",
-		"svelte-forms-lib": "^2.0.1",
+		"svelte-forms-lib": "https://github.com/bbtgnn/svelte-forms-lib.git",
 		"svelte-local-storage-store": "^0.3.1",
 		"svelte-markdown": "^0.2.3",
 		"yup": "^0.32.11"
