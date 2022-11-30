@@ -4,8 +4,6 @@
 	export let error: string | undefined | null;
 </script>
 
-{#if error}
-	<Alert color="red" dismissable data-test="error">
-		{error}
-	</Alert>
-{/if}
+<Alert color="red" dismissable data-test="error">
+	{error}
+</Alert>
