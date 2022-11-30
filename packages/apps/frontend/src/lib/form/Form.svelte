@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { writable } from 'svelte/store';
-	import { setContext } from 'svelte';
+	import { writable, type Writable } from 'svelte/store';
+	import { setContext, onMount, onDestroy } from 'svelte';
 	import type { SubmitFunction } from '$app/forms';
 	import { enhance, applyAction } from '$app/forms';
 
@@ -103,8 +103,33 @@
 	 * doesn't seem to work when the form is empty
 	 */
 
-	// const isFilledAndValid = writable<boolean>(false);
-	// $: $isFilledAndValid = Object.values($touched).every((e) => e) && $isValid;
+	const isFilledAndValid = writable<boolean>(false);
+	$: {
+		const isFilled = Object.values($form).every((e) => Boolean(e));
+		$isFilledAndValid = isFilled && $isValid;
+	}
+
+	/**
+	 * LocalStorage management
+	 */
+
+	// SET: Saving in localstorage when editing
+	$: if ($state.isModified) {
+		localStorage.setItem(lsKey, JSON.stringify($form));
+	}
+
+	// GET: On mount, we check if there's
+	onMount(() => {
+		const formLSData = localStorage.getItem(lsKey);
+		if (formLSData) {
+			$form = JSON.parse(formLSData);
+		}
+
+		// DEL: on unmount, we delete the form from localstorage
+		return () => {
+			localStorage.removeItem(lsKey);
+		};
+	});
 </script>
 
 <!--  -->
@@ -125,9 +150,6 @@
 
 	<!-- Submit button -->
 	<div class="flex flex-row-reverse">
-		<Button type="submit" id="submit">{buttonText}</Button>
+		<Button type="submit" id="submit" disabled={!$isFilledAndValid}>{buttonText}</Button>
 	</div>
-
-	<pre>{JSON.stringify($form, null, 2)}</pre>
-	<pre>{JSON.stringify($errors, null, 2)}</pre>
 </form>
