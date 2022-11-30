@@ -6,6 +6,7 @@
 
 	import { createForm } from 'svelte-forms-lib';
 	import type { InitialValues, Validate, ValidationSchema } from './types';
+	import { key } from './key';
 
 	import { Button } from 'flowbite-svelte';
 	import Error from './Error.svelte';
@@ -21,10 +22,7 @@
 	export let error = '';
 	export let buttonText = 'Submit';
 
-	export let key = 'form';
-	// This variable acts both as:
-	// - the key to store the form in localStorage
-	// - the key for the svelte context
+	export let lsKey = 'form'; // key for localstorage
 
 	/**
 	 * Creating form
@@ -129,4 +127,7 @@
 	<div class="flex flex-row-reverse">
 		<Button type="submit" id="submit">{buttonText}</Button>
 	</div>
+
+	<pre>{JSON.stringify($form, null, 2)}</pre>
+	<pre>{JSON.stringify($errors, null, 2)}</pre>
 </form>

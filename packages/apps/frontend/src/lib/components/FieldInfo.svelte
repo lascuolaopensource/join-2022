@@ -9,9 +9,7 @@
 	export let fieldName: string = '';
 
 	let color: 'gray' | 'green' | 'red' | 'disabled' = 'gray';
-	$: if (error) {
-		color = 'red';
-	}
+	$: error ? (color = 'red') : (color = 'gray');
 </script>
 
 <!--  -->

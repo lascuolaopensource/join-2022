@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-import { get } from '../utils';
 import paths from '../../src/lib/constants/paths';
 
 describe('empty spec', () => {
