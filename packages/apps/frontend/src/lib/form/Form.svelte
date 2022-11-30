@@ -8,7 +8,7 @@
 	import type { InitialValues, Validate, ValidationSchema } from './types';
 
 	import { Button } from 'flowbite-svelte';
-	import FormError from './FormError.svelte';
+	import Error from './Error.svelte';
 
 	//
 
@@ -116,7 +116,7 @@
 	<slot />
 
 	{#if error}
-		<FormError {error} />
+		<Error {error} />
 	{/if}
 
 	{#if $isSubmitting}
