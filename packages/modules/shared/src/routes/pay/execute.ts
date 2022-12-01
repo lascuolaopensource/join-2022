@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { Billing, Address } from "../utils";
+import { Billing, Address } from "../components";
 import { HTTPMethod, Shape } from "../../types";
 import { Schemas } from "../../validation";
 import { flattenObject } from "flatten-anything";

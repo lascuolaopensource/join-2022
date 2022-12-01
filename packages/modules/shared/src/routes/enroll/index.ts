@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { Contacts, Evaluation } from "../utils";
+import { Contacts, Evaluation } from "../components";
 import { HTTPMethod, Shape } from "../../types";
 import { send as s } from "../../join-request";
 

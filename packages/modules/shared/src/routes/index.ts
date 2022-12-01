@@ -3,4 +3,4 @@ export * as Pay from "./pay";
 export * as Admin from "./admin";
 export * as Enroll from "./enroll";
 
-export * from "./utils";
+export * from "./components";
