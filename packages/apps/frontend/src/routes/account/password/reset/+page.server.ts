@@ -2,26 +2,21 @@ import type { Actions } from './$types';
 import { routes as r } from 'join-shared';
 import { invalid, redirect } from '@sveltejs/kit';
 import { setJWTCookie } from '$lib/utils/cookies';
+import { restructure } from '$lib/utils/formData';
 
 //
 
 export const actions: Actions = {
 	default: async ({ request, url, cookies }) => {
-		const data = await request.formData();
-
-		const password = data.get('password') as string;
-		const passwordConfirmation = data.get('passwordConfirmation') as string;
 		const code = url.searchParams.get('code');
 
-		if (!password || !passwordConfirmation || !code) {
+		if (!code) {
 			return invalid(400, { error: 'Invalid data' });
 		}
 
-		const body: r.Account.Password.Reset.Req = {
-			password,
-			passwordConfirmation,
-			code
-		};
+		const data = await request.formData();
+		const body = restructure(data) as r.Account.Password.Reset.Req;
+		body.code = code; // Adding code to body
 
 		const res = await r.Account.Password.Reset.send(body, fetch);
 
