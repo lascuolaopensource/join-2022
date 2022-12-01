@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { formatters as f } from 'join-shared';
+	import { formatters as f, routes as r } from 'join-shared';
 
 	import { Container } from '$lib/components';
 	import {
@@ -15,7 +15,9 @@
 	import { Form, Input } from '$lib/form';
 
 	export let data: PageData;
+
 	const info = data.info!;
+	const { schema: validationSchema, values: initialValues } = r.Pay.Execute;
 </script>
 
 <!--  -->
@@ -46,7 +48,7 @@
 		</Tr>
 	</Table>
 
-	<Form>
+	<Form {validationSchema} {initialValues} let:values let:errors>
 		<Hr />
 
 		<Heading tag="h3">Billing info</Heading>
@@ -60,17 +62,17 @@
 			{:else if $form.billingOption == billingOptions[1]}
 			{:else if $form.billingOption == billingOptions[2]}
 			{/if} -->
-		<Input name="me.cf" label="Fiscal code" type="text" />
+		<Input name="owner.fiscalCode" label="Fiscal code" type="text" />
 
 		<Input name="person.name" label="Name" type="text" />
 		<Input name="person.surname" label="Surname" type="text" />
-		<Input name="person.cf" label="Fiscal code" type="text" />
+		<Input name="person.fiscalCode" label="Fiscal code" type="text" />
 		<Input name="person.email" label="Email" type="email" />
 
 		<Input name="company.name" label="Company name" type="text" />
-		<Input name="company.vat" label="VAT number" type="text" />
-		<Input name="company.sdi" label="Optional:SDI Code" type="text" />
-		<Input name="company.pec" label="Certified mail (PEC)" type="email" />
+		<Input name="company.vatNumber" label="VAT number" type="text" />
+		<Input name="company.sdiCode" label="SDI Code - Optional" type="text" />
+		<Input name="company.certifiedEmail" label="Certified mail (PEC)" type="email" />
 
 		<Heading tag="h4">Full address</Heading>
 

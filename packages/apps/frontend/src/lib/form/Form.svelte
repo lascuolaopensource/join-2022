@@ -140,7 +140,7 @@
 
 <form {action} method="POST" use:enhance={handleEnhance} class="space-y-8">
 	<!-- Default slot for fields -->
-	<slot />
+	<slot values={$form} errors={$errors} />
 
 	{#if error}
 		<Error {error} />
