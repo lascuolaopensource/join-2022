@@ -1,5 +1,4 @@
-import { HTTPMethod } from "$types";
-import { PaymentDetails } from "$types";
+import { PaymentDetails, HTTPMethod } from "../../types";
 export declare type Params = {
     id: string;
 };

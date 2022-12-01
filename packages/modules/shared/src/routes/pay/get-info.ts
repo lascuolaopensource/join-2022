@@ -1,5 +1,4 @@
-import { HTTPMethod } from "$types";
-import { PaymentDetails } from "$types";
+import { PaymentDetails, HTTPMethod } from "../../types";
 import { send as s } from "../../join-request";
 
 //

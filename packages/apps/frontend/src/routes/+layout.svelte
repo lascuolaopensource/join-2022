@@ -10,7 +10,7 @@
 	$: user = ($page.data as PageData).user;
 </script>
 
-<div class="w-screen min-h-screen flex flex-col bg-gray-200">
+<div class="w-screen min-h-screen flex flex-col">
 	<Navbar {user} />
 
 	<slot />

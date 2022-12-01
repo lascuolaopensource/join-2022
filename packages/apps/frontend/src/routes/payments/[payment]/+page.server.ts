@@ -4,7 +4,10 @@ import { routes as r } from 'join-shared';
 
 //
 
-export const load: PageServerLoad = async ({ fetch, params }): LoadReturn<r.Pay.GetInfo.Res> => {
+export const load: PageServerLoad = async ({
+	fetch,
+	params
+}): LoadReturn<{ info: r.Pay.GetInfo.Res }> => {
 	const { payment } = params;
 	const res = await r.Pay.GetInfo.send(payment, fetch);
 
@@ -13,6 +16,6 @@ export const load: PageServerLoad = async ({ fetch, params }): LoadReturn<r.Pay.
 	}
 
 	if (res.data) {
-		return res.data;
+		return { info: res.data };
 	}
 };
