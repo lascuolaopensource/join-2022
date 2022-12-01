@@ -1,4 +1,4 @@
-import { Billing, Address } from "../utils";
+import { Billing, Address } from "../components";
 import { HTTPMethod, Shape } from "../../types";
 export declare const path: (id?: string) => string;
 export declare const method = HTTPMethod.POST;
