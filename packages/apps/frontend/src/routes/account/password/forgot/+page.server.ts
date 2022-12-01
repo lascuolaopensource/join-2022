@@ -8,9 +8,7 @@ import paths from '$lib/constants/paths';
 export const actions: Actions = {
 	default: async ({ request, fetch }) => {
 		const data = await request.formData();
-
 		const email = data.get('email') as string;
-
 		const res = await r.Account.Password.Forgot.send({ email }, fetch);
 
 		if (!res.ok || res.error) {

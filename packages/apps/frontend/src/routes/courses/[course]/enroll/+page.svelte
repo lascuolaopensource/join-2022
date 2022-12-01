@@ -1,13 +1,24 @@
 <script lang="ts">
 	import type { PageData, ActionData } from './$types';
+	import { routes as r } from 'join-shared';
 
 	import { Container } from '$lib/components';
-	import { Input, Label, Hr, Textarea, Button, Heading } from 'flowbite-svelte';
+	import { Hr, Heading } from 'flowbite-svelte';
+	import { Form, Input, Textarea } from '$lib/form';
 
 	export let data: PageData;
 	export let form: ActionData;
 
 	const c = data.course!.attributes!;
+
+	const { values: initialValues, schema: validationSchema, getSchemaCtx } = r.Enroll;
+
+	const validationContext = getSchemaCtx(
+		Boolean(data.user),
+		c.motivationalLetterNeeded,
+		c.portfolioNeeded,
+		c.cvNeeded
+	);
 </script>
 
 <Container direction="column" padding>
@@ -17,105 +28,70 @@
 		</Heading>
 		<Heading tag="h4">Enroll!</Heading>
 
-		<form method="post" class="space-y-6 pt-6">
+		<Form {initialValues} {validationSchema} {validationContext} error={form?.error}>
 			<Hr hrClass="bg-gray-300 rounded border-0 dark:bg-gray-700" />
 
 			{#if !data.user}
-				<div>
-					<Label for="contacts.name">Name</Label>
-					<Input
-						name="contacts.name"
-						type="text"
-						id="contacts.name"
-						placeholder="Maria"
-						required
-						data-test="name"
-					/>
-				</div>
-
-				<div>
-					<Label for="contacts.surname">Surname</Label>
-					<Input
-						name="contacts.surname"
-						type="text"
-						id="contacts.surname"
-						placeholder="Rossi"
-						required
-						data-test="surname"
-					/>
-				</div>
-
-				<div>
-					<Label for="contacts.email">Email</Label>
-					<Input
-						name="contacts.email"
-						type="email"
-						id="contacts.email"
-						placeholder="maria@rossi.com"
-						required
-						data-test="email"
-					/>
-				</div>
+				<Input name="contacts.name" label="Name" placeholder="Maria" type="text" required />
+				<Input
+					name="contacts.surname"
+					label="Surname"
+					placeholder="Rossi"
+					type="text"
+					required
+				/>
+				<Input
+					name="contacts.email"
+					label="Email"
+					placeholder="maria@rossi.com"
+					type="email"
+					required
+				/>
 			{/if}
 
-			<div>
-				<Label for="contacts.phone">Phone number</Label>
-				<Input
-					name="contacts.phone"
-					type="tel"
-					id="contacts.phone"
-					placeholder="+39 123 456 7890"
-					required
-					data-test="phone"
-				/>
-			</div>
+			<Input
+				name="contacts.phone"
+				label="Phone"
+				placeholder="+39 123 456 7890"
+				type="tel"
+				required
+			/>
 
 			<Hr hrClass="bg-gray-300 rounded border-0 dark:bg-gray-700" />
 
 			{#if c.cvNeeded}
-				<div>
-					<Label for="evaluation.cv">CV (Curriculum Vitae)</Label>
-					<Input
-						name="evaluation.cv"
-						type="url"
-						id="evaluation.cv"
-						placeholder="Link to your cv (website, drive)"
-						required
-						data-test="cv"
-					/>
-				</div>
+				<Input
+					name="evaluation.cv"
+					label="CV (Curriculum Vitae)"
+					placeholder="linktoyourcv.com"
+					help="Link to your cv (website, drive)"
+					type="text"
+					required
+				/>
 			{/if}
 
 			{#if c.portfolioNeeded}
-				<div>
-					<Label for="evaluation.portfolio">Portfolio</Label>
-					<Input
-						name="evaluation.portfolio"
-						type="url"
-						id="evaluation.portfolio"
-						placeholder="Link to your portfolio (website, drive)"
-						required
-						data-test="portfolio"
-					/>
-				</div>
+				<Input
+					name="evaluation.portfolio"
+					label="Portfolio"
+					placeholder="linktoyourportfolio.com"
+					help="Link to your portfolio (website, drive)"
+					type="text"
+					required
+				/>
 			{/if}
 
 			{#if c.motivationalLetterNeeded}
-				<div>
-					<Label for="evaluation.letter">Cover letter</Label>
-					<Textarea
-						name="evaluation.letter"
-						id="evaluation.letter"
-						placeholder="Write / paste your letter here"
-						required
-						data-test="letter"
-					/>
-				</div>
+				<Textarea
+					name="evaluation.letter"
+					label="Motivational Letter"
+					placeholder="I would like to enroll in this course because..."
+					help="Write a short text explaining why you want to enroll in this course"
+					required
+				/>
 			{/if}
 
 			<Hr hrClass="bg-gray-300 rounded border-0 dark:bg-gray-700" />
-
-			<Button type="submit" data-test="submit">Enroll!</Button>
-		</form>
+		</Form>
 	</div>
 </Container>

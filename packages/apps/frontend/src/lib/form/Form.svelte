@@ -18,7 +18,8 @@
 	export let initialValues: InitialValues = {};
 	export let validate: Validate | undefined = undefined;
 	export let validationSchema: ValidationSchema | undefined = undefined;
-	export let onSubmit: () => void = () => {};
+	export let validationContext = {};
+	export let onSubmit: (values: any) => void = () => {};
 
 	export let action = '';
 	export let error = '';
@@ -34,7 +35,8 @@
 		initialValues,
 		validate,
 		validationSchema,
-		onSubmit
+		onSubmit,
+		validationContext
 	});
 
 	/**
@@ -159,7 +161,4 @@
 	<div class="flex flex-row-reverse">
 		<Button type="submit" id="submit" disabled={!$isFilledAndValid}>{buttonText}</Button>
 	</div>
-
-	<pre>{JSON.stringify($form, null, 2)}</pre>
-	<pre>{JSON.stringify($errors, null, 2)}</pre>
 </form>

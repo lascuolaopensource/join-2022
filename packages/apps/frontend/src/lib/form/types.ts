@@ -2,7 +2,7 @@ import type { Writable, Readable } from 'svelte/store';
 import type * as yup from 'yup';
 
 export type InitialValues = Record<string, any>;
-export type Validate = (values: Record<string, any>) => Record<string, any>;
+export type Validate = (values: Record<string, any>) => Promise<Record<string, any>>;
 export type ValidationSchema = yup.ObjectSchema<any>;
 
 // Copied from svelte-forms-lib
