@@ -17,9 +17,10 @@ export default async function (
 
     // Getting data
     const body = policyContext.request.body;
+    const paymentID = policyContext.params.id;
 
     // Getting payment
-    const payment: t.Payment = await getPaymentByUID(body.paymentId);
+    const payment: t.Payment = await getPaymentByUID(paymentID);
 
     // Check if its deadline is not passed yet
     if (payment.executed) {

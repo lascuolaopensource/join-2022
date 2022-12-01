@@ -1,2 +1,2 @@
-export { Execute } from "./execute";
+export * as Execute from "./execute";
 export { Confirm } from "./confirm";

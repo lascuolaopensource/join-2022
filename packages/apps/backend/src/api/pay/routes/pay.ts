@@ -5,7 +5,7 @@ export default {
     routes: [
         {
             method: r.Pay.Execute.method,
-            path: r.Pay.Execute.path,
+            path: r.Pay.Execute.path(),
             handler: "pay.execute",
             config: {
                 policies: [

@@ -38,9 +38,10 @@ export default {
 
         // Getting body
         const body: r.Pay.Execute.Req = ctx.request.body;
+        const paymentID = ctx.params.id;
 
         // Getting payment and populating billing data
-        const payment = await getPaymentByUID(body.paymentId, {
+        const payment = await getPaymentByUID(paymentID, {
             billingData: "*",
             owner: "*",
         });

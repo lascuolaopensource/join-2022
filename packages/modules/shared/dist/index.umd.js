@@ -314,8 +314,8 @@
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
 	    return Promise.resolve(send$6({
-	      path: path$5,
-	      method: method$5,
+	      path: path$6,
+	      method: method$6,
 	      data: data,
 	      fetchImpl: fetchImpl
 	    }));
@@ -323,15 +323,15 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$5 = "/account/register";
-	var method$5 = HTTPMethod$1.POST;
-	var values$5 = {
+	var path$6 = "/account/register";
+	var method$6 = HTTPMethod$1.POST;
+	var values$6 = {
 	  name: "",
 	  surname: "",
 	  email: "",
 	  password: ""
 	};
-	var schema$5 = yup__namespace.object({
+	var schema$6 = yup__namespace.object({
 	  name: yup__namespace.string().required(),
 	  surname: yup__namespace.string().required(),
 	  email: Schemas.email.required(),
@@ -341,10 +341,10 @@
 	var register = {
 		__proto__: null,
 		send: send$5,
-		path: path$5,
-		method: method$5,
-		values: values$5,
-		schema: schema$5
+		path: path$6,
+		method: method$6,
+		values: values$6,
+		schema: schema$6
 	};
 
 	var UserExists;
@@ -365,6 +365,41 @@
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
 	    return Promise.resolve(send$6({
+	      path: path$5,
+	      method: method$5,
+	      data: data,
+	      fetchImpl: fetchImpl
+	    }));
+	  } catch (e) {
+	    return Promise.reject(e);
+	  }
+	};
+	var path$5 = "/auth/local";
+	var method$5 = HTTPMethod.POST;
+	var values$5 = {
+	  identifier: "",
+	  password: ""
+	};
+	var schema$5 = yup__namespace.object({
+	  identifier: Schemas.email.required(),
+	  password: yup__namespace.string().required()
+	}).required();
+
+	var login = {
+		__proto__: null,
+		send: send$4,
+		path: path$5,
+		method: method$5,
+		values: values$5,
+		schema: schema$5
+	};
+
+	//
+
+	var send$3 = function send(data, fetchImpl) {
+	  try {
+	    if (fetchImpl === undefined) fetchImpl = fetch;
+	    return Promise.resolve(send$6({
 	      path: path$4,
 	      method: method$4,
 	      data: data,
@@ -374,20 +409,18 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$4 = "/auth/local";
-	var method$4 = HTTPMethod.POST;
+	var path$4 = "/auth/forgot-password";
+	var method$4 = HTTPMethod$1.POST;
 	var values$4 = {
-	  identifier: "",
-	  password: ""
+	  email: ""
 	};
 	var schema$4 = yup__namespace.object({
-	  identifier: Schemas.email.required(),
-	  password: yup__namespace.string().required()
+	  email: Schemas.email.required()
 	}).required();
 
-	var login = {
+	var forgot = {
 		__proto__: null,
-		send: send$4,
+		send: send$3,
 		path: path$4,
 		method: method$4,
 		values: values$4,
@@ -396,7 +429,7 @@
 
 	//
 
-	var send$3 = function send(data, fetchImpl) {
+	var send$2 = function send(data, fetchImpl) {
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
 	    return Promise.resolve(send$6({
@@ -409,47 +442,14 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$3 = "/auth/forgot-password";
+	var path$3 = "/auth/reset-password";
 	var method$3 = HTTPMethod$1.POST;
 	var values$3 = {
-	  email: ""
-	};
-	var schema$3 = yup__namespace.object({
-	  email: Schemas.email.required()
-	}).required();
-
-	var forgot = {
-		__proto__: null,
-		send: send$3,
-		path: path$3,
-		method: method$3,
-		values: values$3,
-		schema: schema$3
-	};
-
-	//
-
-	var send$2 = function send(data, fetchImpl) {
-	  try {
-	    if (fetchImpl === undefined) fetchImpl = fetch;
-	    return Promise.resolve(send$6({
-	      path: path$2,
-	      method: method$2,
-	      data: data,
-	      fetchImpl: fetchImpl
-	    }));
-	  } catch (e) {
-	    return Promise.reject(e);
-	  }
-	};
-	var path$2 = "/auth/reset-password";
-	var method$2 = HTTPMethod$1.POST;
-	var values$2 = {
 	  password: "string",
 	  passwordConfirmation: "string",
 	  code: "string"
 	};
-	var schema$2 = yup__namespace.object({
+	var schema$3 = yup__namespace.object({
 	  password: yup__namespace.string().required(),
 	  passwordConfirmation: yup__namespace.string().required(),
 	  code: yup__namespace.string().required()
@@ -458,10 +458,10 @@
 	var reset = {
 		__proto__: null,
 		send: send$2,
-		path: path$2,
-		method: method$2,
-		values: values$2,
-		schema: schema$2
+		path: path$3,
+		method: method$3,
+		values: values$3,
+		schema: schema$3
 	};
 
 	var index$9 = {
@@ -474,8 +474,8 @@
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
 	    return Promise.resolve(send$6({
-	      path: path$1,
-	      method: method$1,
+	      path: path$2,
+	      method: method$2,
 	      auth: token,
 	      fetchImpl: fetchImpl
 	    }));
@@ -483,14 +483,14 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$1 = "/users/me?populate=info";
-	var method$1 = HTTPMethod.GET;
+	var path$2 = "/users/me?populate=info";
+	var method$2 = HTTPMethod.GET;
 
 	var me = {
 		__proto__: null,
 		send: send$1,
-		path: path$1,
-		method: method$1
+		path: path$2,
+		method: method$2
 	};
 
 	var index$8 = {
@@ -502,14 +502,14 @@
 		get UserExists () { return UserExists; }
 	};
 
-	var values$1 = {
+	var values$2 = {
 	  email: "",
 	  name: "",
 	  surname: "",
 	  phone: ""
 	};
 	var USER_EXISTS = "$userExists";
-	var schema$1 = yup__namespace.object({
+	var schema$2 = yup__namespace.object({
 	  email: yup__namespace.string().email().when(USER_EXISTS, Schemas.thenReq(false)),
 	  name: yup__namespace.string().when(USER_EXISTS, Schemas.thenReq(false)),
 	  surname: yup__namespace.string().when(USER_EXISTS, Schemas.thenReq(false)),
@@ -523,8 +523,8 @@
 
 	var contacts = {
 		__proto__: null,
-		values: values$1,
-		schema: schema$1,
+		values: values$2,
+		schema: schema$2,
 		getSchemaCtx: getSchemaCtx$1
 	};
 
@@ -625,27 +625,36 @@
 		get Company () { return Company; }
 	};
 
-	var Execute;
-	(function (Execute) {
-	  Execute.path = "/pay/execute";
-	  Execute.method = HTTPMethod$1.POST;
-	  Execute.values = {
-	    paymentId: "",
-	    billingOption: Options[0],
-	    owner: Owner.values,
-	    person: Person.values,
-	    company: Company.values,
-	    address: Address.values
-	  };
-	  Execute.schema = yup__namespace.object({
-	    paymentId: yup__namespace.string().required(),
-	    billingOption: yup__namespace.string().oneOf([].concat(Options)).required(),
-	    owner: Owner.schema.when("billingOption", Schemas.thenReq(Options[0])),
-	    person: Person.schema.when("billingOption", Schemas.thenReq(Options[1])),
-	    company: Company.schema.when("billingOption", Schemas.thenReq(Options[2])),
-	    address: Address.schema.required()
-	  });
-	})(Execute || (Execute = {}));
+	//
+	var path$1 = function path(id) {
+	  if (id === void 0) {
+	    id = ":id";
+	  }
+	  return "/pay/execute/" + id;
+	};
+	var method$1 = HTTPMethod$1.POST;
+	var values$1 = {
+	  billingOption: Options[0],
+	  owner: Owner.values,
+	  person: Person.values,
+	  company: Company.values,
+	  address: Address.values
+	};
+	var schema$1 = yup__namespace.object({
+	  billingOption: yup__namespace.string().oneOf([].concat(Options)).required(),
+	  owner: Owner.schema.when("billingOption", Schemas.thenReq(Options[0])),
+	  person: Person.schema.when("billingOption", Schemas.thenReq(Options[1])),
+	  company: Company.schema.when("billingOption", Schemas.thenReq(Options[2])),
+	  address: Address.schema.required()
+	});
+
+	var execute = {
+		__proto__: null,
+		path: path$1,
+		method: method$1,
+		values: values$1,
+		schema: schema$1
+	};
 
 	var Confirm;
 	(function (Confirm) {
@@ -658,7 +667,7 @@
 
 	var index$6 = {
 		__proto__: null,
-		get Execute () { return Execute; },
+		Execute: execute,
 		get Confirm () { return Confirm; }
 	};
 
@@ -713,11 +722,11 @@
 	};
 	var method = HTTPMethod$1.POST;
 	var values = {
-	  contacts: values$1,
+	  contacts: values$2,
 	  evaluation: Evaluation.values
 	};
 	var schema = yup__namespace.object({
-	  contacts: schema$1.required(),
+	  contacts: schema$2.required(),
 	  evaluation: Evaluation.schema.required()
 	});
 	function getSchemaCtx(userExists, letterNeeded, portfolioNeeded, cvNeeded) {

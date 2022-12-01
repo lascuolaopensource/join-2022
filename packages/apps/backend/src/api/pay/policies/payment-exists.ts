@@ -16,11 +16,11 @@ export default async function (
     strapi.log.info(`POLICY - ${policyName}`);
 
     // Getting data
-    const body = policyContext.request.body;
+    const paymentID = policyContext.params.id;
 
     // Getting payment
     try {
-        await getPaymentByUID(body.paymentId);
+        await getPaymentByUID(paymentID);
     } catch (err) {
         throw new PolicyError(e.paymentNotFound, { policyName });
     }
