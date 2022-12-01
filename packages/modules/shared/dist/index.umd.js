@@ -246,7 +246,7 @@
 	  }
 	  return result;
 	}
-	var send$7 = function send(_ref) {
+	var send$8 = function send(_ref) {
 	  var method = _ref.method,
 	    path = _ref.path,
 	    data = _ref.data,
@@ -287,15 +287,15 @@
 
 	var request = {
 		__proto__: null,
-		send: send$7
+		send: send$8
 	};
 
-	var send$6 = function send(args) {
+	var send$7 = function send(args) {
 	  try {
 	    var argsCopy = _extends({}, args);
 	    argsCopy.path = "" + backendURL + args.path;
 	    if (args.auth) argsCopy.auth = "Bearer " + args.auth;
-	    return Promise.resolve(send$7(_extends({}, argsCopy)));
+	    return Promise.resolve(send$8(_extends({}, argsCopy)));
 	  } catch (e) {
 	    return Promise.reject(e);
 	  }
@@ -304,18 +304,18 @@
 
 	var index$a = {
 		__proto__: null,
-		send: send$6,
+		send: send$7,
 		backendURL: backendURL
 	};
 
 	//
 
-	var send$5 = function send(data, fetchImpl) {
+	var send$6 = function send(data, fetchImpl) {
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
-	    return Promise.resolve(send$6({
-	      path: path$6,
-	      method: method$6,
+	    return Promise.resolve(send$7({
+	      path: path$7,
+	      method: method$7,
 	      data: data,
 	      fetchImpl: fetchImpl
 	    }));
@@ -323,8 +323,8 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$6 = "/account/register";
-	var method$6 = HTTPMethod$1.POST;
+	var path$7 = "/account/register";
+	var method$7 = HTTPMethod$1.POST;
 	var values$6 = {
 	  name: "",
 	  surname: "",
@@ -340,9 +340,9 @@
 
 	var register = {
 		__proto__: null,
-		send: send$5,
-		path: path$6,
-		method: method$6,
+		send: send$6,
+		path: path$7,
+		method: method$7,
 		values: values$6,
 		schema: schema$6
 	};
@@ -361,12 +361,12 @@
 
 	//
 
-	var send$4 = function send(data, fetchImpl) {
+	var send$5 = function send(data, fetchImpl) {
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
-	    return Promise.resolve(send$6({
-	      path: path$5,
-	      method: method$5,
+	    return Promise.resolve(send$7({
+	      path: path$6,
+	      method: method$6,
 	      data: data,
 	      fetchImpl: fetchImpl
 	    }));
@@ -374,8 +374,8 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$5 = "/auth/local";
-	var method$5 = HTTPMethod.POST;
+	var path$6 = "/auth/local";
+	var method$6 = HTTPMethod.POST;
 	var values$5 = {
 	  identifier: "",
 	  password: ""
@@ -387,21 +387,21 @@
 
 	var login = {
 		__proto__: null,
-		send: send$4,
-		path: path$5,
-		method: method$5,
+		send: send$5,
+		path: path$6,
+		method: method$6,
 		values: values$5,
 		schema: schema$5
 	};
 
 	//
 
-	var send$3 = function send(data, fetchImpl) {
+	var send$4 = function send(data, fetchImpl) {
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
-	    return Promise.resolve(send$6({
-	      path: path$4,
-	      method: method$4,
+	    return Promise.resolve(send$7({
+	      path: path$5,
+	      method: method$5,
 	      data: data,
 	      fetchImpl: fetchImpl
 	    }));
@@ -409,8 +409,8 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$4 = "/auth/forgot-password";
-	var method$4 = HTTPMethod$1.POST;
+	var path$5 = "/auth/forgot-password";
+	var method$5 = HTTPMethod$1.POST;
 	var values$4 = {
 	  email: ""
 	};
@@ -420,21 +420,21 @@
 
 	var forgot = {
 		__proto__: null,
-		send: send$3,
-		path: path$4,
-		method: method$4,
+		send: send$4,
+		path: path$5,
+		method: method$5,
 		values: values$4,
 		schema: schema$4
 	};
 
 	//
 
-	var send$2 = function send(data, fetchImpl) {
+	var send$3 = function send(data, fetchImpl) {
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
-	    return Promise.resolve(send$6({
-	      path: path$3,
-	      method: method$3,
+	    return Promise.resolve(send$7({
+	      path: path$4,
+	      method: method$4,
 	      data: data,
 	      fetchImpl: fetchImpl
 	    }));
@@ -442,8 +442,8 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$3 = "/auth/reset-password";
-	var method$3 = HTTPMethod$1.POST;
+	var path$4 = "/auth/reset-password";
+	var method$4 = HTTPMethod$1.POST;
 	var values$3 = {
 	  password: "string",
 	  passwordConfirmation: "string",
@@ -457,9 +457,9 @@
 
 	var reset = {
 		__proto__: null,
-		send: send$2,
-		path: path$3,
-		method: method$3,
+		send: send$3,
+		path: path$4,
+		method: method$4,
 		values: values$3,
 		schema: schema$3
 	};
@@ -470,12 +470,12 @@
 		Reset: reset
 	};
 
-	var send$1 = function send(token, fetchImpl) {
+	var send$2 = function send(token, fetchImpl) {
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
-	    return Promise.resolve(send$6({
-	      path: path$2,
-	      method: method$2,
+	    return Promise.resolve(send$7({
+	      path: path$3,
+	      method: method$3,
 	      auth: token,
 	      fetchImpl: fetchImpl
 	    }));
@@ -483,14 +483,14 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$2 = "/users/me?populate=info";
-	var method$2 = HTTPMethod.GET;
+	var path$3 = "/users/me?populate=info";
+	var method$3 = HTTPMethod.GET;
 
 	var me = {
 		__proto__: null,
-		send: send$1,
-		path: path$2,
-		method: method$2
+		send: send$2,
+		path: path$3,
+		method: method$3
 	};
 
 	var index$8 = {
@@ -625,14 +625,15 @@
 		get Company () { return Company; }
 	};
 
-	//
-	var path$1 = function path(id) {
-	  if (id === void 0) {
-	    id = ":id";
+	var path$2 = function path(params) {
+	  if (params === void 0) {
+	    params = {
+	      id: ":id"
+	    };
 	  }
-	  return "/pay/execute/" + id;
+	  return "/pay/execute/" + params.id;
 	};
-	var method$1 = HTTPMethod$1.POST;
+	var method$2 = HTTPMethod$1.POST;
 	var values$1 = {
 	  billingOption: Options[0],
 	  owner: Owner.values,
@@ -650,10 +651,41 @@
 
 	var execute = {
 		__proto__: null,
-		path: path$1,
-		method: method$1,
+		path: path$2,
+		method: method$2,
 		values: values$1,
 		schema: schema$1
+	};
+
+	var send$1 = function send(id, fetchImpl) {
+	  try {
+	    if (fetchImpl === undefined) fetchImpl = fetch;
+	    return Promise.resolve(send$7({
+	      path: path$1({
+	        id: id
+	      }),
+	      method: method$1,
+	      fetchImpl: fetchImpl
+	    }));
+	  } catch (e) {
+	    return Promise.reject(e);
+	  }
+	};
+	var path$1 = function path(params) {
+	  if (params === void 0) {
+	    params = {
+	      id: ":id"
+	    };
+	  }
+	  return "/pay/get-info/" + params.id;
+	};
+	var method$1 = HTTPMethod$1.GET;
+
+	var getInfo = {
+		__proto__: null,
+		send: send$1,
+		path: path$1,
+		method: method$1
 	};
 
 	var Confirm;
@@ -668,6 +700,7 @@
 	var index$6 = {
 		__proto__: null,
 		Execute: execute,
+		GetInfo: getInfo,
 		get Confirm () { return Confirm; }
 	};
 
@@ -703,7 +736,7 @@
 	  }
 	  try {
 	    if (fetchImpl === undefined) fetchImpl = fetch;
-	    return Promise.resolve(send$6({
+	    return Promise.resolve(send$7({
 	      path: path(courseID),
 	      method: method,
 	      data: data,

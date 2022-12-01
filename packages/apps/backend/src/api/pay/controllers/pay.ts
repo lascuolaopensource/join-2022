@@ -31,7 +31,7 @@ export default {
      */
 
     execute: async (
-        ctx: CTX<r.Pay.Execute.Req>,
+        ctx: CTX<r.Pay.Execute.Req, r.Pay.Execute.Params>,
         next
     ): Promise<r.Pay.Execute.Res> => {
         strapi.log.info("CONTROLLER - pay/execute");
@@ -190,5 +190,26 @@ export default {
         return {
             confirmed: true,
         };
+    },
+
+    /**
+     * Gets the payment details
+     */
+
+    getInfo: async (
+        ctx: CTX<null, r.Pay.GetInfo.Params>,
+        next
+    ): Promise<r.Pay.GetInfo.Res> => {
+        strapi.log.info("CONTROLLER - pay/get-info");
+
+        // Getting payment
+        const paymentID = ctx.params.id;
+        const payment = await getPaymentByUID(paymentID);
+        const details = await getPaymentDetails(payment.id);
+
+        // Removing email from owner
+        delete details.owner.email;
+
+        return details;
     },
 };

@@ -5,7 +5,9 @@ import { Schemas } from "../../validation";
 
 //
 
-export const path = (id = ":id") => `/pay/execute/${id}`;
+export type Params = { id: string };
+export const path = (params: Params = { id: ":id" }) =>
+    `/pay/execute/${params.id}`;
 export const method = HTTPMethod.POST;
 
 export type Req = {

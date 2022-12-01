@@ -17,7 +17,7 @@ export type CleanComp<T> = Omit<T, "id" | "__typename">;
  */
 
 export interface PaymentC extends Payment {
-	confirmationCode: string;
+    confirmationCode: string;
 }
 
 /**
@@ -25,21 +25,21 @@ export interface PaymentC extends Payment {
  */
 
 export interface PaymentDetails {
-	category: string;
-	title: string;
-	price: number;
-	executed: boolean;
-	deadline: string;
-	expired: boolean;
-	owner: {
-		name: string;
-		surname: string;
-		email: string;
-	};
+    category: string;
+    title: string;
+    price: number;
+    executed: boolean;
+    deadline: string;
+    expired: boolean;
+    owner: {
+        name: string;
+        surname: string;
+        email: string;
+    };
 }
 
 export enum PaymentCategories {
-	course = "course",
+    course = "course",
 }
 
 /**

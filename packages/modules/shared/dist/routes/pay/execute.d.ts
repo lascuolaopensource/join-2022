@@ -1,6 +1,9 @@
 import { Billing, Address } from "../components";
 import { HTTPMethod, Shape } from "../../types";
-export declare const path: (id?: string) => string;
+export declare type Params = {
+    id: string;
+};
+export declare const path: (params?: Params) => string;
 export declare const method = HTTPMethod.POST;
 export declare type Req = {
     billingOption: Billing.Option;

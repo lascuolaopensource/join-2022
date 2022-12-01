@@ -26,5 +26,13 @@ export default {
                 middlewares: [],
             },
         },
+        {
+            method: r.Pay.GetInfo.method,
+            path: r.Pay.GetInfo.path(),
+            handler: "pay.getInfo",
+            config: {
+                policies: ["payment-exists"],
+            },
+        },
     ],
 };

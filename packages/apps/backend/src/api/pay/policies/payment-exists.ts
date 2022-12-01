@@ -8,7 +8,7 @@ const { PolicyError } = errors;
 //
 
 export default async function (
-    policyContext: CTX<r.Pay.Execute.Req>,
+    policyContext: CTX<any, r.Pay.GetInfo.Params | r.Pay.Execute.Params>,
     config: any,
     { strapi }: { strapi: Strapi }
 ) {
@@ -16,11 +16,11 @@ export default async function (
     strapi.log.info(`POLICY - ${policyName}`);
 
     // Getting data
-    const paymentID = policyContext.params.id;
+    const id = policyContext.params.id;
 
     // Getting payment
     try {
-        await getPaymentByUID(paymentID);
+        await getPaymentByUID(id);
     } catch (err) {
         throw new PolicyError(e.paymentNotFound, { policyName });
     }
