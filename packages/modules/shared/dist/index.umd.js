@@ -625,6 +625,203 @@
 		get Company () { return Company; }
 	};
 
+	/**
+	 * Returns the object type of the given payload
+	 *
+	 * @param {*} payload
+	 * @returns {string}
+	 */
+	function getType$1(payload) {
+	    return Object.prototype.toString.call(payload).slice(8, -1);
+	}
+	/**
+	 * Returns whether the payload is a plain JavaScript object (excluding special classes or objects with other prototypes)
+	 *
+	 * @param {*} payload
+	 * @returns {payload is PlainObject}
+	 */
+	function isPlainObject$1(payload) {
+	    if (getType$1(payload) !== 'Object')
+	        return false;
+	    const prototype = Object.getPrototypeOf(payload);
+	    return prototype.constructor === Object && prototype === Object.prototype;
+	}
+	/**
+	 * Returns whether the payload is a number (but not NaN)
+	 *
+	 * This will return `false` for `NaN`!!
+	 *
+	 * @param {*} payload
+	 * @returns {payload is number}
+	 */
+	function isNumber(payload) {
+	    return getType$1(payload) === 'Number' && !isNaN(payload);
+	}
+
+	function retrievePaths(object, path, result, untilDepth) {
+	    if (!isPlainObject$1(object) ||
+	        !Object.keys(object).length ||
+	        object.methodName === 'FieldValue.serverTimestamp') {
+	        if (!path)
+	            return object;
+	        result[path] = object;
+	        return result;
+	    }
+	    if (isNumber(untilDepth))
+	        untilDepth--;
+	    return Object.keys(object).reduce((carry, key) => {
+	        const pathUntilNow = path ? path + '.' : '';
+	        const newPath = pathUntilNow + key;
+	        // last iteration or not
+	        const extra = untilDepth === -1
+	            ? { [newPath]: object[key] }
+	            : retrievePaths(object[key], newPath, result, untilDepth);
+	        return Object.assign(carry, extra);
+	    }, {});
+	}
+	/**
+	 * Flattens an object from `{a: {b: {c: 'd'}}}` to `{'a.b.c': 'd'}`
+	 *
+	 * @export
+	 * @param {Record<string, any>} object the object to flatten
+	 * @param {untilDepth} [number] how deep you want to flatten. 1 for flattening only the first nested prop, and keeping deeper objects as is.
+	 * @returns {Record<string, any>} the flattened object
+	 */
+	function flattenObject(object, untilDepth) {
+	    const result = {};
+	    return retrievePaths(object, null, result, untilDepth);
+	}
+
+	/**
+	 * Returns the object type of the given payload
+	 *
+	 * @param {*} payload
+	 * @returns {string}
+	 */
+	function getType(payload) {
+	  return Object.prototype.toString.call(payload).slice(8, -1);
+	}
+	/**
+	 * Returns whether the payload is a plain JavaScript object (excluding special classes or objects with other prototypes)
+	 *
+	 * @param {*} payload
+	 * @returns {payload is PlainObject}
+	 */
+	function isPlainObject(payload) {
+	  if (getType(payload) !== 'Object') return false;
+	  return payload.constructor === Object && Object.getPrototypeOf(payload) === Object.prototype;
+	}
+	/**
+	 * Returns whether the payload is a Symbol
+	 *
+	 * @param {*} payload
+	 * @returns {payload is symbol}
+	 */
+	function isSymbol(payload) {
+	  return getType(payload) === 'Symbol';
+	}
+
+	function assignProp(carry, key, newVal, originalObject) {
+	  var propType = {}.propertyIsEnumerable.call(originalObject, key) ? 'enumerable' : 'nonenumerable';
+	  if (propType === 'enumerable') carry[key] = newVal;
+	  if (propType === 'nonenumerable') {
+	    Object.defineProperty(carry, key, {
+	      value: newVal,
+	      enumerable: false,
+	      writable: true,
+	      configurable: true
+	    });
+	  }
+	}
+	function mergeRecursively(origin, newComer, compareFn) {
+	  // always return newComer if its not an object
+	  if (!isPlainObject(newComer)) return newComer;
+	  // define newObject to merge all values upon
+	  var newObject = {};
+	  if (isPlainObject(origin)) {
+	    var _props = Object.getOwnPropertyNames(origin);
+	    var _symbols = Object.getOwnPropertySymbols(origin);
+	    newObject = [].concat(_props, _symbols).reduce(function (carry, key) {
+	      var targetVal = origin[key];
+	      if (!isSymbol(key) && !Object.getOwnPropertyNames(newComer).includes(key) || isSymbol(key) && !Object.getOwnPropertySymbols(newComer).includes(key)) {
+	        assignProp(carry, key, targetVal, origin);
+	      }
+	      return carry;
+	    }, {});
+	  }
+	  // newObject has all properties that newComer hasn't
+	  var props = Object.getOwnPropertyNames(newComer);
+	  var symbols = Object.getOwnPropertySymbols(newComer);
+	  var result = [].concat(props, symbols).reduce(function (carry, key) {
+	    // re-define the origin and newComer as targetVal and newVal
+	    var newVal = newComer[key];
+	    var targetVal = isPlainObject(origin) ? origin[key] : undefined;
+	    // When newVal is an object do the merge recursively
+	    if (targetVal !== undefined && isPlainObject(newVal)) {
+	      newVal = mergeRecursively(targetVal, newVal, compareFn);
+	    }
+	    var propToAssign = compareFn ? compareFn(targetVal, newVal, key) : newVal;
+	    assignProp(carry, key, propToAssign, newComer);
+	    return carry;
+	  }, newObject);
+	  return result;
+	}
+	/**
+	 * Merge anything recursively.
+	 * Objects get merged, special objects (classes etc.) are re-assigned "as is".
+	 * Basic types overwrite objects or other basic types.
+	 * @param object
+	 * @param otherObjects
+	 */
+	function merge(object) {
+	  return [].slice.call(arguments, 1).reduce(function (result, newComer) {
+	    return mergeRecursively(result, newComer);
+	  }, object);
+	}
+
+	/**
+	 * creates an object from a path
+	 *
+	 * @param {string} path a.path.like.this
+	 * @param {unknown} payload the value to attach to the nested prop
+	 * @returns {Record<string, unknown>} eg. `{a: {path: {like: {this: 'payload'}}}}`
+	 */
+	function createObjectFromPath(path, payload) {
+	  var _ref;
+	  // edge cases
+	  if (!path.includes('.')) return _ref = {}, _ref[path] = payload, _ref;
+	  // start
+	  var newValue = payload;
+	  // important to set the result here and not return the reduce directly!
+	  var result = {};
+	  var matches = path.match(/[^.]+/g) || [];
+	  matches.reduce(function (carry, _prop, index, array) {
+	    _prop = _prop.replace('_____dot_____', '.');
+	    var container = index === array.length - 1 ? newValue : {};
+	    carry[_prop] = container;
+	    return container;
+	  }, result);
+	  return result;
+	}
+	/**
+	 * Recreates an object from any `nested.props` in a passed target object.
+	 *
+	 * @param {Record<string, unknown>} payload object with flat prop paths - eg. `{ 'size.h': 0, 'size.w': 0 }`
+	 * @returns {Record<string, unknown>} object with nested props - eg. `{ size: { h: 0, w: 0 } }`
+	 * @example
+	 * const result = nestifyObject({ 'size.h': 0, 'size.w': 0 })
+	 * // result is:
+	 * { size: { h: 0, w: 0 } }
+	 */
+	function nestifyObject(payload) {
+	  return Object.entries(payload).reduce(function (carry, _ref2) {
+	    var key = _ref2[0],
+	      value = _ref2[1];
+	    var nestedObject = createObjectFromPath(key, value);
+	    return merge(carry, nestedObject);
+	  }, {});
+	}
+
 	//
 	var path$1 = function path(id) {
 	  if (id === void 0) {
@@ -640,6 +837,15 @@
 	  company: Company.values,
 	  address: Address.values
 	};
+	function listKeys(record) {
+	  var list = {};
+	  for (var _i = 0, _Object$keys = Object.keys(record); _i < _Object$keys.length; _i++) {
+	    var key = _Object$keys[_i];
+	    list[key] = key;
+	  }
+	  return list;
+	}
+	console.log(nestifyObject(listKeys(flattenObject(values$1))));
 	var schema$1 = yup__namespace.object({
 	  billingOption: yup__namespace.string().oneOf([].concat(Options)).required(),
 	  owner: Owner.schema.when("billingOption", Schemas.thenReq(Options[0])),

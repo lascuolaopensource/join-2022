@@ -2,19 +2,21 @@ import * as yup from "yup";
 import { Billing, Address } from "../utils";
 import { HTTPMethod, Shape } from "../../types";
 import { Schemas } from "../../validation";
+import { flattenObject } from "flatten-anything";
+import { nestifyObject } from "nestify-anything";
 
 //
 
 export const path = (id = ":id") => `/pay/execute/${id}`;
 export const method = HTTPMethod.POST;
 
-export interface Req {
+export type Req = {
     billingOption: Billing.Option;
     owner: Billing.Owner.Type;
     person: Billing.Person.Type;
     company: Billing.Company.Type;
     address: Address.Type;
-}
+};
 
 export const values: Req = {
     billingOption: Billing.Options[0],
@@ -23,6 +25,16 @@ export const values: Req = {
     company: Billing.Company.values,
     address: Address.values,
 };
+
+function listKeys(record: Record<string, unknown>) {
+    const list: Record<string, string> = {};
+    for (const key of Object.keys(record)) {
+        list[key] = key;
+    }
+    return list;
+}
+
+console.log(nestifyObject(listKeys(flattenObject(values))));
 
 export const schema = yup.object<Shape<Req>>({
     billingOption: yup

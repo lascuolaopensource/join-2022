@@ -24,6 +24,8 @@
     "microbundle": "^0.14.2"
   },
   "dependencies": {
+    "flatten-anything": "^3.0.3",
+    "nestify-anything": "^2.0.2",
     "yup": "^0.32.11"
   }
 }
