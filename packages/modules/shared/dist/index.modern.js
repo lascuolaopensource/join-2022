@@ -193,7 +193,7 @@ var types = {
 };
 
 // Send function
-async function send$8({
+async function send$9({
   method,
   path,
   data,
@@ -228,21 +228,21 @@ async function send$8({
 
 var request = {
 	__proto__: null,
-	send: send$8
+	send: send$9
 };
 
 const backendURL = "http://localhost:1337/api";
-async function send$7(args) {
+async function send$8(args) {
   const argsCopy = _extends({}, args);
   argsCopy.path = `${backendURL}${args.path}`;
   if (args.auth) argsCopy.auth = `Bearer ${args.auth}`;
-  return await send$8(_extends({}, argsCopy));
+  return await send$9(_extends({}, argsCopy));
 }
 
 var index$a = {
 	__proto__: null,
 	backendURL: backendURL,
-	send: send$7
+	send: send$8
 };
 
 //
@@ -260,8 +260,8 @@ const schema$6 = yup.object({
   email: Schemas.email.required(),
   password: yup.string().required()
 }).required();
-async function send$6(data, fetchImpl = fetch) {
-  return send$7({
+async function send$7(data, fetchImpl = fetch) {
+  return send$8({
     path: path$7,
     method: method$7,
     data,
@@ -275,7 +275,7 @@ var register = {
 	method: method$7,
 	values: values$6,
 	schema: schema$6,
-	send: send$6
+	send: send$7
 };
 
 var UserExists;
@@ -301,8 +301,8 @@ const schema$5 = yup.object({
   identifier: Schemas.email.required(),
   password: yup.string().required()
 }).required();
-async function send$5(data, fetchImpl = fetch) {
-  return send$7({
+async function send$6(data, fetchImpl = fetch) {
+  return send$8({
     path: path$6,
     method: method$6,
     data,
@@ -316,7 +316,7 @@ var login = {
 	method: method$6,
 	values: values$5,
 	schema: schema$5,
-	send: send$5
+	send: send$6
 };
 
 //
@@ -328,8 +328,8 @@ const values$4 = {
 const schema$4 = yup.object({
   email: Schemas.email.required()
 }).required();
-async function send$4(data, fetchImpl = fetch) {
-  return send$7({
+async function send$5(data, fetchImpl = fetch) {
+  return send$8({
     path: path$5,
     method: method$5,
     data,
@@ -343,7 +343,7 @@ var forgot = {
 	method: method$5,
 	values: values$4,
 	schema: schema$4,
-	send: send$4
+	send: send$5
 };
 
 //
@@ -359,8 +359,8 @@ const schema$3 = yup.object({
   passwordConfirmation: yup.string().required(),
   code: yup.string().required()
 }).required();
-async function send$3(data, fetchImpl = fetch) {
-  return send$7({
+async function send$4(data, fetchImpl = fetch) {
+  return send$8({
     path: path$4,
     method: method$4,
     data,
@@ -374,7 +374,7 @@ var reset = {
 	method: method$4,
 	values: values$3,
 	schema: schema$3,
-	send: send$3
+	send: send$4
 };
 
 var index$9 = {
@@ -385,8 +385,8 @@ var index$9 = {
 
 const path$3 = "/users/me?populate=info";
 const method$3 = HTTPMethod.GET;
-async function send$2(token, fetchImpl = fetch) {
-  return send$7({
+async function send$3(token, fetchImpl = fetch) {
+  return send$8({
     path: path$3,
     method: method$3,
     auth: token,
@@ -398,7 +398,7 @@ var me = {
 	__proto__: null,
 	path: path$3,
 	method: method$3,
-	send: send$2
+	send: send$3
 };
 
 var index$8 = {
@@ -551,13 +551,24 @@ const schema$1 = yup.object({
   company: Company.schema.when("billingOption", Schemas.thenReq(Options[2])),
   address: Address.schema.required()
 });
+async function send$2(paymentID, data, fetchImpl = fetch) {
+  return send$8({
+    path: path$2({
+      id: paymentID
+    }),
+    method: method$2,
+    data,
+    fetchImpl
+  });
+}
 
 var execute = {
 	__proto__: null,
 	path: path$2,
 	method: method$2,
 	values: values$1,
-	schema: schema$1
+	schema: schema$1,
+	send: send$2
 };
 
 const path$1 = (params = {
@@ -565,7 +576,7 @@ const path$1 = (params = {
 }) => `/pay/get-info/${params.id}`;
 const method$1 = HTTPMethod$1.GET;
 async function send$1(id, fetchImpl = fetch) {
-  return send$7({
+  return send$8({
     path: path$1({
       id
     }),
@@ -636,7 +647,7 @@ function getSchemaCtx(userExists, letterNeeded, portfolioNeeded, cvNeeded) {
   return _extends({}, getSchemaCtx$1(userExists), Evaluation.getSchemaCtx(letterNeeded, portfolioNeeded, cvNeeded));
 }
 async function send(courseID, data, token = null, fetchImpl = fetch) {
-  return send$7({
+  return send$8({
     path: path(courseID),
     method,
     data,

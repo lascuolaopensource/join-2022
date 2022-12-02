@@ -2,6 +2,7 @@ import * as yup from "yup";
 import { Billing, Address } from "../components";
 import { HTTPMethod, Shape } from "../../types";
 import { Schemas } from "../../validation";
+import { send as s } from "../../join-request";
 
 //
 
@@ -14,9 +15,9 @@ export const method = HTTPMethod.POST;
 
 export type Req = {
     billingOption: Billing.Option;
-    owner: Billing.Owner.Type;
-    person: Billing.Person.Type;
-    company: Billing.Company.Type;
+    owner: Billing.Owner.Type | null;
+    person: Billing.Person.Type | null;
+    company: Billing.Company.Type | null;
     address: Address.Type;
 };
 
@@ -50,4 +51,13 @@ export const schema = yup.object<Shape<Req>>({
 
 export interface Res {
     sessionUrl: string | null;
+}
+
+export async function send(paymentID: string, data: Req, fetchImpl = fetch) {
+    return s<Res>({
+        path: path({ id: paymentID }),
+        method,
+        data,
+        fetchImpl,
+    });
 }

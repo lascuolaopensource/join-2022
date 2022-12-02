@@ -243,7 +243,7 @@ function _catch(body, recover) {
   }
   return result;
 }
-var send$8 = function send(_ref) {
+var send$9 = function send(_ref) {
   var method = _ref.method,
     path = _ref.path,
     data = _ref.data,
@@ -284,15 +284,15 @@ var send$8 = function send(_ref) {
 
 var request = {
 	__proto__: null,
-	send: send$8
+	send: send$9
 };
 
-var send$7 = function send(args) {
+var send$8 = function send(args) {
   try {
     var argsCopy = _extends({}, args);
     argsCopy.path = "" + backendURL + args.path;
     if (args.auth) argsCopy.auth = "Bearer " + args.auth;
-    return Promise.resolve(send$8(_extends({}, argsCopy)));
+    return Promise.resolve(send$9(_extends({}, argsCopy)));
   } catch (e) {
     return Promise.reject(e);
   }
@@ -301,16 +301,16 @@ var backendURL = "http://localhost:1337/api";
 
 var index$a = {
 	__proto__: null,
-	send: send$7,
+	send: send$8,
 	backendURL: backendURL
 };
 
 //
 
-var send$6 = function send(data, fetchImpl) {
+var send$7 = function send(data, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$7({
+    return Promise.resolve(send$8({
       path: path$7,
       method: method$7,
       data: data,
@@ -337,7 +337,7 @@ var schema$6 = yup__namespace.object({
 
 var register = {
 	__proto__: null,
-	send: send$6,
+	send: send$7,
 	path: path$7,
 	method: method$7,
 	values: values$6,
@@ -358,10 +358,10 @@ var UserExists;
 
 //
 
-var send$5 = function send(data, fetchImpl) {
+var send$6 = function send(data, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$7({
+    return Promise.resolve(send$8({
       path: path$6,
       method: method$6,
       data: data,
@@ -384,7 +384,7 @@ var schema$5 = yup__namespace.object({
 
 var login = {
 	__proto__: null,
-	send: send$5,
+	send: send$6,
 	path: path$6,
 	method: method$6,
 	values: values$5,
@@ -393,10 +393,10 @@ var login = {
 
 //
 
-var send$4 = function send(data, fetchImpl) {
+var send$5 = function send(data, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$7({
+    return Promise.resolve(send$8({
       path: path$5,
       method: method$5,
       data: data,
@@ -417,7 +417,7 @@ var schema$4 = yup__namespace.object({
 
 var forgot = {
 	__proto__: null,
-	send: send$4,
+	send: send$5,
 	path: path$5,
 	method: method$5,
 	values: values$4,
@@ -426,10 +426,10 @@ var forgot = {
 
 //
 
-var send$3 = function send(data, fetchImpl) {
+var send$4 = function send(data, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$7({
+    return Promise.resolve(send$8({
       path: path$4,
       method: method$4,
       data: data,
@@ -454,7 +454,7 @@ var schema$3 = yup__namespace.object({
 
 var reset = {
 	__proto__: null,
-	send: send$3,
+	send: send$4,
 	path: path$4,
 	method: method$4,
 	values: values$3,
@@ -467,10 +467,10 @@ var index$9 = {
 	Reset: reset
 };
 
-var send$2 = function send(token, fetchImpl) {
+var send$3 = function send(token, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$7({
+    return Promise.resolve(send$8({
       path: path$3,
       method: method$3,
       auth: token,
@@ -485,7 +485,7 @@ var method$3 = HTTPMethod.GET;
 
 var me = {
 	__proto__: null,
-	send: send$2,
+	send: send$3,
 	path: path$3,
 	method: method$3
 };
@@ -622,6 +622,21 @@ var index$7 = {
 	get Company () { return Company; }
 };
 
+var send$2 = function send(paymentID, data, fetchImpl) {
+  try {
+    if (fetchImpl === undefined) fetchImpl = fetch;
+    return Promise.resolve(send$8({
+      path: path$2({
+        id: paymentID
+      }),
+      method: method$2,
+      data: data,
+      fetchImpl: fetchImpl
+    }));
+  } catch (e) {
+    return Promise.reject(e);
+  }
+};
 var path$2 = function path(params) {
   if (params === void 0) {
     params = {
@@ -648,6 +663,7 @@ var schema$1 = yup__namespace.object({
 
 var execute = {
 	__proto__: null,
+	send: send$2,
 	path: path$2,
 	method: method$2,
 	values: values$1,
@@ -657,7 +673,7 @@ var execute = {
 var send$1 = function send(id, fetchImpl) {
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$7({
+    return Promise.resolve(send$8({
       path: path$1({
         id: id
       }),
@@ -733,7 +749,7 @@ var send = function send(courseID, data, token, fetchImpl) {
   }
   try {
     if (fetchImpl === undefined) fetchImpl = fetch;
-    return Promise.resolve(send$7({
+    return Promise.resolve(send$8({
       path: path(courseID),
       method: method,
       data: data,
