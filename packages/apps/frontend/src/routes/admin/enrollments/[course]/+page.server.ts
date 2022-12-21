@@ -1,17 +1,30 @@
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 import qs from 'qs';
 import { jr, Request, types as t } from 'join-shared';
 import type { LoadReturn } from '$lib/types';
+import { getJWT } from '$lib/utils/cookies';
 
 //
 
-export const load: PageLoad = async ({ params, fetch }): LoadReturn<{ course: t.CourseEntity }> => {
+export const load: PageServerLoad = async ({
+	params,
+	fetch,
+	cookies
+}): LoadReturn<{ course: t.CourseEntity }> => {
 	const { course: slug } = params;
 
 	// Creating filters
 	const query = qs.stringify({
 		populate: {
-			gallery: '*'
+			enrollments: {
+				populate: {
+					owner: {
+						populate: {
+							info: '*'
+						}
+					}
+				}
+			}
 		},
 		filters: {
 			slug: {
@@ -23,6 +36,7 @@ export const load: PageLoad = async ({ params, fetch }): LoadReturn<{ course: t.
 	const res = await jr.send<t.CourseEntityResponseCollection>({
 		fetchImpl: fetch,
 		path: `/courses?${query}`,
+		auth: getJWT(cookies),
 		method: Request.HTTPMethod.GET
 	});
 
