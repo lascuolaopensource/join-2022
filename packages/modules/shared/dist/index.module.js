@@ -108,49 +108,16 @@ var PaymentCategories;
  * Enrollment states, as list
  */
 var EnrollmentStates = Object.values(Enum_Enrollment_State);
-// import {
-// 	UsersPermissionsMe,
-// 	ComponentLocationAddress,
-// 	BillingInfoDataDynamicZone,
-// 	Payment,
-// } from "./types";
-// export type Comp<T> = Partial<T> & { __component: string };
-// /**
-//  * Login
-//  */
-// export interface LoginResponse {
-// 	jwt?: string;
-// 	user: UsersPermissionsMe;
-// }
-// /**
-//  * Payment
-//  */
-// export interface PaymentC extends Payment {
-// 	confirmCode: string;
-// }
-// export interface PaymentBillingInfo {
-// 	address: ComponentLocationAddress;
-// 	data: Comp<BillingInfoDataDynamicZone>;
-// }
-// /**
-//  * Billing options
-//  */
-// // Lista dei componenti per la zona dinamica
-// // Reference: strapi-backend/src/api/billing-info/content-types/billing-info/schema.json
-// export enum BillingOptionsComponents {
-// 	Company = "billing.company",
-// 	Person = "billing.person",
-// 	Me = "billing.me",
-// }
-// /**
-//  * Roles
-//  */
-// export enum UserPermissionRoles {
-// 	Public = "public",
-// 	Authenticated = "authenticated",
-// 	AdminEnrollments = "admin_enrollments",
-// 	AdminTools = "admin_tools",
-// }
+/**
+ * Roles
+ */
+var UserPermissionRoles;
+(function (UserPermissionRoles) {
+  UserPermissionRoles["Public"] = "public";
+  UserPermissionRoles["Authenticated"] = "authenticated";
+  UserPermissionRoles["AdminEnrollments"] = "admin_enrollments";
+  UserPermissionRoles["AdminTools"] = "admin_tools";
+})(UserPermissionRoles || (UserPermissionRoles = {}));
 
 var HTTPMethod$1;
 (function (HTTPMethod) {
@@ -171,7 +138,8 @@ var index$b = {
 	get Enum_Enrollment_State () { return Enum_Enrollment_State; },
 	get PublicationState () { return PublicationState; },
 	get PaymentCategories () { return PaymentCategories; },
-	EnrollmentStates: EnrollmentStates
+	EnrollmentStates: EnrollmentStates,
+	get UserPermissionRoles () { return UserPermissionRoles; }
 };
 
 function _extends() {
