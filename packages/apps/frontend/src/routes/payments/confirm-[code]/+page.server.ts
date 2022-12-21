@@ -7,9 +7,6 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	const res = await r.Pay.Confirm.send(code);
 
-	console.log(res.data);
-	console.log(res.data?.category === t.PaymentCategories.course);
-
 	if (res.data?.category === t.PaymentCategories.course) {
 		throw redirect(307, `/courses/${res.data.id}/enroll/thanks`);
 	}

@@ -844,12 +844,21 @@
 	function hasDeadlinePassed(c) {
 	  return Date.now() > Date.parse(c.enrollmentDeadline);
 	}
+	function getFirstMeeting(c) {
+	  return c.meetings[0];
+	}
+	function getStart(c) {
+	  var _getFirstMeeting;
+	  return new Date((_getFirstMeeting = getFirstMeeting(c)) == null ? void 0 : _getFirstMeeting.start);
+	}
 
 	var course = {
 		__proto__: null,
 		getEvaluationSchemaCtx: getEvaluationSchemaCtx,
 		isPaymentNeeded: isPaymentNeeded,
-		hasDeadlinePassed: hasDeadlinePassed
+		hasDeadlinePassed: hasDeadlinePassed,
+		getFirstMeeting: getFirstMeeting,
+		getStart: getStart
 	};
 
 	var Payment;

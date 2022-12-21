@@ -20,6 +20,12 @@ export default {
 			thanks: (course: string) => `/courses/${course}/enroll/thanks`
 		}
 	},
+	admin: {
+		enrollments: {
+			index: '/admin/enrollments',
+			archive: '/admin/enrollments?archive=true'
+		}
+	},
 	payment: {
 		index: (id: string) => `/payments/pay-${id}`
 	}
