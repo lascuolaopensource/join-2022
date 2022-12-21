@@ -143,7 +143,11 @@ export default {
             .findOne({
                 where: { confirmationCode: ctx.request.body.confirmationCode },
                 populate: {
-                    enrollment: "*",
+                    enrollment: {
+                        populate: {
+                            course: "*",
+                        },
+                    },
                 },
             });
 
@@ -162,8 +166,14 @@ export default {
             },
         });
 
+        // Defining category and id
+        let category: t.PaymentCategories;
+        let id: string;
+
         // Updating enrollment
         const enroll = payment.enrollment as any as t.ID<t.Enrollment>;
+        const course = enroll.course as any as t.ID<t.Course>;
+
         if (enroll && enroll.state == t.Enum_Enrollment_State.AwaitingPayment) {
             await strapi.entityService.update(entities.enrollment, enroll.id, {
                 data: {
@@ -171,6 +181,9 @@ export default {
                 },
             });
         }
+
+        category = t.PaymentCategories.course;
+        id = course.slug;
 
         // Updating any other relationships
         // ...
@@ -188,7 +201,8 @@ export default {
         });
 
         return {
-            confirmed: true,
+            category,
+            id,
         };
     },
 
