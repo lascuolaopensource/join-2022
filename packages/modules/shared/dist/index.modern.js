@@ -383,7 +383,7 @@ var index$9 = {
 	Reset: reset
 };
 
-const path$4 = "/users/me?populate=info";
+const path$4 = "/users/me?populate=info&populate=role";
 const method$4 = HTTPMethod.GET;
 async function send$4(token, fetchImpl = fetch) {
   return send$9({

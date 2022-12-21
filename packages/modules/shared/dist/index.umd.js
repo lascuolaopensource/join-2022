@@ -483,7 +483,7 @@
 	    return Promise.reject(e);
 	  }
 	};
-	var path$4 = "/users/me?populate=info";
+	var path$4 = "/users/me?populate=info&populate=role";
 	var method$4 = HTTPMethod.GET;
 
 	var me = {
