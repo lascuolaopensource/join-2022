@@ -31,16 +31,17 @@ export default {
      */
 
     execute: async (
-        ctx: CTX<r.Pay.Execute.Req>,
+        ctx: CTX<r.Pay.Execute.Req, r.Pay.Execute.Params>,
         next
     ): Promise<r.Pay.Execute.Res> => {
         strapi.log.info("CONTROLLER - pay/execute");
 
         // Getting body
         const body: r.Pay.Execute.Req = ctx.request.body;
+        const paymentID = ctx.params.id;
 
         // Getting payment and populating billing data
-        const payment = await getPaymentByUID(body.paymentId, {
+        const payment = await getPaymentByUID(paymentID, {
             billingData: "*",
             owner: "*",
         });
@@ -142,7 +143,11 @@ export default {
             .findOne({
                 where: { confirmationCode: ctx.request.body.confirmationCode },
                 populate: {
-                    enrollment: "*",
+                    enrollment: {
+                        populate: {
+                            course: "*",
+                        },
+                    },
                 },
             });
 
@@ -161,8 +166,14 @@ export default {
             },
         });
 
+        // Defining category and id
+        let category: t.PaymentCategories;
+        let id: string;
+
         // Updating enrollment
         const enroll = payment.enrollment as any as t.ID<t.Enrollment>;
+        const course = enroll.course as any as t.ID<t.Course>;
+
         if (enroll && enroll.state == t.Enum_Enrollment_State.AwaitingPayment) {
             await strapi.entityService.update(entities.enrollment, enroll.id, {
                 data: {
@@ -170,6 +181,9 @@ export default {
                 },
             });
         }
+
+        category = t.PaymentCategories.course;
+        id = course.slug;
 
         // Updating any other relationships
         // ...
@@ -187,7 +201,29 @@ export default {
         });
 
         return {
-            confirmed: true,
+            category,
+            id,
         };
+    },
+
+    /**
+     * Gets the payment details
+     */
+
+    getInfo: async (
+        ctx: CTX<null, r.Pay.GetInfo.Params>,
+        next
+    ): Promise<r.Pay.GetInfo.Res> => {
+        strapi.log.info("CONTROLLER - pay/get-info");
+
+        // Getting payment
+        const paymentID = ctx.params.id;
+        const payment = await getPaymentByUID(paymentID);
+        const details = await getPaymentDetails(payment.id);
+
+        // Removing email from owner
+        delete details.owner.email;
+
+        return details;
     },
 };

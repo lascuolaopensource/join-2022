@@ -8,7 +8,7 @@ const { PolicyError } = errors;
 //
 
 export default async function (
-    policyContext: CTX<r.Pay.Execute.Req>,
+    policyContext: CTX<r.Pay.Execute.Req, r.Pay.Execute.Params>,
     config: any,
     { strapi }: { strapi: Strapi }
 ) {
@@ -16,10 +16,10 @@ export default async function (
     strapi.log.info(`POLICY - ${policyName}`);
 
     // Getting data
-    const body = policyContext.request.body;
+    const paymentID = policyContext.params.id;
 
     // Getting payment
-    const payment: t.Payment = await getPaymentByUID(body.paymentId);
+    const payment: t.Payment = await getPaymentByUID(paymentID);
 
     // Check if its deadline is not passed yet
     if (new Date() > new Date(payment.deadline)) {

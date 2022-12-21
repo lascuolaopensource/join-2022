@@ -2,7 +2,7 @@ import { types as t } from "join-shared";
 
 export type ErrorFunction = (message: string, detail?: Object) => any;
 
-export interface CTX<T> {
+export interface CTX<T = unknown, P = unknown> {
     body: any;
     state: {
         user: t.ID<t.UsersPermissionsUser>;
@@ -12,7 +12,7 @@ export interface CTX<T> {
     };
     notFound: ErrorFunction;
     badRequest: ErrorFunction;
-    params: any;
+    params: P;
 }
 
 //

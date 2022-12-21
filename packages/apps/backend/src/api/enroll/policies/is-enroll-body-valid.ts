@@ -13,7 +13,7 @@ const { PolicyError } = errors;
 //
 
 export default async function (
-    policyContext: CTX<r.Enroll.Req>,
+    policyContext: CTX<r.Enroll.Req, any>,
     config: any,
     { strapi }: { strapi: Strapi }
 ) {

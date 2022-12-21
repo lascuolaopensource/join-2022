@@ -1,2 +1,3 @@
-export { Execute } from "./execute";
-export { Confirm } from "./confirm";
+export * as Execute from "./execute";
+export * as GetInfo from "./get-info";
+export * as Confirm from "./confirm";

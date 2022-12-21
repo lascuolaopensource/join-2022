@@ -1,23 +1,31 @@
 import * as yup from "yup";
-import { HTTPMethod, Shape } from "$types";
+import { HTTPMethod, Shape, PaymentCategories } from "../../types";
+import { send as s } from "../../join-request";
 
-export namespace Confirm {
-    export const path = "/pay/confirm";
-    export const method = HTTPMethod.POST;
+//
 
-    export interface Req {
-        confirmationCode: string;
-    }
+export const path = "/pay/confirm";
 
-    export const schema = yup.object<Shape<Req>>({
-        confirmationCode: yup.string().required(),
+export const method = HTTPMethod.POST;
+
+export type Req = {
+    confirmationCode: string;
+};
+
+export const schema = yup.object<Shape<Req>>({
+    confirmationCode: yup.string().required(),
+});
+
+export interface Res {
+    category: PaymentCategories;
+    id: string;
+}
+
+export async function send(confirmationCode: string, fetchImpl = fetch) {
+    return s<Res>({
+        path,
+        method,
+        data: { confirmationCode },
+        fetchImpl,
     });
-
-    export interface Res {
-        confirmed: boolean;
-    }
-
-    export interface Pino {
-        pino: number;
-    }
 }

@@ -5,7 +5,7 @@ export default {
     routes: [
         {
             method: r.Pay.Execute.method,
-            path: r.Pay.Execute.path,
+            path: r.Pay.Execute.path(),
             handler: "pay.execute",
             config: {
                 policies: [
@@ -24,6 +24,14 @@ export default {
             config: {
                 policies: [isBodyValid({ schema: r.Pay.Confirm.schema })],
                 middlewares: [],
+            },
+        },
+        {
+            method: r.Pay.GetInfo.method,
+            path: r.Pay.GetInfo.path(),
+            handler: "pay.getInfo",
+            config: {
+                policies: ["payment-exists"],
             },
         },
     ],

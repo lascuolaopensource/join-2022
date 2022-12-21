@@ -134,13 +134,18 @@
 			localStorage.removeItem(lsKey);
 		};
 	});
+
+	// Small fix for exporting form values from slot without occurring in tyepscript error
+	// TODO: Implement type T = $$Generic in form
+	let values: any;
+	$: values = $form;
 </script>
 
 <!--  -->
 
 <form {action} method="POST" use:enhance={handleEnhance} class="space-y-8">
 	<!-- Default slot for fields -->
-	<slot />
+	<slot {values} errors={$errors} />
 
 	{#if error}
 		<Error {error} />

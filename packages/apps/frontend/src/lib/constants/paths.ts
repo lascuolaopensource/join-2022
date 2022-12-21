@@ -21,6 +21,6 @@ export default {
 		}
 	},
 	payment: {
-		index: (id: string) => `/payments/${id}`
+		index: (id: string) => `/payments/pay-${id}`
 	}
 };
