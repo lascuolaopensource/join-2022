@@ -5,3 +5,5 @@ export declare function isPaymentNeeded(c: Course): boolean;
 export declare function hasDeadlinePassed(c: Course): boolean;
 export declare function getFirstMeeting(c: Course): CC<ComponentTimeMeetings> | undefined;
 export declare function getStart(c: Course): Date;
+export declare function isEvaluationTime(c: Course): boolean;
+export declare function canEditEnrollments(c: Course): boolean;

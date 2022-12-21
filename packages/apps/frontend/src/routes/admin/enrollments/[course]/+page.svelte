@@ -1,20 +1,29 @@
 <script lang="ts">
-	import { PUBLIC_BACKEND_URL } from '$env/static/public';
 	import type { PageData } from './$types';
 	import { Container, TitleAndLink } from '$lib/components';
-	import { Heading, Button } from 'flowbite-svelte';
-	import { helpers as h, formatters as f } from 'join-shared';
-	import paths from '$lib/constants/paths';
+	import { Button, Modal } from 'flowbite-svelte';
 	import EnrollmentsTable from '$lib/partials/admin/enrollments/EnrollmentsTable.svelte';
+	import Form from '$lib/form/Form.svelte';
+	import { helpers as h } from 'join-shared';
+
+	//
 
 	export let data: PageData;
+
+	//
 
 	const c = data.course!.attributes!;
 	let enrollments = c.enrollments?.data!;
 	$: console.log(enrollments);
 
-	// TODO: isEvauluationTime
-	const canEdit = true;
+	const canEdit = h.Course.canEditEnrollments(c);
+
+	function onEnhance(data: FormData) {
+		data.set('enrollments', JSON.stringify(enrollments));
+	}
+
+	let showConfirmModal = false;
+	const openConfirmModal = () => (showConfirmModal = true);
 </script>
 
 <!--  -->
@@ -26,7 +35,20 @@
 			link={{ href: `/admin/enrollments`, text: `← Back to all courses` }}
 			reverse
 		/>
-		<Button disabled={!canEdit}>Confirm course</Button>
+		<Button type="submit" disabled={!canEdit} on:click={openConfirmModal}>
+			Confirm course
+		</Button>
 	</div>
 	<EnrollmentsTable bind:enrollments {canEdit} />
 </Container>
+
+<Modal title="Warning!" bind:open={showConfirmModal}>
+	<p>
+		Are you sure you want to <strong>confirm</strong> the course?<br />
+		All the people that enrolled will be notified by email, and it won't be possible to accept enrollments
+		anymore!
+	</p>
+	<Form {onEnhance} buttonDefault={false}>
+		<Button type="submit">Confirm course</Button>
+	</Form>
+</Modal>

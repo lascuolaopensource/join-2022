@@ -20,9 +20,11 @@
 	export let validationSchema: ValidationSchema | undefined = undefined;
 	export let validationContext = {};
 	export let onSubmit: (values: any) => void = () => {};
+	export let onEnhance: (data: FormData) => void = () => {};
 
 	export let action = '';
 	export let error = '';
+	export let buttonDefault = true;
 	export let buttonText = 'Submit';
 
 	export let lsKey = 'form'; // key for localstorage
@@ -68,11 +70,13 @@
 
 	let isSubmitting = writable(false);
 
-	const handleEnhance: SubmitFunction = ({ form, data, action, cancel }) => {
+	const handleEnhance: SubmitFunction = ({ form, data, action, controller, cancel }) => {
 		// Reset error
 		error = '';
 		// Set loading
 		$isSubmitting = true;
+
+		onEnhance(data);
 
 		return async ({ result, update }) => {
 			await applyAction(result);
@@ -163,7 +167,9 @@
 	{/if}
 
 	<!-- Submit button -->
-	<div class="flex flex-row-reverse">
-		<Button type="submit" id="submit" disabled={!$isFilledAndValid}>{buttonText}</Button>
-	</div>
+	{#if buttonDefault}
+		<div class="flex flex-row-reverse">
+			<Button type="submit" id="submit" disabled={!$isFilledAndValid}>{buttonText}</Button>
+		</div>
+	{/if}
 </form>

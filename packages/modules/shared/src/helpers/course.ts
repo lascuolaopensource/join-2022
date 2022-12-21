@@ -28,3 +28,14 @@ export function getFirstMeeting(
 export function getStart(c: Course): Date {
     return new Date(getFirstMeeting(c)?.start);
 }
+
+export function isEvaluationTime(c: Course): boolean {
+    return (
+        Date.now() > Date.parse(c.enrollmentDeadline) &&
+        new Date() < getStart(c)
+    );
+}
+
+export function canEditEnrollments(c: Course): boolean {
+    return isEvaluationTime(c) && !c.confirmed;
+}

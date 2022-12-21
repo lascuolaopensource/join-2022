@@ -851,6 +851,12 @@
 	  var _getFirstMeeting;
 	  return new Date((_getFirstMeeting = getFirstMeeting(c)) == null ? void 0 : _getFirstMeeting.start);
 	}
+	function isEvaluationTime(c) {
+	  return Date.now() > Date.parse(c.enrollmentDeadline) && new Date() < getStart(c);
+	}
+	function canEditEnrollments(c) {
+	  return isEvaluationTime(c) && !c.confirmed;
+	}
 
 	var course = {
 		__proto__: null,
@@ -858,7 +864,9 @@
 		isPaymentNeeded: isPaymentNeeded,
 		hasDeadlinePassed: hasDeadlinePassed,
 		getFirstMeeting: getFirstMeeting,
-		getStart: getStart
+		getStart: getStart,
+		isEvaluationTime: isEvaluationTime,
+		canEditEnrollments: canEditEnrollments
 	};
 
 	var Payment;

@@ -1,10 +1,13 @@
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad, Actions } from './$types';
 import qs from 'qs';
 import { jr, Request, types as t } from 'join-shared';
 import type { LoadReturn } from '$lib/types';
 import { getJWT } from '$lib/utils/cookies';
+import { restructure } from '$lib/utils/formData';
 
-//
+/**
+ *
+ */
 
 export const load: PageServerLoad = async ({
 	params,
@@ -16,6 +19,7 @@ export const load: PageServerLoad = async ({
 	// Creating filters
 	const query = qs.stringify({
 		populate: {
+			meetings: '*',
 			enrollments: {
 				populate: {
 					owner: {
@@ -50,5 +54,28 @@ export const load: PageServerLoad = async ({
 
 	if (res.data) {
 		return { course: res.data.data[0] };
+	}
+};
+
+/**
+ *
+ */
+
+export const actions: Actions = {
+	default: async ({ cookies, request, fetch }) => {
+		const data = await request.formData();
+		const body = restructure(data);
+		const enrollments = JSON.parse(body.enrollments as string);
+		console.log(enrollments.length);
+		// const res = await r.Account.Login.send(body, fetch);
+
+		// if (!res.ok || Boolean(res.error)) {
+		// 	return invalid(400, { error: res.error?.error.message });
+		// }
+		// //
+		// else if (res.data) {
+		// 	setJWTCookie(cookies, res.data.jwt);
+		// 	throw redirect(307, '/');
+		// }
 	}
 };
