@@ -5,6 +5,10 @@ import type { LoadReturn } from '$lib/types';
 import { getJWT } from '$lib/utils/cookies';
 import { restructure } from '$lib/utils/formData';
 
+//
+
+let courseID = '';
+
 /**
  *
  */
@@ -52,7 +56,10 @@ export const load: PageServerLoad = async ({
 		return { error: 'Course not found' };
 	}
 
-	return { course: res.data.data[0] };
+	const course = res.data.data[0];
+	courseID = course.id as string;
+
+	return { course };
 };
 
 /**
@@ -74,15 +81,7 @@ export const actions: Actions = {
 		);
 	},
 
-	confirm: async ({ cookies, request, fetch }) => {
-		// const res = await r.Account.Login.send(body, fetch);
-		// if (!res.ok || Boolean(res.error)) {
-		// 	return invalid(400, { error: res.error?.error.message });
-		// }
-		// //
-		// else if (res.data) {
-		// 	setJWTCookie(cookies, res.data.jwt);
-		// 	throw redirect(307, '/');
-		// }
+	confirm: async ({ cookies, fetch }) => {
+		await r.Admin.Enrollments.ConfirmCourse.send(courseID, getJWT(cookies) as string, fetch);
 	}
 };

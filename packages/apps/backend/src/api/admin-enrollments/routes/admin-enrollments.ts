@@ -16,8 +16,8 @@ export default {
         },
         // Confirms the course
         {
-            method: "GET",
-            path: "/admin-enrollments/confirm-course/:courseID",
+            method: r.Admin.Enrollments.ConfirmCourse.method,
+            path: r.Admin.Enrollments.ConfirmCourse.path(),
             handler: "admin-enrollments.confirmCourse",
         },
     ],

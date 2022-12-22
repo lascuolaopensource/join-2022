@@ -50,23 +50,32 @@ export default {
      * Confirms course and notifies the users
      */
 
-    confirmCourse: async (ctx: any, next: any) => {
+    confirmCourse: async (
+        ctx: CTX<{}, r.Admin.Enrollments.ConfirmCourse.Params>,
+        next: any
+    ) => {
         strapi.log.info("CONTROLLER - admin-enrollments/confirmCourse");
 
-        // const courseID = ctx.params.courseID as string;
+        const courseID = ctx.params.id;
 
-        // // Getting course
-        // const course = await getCourseByID(courseID, {
-        //     populate: {
-        //         enrollments: {
-        //             populate: {
-        //                 owner: {
-        //                     populate: ["userInfo"],
-        //                 },
-        //             },
-        //         },
-        //     },
-        // });
+        // Getting course and its enrollments, with owner data
+        const course = await strapi.entityService.findOne(
+            entities.course,
+            courseID,
+            {
+                populate: {
+                    enrollments: {
+                        populate: {
+                            owner: {
+                                populate: ["info"],
+                            },
+                        },
+                    },
+                },
+            }
+        );
+
+        console.log(course);
 
         // // If course is already confirmed, we get out
         // if (course.confirmed) return {};

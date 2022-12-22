@@ -18,13 +18,18 @@
 
 	const canEdit = h.Course.canEditEnrollments(c);
 
+	let showConfirmModal = false;
+	const openConfirmModal = () => (showConfirmModal = true);
+	const closeConfirmModal = () => (showConfirmModal = false);
+
 	function onUpdateEnhance(data: FormData) {
 		data.set('enrollments', JSON.stringify(enrollments));
 	}
 
-	let showConfirmModal = false;
-	const openConfirmModal = () => (showConfirmModal = true);
-	const closeConfirmModal = () => (showConfirmModal = false);
+	function afterConfirmEnhance() {
+		invalidateAll();
+		closeConfirmModal();
+	}
 </script>
 
 <!--  -->
@@ -59,7 +64,7 @@
 		All the people that enrolled will be notified by email, and it won't be possible to accept enrollments
 		anymore!
 	</p>
-	<Form action="?/confirm" afterEnhance={closeConfirmModal} buttonDefault={false}>
+	<Form action="?/confirm" afterEnhance={afterConfirmEnhance} buttonDefault={false}>
 		<Button type="submit">Confirm course</Button>
 	</Form>
 </Modal>

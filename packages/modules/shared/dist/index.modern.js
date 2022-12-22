@@ -161,7 +161,7 @@ var types = {
 };
 
 // Send function
-async function send$b({
+async function send$c({
   method,
   path,
   data,
@@ -196,26 +196,26 @@ async function send$b({
 
 var request = {
 	__proto__: null,
-	send: send$b
+	send: send$c
 };
 
 const backendURL = "http://localhost:1337/api";
-async function send$a(args) {
+async function send$b(args) {
   const argsCopy = _extends({}, args);
   argsCopy.path = `${backendURL}${args.path}`;
   if (args.auth) argsCopy.auth = `Bearer ${args.auth}`;
-  return await send$b(_extends({}, argsCopy));
+  return await send$c(_extends({}, argsCopy));
 }
 
 var index$a = {
 	__proto__: null,
 	backendURL: backendURL,
-	send: send$a
+	send: send$b
 };
 
 //
-const path$9 = "/account/register";
-const method$9 = HTTPMethod$1.POST;
+const path$a = "/account/register";
+const method$a = HTTPMethod$1.POST;
 const values$6 = {
   name: "",
   surname: "",
@@ -228,10 +228,10 @@ const schema$8 = yup.object({
   email: Schemas.email.required(),
   password: yup.string().required()
 }).required();
-async function send$9(data, fetchImpl = fetch) {
-  return send$a({
-    path: path$9,
-    method: method$9,
+async function send$a(data, fetchImpl = fetch) {
+  return send$b({
+    path: path$a,
+    method: method$a,
     data,
     fetchImpl
   });
@@ -239,11 +239,11 @@ async function send$9(data, fetchImpl = fetch) {
 
 var register = {
 	__proto__: null,
-	path: path$9,
-	method: method$9,
+	path: path$a,
+	method: method$a,
 	values: values$6,
 	schema: schema$8,
-	send: send$9
+	send: send$a
 };
 
 var UserExists;
@@ -259,8 +259,8 @@ var UserExists;
 })(UserExists || (UserExists = {}));
 
 //
-const path$8 = "/auth/local";
-const method$8 = HTTPMethod.POST;
+const path$9 = "/auth/local";
+const method$9 = HTTPMethod.POST;
 const values$5 = {
   identifier: "",
   password: ""
@@ -269,10 +269,10 @@ const schema$7 = yup.object({
   identifier: Schemas.email.required(),
   password: yup.string().required()
 }).required();
-async function send$8(data, fetchImpl = fetch) {
-  return send$a({
-    path: path$8,
-    method: method$8,
+async function send$9(data, fetchImpl = fetch) {
+  return send$b({
+    path: path$9,
+    method: method$9,
     data,
     fetchImpl
   });
@@ -280,26 +280,26 @@ async function send$8(data, fetchImpl = fetch) {
 
 var login = {
 	__proto__: null,
-	path: path$8,
-	method: method$8,
+	path: path$9,
+	method: method$9,
 	values: values$5,
 	schema: schema$7,
-	send: send$8
+	send: send$9
 };
 
 //
-const path$7 = "/auth/forgot-password";
-const method$7 = HTTPMethod$1.POST;
+const path$8 = "/auth/forgot-password";
+const method$8 = HTTPMethod$1.POST;
 const values$4 = {
   email: ""
 };
 const schema$6 = yup.object({
   email: Schemas.email.required()
 }).required();
-async function send$7(data, fetchImpl = fetch) {
-  return send$a({
-    path: path$7,
-    method: method$7,
+async function send$8(data, fetchImpl = fetch) {
+  return send$b({
+    path: path$8,
+    method: method$8,
     data,
     fetchImpl
   });
@@ -307,16 +307,16 @@ async function send$7(data, fetchImpl = fetch) {
 
 var forgot = {
 	__proto__: null,
-	path: path$7,
-	method: method$7,
+	path: path$8,
+	method: method$8,
 	values: values$4,
 	schema: schema$6,
-	send: send$7
+	send: send$8
 };
 
 //
-const path$6 = "/auth/reset-password";
-const method$6 = HTTPMethod$1.POST;
+const path$7 = "/auth/reset-password";
+const method$7 = HTTPMethod$1.POST;
 const values$3 = {
   password: "string",
   passwordConfirmation: "string",
@@ -327,10 +327,10 @@ const schema$5 = yup.object({
   passwordConfirmation: yup.string().required(),
   code: yup.string().required()
 }).required();
-async function send$6(data, fetchImpl = fetch) {
-  return send$a({
-    path: path$6,
-    method: method$6,
+async function send$7(data, fetchImpl = fetch) {
+  return send$b({
+    path: path$7,
+    method: method$7,
     data,
     fetchImpl
   });
@@ -338,11 +338,11 @@ async function send$6(data, fetchImpl = fetch) {
 
 var reset = {
 	__proto__: null,
-	path: path$6,
-	method: method$6,
+	path: path$7,
+	method: method$7,
 	values: values$3,
 	schema: schema$5,
-	send: send$6
+	send: send$7
 };
 
 var index$9 = {
@@ -351,12 +351,12 @@ var index$9 = {
 	Reset: reset
 };
 
-const path$5 = "/users/me?populate=info&populate=role";
-const method$5 = HTTPMethod.GET;
-async function send$5(token, fetchImpl = fetch) {
-  return send$a({
-    path: path$5,
-    method: method$5,
+const path$6 = "/users/me?populate=info&populate=role";
+const method$6 = HTTPMethod.GET;
+async function send$6(token, fetchImpl = fetch) {
+  return send$b({
+    path: path$6,
+    method: method$6,
     auth: token,
     fetchImpl
   });
@@ -364,9 +364,9 @@ async function send$5(token, fetchImpl = fetch) {
 
 var me = {
 	__proto__: null,
-	path: path$5,
-	method: method$5,
-	send: send$5
+	path: path$6,
+	method: method$6,
+	send: send$6
 };
 
 var index$8 = {
@@ -501,10 +501,14 @@ var index$7 = {
 	get Company () { return Company; }
 };
 
-const path$4 = (params = {
+//
+const method$5 = HTTPMethod$1.POST;
+const defaultParams$1 = {
   id: ":id"
-}) => `/pay/execute/${params.id}`;
-const method$4 = HTTPMethod$1.POST;
+};
+function path$5(params = defaultParams$1) {
+  return `/pay/execute/${params.id}`;
+}
 const values$1 = {
   billingOption: Options[0],
   owner: Owner.values,
@@ -519,12 +523,12 @@ const schema$3 = yup.object({
   company: Company.schema.when("billingOption", Schemas.thenReq(Options[2])),
   address: Address.schema.required()
 });
-async function send$4(paymentID, data, fetchImpl = fetch) {
-  return send$a({
-    path: path$4({
+async function send$5(paymentID, data, fetchImpl = fetch) {
+  return send$b({
+    path: path$5({
       id: paymentID
     }),
-    method: method$4,
+    method: method$5,
     data,
     fetchImpl
   });
@@ -532,44 +536,45 @@ async function send$4(paymentID, data, fetchImpl = fetch) {
 
 var execute = {
 	__proto__: null,
-	path: path$4,
-	method: method$4,
+	method: method$5,
+	defaultParams: defaultParams$1,
+	path: path$5,
 	values: values$1,
 	schema: schema$3,
-	send: send$4
+	send: send$5
 };
 
-const path$3 = (params = {
+const path$4 = (params = {
   id: ":id"
 }) => `/pay/get-info/${params.id}`;
-const method$3 = HTTPMethod$1.GET;
-async function send$3(id, fetchImpl = fetch) {
-  return send$a({
-    path: path$3({
+const method$4 = HTTPMethod$1.GET;
+async function send$4(id, fetchImpl = fetch) {
+  return send$b({
+    path: path$4({
       id
     }),
-    method: method$3,
+    method: method$4,
     fetchImpl
   });
 }
 
 var getInfo = {
 	__proto__: null,
-	path: path$3,
-	method: method$3,
-	send: send$3
+	path: path$4,
+	method: method$4,
+	send: send$4
 };
 
 //
-const path$2 = "/pay/confirm";
-const method$2 = HTTPMethod$1.POST;
+const path$3 = "/pay/confirm";
+const method$3 = HTTPMethod$1.POST;
 const schema$2 = yup.object({
   confirmationCode: yup.string().required()
 });
-async function send$2(confirmationCode, fetchImpl = fetch) {
-  return send$a({
-    path: path$2,
-    method: method$2,
+async function send$3(confirmationCode, fetchImpl = fetch) {
+  return send$b({
+    path: path$3,
+    method: method$3,
     data: {
       confirmationCode
     },
@@ -579,10 +584,10 @@ async function send$2(confirmationCode, fetchImpl = fetch) {
 
 var confirm = {
 	__proto__: null,
-	path: path$2,
-	method: method$2,
+	path: path$3,
+	method: method$3,
 	schema: schema$2,
-	send: send$2
+	send: send$3
 };
 
 var index$6 = {
@@ -593,8 +598,8 @@ var index$6 = {
 };
 
 //
-const path$1 = "/admin-enrollments/update";
-const method$1 = HTTPMethod$1.POST;
+const path$2 = "/admin-enrollments/update";
+const method$2 = HTTPMethod$1.POST;
 const itemSchema = yup.object({
   id: yup.string().required(),
   state: yup.string().oneOf(EnrollmentStates).required()
@@ -602,10 +607,10 @@ const itemSchema = yup.object({
 const schema$1 = yup.object({
   items: yup.array(itemSchema).required()
 });
-async function send$1(data, auth, fetchImpl = fetch) {
-  return send$a({
-    path: path$1,
-    method: method$1,
+async function send$2(data, auth, fetchImpl = fetch) {
+  return send$b({
+    path: path$2,
+    method: method$2,
     data,
     fetchImpl,
     auth
@@ -614,16 +619,44 @@ async function send$1(data, auth, fetchImpl = fetch) {
 
 var update = {
 	__proto__: null,
-	path: path$1,
-	method: method$1,
+	path: path$2,
+	method: method$2,
 	itemSchema: itemSchema,
 	schema: schema$1,
+	send: send$2
+};
+
+//
+const method$1 = HTTPMethod$1.GET;
+const defaultParams = {
+  id: ":id"
+};
+function path$1(params = defaultParams) {
+  return `/admin-enrollments/confirm-course/${params.id}`;
+}
+async function send$1(courseID, auth, fetchImpl = fetch) {
+  return send$b({
+    path: path$1({
+      id: courseID
+    }),
+    method: method$1,
+    fetchImpl,
+    auth
+  });
+}
+
+var confirmCourse = {
+	__proto__: null,
+	method: method$1,
+	defaultParams: defaultParams,
+	path: path$1,
 	send: send$1
 };
 
 var index$5 = {
 	__proto__: null,
-	Update: update
+	Update: update,
+	ConfirmCourse: confirmCourse
 };
 
 var index$4 = {
@@ -646,7 +679,7 @@ function getSchemaCtx(userExists, letterNeeded, portfolioNeeded, cvNeeded) {
   return _extends({}, getSchemaCtx$1(userExists), Evaluation.getSchemaCtx(letterNeeded, portfolioNeeded, cvNeeded));
 }
 async function send(courseID, data, token = null, fetchImpl = fetch) {
-  return send$a({
+  return send$b({
     path: path(courseID),
     method,
     data,
