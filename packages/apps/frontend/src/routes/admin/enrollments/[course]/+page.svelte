@@ -5,6 +5,7 @@
 	import EnrollmentsTable from '$lib/partials/admin/enrollments/EnrollmentsTable.svelte';
 	import Form from '$lib/form/Form.svelte';
 	import { helpers as h } from 'join-shared';
+	import { invalidateAll } from '$app/navigation';
 
 	//
 
@@ -14,16 +15,16 @@
 
 	const c = data.course!.attributes!;
 	let enrollments = c.enrollments?.data!;
-	$: console.log(enrollments);
 
 	const canEdit = h.Course.canEditEnrollments(c);
 
-	function onEnhance(data: FormData) {
+	function onUpdateEnhance(data: FormData) {
 		data.set('enrollments', JSON.stringify(enrollments));
 	}
 
 	let showConfirmModal = false;
 	const openConfirmModal = () => (showConfirmModal = true);
+	const closeConfirmModal = () => (showConfirmModal = false);
 </script>
 
 <!--  -->
@@ -35,9 +36,19 @@
 			link={{ href: `/admin/enrollments`, text: `← Back to all courses` }}
 			reverse
 		/>
-		<Button type="submit" disabled={!canEdit} on:click={openConfirmModal}>
-			Confirm course
-		</Button>
+		<div class="flex space-x-2">
+			<Form
+				action="?/update"
+				onEnhance={onUpdateEnhance}
+				afterEnhance={invalidateAll}
+				buttonDefault={false}
+			>
+				<Button type="submit" disabled={!canEdit} color="alternative">
+					Update enrollments
+				</Button>
+			</Form>
+			<Button disabled={!canEdit} on:click={openConfirmModal}>Confirm course</Button>
+		</div>
 	</div>
 	<EnrollmentsTable bind:enrollments {canEdit} />
 </Container>
@@ -48,7 +59,7 @@
 		All the people that enrolled will be notified by email, and it won't be possible to accept enrollments
 		anymore!
 	</p>
-	<Form {onEnhance} buttonDefault={false}>
+	<Form action="?/confirm" afterEnhance={closeConfirmModal} buttonDefault={false}>
 		<Button type="submit">Confirm course</Button>
 	</Form>
 </Modal>

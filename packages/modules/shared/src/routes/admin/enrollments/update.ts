@@ -1,34 +1,38 @@
 import * as yup from "yup";
 import {
-	HTTPMethod,
-	Enum_Enrollment_State,
-	Shape,
-	EnrollmentStates,
-} from "$types";
+    HTTPMethod,
+    Enum_Enrollment_State,
+    Shape,
+    EnrollmentStates,
+} from "../../../types";
+import { send as s } from "../../../join-request";
 
 //
 
-export namespace Update {
-	export const path = "/admin-enrollments/update";
-	export const method = HTTPMethod.POST;
+export const path = "/admin-enrollments/update";
 
-	export interface Item {
-		id: string;
-		state: Enum_Enrollment_State;
-	}
+export const method = HTTPMethod.POST;
 
-	export const itemSchema = yup.object<Shape<Item>>({
-		id: yup.string().required(),
-		state: yup.string().oneOf(EnrollmentStates).required(),
-	});
+export interface Item {
+    id: string;
+    state: Enum_Enrollment_State;
+}
 
-	export interface Req {
-		changes: Array<Item>;
-	}
+export const itemSchema = yup.object<Shape<Item>>({
+    id: yup.string().required(),
+    state: yup.string().oneOf(EnrollmentStates).required(),
+});
 
-	export const schema = yup.object({
-		changes: yup.array(itemSchema).required(),
-	});
+export type Req = {
+    items: Array<Item>;
+};
 
-	export interface Res {}
+export const schema = yup.object({
+    items: yup.array(itemSchema).required(),
+});
+
+export interface Res {}
+
+export async function send(data: Req, auth: string, fetchImpl = fetch) {
+    return s<Res>({ path, method, data, fetchImpl, auth });
 }

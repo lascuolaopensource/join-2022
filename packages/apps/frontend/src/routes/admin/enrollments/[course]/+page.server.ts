@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 import qs from 'qs';
-import { jr, Request, types as t } from 'join-shared';
+import { jr, Request, types as t, routes as r, helpers as h } from 'join-shared';
 import type { LoadReturn } from '$lib/types';
 import { getJWT } from '$lib/utils/cookies';
 import { restructure } from '$lib/utils/formData';
@@ -52,9 +52,7 @@ export const load: PageServerLoad = async ({
 		return { error: 'Course not found' };
 	}
 
-	if (res.data) {
-		return { course: res.data.data[0] };
-	}
+	return { course: res.data.data[0] };
 };
 
 /**
@@ -62,13 +60,22 @@ export const load: PageServerLoad = async ({
  */
 
 export const actions: Actions = {
-	default: async ({ cookies, request, fetch }) => {
+	update: async ({ cookies, request, fetch }) => {
 		const data = await request.formData();
 		const body = restructure(data);
-		const enrollments = JSON.parse(body.enrollments as string);
-		console.log(enrollments.length);
-		// const res = await r.Account.Login.send(body, fetch);
 
+		const enrollments = JSON.parse(body.enrollments as string) as Array<t.EnrollmentEntity>;
+		const cleanedEnrollments = h.Enrollment.getItems(enrollments);
+
+		await r.Admin.Enrollments.Update.send(
+			{ items: cleanedEnrollments },
+			getJWT(cookies) as string,
+			fetch
+		);
+	},
+
+	confirm: async ({ cookies, request, fetch }) => {
+		// const res = await r.Account.Login.send(body, fetch);
 		// if (!res.ok || Boolean(res.error)) {
 		// 	return invalid(400, { error: res.error?.error.message });
 		// }

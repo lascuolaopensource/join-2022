@@ -21,6 +21,7 @@
 	export let validationContext = {};
 	export let onSubmit: (values: any) => void = () => {};
 	export let onEnhance: (data: FormData) => void = () => {};
+	export let afterEnhance: () => void = () => {};
 
 	export let action = '';
 	export let error = '';
@@ -81,6 +82,8 @@
 		return async ({ result, update }) => {
 			await applyAction(result);
 			$isSubmitting = false;
+
+			afterEnhance();
 		};
 	};
 

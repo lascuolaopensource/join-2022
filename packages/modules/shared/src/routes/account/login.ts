@@ -1,13 +1,14 @@
 import * as yup from "yup";
 import { Schemas } from "../../validation";
 import { UsersPermissionsMe } from "../../types";
-import { Request as Req } from "../../request";
-import { send as s, Res as R } from "../../join-request";
+import { Request } from "../../request";
+import { send as s } from "../../join-request";
 
 //
 
 export const path = "/auth/local";
-export const method = Req.HTTPMethod.POST;
+
+export const method = Request.HTTPMethod.POST;
 
 export type Req = {
     identifier: string;
