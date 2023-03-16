@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . /app
 
+COPY ../../modules/shared /app/node_modules/shared
+
 EXPOSE 1337
 
 ARG backendurl=http://localhost:1337

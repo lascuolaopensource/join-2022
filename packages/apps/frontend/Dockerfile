@@ -10,6 +10,8 @@ COPY ./packages/apps/frontend /app
 
 COPY ./packages/modules/shared /app/node_modules/shared
 
+COPY ../../modules/shared /app/node_modules/shared
+
 RUN npm run build
 
 FROM node:16-alpine
