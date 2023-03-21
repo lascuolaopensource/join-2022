@@ -2,11 +2,13 @@ FROM node:16 as builder
 
 WORKDIR /app
 
-COPY ./package.json /app
+COPY ./packages/apps/frontend/package.json /app
 
 RUN npm install
 
-COPY . /app
+COPY ./packages/apps/frontend /app
+
+COPY ./packages/modules/shared /app/node_modules/shared
 
 COPY ../../modules/shared /app/node_modules/shared
 
