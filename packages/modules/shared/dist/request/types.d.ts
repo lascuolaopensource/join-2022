@@ -1,7 +1,7 @@
 /**
  * Type utilities
  */
-export declare type Fetch = (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>;
+export type Fetch = (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>;
 export declare enum HTTPMethod {
     CONNECT = "CONNECT",
     DELETE = "DELETE",

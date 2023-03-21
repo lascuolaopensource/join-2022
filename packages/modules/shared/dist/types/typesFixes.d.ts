@@ -2,13 +2,13 @@ import { Enum_Enrollment_State, Payment } from "./types";
 /**
  * Adds ID to any interface
  */
-export declare type ID<T> = T & {
+export type ID<T> = T & {
     id: string;
 };
 /**
  * Cleans a component interface from keys: __typename and ID
  */
-export declare type CleanComp<T> = Omit<T, "id" | "__typename">;
+export type CleanComp<T> = Omit<T, "id" | "__typename">;
 /**
  * Adds confirmation code to Payment keys
  */

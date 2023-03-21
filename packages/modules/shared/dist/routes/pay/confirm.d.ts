@@ -1,7 +1,7 @@
 import { HTTPMethod, Shape, PaymentCategories } from "../../types";
 export declare const path = "/pay/confirm";
 export declare const method = HTTPMethod.POST;
-export declare type Req = {
+export type Req = {
     confirmationCode: string;
 };
 export declare const schema: import("yup/lib/object").OptionalObjectSchema<Shape<Req>, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<Shape<Req>>>;

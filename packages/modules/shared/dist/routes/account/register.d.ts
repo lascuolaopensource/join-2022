@@ -1,7 +1,7 @@
 import { HTTPMethod, UsersPermissionsLoginPayload } from "../../types";
 export declare const path = "/account/register";
 export declare const method = HTTPMethod.POST;
-export declare type Req = {
+export type Req = {
     name: string;
     surname: string;
     email: string;

@@ -1,7 +1,7 @@
 import { HTTPMethod } from "../../../types";
 export declare const path = "/auth/forgot-password";
 export declare const method = HTTPMethod.POST;
-export declare type Req = {
+export type Req = {
     email: string;
 };
 export declare const values: Req;

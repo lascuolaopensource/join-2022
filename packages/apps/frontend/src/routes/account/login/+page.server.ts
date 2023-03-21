@@ -1,5 +1,5 @@
 import type { PageServerLoad, Actions } from './$types';
-import { invalid, redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { routes as r } from 'join-shared';
 import { setJWTCookie } from '$lib/utils/cookies';
 import { restructure } from '$lib/utils/formData';
@@ -20,7 +20,7 @@ export const actions: Actions = {
 		const res = await r.Account.Login.send(body, fetch);
 
 		if (!res.ok || Boolean(res.error)) {
-			return invalid(400, { error: res.error?.error.message });
+			return error(400, { message: res.error?.error.message || '' });
 		}
 		//
 		else if (res.data) {

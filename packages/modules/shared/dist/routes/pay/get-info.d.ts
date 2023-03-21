@@ -1,5 +1,5 @@
 import { PaymentDetails, HTTPMethod } from "../../types";
-export declare type Params = {
+export type Params = {
     id: string;
 };
 export declare const path: (params?: Params) => string;

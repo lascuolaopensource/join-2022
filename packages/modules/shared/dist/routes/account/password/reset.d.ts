@@ -1,7 +1,7 @@
 import { HTTPMethod, UsersPermissionsMe } from "../../../types";
 export declare const path = "/auth/reset-password";
 export declare const method = HTTPMethod.POST;
-export declare type Req = {
+export type Req = {
     password: string;
     passwordConfirmation: string;
     code: string;
