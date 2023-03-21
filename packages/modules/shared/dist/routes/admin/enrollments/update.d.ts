@@ -6,7 +6,7 @@ export interface Item {
     state: Enum_Enrollment_State;
 }
 export declare const itemSchema: import("yup/lib/object").OptionalObjectSchema<Shape<Item>, import("yup/lib/object").AnyObject, import("yup/lib/object").TypeOfShape<Shape<Item>>>;
-export declare type Req = {
+export type Req = {
     items: Array<Item>;
 };
 export declare const schema: import("yup/lib/object").OptionalObjectSchema<{

@@ -2,7 +2,6 @@ import type { Actions } from './$types';
 import type { types as t } from 'join-shared';
 import { routes as r } from 'join-shared';
 import type { PageServerLoad } from './$types';
-// import { invalid, redirect } from '@sveltejs/kit';
 import paths from '$lib/constants/paths';
 import { getJWT } from '$lib/utils/cookies';
 import { redirect } from '@sveltejs/kit';

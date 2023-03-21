@@ -1,6 +1,6 @@
 import { Request as Req } from "../request";
 export declare const backendURL = "http://localhost:1337/api";
-export declare type StrapiError = {
+export type StrapiError = {
     data: null;
     error: {
         status: string;
@@ -9,5 +9,5 @@ export declare type StrapiError = {
         details: any;
     };
 };
-export declare type Res<T> = Req.Res<T, StrapiError>;
+export type Res<T> = Req.Res<T, StrapiError>;
 export declare function send<T>(args: Req.Args): Promise<Res<T>>;

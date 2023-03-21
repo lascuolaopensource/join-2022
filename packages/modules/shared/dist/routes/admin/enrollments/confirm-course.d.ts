@@ -1,6 +1,6 @@
 import { HTTPMethod } from "../../../types";
 export declare const method = HTTPMethod.GET;
-export declare type Params = {
+export type Params = {
     id: string;
 };
 export declare const defaultParams: Params;

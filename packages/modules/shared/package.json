@@ -21,11 +21,9 @@
     "@graphql-codegen/typescript": "^2.4.7",
     "@graphql-codegen/typescript-operations": "^2.3.4",
     "graphql": "^15.8.0",
-    "microbundle": "^0.14.2"
+    "microbundle": "^0.15.1"
   },
   "dependencies": {
-    "flatten-anything": "^3.0.3",
-    "nestify-anything": "^2.0.2",
     "yup": "^0.32.11"
   }
 }
