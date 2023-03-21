@@ -1,14 +1,20 @@
 <script lang="ts">
-	import { types as t } from 'shared';
+	import { types as t } from 'join-shared';
 
-	import EnrollmentRow from './enrollmentRow.svelte';
-	import { Table, Th, Td, Tr } from '$lib/components';
-	import { enrollmentStatesAdmin } from '$lib/strings';
+	import EnrollmentsTableRow from './EnrollmentsTableRow.svelte';
+	import {
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell
+	} from 'flowbite-svelte';
 
 	//
 
 	export let enrollments: Array<t.EnrollmentEntity>;
-	export let isCourseConfirmed: boolean;
+	export let canEdit: boolean;
 
 	//
 
@@ -39,11 +45,11 @@
 		{@const enrollsNum = enrolls.length}
 
 		<!-- Row - Section header -->
-		<Tr>
-			<Th colspan={100}>
-				{enrollmentStatesAdmin[s]}
-			</Th>
-		</Tr>
+		<TableHead>
+			<TableHeadCell colspan={100}>
+				{s}
+			</TableHeadCell>
+		</TableHead>
 
 		<!-- Rows - Data -->
 		{#if enrollsNum > 0}
@@ -51,18 +57,15 @@
 			{#each enrolls as e (e.id)}
 				<!-- Getting index to reference the actual enrollment -->
 				{@const index = enrollments.indexOf(e)}
-				<EnrollmentRow
-					{isCourseConfirmed}
-					bind:enrollment={enrollments[index]}
-				/>
+				<EnrollmentsTableRow {canEdit} bind:enrollment={enrollments[index]} />
 			{/each}
 		{:else}
 			<!-- Empty section -->
-			<Tr>
-				<Td colspan={100}>
-					<p class="text-gray-400">Non ci sono iscrizioni in questa sezione</p>
-				</Td>
-			</Tr>
+			<TableBodyRow>
+				<TableBodyCell colspan={100}>
+					<p class="text-gray-400">No enrollments in this section</p>
+				</TableBodyCell>
+			</TableBodyRow>
 		{/if}
 	{/each}
 </Table>

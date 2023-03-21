@@ -38,3 +38,12 @@ export declare enum PaymentCategories {
  * Enrollment states, as list
  */
 export declare const EnrollmentStates: Enum_Enrollment_State[];
+/**
+ * Roles
+ */
+export declare enum UserPermissionRoles {
+    Public = "public",
+    Authenticated = "authenticated",
+    AdminEnrollments = "admin_enrollments",
+    AdminTools = "admin_tools"
+}

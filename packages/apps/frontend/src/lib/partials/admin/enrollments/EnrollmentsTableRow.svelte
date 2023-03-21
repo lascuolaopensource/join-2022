@@ -1,23 +1,23 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
-	import { types as t } from 'shared';
+	import { types as t } from 'join-shared';
 	import prependHttp from 'prepend-http';
-	import { copy } from '$lib/utils';
+	import { copy } from '$lib/utils/copy';
 
-	import Modal from '$lib/components/modal.svelte';
-	import { Tr, Td, Button, ButtonLink } from '$lib/components';
+	import { TableBodyCell, TableBodyRow, Button, Modal } from 'flowbite-svelte';
+	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 
 	//
 
 	export let enrollment: t.EnrollmentEntity;
-	export let isCourseConfirmed: boolean;
+	export let canEdit: boolean;
 
 	/**
 	 * Data variables
 	 */
 
 	const owner = enrollment.attributes?.owner?.data?.attributes;
-	const ownerInfo = owner?.userInfo?.data?.attributes;
+	const ownerInfo = owner?.info?.data?.attributes;
 
 	const cvUrl = enrollment.attributes?.cvUrl;
 	const portfolioUrl = enrollment.attributes?.portfolioUrl;
@@ -33,7 +33,7 @@
 	}
 
 	function copyPhone() {
-		const phone = enrollment.attributes?.phoneNumber.data?.attributes?.number;
+		const phone = enrollment.attributes?.phoneNumber;
 		copy(phone);
 	}
 
@@ -42,9 +42,7 @@
 	 */
 
 	function changeState(s: t.Enum_Enrollment_State) {
-		if (enrollment.attributes) {
-			enrollment.attributes.state = s;
-		}
+		enrollment.attributes!.state = s;
 	}
 
 	function setPending() {
@@ -63,64 +61,68 @@
 	 * Writable for modal
 	 */
 
-	let showLetter = writable(false);
+	let showLetter = false;
+	const openLetter = () => (showLetter = true);
 </script>
 
 <!--  -->
 
-<Tr>
+<TableBodyRow>
 	<!-- Nome e cognome -->
-	<Td>
+	<TableBodyCell>
 		{#if ownerInfo}
 			<p>
 				{ownerInfo.name}
 				{ownerInfo.surname}
 			</p>
 		{/if}
-	</Td>
+	</TableBodyCell>
 
 	<!-- Contatti -->
-	<Td>
+	<TableBodyCell>
 		<!-- Email -->
 		{#if owner}
-			<Button hierarchy="secondary" small on:click={copyEmail}>email</Button>
+			<Button color="alternative" size="xs" on:click={copyEmail}>
+				<span class="mr-1">Email</span><Copy />
+			</Button>
 		{/if}
 
 		<!-- Telefono -->
-		<Button hierarchy="secondary" small on:click={copyPhone}>tel</Button>
-	</Td>
+		<Button color="alternative" size="xs" on:click={copyPhone}>
+			<span class="mr-1">Phone</span><Copy />
+		</Button>
+	</TableBodyCell>
 
 	<!-- Valutazione -->
 	{#if evaluation}
-		<Td>
+		<TableBodyCell>
 			<!-- CV -->
 			{#if cvUrl}
-				<ButtonLink href={prependHttp(cvUrl)} blank small>CV [↗]</ButtonLink>
+				<Button href={prependHttp(cvUrl)} target="_blank" color="alternative" size="xs"
+					>CV [↗]</Button
+				>
 			{/if}
 
 			<!-- Portfolio -->
 			{#if portfolioUrl}
-				<ButtonLink href={prependHttp(portfolioUrl)} blank small>
-					Portfolio [↗]
-				</ButtonLink>
+				<Button
+					href={prependHttp(portfolioUrl)}
+					target="_blank"
+					color="alternative"
+					size="xs">Portfolio [↗]</Button
+				>
 			{/if}
 
 			<!-- Lettera motivazionale -->
 			{#if motivationalLetter}
-				<Button
-					hierarchy="secondary"
-					small
-					on:click={() => {
-						$showLetter = true;
-					}}>Lettera motivazionale</Button
-				>
+				<Button color="alternative" size="xs" on:click={openLetter}>Letter</Button>
 			{/if}
-		</Td>
+		</TableBodyCell>
 	{/if}
 
 	<!-- Pulsanti di stato -->
-	{#if !isCourseConfirmed}
-		<Td>
+	{#if canEdit}
+		<TableBodyCell>
 			<!-- Shortcut for state -->
 			{@const state = enrollment.attributes?.state}
 
@@ -128,36 +130,32 @@
 			{#if state != t.Enum_Enrollment_State.AwaitingPayment}
 				<!-- If not approved, can be set as approved -->
 				{#if state != t.Enum_Enrollment_State.Approved}
-					<Button hierarchy="secondary" small on:click={setApproved}>
-						Approva
-					</Button>
+					<Button color="green" size="xs" on:click={setApproved}>Approva</Button>
 				{/if}
 
 				<!-- If not pending, can be set as pending -->
 				{#if state != t.Enum_Enrollment_State.Pending}
-					<Button hierarchy="secondary" small on:click={setPending}>
-						Sposta in "Da approvare"
-					</Button>
+					<Button color="yellow" size="xs" on:click={setPending}
+						>Sposta in "Da approvare"</Button
+					>
 				{/if}
 
 				<!-- If not rejected, can be set as rejected -->
 				{#if state != t.Enum_Enrollment_State.Rejected}
-					<Button hierarchy="secondary" small on:click={setRejected}>
-						Rifiuta
-					</Button>
+					<Button color="red" size="xs" on:click={setRejected}>Rifiuta</Button>
 				{/if}
 			{/if}
-		</Td>
+		</TableBodyCell>
 	{/if}
-</Tr>
+</TableBodyRow>
 
 <!-- Modal to display motivational letter -->
 {#if motivationalLetter && ownerInfo}
 	<!-- Modal title -->
-	{@const title = `Lettera – ${ownerInfo.name} ${ownerInfo.surname}`}
+	{@const title = `Letter – ${ownerInfo.name} ${ownerInfo.surname}`}
 
 	<!-- The modal -->
-	<Modal {title} visible={showLetter}>
+	<Modal {title} bind:open={showLetter}>
 		{motivationalLetter}
 	</Modal>
 {/if}

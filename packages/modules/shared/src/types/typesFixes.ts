@@ -48,56 +48,13 @@ export enum PaymentCategories {
 
 export const EnrollmentStates = Object.values(Enum_Enrollment_State);
 
-// import {
-// 	UsersPermissionsMe,
-// 	ComponentLocationAddress,
-// 	BillingInfoDataDynamicZone,
-// 	Payment,
-// } from "./types";
+/**
+ * Roles
+ */
 
-// export type Comp<T> = Partial<T> & { __component: string };
-
-// /**
-//  * Login
-//  */
-
-// export interface LoginResponse {
-// 	jwt?: string;
-// 	user: UsersPermissionsMe;
-// }
-
-// /**
-//  * Payment
-//  */
-
-// export interface PaymentC extends Payment {
-// 	confirmCode: string;
-// }
-
-// export interface PaymentBillingInfo {
-// 	address: ComponentLocationAddress;
-// 	data: Comp<BillingInfoDataDynamicZone>;
-// }
-
-// /**
-//  * Billing options
-//  */
-
-// // Lista dei componenti per la zona dinamica
-// // Reference: strapi-backend/src/api/billing-info/content-types/billing-info/schema.json
-// export enum BillingOptionsComponents {
-// 	Company = "billing.company",
-// 	Person = "billing.person",
-// 	Me = "billing.me",
-// }
-
-// /**
-//  * Roles
-//  */
-
-// export enum UserPermissionRoles {
-// 	Public = "public",
-// 	Authenticated = "authenticated",
-// 	AdminEnrollments = "admin_enrollments",
-// 	AdminTools = "admin_tools",
-// }
+export enum UserPermissionRoles {
+    Public = "public",
+    Authenticated = "authenticated",
+    AdminEnrollments = "admin_enrollments",
+    AdminTools = "admin_tools",
+}

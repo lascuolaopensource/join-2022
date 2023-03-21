@@ -6,12 +6,16 @@ import { send as s } from "../../join-request";
 
 //
 
-export type Params = { id: string };
-
-export const path = (params: Params = { id: ":id" }) =>
-    `/pay/execute/${params.id}`;
-
 export const method = HTTPMethod.POST;
+
+export type Params = { id: string };
+export const defaultParams: Params = { id: ":id" };
+
+export function path(params = defaultParams) {
+    return `/pay/execute/${params.id}`;
+}
+
+//
 
 export type Req = {
     billingOption: Billing.Option;

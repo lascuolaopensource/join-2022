@@ -1,4 +1,4 @@
-import { Course } from "../types";
+import { Course, ComponentTimeMeetings, CleanComp as CC } from "../types";
 import { Evaluation } from "../routes";
 
 //
@@ -17,4 +17,25 @@ export function isPaymentNeeded(c: Course): boolean {
 
 export function hasDeadlinePassed(c: Course): boolean {
     return Date.now() > Date.parse(c.enrollmentDeadline);
+}
+
+export function getFirstMeeting(
+    c: Course
+): CC<ComponentTimeMeetings> | undefined {
+    return c.meetings[0];
+}
+
+export function getStart(c: Course): Date {
+    return new Date(getFirstMeeting(c)?.start);
+}
+
+export function isEvaluationTime(c: Course): boolean {
+    return (
+        Date.now() > Date.parse(c.enrollmentDeadline) &&
+        new Date() < getStart(c)
+    );
+}
+
+export function canEditEnrollments(c: Course): boolean {
+    return isEvaluationTime(c) && !c.confirmed;
 }

@@ -1,10 +1,11 @@
 import { Billing, Address } from "../components";
 import { HTTPMethod, Shape } from "../../types";
+export declare const method = HTTPMethod.POST;
 export declare type Params = {
     id: string;
 };
-export declare const path: (params?: Params) => string;
-export declare const method = HTTPMethod.POST;
+export declare const defaultParams: Params;
+export declare function path(params?: Params): string;
 export declare type Req = {
     billingOption: Billing.Option;
     owner: Billing.Owner.Type | null;
