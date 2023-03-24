@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PUBLIC_BACKEND_URL } from '$env/static/public';
+	import { env } from '$env/dynamic/public';
 	import type { PageData } from './$types';
 	import { Container, BottomBar } from '$lib/components';
 	import { Heading, Button } from 'flowbite-svelte';
@@ -11,7 +11,7 @@
 
 	const c = data.course!.attributes!;
 
-	const coverUrl = `${PUBLIC_BACKEND_URL}${c?.gallery?.data[0].attributes?.url}`;
+	const coverUrl = `${env.PUBLIC_BACKEND_URL}${c?.gallery?.data[0].attributes?.url}`;
 	const coverBg = `url(${coverUrl})`;
 
 	const hasDeadlinePassed = h.Course.hasDeadlinePassed(c);
