@@ -1,4 +1,4 @@
-FROM node:16-alpine as builder
+FROM node:16 as builder
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN npm install
 
 RUN npm run build
 
-FROM node:16-alpine as join-frontend
+FROM node:16 as join-frontend
 
 WORKDIR /app
 
