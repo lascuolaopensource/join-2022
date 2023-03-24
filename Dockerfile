@@ -1,4 +1,4 @@
-FROM node:16 as builder
+FROM node:16-alpine as builder
 
 WORKDIR /app
 
@@ -12,7 +12,8 @@ FROM node:16-alpine as join-frontend
 
 WORKDIR /app
 
-COPY --from=builder /app/packages/apps/frontend/build/* .
+COPY --from=builder /app/packages/apps/frontend/build ./
+COPY --from=builder /app/packages/apps/frontend/package.json ./
 
 ENV PORT 3000
 
