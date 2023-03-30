@@ -1,0 +1,33 @@
+FROM node:16 as builder
+
+WORKDIR /app
+
+COPY . /app
+
+RUN yarn
+
+RUN npx lerna run build
+
+FROM node:16-alpine as join-frontend
+
+WORKDIR /app
+
+COPY --from=builder /app/packages/apps/frontend/build ./
+COPY --from=builder /app/packages/apps/frontend/package.json ./
+COPY --from=builder /app/packages/apps/frontend/node_modules ./
+
+ENV PORT 3000
+
+CMD ["node", "index.js"]
+
+FROM node:16-alpine as join-backend
+
+WORKDIR /app
+
+COPY --from=builder /app/packages/apps/backend/dist/build ./
+COPY --from=builder /app/packages/apps/backend/package.json ./
+COPY --from=builder /app/packages/apps/backend/node_modules ./
+
+EXPOSE 1337
+
+CMD ["npm","start"]
