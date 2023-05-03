@@ -21,7 +21,7 @@ export const actions: Actions = {
 		const res = await r.Account.Register.send(body, fetch);
 
 		if (!res.ok || res.error) {
-			return error(400, { message: res.error?.error.message || 'SERVER_ERROR' });
+			throw error(400, { message: res.error?.error.message || 'SERVER_ERROR' });
 		}
 		//
 		else if (res.data) {
