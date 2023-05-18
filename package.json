@@ -10,11 +10,13 @@
   ],
   "scripts": {
     "build": "lerna run build",
+    "turboBuild": "turbo build",
     "dev": "lerna run dev --parallel",
     "clean": "lerna clean",
     "types": "yarn workspace join-shared types"
   },
   "devDependencies": {
-    "lerna": "^6.0.3"
+    "lerna": "^6.0.3",
+    "turborepo": "^0.0.1"
   }
 }

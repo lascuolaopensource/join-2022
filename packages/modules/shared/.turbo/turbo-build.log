@@ -1,4 +1,3 @@
-yarn run v1.22.19
 warning package.json: No license field
 $ microbundle --no-compress
 Browserslist: caniuse-lite is outdated. Please run:
@@ -13,4 +12,3 @@ Build "join-shared" to dist:
       35.9 kB: index.module.js.br
       43.7 kB: index.umd.js.gz
       36.4 kB: index.umd.js.br
-Done in 18.69s.
