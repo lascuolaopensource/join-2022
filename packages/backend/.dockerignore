@@ -6,3 +6,4 @@ src_ts
 .env.example
 .eslintrc
 .env
+dist

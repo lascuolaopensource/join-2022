@@ -5,11 +5,13 @@
     "node": "^16.12"
   },
   "workspaces": [
-    "packages/apps/*",
-    "packages/modules/*"
+    "packages/*"
   ],
   "scripts": {
-    "build": "lerna run build",
+    "build:shared": "yarn workspace join-shared build",
+    "build:backend": "yarn workspace join-backend build",
+    "start:backend": "yarn workspace join-backend start",
+    "build:frontend": "yarn workspace join-frontend build",
     "turboBuild": "turbo build",
     "dev": "lerna run dev --parallel",
     "clean": "lerna clean",
