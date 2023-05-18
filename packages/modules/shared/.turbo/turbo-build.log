@@ -1,0 +1,16 @@
+yarn run v1.22.19
+warning package.json: No license field
+$ microbundle --no-compress
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Build "join-shared" to dist:
+      42.9 kB: index.cjs.gz
+      35.9 kB: index.cjs.br
+      42.6 kB: index.modern.js.gz
+      35.7 kB: index.modern.js.br
+      42.9 kB: index.module.js.gz
+      35.9 kB: index.module.js.br
+      43.7 kB: index.umd.js.gz
+      36.4 kB: index.umd.js.br
+Done in 18.69s.

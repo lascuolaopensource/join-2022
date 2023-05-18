@@ -1,0 +1,176 @@
+yarn run v1.22.19
+$ vite build
+
+vite v4.2.1 building SSR bundle for production...
+transforming...
+✓ 317 modules transformed.
+3:47:55 PM [vite-plugin-svelte] ssr compile done.
+package            	files	  time	  avg
+flowbite-svelte    	  151	 0.35s	2.3ms
+join-frontend      	   35	 0.18s	5.1ms
+svelte-markdown    	   23	19.2ms	0.8ms
+@sveltejs/kit      	    2	17.0ms	8.5ms
+carbon-icons-svelte	    4	 9.6ms	2.4ms
+svelte-forms-lib   	    5	 6.3ms	1.3ms
+rendering chunks...
+
+vite v4.2.1 building for production...
+transforming...
+✓ 410 modules transformed.
+3:47:59 PM [vite-plugin-svelte] dom compile done.
+package            	files	  time	   avg
+flowbite-svelte    	  151	 1.03s	 6.8ms
+join-frontend      	   35	 0.48s	13.7ms
+svelte-markdown    	   23	96.8ms	 4.2ms
+carbon-icons-svelte	    4	21.5ms	 5.4ms
+svelte-forms-lib   	    5	14.7ms	 2.9ms
+@sveltejs/kit      	    2	10.3ms	 5.1ms
+Generated an empty chunk: "7".
+Generated an empty chunk: "20".
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                                                               0.03 kB
+.svelte-kit/output/client/vite-manifest.json                                                             21.93 kB
+.svelte-kit/output/client/_app/immutable/assets/Indicator.1d121e74.css                                    0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/client/_app/immutable/assets/Form.dbddf91f.css                                         0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/_page.64059dc9.css                                        0.17 kB │ gzip:  0.14 kB
+.svelte-kit/output/client/_app/immutable/assets/_layout.6b9ba979.css                                    122.86 kB │ gzip: 17.03 kB
+.svelte-kit/output/client/_app/immutable/chunks/7.4ed993c7.js                                             0.00 kB │ gzip:  0.02 kB
+.svelte-kit/output/client/_app/immutable/chunks/20.4ed993c7.js                                            0.00 kB │ gzip:  0.02 kB
+.svelte-kit/output/client/_app/immutable/chunks/1.d0448d40.js                                             0.08 kB │ gzip:  0.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/5.52c70792.js                                             0.08 kB │ gzip:  0.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/3.37f24c9a.js                                             0.09 kB │ gzip:  0.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/4.37f24c9a.js                                             0.09 kB │ gzip:  0.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/0.fc19c06d.js                                             0.09 kB │ gzip:  0.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/2.00ad84dd.js                                             0.09 kB │ gzip:  0.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/6.abc57b14.js                                             0.10 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/17.ea6987b3.js                                            0.10 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/11.724ebb66.js                                            0.10 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/14.01d5f975.js                                            0.10 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/21.31cea6e5.js                                            0.10 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/entry/courses-page.ts.526aaf5a.js                                0.11 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/10.744e1a35.js                                            0.11 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/8.0583800c.js                                             0.11 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/18.0a9b78c9.js                                            0.11 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/13.1566188a.js                                            0.11 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/12.3971132e.js                                            0.11 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/15.51a6e1ce.js                                            0.11 kB │ gzip:  0.12 kB
+.svelte-kit/output/client/_app/immutable/chunks/19.ba8d9457.js                                            0.11 kB │ gzip:  0.12 kB
+.svelte-kit/output/client/_app/immutable/chunks/9.5228ccca.js                                             0.12 kB │ gzip:  0.12 kB
+.svelte-kit/output/client/_app/immutable/chunks/16.2e903d55.js                                            0.15 kB │ gzip:  0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/stores.5b33653b.js                                        0.24 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/entry/layout.svelte.2e0221b0.js                                  0.54 kB │ gzip:  0.36 kB
+.svelte-kit/output/client/_app/immutable/chunks/paths.82859871.js                                         0.55 kB │ gzip:  0.24 kB
+.svelte-kit/output/client/_app/immutable/chunks/Indicator.svelte_svelte_type_style_lang.7adfd83d.js       0.74 kB │ gzip:  0.47 kB
+.svelte-kit/output/client/_app/immutable/entry/courses-_course_-enroll-thanks-page.svelte.a3099e70.js     0.74 kB │ gzip:  0.46 kB
+.svelte-kit/output/client/_app/immutable/entry/error.svelte.2473c986.js                                   0.80 kB │ gzip:  0.50 kB
+.svelte-kit/output/client/_app/immutable/entry/account-password-forgot-confirm-page.svelte.227b1112.js    1.11 kB │ gzip:  0.60 kB
+.svelte-kit/output/client/_app/immutable/entry/account-register-thanks-page.svelte.318b5457.js            1.12 kB │ gzip:  0.60 kB
+.svelte-kit/output/client/_app/immutable/chunks/parse.d12b0d5b.js                                         1.32 kB │ gzip:  0.65 kB
+.svelte-kit/output/client/_app/immutable/chunks/A.82e9f799.js                                             1.33 kB │ gzip:  0.80 kB
+.svelte-kit/output/client/_app/immutable/entry/account-register-confirm-page.svelte.ae5ca4af.js           1.47 kB │ gzip:  0.69 kB
+.svelte-kit/output/client/_app/immutable/chunks/container.4058b5a3.js                                     1.48 kB │ gzip:  0.75 kB
+.svelte-kit/output/client/_app/immutable/chunks/forms.0f2d7572.js                                         1.62 kB │ gzip:  0.85 kB
+.svelte-kit/output/client/_app/immutable/entry/account-layout.svelte.4a0a8022.js                          1.64 kB │ gzip:  0.82 kB
+.svelte-kit/output/client/_app/immutable/chunks/Heading.fbbe6c7e.js                                       1.85 kB │ gzip:  1.00 kB
+.svelte-kit/output/client/_app/immutable/entry/account-login-page.svelte.42a80e0b.js                      2.05 kB │ gzip:  1.03 kB
+.svelte-kit/output/client/_app/immutable/entry/account-password-forgot-page.svelte.5a21c042.js            2.22 kB │ gzip:  1.10 kB
+.svelte-kit/output/client/_app/immutable/entry/account-password-reset-page.svelte.359801ad.js             2.28 kB │ gzip:  1.06 kB
+.svelte-kit/output/client/_app/immutable/entry/account-register-page.svelte.07c92a8a.js                   2.41 kB │ gzip:  1.09 kB
+.svelte-kit/output/client/_app/immutable/chunks/Hr.d766900f.js                                            2.73 kB │ gzip:  1.39 kB
+.svelte-kit/output/client/_app/immutable/chunks/TitleAndText.997317e0.js                                  2.77 kB │ gzip:  1.18 kB
+.svelte-kit/output/client/_app/immutable/chunks/TitleAndLink.38db1dbc.js                                  2.97 kB │ gzip:  1.21 kB
+.svelte-kit/output/client/_app/immutable/chunks/P.af0cb97f.js                                             3.09 kB │ gzip:  1.46 kB
+.svelte-kit/output/client/_app/immutable/chunks/singletons.24dd0a89.js                                    3.20 kB │ gzip:  1.64 kB
+.svelte-kit/output/client/_app/immutable/chunks/Card.7a9fbfa7.js                                          3.44 kB │ gzip:  1.72 kB
+.svelte-kit/output/client/_app/immutable/entry/_page.svelte.3ea28b10.js                                   3.70 kB │ gzip:  1.61 kB
+.svelte-kit/output/client/_app/immutable/chunks/TableHeadCell.f80f61ab.js                                 6.22 kB │ gzip:  2.25 kB
+.svelte-kit/output/client/_app/immutable/chunks/Frame.c9a6f551.js                                         6.58 kB │ gzip:  2.44 kB
+.svelte-kit/output/client/_app/immutable/entry/courses-page.svelte.5b2f8770.js                            7.07 kB │ gzip:  2.59 kB
+.svelte-kit/output/client/_app/immutable/entry/admin-enrollments-page.svelte.cf18e4aa.js                  7.46 kB │ gzip:  2.68 kB
+.svelte-kit/output/client/_app/immutable/entry/_layout.svelte.a76d2a8c.js                                 9.35 kB │ gzip:  3.46 kB
+.svelte-kit/output/client/_app/immutable/chunks/Button.2a944339.js                                       10.43 kB │ gzip:  3.10 kB
+.svelte-kit/output/client/_app/immutable/entry/courses-_course_-enroll-page.svelte.5f3c6d30.js           12.32 kB │ gzip:  4.01 kB
+.svelte-kit/output/client/_app/immutable/chunks/index.ae8d5ca4.js                                        14.39 kB │ gzip:  5.88 kB
+.svelte-kit/output/client/_app/immutable/entry/app.987e365e.js                                           17.89 kB │ gzip:  3.70 kB
+.svelte-kit/output/client/_app/immutable/entry/payments-pay-_id_-page.svelte.5a6ca880.js                 19.44 kB │ gzip:  5.22 kB
+.svelte-kit/output/client/_app/immutable/entry/start.8db0af6e.js                                         22.09 kB │ gzip:  8.81 kB
+.svelte-kit/output/client/_app/immutable/chunks/Form.0fecf6f9.js                                         22.39 kB │ gzip:  8.23 kB
+.svelte-kit/output/client/_app/immutable/chunks/Input.d022c139.js                                        23.93 kB │ gzip:  7.11 kB
+.svelte-kit/output/client/_app/immutable/entry/admin-enrollments-_course_-page.svelte.1003c8c3.js        33.26 kB │ gzip:  9.97 kB
+.svelte-kit/output/client/_app/immutable/chunks/_page.3b6a9860.js                                        40.33 kB │ gzip: 11.53 kB
+.svelte-kit/output/client/_app/immutable/chunks/index.modern.c5f1933c.js                                 62.86 kB │ gzip: 22.17 kB
+.svelte-kit/output/client/_app/immutable/entry/courses-_course_-page.svelte.916ec846.js                  75.76 kB │ gzip: 19.19 kB
+✓ built in 3.68s
+.svelte-kit/output/server/vite-manifest.json                                              15.77 kB
+.svelte-kit/output/server/_app/immutable/assets/Form.d9320578.css                          0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/Indicator.587c320c.css                     0.07 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.fd99ff9f.css                         0.18 kB
+.svelte-kit/output/server/_app/immutable/assets/_layout.a54ab2f9.css                     145.22 kB
+.svelte-kit/output/server/entries/pages/_layout.server.ts.js                               0.10 kB
+.svelte-kit/output/server/chunks/shared-server.js                                          0.21 kB
+.svelte-kit/output/server/entries/pages/_page.server.ts.js                                 0.24 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                               0.24 kB
+.svelte-kit/output/server/internal.js                                                      0.24 kB
+.svelte-kit/output/server/chunks/cookies.js                                                0.28 kB
+.svelte-kit/output/server/entries/pages/admin/enrollments/_layout.server.ts.js             0.32 kB
+.svelte-kit/output/server/chunks/hooks.server.js                                           0.39 kB
+.svelte-kit/output/server/entries/pages/account/logout/_page.server.ts.js                  0.39 kB
+.svelte-kit/output/server/entries/pages/payments/confirm-_code_/_page.server.ts.js         0.43 kB
+.svelte-kit/output/server/chunks/stores.js                                                 0.47 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                0.47 kB
+.svelte-kit/output/server/entries/pages/courses/_course_/enroll/thanks/_page.svelte.js     0.53 kB
+.svelte-kit/output/server/entries/pages/account/password/forgot/_page.server.ts.js         0.66 kB
+.svelte-kit/output/server/entries/pages/courses/_course_/_layout.server.ts.js              0.70 kB
+.svelte-kit/output/server/entries/pages/account/register/thanks/_page.svelte.js            0.74 kB
+.svelte-kit/output/server/entries/pages/account/password/forgot/confirm/_page.svelte.js    0.75 kB
+.svelte-kit/output/server/chunks/paths.js                                                  0.76 kB
+.svelte-kit/output/server/entries/pages/courses/_page.ts.js                                0.76 kB
+.svelte-kit/output/server/entries/pages/account/_layout.svelte.js                          0.80 kB
+.svelte-kit/output/server/entries/pages/account/login/_page.server.ts.js                   0.84 kB
+.svelte-kit/output/server/entries/pages/admin/enrollments/_page.server.ts.js               0.89 kB
+.svelte-kit/output/server/entries/pages/account/password/reset/_page.server.ts.js          0.90 kB
+.svelte-kit/output/server/entries/pages/account/register/confirm/_page.svelte.js           0.97 kB
+.svelte-kit/output/server/entries/pages/account/register/_page.server.ts.js                0.99 kB
+.svelte-kit/output/server/entries/pages/payments/pay-_id_/_page.server.ts.js               1.06 kB
+.svelte-kit/output/server/entries/pages/courses/_course_/enroll/_page.server.ts.js         1.09 kB
+.svelte-kit/output/server/chunks/A.js                                                      1.10 kB
+.svelte-kit/output/server/chunks/TitleAndText.js                                           1.31 kB
+.svelte-kit/output/server/chunks/container.js                                              1.37 kB
+.svelte-kit/output/server/chunks/Heading.js                                                1.45 kB
+.svelte-kit/output/server/chunks/TitleAndLink.js                                           1.51 kB
+.svelte-kit/output/server/entries/pages/admin/enrollments/_course_/_page.server.ts.js      1.65 kB
+.svelte-kit/output/server/entries/pages/account/password/reset/_page.svelte.js             1.93 kB
+.svelte-kit/output/server/entries/pages/account/password/forgot/_page.svelte.js            1.95 kB
+.svelte-kit/output/server/entries/pages/account/login/_page.svelte.js                      2.12 kB
+.svelte-kit/output/server/chunks/index.js                                                  2.15 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                                    2.16 kB
+.svelte-kit/output/server/chunks/index2.js                                                 2.36 kB
+.svelte-kit/output/server/entries/pages/account/register/_page.svelte.js                   2.56 kB
+.svelte-kit/output/server/chunks/Hr.js                                                     2.61 kB
+.svelte-kit/output/server/chunks/Card.js                                                   2.64 kB
+.svelte-kit/output/server/chunks/formData.js                                               2.73 kB
+.svelte-kit/output/server/entries/pages/courses/_page.svelte.js                            3.85 kB
+.svelte-kit/output/server/entries/pages/admin/enrollments/_page.svelte.js                  4.10 kB
+.svelte-kit/output/server/chunks/P.js                                                      4.29 kB
+.svelte-kit/output/server/chunks/Frame.js                                                  5.23 kB
+.svelte-kit/output/server/chunks/TableHeadCell.js                                          5.42 kB
+.svelte-kit/output/server/chunks/internal.js                                               6.20 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js                                  6.36 kB
+.svelte-kit/output/server/chunks/index3.js                                                 8.68 kB
+.svelte-kit/output/server/entries/pages/courses/_course_/enroll/_page.svelte.js           10.05 kB
+.svelte-kit/output/server/chunks/Button.js                                                10.41 kB
+.svelte-kit/output/server/entries/pages/payments/pay-_id_/_page.svelte.js                 15.69 kB
+.svelte-kit/output/server/chunks/Input.js                                                 16.40 kB
+.svelte-kit/output/server/entries/pages/courses/_course_/_page.svelte.js                  18.31 kB
+.svelte-kit/output/server/entries/pages/admin/enrollments/_course_/_page.svelte.js        19.91 kB
+.svelte-kit/output/server/chunks/Form.js                                                  23.23 kB
+.svelte-kit/output/server/index.js                                                        81.97 kB
+.svelte-kit/output/server/chunks/index.modern.js                                         127.99 kB
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-node
+  ✔ done
+✓ built in 8.09s
+Done in 8.98s.
